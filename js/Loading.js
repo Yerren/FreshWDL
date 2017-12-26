@@ -1,5 +1,9 @@
 /*jslint plusplus: true, sloppy: true, indent: 4 */
-var op = 1;
+var op = 1,
+    dataCollectErrorCR = false,
+    dataCollectErrorCRE = false,
+    dataCollectErrorCRH = false,
+    dataCollectErrorCRD = false:
 
 function fade() {
     var element = document.getElementById("loadingScreen");
