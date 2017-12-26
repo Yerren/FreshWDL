@@ -51,7 +51,10 @@ var humidityGauge = {
 		humidityIn: 0,
 		humidityOut: 0,
         unitsIn: "humidity"
-	}
+	},
+    valuesOLD: {
+		humidityIn: 0
+    }
 };
 
 Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
@@ -59,34 +62,27 @@ Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
 	return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 };
 
-function drawWithInputValueHum01() {
-    //Function that is called when button pressed
-    var halfAngleDeg = (Math.PI - Math.acos((humidityGauge.setupVars.cutOffLength - humidityGauge.setupVars.posOuterCircle.y) / humidityGauge.setupVars.outerCircleRad)) * (180 / Math.PI);
+function drawHumidityGaugeHum01(humidityIn, unitChange) {
+    //Is called when new data is sent.
     
-    humidityGauge.values.humidityIn = parseFloat(document.getElementById('txtHumidity').value, 0);
+    unitChange = unitChange || false;
     
-    if (humidityGauge.values.humidityIn !== null) {
-        humidityGauge.values.humidityOut = humidityGauge.values.humidityIn.map(0, 100, -halfAngleDeg, halfAngleDeg)
-        
+    if (humidityGauge.valuesOLD.humidityIn != humidityIn || unitChange === true) {
+        var halfAngleDeg = (Math.PI - Math.acos((humidityGauge.setupVars.cutOffLength - humidityGauge.setupVars.posOuterCircle.y) / humidityGauge.setupVars.outerCircleRad)) * (180 / Math.PI);
+
+        humidityGauge.values.humidityIn = parseFloat(humidityIn, 0);
+        humidityGauge.values.humidityOut = humidityGauge.values.humidityIn.map(0, 100, -halfAngleDeg, halfAngleDeg);
         createjs.Tween.get(humidityGauge.tweens)
             .to({r: humidityGauge.values.humidityOut}, 2000, createjs.Ease.quartInOut);
-	}
-}
-
-function drawHumidityGaugeHum01(humidityIn) {
-    //Is called when new data is sent.
-    var halfAngleDeg = (Math.PI - Math.acos((humidityGauge.setupVars.cutOffLength - humidityGauge.setupVars.posOuterCircle.y) / humidityGauge.setupVars.outerCircleRad)) * (180 / Math.PI);
-    
-    humidityGauge.values.humidityIn = parseFloat(humidityIn, 0);
-    humidityGauge.values.humidityOut = humidityGauge.values.humidityIn.map(0, 100, -halfAngleDeg, halfAngleDeg)
-    createjs.Tween.get(humidityGauge.tweens)
-        .to({r: humidityGauge.values.humidityOut}, 2000, createjs.Ease.quartInOut);
+        
+        humidityGauge.valuesOLD.humidityIn = humidityIn;
+    }
 }
 
 function updateTweensHum01() {
     //Updates any tweened or changing objects. This is called every frame
     humidityGauge.pointer.rotation = humidityGauge.tweens.r;
-    humidityGauge.textDisplay.text = humidityGauge.values.humidityIn.toString() + "%"
+    humidityGauge.textDisplay.text = humidityGauge.values.humidityIn.toString() + "%";
 }
 
 function updateTopHum01() {
