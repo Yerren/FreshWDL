@@ -3,7 +3,7 @@ var op = 1,
     dataCollectErrorCR = false,
     dataCollectErrorCRE = false,
     dataCollectErrorCRH = false,
-    dataCollectErrorCRD = false:
+    dataCollectErrorCRD = false;
 
 function fade() {
     var element = document.getElementById("loadingScreen");
