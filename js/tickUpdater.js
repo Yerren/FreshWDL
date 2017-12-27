@@ -46,6 +46,4 @@ function tickHandler(e) {
     barometer01.stage.update();
     apparent01.stage.update();
     titleRainfall01.stage.update();
-    
-    console.log("WTF THIS WORKS");
 }
