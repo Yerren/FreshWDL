@@ -50,6 +50,9 @@ var uniBar03 = {
 		uniIn: 0,
 		uniOut: 0
 	},
+    valuesOLD: {
+		uniIn: 0
+	},
     config: {
         unitsIn: "rainfall",
         title: "Annual",
@@ -82,28 +85,24 @@ function formatInputUni03() {
 	uniBar03.values.uniOut = uniBar03.values.uniIn.map(uniBar03.constants.minUni, uniBar03.constants.maxUni, 0, 1);
 }
 
-function drawWithInputValueUni03() {
-    //Function that is called when button pressed
-	uniBar03.values.uniIn = parseFloat(document.getElementById('txtUni').value, 0);
-
-	if (uniBar03.values.uniIn !== null) {
-		formatInputUni03();
-        createjs.Tween.get(uniBar03.tweens.barFill)
-            .to({h: uniBar03.values.uniOut}, 2000, createjs.Ease.quartInOut);
-	}
-
-}
-
-function drawUniratureBarUni03(uniIn) {
+function drawUniratureBarUni03(uniIn, unitChange) {
     //Is called when new data is sent.
     
-    //Sets inputs to new data
-	uniBar03.values.uniIn = uniIn;
+    unitChange = unitChange || false;
+    
+    //check if widget actually needs to be updated
+    if (uniBar03.valuesOLD.uniIn != uniIn || unitChange === true) {
+        //Sets inputs to new data
+        uniBar03.values.uniIn = uniIn;
 
-    //Starts the tweens (animations) of the inputs
-	formatInputUni03();
-	createjs.Tween.get(uniBar03.tweens.barFill)
-		.to({h: uniBar03.values.uniOut}, 2000, createjs.Ease.quartInOut);
+        //Starts the tweens (animations) of the inputs
+        formatInputUni03();
+        createjs.Tween.get(uniBar03.tweens.barFill)
+            .to({h: uniBar03.values.uniOut}, 2000, createjs.Ease.quartInOut);
+        
+        uniBar03.valuesOLD.uniIn = uniIn;
+    }
+    
 }
 
 function updateTweensUni03() {
