@@ -18,10 +18,7 @@ var arrayClientraw = [],
     attemptedCRE,
     attemptedCRH,
     attemptedCRD,
-    dataCollectErrorCR = false,
-    dataCollectErrorCRE = false,
-    dataCollectErrorCRH = false,
-    dataCollectErrorCRD = false,
+    noDataChanged = false,
 	baseURL = window.location.href,
 	to = baseURL.lastIndexOf("/"),
     loaded = null,
@@ -54,6 +51,38 @@ function shiftArrayFtL(arrayIn) {
 //Proccesses Base URL
 to = to === -1 ? baseURL.length : to + 1;
 baseURL = baseURL.substring(0, to);
+
+//Array comparison, credit to Tomas Zato @ https://stackoverflow.com/questions/7837456/how-to-compare-arrays-in-javascript.
+// Warn if overriding existing method
+if(Array.prototype.equals)
+    console.warn("Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.");
+// attach the .equals method to Array's prototype to call it on any array
+Array.prototype.equals = function (array) {
+    // if the other array is a falsy value, return
+    if (!array)
+        return false;
+
+    // compare lengths - can save a lot of time 
+    if (this.length != array.length)
+        return false;
+
+    for (i = 0, l=this.length; i < l; i++) {
+        // Check if we have nested arrays
+        if (this[i] instanceof Array && array[i] instanceof Array) {
+            // recurse into the nested arrays
+            if (!this[i].equals(array[i]))
+                return false;       
+        }           
+        else if (this[i] != array[i]) { 
+            // Warning - two different object instances will never be equal: {x:20} != {x:20}
+            return false;   
+        }           
+    }       
+    return true;
+}
+// Hide method from for-in loops
+Object.defineProperty(Array.prototype, "equals", {enumerable: false});
+
 
 //INFORMATION GATHERING SECTION
 
@@ -238,49 +267,59 @@ function tryUpdateWidgets() {
         //check if all are done
         if ((doneCR === true && doneCRE === true && doneCRH === true && doneCRD === true) || (attemptedCR === true && attemptedCRE === true && attemptedCRH === true && attemptedCRD === true && firstTime === false)) {
             doneCR = doneCRE = doneCRH = doneCRD = attemptedCR = attemptedCRE = attemptedCRH = attemptedCRD = false;
+            
+            if (arrayClientraw.equals(arrayClientrawOld) === true && arrayClientrawExtra.equals(arrayClientrawExtraOld) === true && arrayClientrawDaily.equals(arrayClientrawDailyOld) === true && arrayClientrawHour.equals(arrayClientrawHourOld) === true) {
+                noDataChanged = true;
+                
+                drawStatusS01(arrayClientraw[49]); //Status widget must always be updated
+            } else {
+                noDataChanged = false;
+                
+                drawStatusS01(arrayClientraw[49]); //Status widget must always be updated
+                
+                if (arrayClientraw.equals(arrayClientrawOld) === false) {
+                    drawHumidityGaugeHum01(arrayClientraw[5]);
+                    drawTemperatureBarTemp01(arrayClientraw[4], arrayClientraw[46], arrayClientraw[47]);
+                    drawUniratureBarUni01(arrayClientraw[7]);
+                    drawUniratureBarUni02(arrayClientraw[8]);
+                    drawUniratureBarUni03(arrayClientraw[9]);
+                    drawWindGaugeWind01(arrayClientraw[3], arrayClientraw[117]);
+                    drawSpeedBarWS01(arrayClientraw[1], arrayClientraw[2], arrayClientraw[113], arrayClientraw[71]);
+                    drawWindchillBarWC01(arrayClientraw[44], arrayClientraw[77], arrayClientraw[78]);
+                    drawUVBarUV01(arrayClientraw[79]);
+                    drawBarometerB01(arrayClientraw[6], arrayClientraw[50]);
+                    drawApparentA01(arrayClientraw[130]);
+                }
+                if (arrayClientrawExtra.equals(arrayClientrawExtraOld) === false) {
+                    processRecordsData(recordsDict[2], 313, 684);
+                    processRecordsData(recordsDict[1], 187, 672);
+                    processRecordsData(recordsDict[0], 61, 660);
+                    updateValuesRe01();
+                    formatAndDisplayForecastFor01(arrayClientrawExtra[531]);
+                    drawMoonSunMS01(arrayClientrawExtra[556], arrayClientrawExtra[557], arrayClientrawExtra[558], arrayClientrawExtra[559], arrayClientrawExtra[560], arrayClientrawExtra[561]);
+                }
+                if (arrayClientrawDaily.equals(arrayClientrawDailyOld) === false) {
 
-            if (arrayClientraw != arrayClientrawOld) {
-                drawHumidityGaugeHum01(arrayClientraw[5]);
-                drawTemperatureBarTemp01(arrayClientraw[4], arrayClientraw[46], arrayClientraw[47]);
-                drawUniratureBarUni01(arrayClientraw[7]);
-                drawUniratureBarUni02(arrayClientraw[8]);
-                drawUniratureBarUni03(arrayClientraw[9]);
-                drawWindGaugeWind01(arrayClientraw[3], arrayClientraw[117]);
-                drawSpeedBarWS01(arrayClientraw[1], arrayClientraw[2], arrayClientraw[113], arrayClientraw[71]);
-                drawWindchillBarWC01(arrayClientraw[44], arrayClientraw[77], arrayClientraw[78]);
-                drawUVBarUV01(arrayClientraw[79]);
-                drawBarometerB01(arrayClientraw[6], arrayClientraw[50]);
-                drawApparentA01(arrayClientraw[130]);
-            }
-            if (arrayClientrawExtra != arrayClientrawExtraOld) {
-                processRecordsData(recordsDict[2], 313, 684);
-                processRecordsData(recordsDict[1], 187, 672);
-                processRecordsData(recordsDict[0], 61, 660);
-                updateValuesRe01();
-                formatAndDisplayForecastFor01(arrayClientrawExtra[531]);
-                drawMoonSunMS01(arrayClientrawExtra[556], arrayClientrawExtra[557], arrayClientrawExtra[558], arrayClientrawExtra[559], arrayClientrawExtra[560], arrayClientrawExtra[561]);
-            }
-            if (arrayClientrawDaily != arrayClientrawDailyOld) {
+                }
+                if (arrayClientrawHour.equals(arrayClientrawHourOld) === false) {
 
-            }
-            if (arrayClientrawHour != arrayClientrawHourOld) {
+                }
+                if (arrayClientraw.equals(arrayClientrawOld) === false || arrayClientrawExtra.equals(arrayClientrawExtraOld) === false) {
+                    drawSolarBarSol01(arrayClientraw[34], arrayClientraw[127], arrayClientrawExtra[696]);
+                }
 
-            }
-            if (arrayClientraw != arrayClientrawOld && arrayClientrawExtra != arrayClientrawExtraOld) {
-                drawSolarBarSol01(arrayClientraw[34], arrayClientraw[127], arrayClientrawExtra[696]);
-            }
+                arrayClientrawOld = arrayClientraw;
+                arrayClientrawExtraOld = arrayClientrawExtra;
+                arrayClientrawDailyOld = arrayClientrawDaily;
+                arrayClientrawHourOld = arrayClientrawHour;
 
-            arrayClientrawOld = arrayClientraw;
-            arrayClientrawExtraOld = arrayClientrawExtra;
-            arrayClientrawDailyOld = arrayClientrawDaily;
-            arrayClientrawHourOld = arrayClientrawHour;
-
-            processGraphData();
-            configureGraphRainBar01("rainfallBar", "dailyMonth");
-            configureGraphTempLine01("temp", "hourlyDay");
-            configureGraphWindLine01("windSpeed", "hourlyDay");
-            configureGraphBaroLine01("barometer", "hourlyDay");
-            configureGraph(modalGraph.currentGraph[0], modalGraph.currentGraph[1]);
+                processGraphData();
+                configureGraphRainBar01("rainfallBar", "dailyMonth");
+                configureGraphTempLine01("temp", "hourlyDay");
+                configureGraphWindLine01("windSpeed", "hourlyDay");
+                configureGraphBaroLine01("barometer", "hourlyDay");
+                configureGraph(modalGraph.currentGraph[0], modalGraph.currentGraph[1]);
+            }
             
             //If it is the first time here, clear loading screen
             if (firstTime === true) {
@@ -305,6 +344,7 @@ function loadArray(url) {
 	}
 	
 	xhttpVar.open("GET", url, true);
+    xhttpVar.setRequestHeader("Cache-Control", "no-cache");
     xhttpVar.send();
 	
 	return xhttpVar;
@@ -315,22 +355,15 @@ function updateClientraw() {
     var xhttpCR;
     xhttpCR = loadArray(baseURL + "clientraw.txt");
     
-    xhttpCR.onloadend = function() {
-        if(xhttpCR.status == 404) {
-            console.log("404 Error. Clientraw");
-            dataCollectErrorCR = true;
-        }
-        if(xhttpCR.status == 500) {
-            console.log("500 Error. Clientraw");
-            dataCollectErrorCR = true;
-        }
-    }   
-
     xhttpCR.onreadystatechange = function () {
-        if (xhttpCR.readyState === 4 && xhttpCR.status === 200) {
-            dataCollectErrorCR = false;
-            arrayClientraw = xhttpCR.responseText.toString().split(" ");
-            doneCR = true;
+        if (xhttpCR.readyState === 4) {
+            if (xhttpCR.status === 200) {
+                dataCollectErrorCR = false;
+                arrayClientraw = xhttpCR.responseText.toString().split(" ");
+                doneCR = true;
+            } else {
+                dataCollectErrorCR = true;
+            }
             tryUpdateWidgets();
         }
     };
@@ -344,25 +377,18 @@ function updateClientrawExtra() {
 	var xhttpCRE;
 	xhttpCRE = loadArray(baseURL + "clientrawextra.txt");
 	
-    xhttpCRE.onloadend = function() {
-        if(xhttpCRE.status == 404) {
-            console.log("404 Error. ClientrawExtra");
-            dataCollectErrorCRE = true;
-        }
-        if(xhttpCRE.status == 500) {
-            console.log("500 Error. ClientrawExtra");
-            dataCollectErrorCRE = true;
-        }
-    }
-    
-	xhttpCRE.onreadystatechange = function () {
-		if (xhttpCRE.readyState === 4 && xhttpCRE.status === 200) {
-            dataCollectErrorCRE = false;
-			arrayClientrawExtra = xhttpCRE.responseText.toString().split(" ");
-			doneCRE = true;
+    xhttpCRE.onreadystatechange = function () {
+        if (xhttpCRE.readyState === 4) {
+            if (xhttpCRE.status === 200) {
+                dataCollectErrorCRE = false;
+                arrayClientrawExtra = xhttpCRE.responseText.toString().split(" ");
+                doneCRE = true;
+            } else {
+                dataCollectErrorCRE = true;
+            }
             tryUpdateWidgets();
-		}
-	};
+        }
+    };
     attemptedCRE = true;
 }
 
@@ -372,26 +398,18 @@ function updateClientrawHour() {
 	var xhttpCRH;
 	xhttpCRH = loadArray(baseURL + "clientrawhour.txt");
     
-    xhttpCRH.onloadend = function() {
-        if(xhttpCRH.status == 404) {
-            console.log("404 Error. ClientrawHour");
-            dataCollectErrorCRH = true;
-        }
-        if(xhttpCRH.status == 500) {
-            console.log("500 Error. ClientrawHour");
-            dataCollectErrorCRH = true;
-        }
-    }
-	
-	xhttpCRH.onreadystatechange = function () {
-		if (xhttpCRH.readyState === 4 && xhttpCRH.status === 200) {
-            dataCollectErrorCRH = false;
-			arrayClientrawHour = xhttpCRH.responseText.toString().split(" ");
-			doneCRH = true;
+    xhttpCRH.onreadystatechange = function () {
+        if (xhttpCRH.readyState === 4) {
+            if (xhttpCRH.status === 200) {
+                dataCollectErrorCRH = false;
+                arrayClientrawHour = xhttpCRH.responseText.toString().split(" ");
+                doneCRH = true;
+            } else {
+                dataCollectErrorCRH = true;
+            }
             tryUpdateWidgets();
-		}
-	};
-    
+        }
+    };
     attemptedCRH = true;
 }
 
@@ -401,26 +419,18 @@ function updateClientrawDaily() {
 	var xhttpCRD;
 	xhttpCRD = loadArray(baseURL + "clientrawdaily.txt");
     
-    xhttpCRD.onloadend = function() {
-        if(xhttpCRD.status == 404) {
-            console.log("404 Error. ClientrawDaily");
-            dataCollectErrorCRD = true;
-        }
-        if(xhttpCRD.status == 500) {
-            console.log("500 Error. ClientrawDaily");
-            dataCollectErrorCRD = true;
-        }
-    }
-	
-	xhttpCRD.onreadystatechange = function () {
-		if (xhttpCRD.readyState === 4 && xhttpCRD.status === 200) {
-            dataCollectErrorCRE = false;
-			arrayClientrawDaily = xhttpCRD.responseText.toString().split(" ");
-			doneCRD = true;
+    xhttpCRD.onreadystatechange = function () {
+        if (xhttpCRD.readyState === 4) {
+            if (xhttpCRD.status === 200) {
+                dataCollectErrorCRD = false;
+                arrayClientrawDaily = xhttpCRD.responseText.toString().split(" ");
+                doneCRD = true;
+            } else {
+                dataCollectErrorCRD = true;
+            }
             tryUpdateWidgets();
-		}
-	};
-    
+        }
+    };
     attemptedCRD = true;
 }
 

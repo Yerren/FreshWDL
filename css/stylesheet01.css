@@ -16,9 +16,10 @@ head, body {
 .buttons {
     height: 100%;
     width: 12%;
-    margin-left: 0.9%;
-    margin-right: 0.9%;
-    font-size: 2vmin;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    font-size: 1.8vmin;
+    padding: 0;
 }
 /* Formating to ensure floating layout works */
 #FWDLcontainer {
@@ -42,8 +43,12 @@ head, body {
     height: 20%;
 }
 
-#top > canvas {
+#MoonSun01 {
     float: right;
+}
+
+#Status01 {
+    float: left;
 }
 
 #left {

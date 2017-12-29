@@ -195,7 +195,7 @@ function updateTopWS01() {
     windSpeed.setupVars.barFillHeight = windSpeed.setupVars.barHeight;
     windSpeed.setupVars.strokeSize = windSpeed.setupVars.barWidth / 40;
     windSpeed.setupVars.textSize = windSpeed.canvas.height / 17;
-    windSpeed.setupVars.textDisplaySize = windSpeed.canvas.height / 19;
+    windSpeed.setupVars.textDisplaySize = windSpeed.canvas.height / 20;
     windSpeed.setupVars.posBarLeft = {
         x: ((windSpeed.canvas.height / 2) - (windSpeed.setupVars.barWidth / 2)),
         y: ((windSpeed.canvas.height / 2) - (windSpeed.setupVars.barHeight / 2))

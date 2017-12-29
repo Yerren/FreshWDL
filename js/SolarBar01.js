@@ -40,6 +40,11 @@ var solarBar01 = {
 		percentIn: 0,
 		percentOut: 0
 	},
+    valuesOLD: {
+		uniIn: 0,
+		sunHoursIn: 0,
+		percentIn: 0,
+	},
     config: {
         unitsIn: "solar",
         title: "Solar",
@@ -63,18 +68,25 @@ function formatInputSol01() {
 	solarBar01.values.percentOut = solarBar01.values.percentIn.map(0, 100, 0, 1);
 }
 
-function drawSolarBarSol01(percentIn, uniIn, sunHoursIn) {
+function drawSolarBarSol01(percentIn, uniIn, sunHoursIn, unitChange) {
     //Is called when new data is sent.
+    unitChange = unitChange || false;
     
-    //Sets inputs to new data
-	solarBar01.values.uniIn = Number(uniIn);
-	solarBar01.values.percentIn = Number(percentIn);
-	solarBar01.values.sunHoursIn = Number(sunHoursIn);
+    if (solarBar01.valuesOLD.uniIn != percentIn || solarBar01.valuesOLD.percentIn != uniIn || solarBar01.valuesOLD.sunHoursIn != sunHoursIn || unitChange === true) {
+        //Sets inputs to new data
+        solarBar01.values.uniIn = Number(uniIn);
+        solarBar01.values.percentIn = Number(percentIn);
+        solarBar01.values.sunHoursIn = Number(sunHoursIn);
 
-    //Starts the tweens (animations) of the inputs
-	formatInputSol01();
-	createjs.Tween.get(solarBar01.tweens.barFill)
-		.to({h: solarBar01.values.percentOut}, 2000, createjs.Ease.quartInOut);
+        //Starts the tweens (animations) of the inputs
+        formatInputSol01();
+        createjs.Tween.get(solarBar01.tweens.barFill)
+            .to({h: solarBar01.values.percentOut}, 2000, createjs.Ease.quartInOut);
+        
+        solarBar01.valuesOLD.uniIn = percentIn;
+        solarBar01.valuesOLD.percentIn = uniIn;
+        solarBar01.valuesOLD.sunHoursIn = sunHoursIn;
+    }
 }
 
 function updateTweensSol01() {

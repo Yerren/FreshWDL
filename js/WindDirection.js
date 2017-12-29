@@ -59,6 +59,10 @@ var windGauge = {
 		avgOut: 0,
         avgOld: 0,
         unitsIn: "wind"
+	},
+    valuesOLD: {
+		windIn: 0,
+        avgIn: 0
 	}
 };
 
@@ -67,43 +71,51 @@ Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
 	return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 };
 
-function drawWindGaugeWind01(windIn, avgIn) {
+function drawWindGaugeWind01(windIn, avgIn, unitChange) {
     //Is called when new data is sent.
-    windIn = parseFloat(windIn, 0);
-    avgIn = parseFloat(avgIn, 0);
-    windGauge.textDisplay.text = windIn.toString() + "\u00B0";
-    windGauge.avgDisplay.text = avgIn.toString() + "\u00B0";
     
-    var angleDiff = windIn - (windGauge.values.windOld % 360),
-        avgAngleDiff = avgIn - (windGauge.values.avgOld % 360);
+    unitChange = unitChange || false;
     
-    //For wind pointer
-    if (Math.abs(angleDiff) < 180) {
-        windGauge.values.windOut = windGauge.values.windOld + angleDiff;
-    } else if (windGauge.values.windOld > windIn) {
-        windGauge.values.windOut = windGauge.values.windOld + angleDiff + 360;
-    } else if (windGauge.values.windOld < windIn) {
-        windGauge.values.windOut = windGauge.values.windOld + angleDiff - 360;
+    //Check if widget needs to be updated
+    if (windGauge.valuesOLD.windIn != windIn || windGauge.valuesOLD.avgIn != avgIn || unitChange === true) {
+        windIn = parseFloat(windIn, 0);
+        avgIn = parseFloat(avgIn, 0);
+        windGauge.textDisplay.text = windIn.toString() + "\u00B0";
+        windGauge.avgDisplay.text = avgIn.toString() + "\u00B0";
+
+        var angleDiff = windIn - (windGauge.values.windOld % 360),
+            avgAngleDiff = avgIn - (windGauge.values.avgOld % 360);
+
+        //For wind pointer
+        if (Math.abs(angleDiff) < 180) {
+            windGauge.values.windOut = windGauge.values.windOld + angleDiff;
+        } else if (windGauge.values.windOld > windIn) {
+            windGauge.values.windOut = windGauge.values.windOld + angleDiff + 360;
+        } else if (windGauge.values.windOld < windIn) {
+            windGauge.values.windOut = windGauge.values.windOld + angleDiff - 360;
+        }
+
+        //For average pointer
+        if (Math.abs(avgAngleDiff) < 180) {
+            windGauge.values.avgOut = windGauge.values.avgOld + avgAngleDiff;
+        } else if (windGauge.values.avgOld > avgIn) {
+            windGauge.values.avgOut = windGauge.values.avgOld + avgAngleDiff + 360;
+        } else if (windGauge.values.avgOld < avgIn) {
+            windGauge.values.avgOut = windGauge.values.avgOld + avgAngleDiff - 360;
+        }
+
+        createjs.Tween.get(windGauge.tweens)
+            .to({r: windGauge.values.windOut}, 2000, createjs.Ease.quartInOut);
+        createjs.Tween.get(windGauge.tweens)
+            .to({aR: windGauge.values.avgOut}, 2000, createjs.Ease.quartInOut);
+
+        windGauge.values.windOld = windGauge.values.windOut;
+        windGauge.values.avgOld = windGauge.values.avgOut;
+        
+        //values used for checking if changes in value
+        windGauge.valuesOLD.windIn = windIn;
+        windGauge.valuesOLD.avgIn = avgIn;
     }
-    
-    //For average pointer
-    if (Math.abs(avgAngleDiff) < 180) {
-        windGauge.values.avgOut = windGauge.values.avgOld + avgAngleDiff;
-    } else if (windGauge.values.avgOld > avgIn) {
-        windGauge.values.avgOut = windGauge.values.avgOld + avgAngleDiff + 360;
-    } else if (windGauge.values.avgOld < avgIn) {
-        windGauge.values.avgOut = windGauge.values.avgOld + avgAngleDiff - 360;
-    }
-    
-    createjs.Tween.get(windGauge.tweens)
-        .to({r: windGauge.values.windOut}, 2000, createjs.Ease.quartInOut);
-    createjs.Tween.get(windGauge.tweens)
-        .to({aR: windGauge.values.avgOut}, 2000, createjs.Ease.quartInOut);
-    
-    windGauge.values.windOld = windGauge.values.windOut;
-    windGauge.values.avgOld = windGauge.values.avgOut;
-    
-    //windGauge.pointer.rotation = windGauge.values.windOld = windGauge.tweens.r = windGauge.values.windOut % 360;
 }
 
 function updateTweensWind01() {

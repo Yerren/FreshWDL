@@ -71,15 +71,14 @@ function drawMoonSunMS01(sunRiseIn, sunSetIn, moonRiseIn, moonSetIn, moonPhaseIn
         moonSun01.textDisplayMS.text = "Set: " + moonSun01.values.moonSetIn;
         moonSun01.textDisplayMP.text = "Phase: " + moonSun01.values.moonPhaseIn + "%";
         moonSun01.textDisplayMA.text = "Age: " + moonSun01.values.moonAgeIn;
+        
+        moonSun01.valuesOld.sunRiseIn = sunRiseIn;
+        moonSun01.valuesOld.sunSetIn = sunSetIn;
+        moonSun01.valuesOld.moonRiseIn = moonRiseIn;
+        moonSun01.valuesOld.moonSetIn = moonSetIn;
+        moonSun01.valuesOld.moonPhaseIn = moonPhaseIn;
+        moonSun01.valuesOld.moonAgeIn = moonAgeIn;
     }
-    
-    moonSun01.valuesOld.sunRiseIn = sunRiseIn;
-    moonSun01.valuesOld.sunSetIn = sunSetIn;
-    moonSun01.valuesOld.moonRiseIn = moonRiseIn;
-    moonSun01.valuesOld.moonSetIn = moonSetIn;
-    moonSun01.valuesOld.moonPhaseIn = moonPhaseIn;
-    moonSun01.valuesOld.moonAgeIn = moonAgeIn;
-    
 }
 
 function updateTopMS01() {

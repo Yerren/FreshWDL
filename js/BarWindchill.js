@@ -77,6 +77,11 @@ var windchill01 = {
 		lowTempIn: 0,
 		lowTempOut: 0,
         unitsIn: "temp"
+	},
+    valuesOld: {
+		tempIn: 0,
+		highTempIn: 0,
+		lowTempIn: 0
 	}
 };
 
@@ -107,22 +112,30 @@ function formatInputWC01() {
 	windchill01.values.lowTempOut = windchill01.values.lowTempIn.map(windchill01.constants.minTemp, windchill01.constants.maxTemp, 1.04, 0.17);
 }
 
-function drawWindchillBarWC01(tempIn, highTempIn, lowTempIn) {
+function drawWindchillBarWC01(tempIn, highTempIn, lowTempIn, unitChange) {
     //Is called when new data is sent.
     
-    //Sets inputs to new data
-	windchill01.values.tempIn = Number(tempIn);
-    windchill01.values.highTempIn = Number(highTempIn);
-    windchill01.values.lowTempIn = Number(lowTempIn);
+    unitChange = unitChange || false;
+    
+    if (windchill01.valuesOld.TempIn != tempIn || windchill01.valuesOld.highTempIn != highTempIn || windchill01.valuesOld.lowTempIn != lowTempIn || unitChange === true) {
+        //Sets inputs to new data
+        windchill01.values.tempIn = Number(tempIn);
+        windchill01.values.highTempIn = Number(highTempIn);
+        windchill01.values.lowTempIn = Number(lowTempIn);
 
-    //Starts the tweens (animations) of the inputs
-	formatInputWC01();
-	createjs.Tween.get(windchill01.tweens.barFill)
-		.to({h: windchill01.values.tempOut}, 2000, createjs.Ease.quartInOut);
-	createjs.Tween.get(windchill01.tweens.highTemp)
-		.to({h: windchill01.values.highTempOut}, 2000, createjs.Ease.quartInOut);
-	createjs.Tween.get(windchill01.tweens.lowTemp)
-		.to({h: windchill01.values.lowTempOut}, 2000, createjs.Ease.quartInOut);
+        //Starts the tweens (animations) of the inputs
+        formatInputWC01();
+        createjs.Tween.get(windchill01.tweens.barFill)
+            .to({h: windchill01.values.tempOut}, 2000, createjs.Ease.quartInOut);
+        createjs.Tween.get(windchill01.tweens.highTemp)
+            .to({h: windchill01.values.highTempOut}, 2000, createjs.Ease.quartInOut);
+        createjs.Tween.get(windchill01.tweens.lowTemp)
+            .to({h: windchill01.values.lowTempOut}, 2000, createjs.Ease.quartInOut);
+        
+        windchill01.valuesOld.TempIn = tempIn;
+        windchill01.valuesOld.highTempIn = highTempIn;
+        windchill01.valuesOld.lowTempIn = lowTempIn;
+    }
 
 }
 

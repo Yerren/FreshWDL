@@ -41,6 +41,9 @@ function tickHandler(e) {
     uvBar01.stage.update();
     updateTweensUV01();
     
+    status01.stage.update();
+    updateTweensS01();
+    
     //Non Animated Widgets
     moonSun01.stage.update();
     barometer01.stage.update();
