@@ -43,8 +43,12 @@ head, body {
     height: 20%;
 }
 
-#top > canvas {
+#MoonSun01 {
     float: right;
+}
+
+#Status01 {
+    float: left;
 }
 
 #left {

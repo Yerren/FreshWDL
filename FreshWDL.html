@@ -2,40 +2,8 @@
 <html lang="en">
     <!-- Include Scripts -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet"> <!--Includes the font for loading screen-->
-    <link rel="stylesheet" type="text/css" href="css_unpublished/stylesheet01.css?v=1.0"> <!--Includes the project's css sheet -->
-    <script src="http://code.createjs.com/easeljs-0.8.0.min.js"></script> <!--Includes the drawing part of CreateJS: EaselJS-->
-    <script src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script> <!--Includes the animation part of CreateJS: TweenJS-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/opentip/2.4.6/downloads/opentip-native.js"></script> <!--Includes the tooltip library: OpenTip-->
-    <script type="text/javascript" src="js_unpublished/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
-    <script type="text/javascript" src="js_unpublished/Globals.js?v=1.0"></script> <!--Includes the script that sets global variables-->
-    <script type="text/javascript" src="js_unpublished/Humiditiy.js?v=1.0"></script> <!--Includes the script that draws the Humidity gauge-->
-    <script type="text/javascript" src="js_unpublished/WindDirection.js?v=1.0"></script> <!--Includes the script that draws the Wind Direction gauge-->
-    <script type="text/javascript" src="js_unpublished/Bar.js?v=1.0"></script> <!--Includes the script that draws the Temperature gauge-->
-    <script type="text/javascript" src="js_unpublished/BarWindchill.js?v=1.0"></script> <!--Includes the script that draws the Wind Choll gauge-->
-    <script type="text/javascript" src="js_unpublished/WindSpeed.js?v=1.0"></script> <!--Includes the script that draws the Wind Speed gauge-->
-    <script type="text/javascript" src="js_unpublished/MoonSun.js?v=1.0"></script> <!--Includes the script that draws the Moon / Sun gauge-->
-    <script type="text/javascript" src="js_unpublished/Barometer.js?v=1.0"></script> <!--Includes the script that draws the Barometer gauge-->
-    <script type="text/javascript" src="js_unpublished/Apparent.js?v=1.0"></script> <!--Includes the script that draws the Apparent Temper gauge-->
-    <script type="text/javascript" src="js_unpublished/TITLErainfall.js?v=1.0"></script> <!--Includes the script the title ofthe "rainfall" section-->
-    <script type="text/javascript" src="js_unpublished/UniBar01.js?v=1.0"></script> <!--Includes the script that draws a Universal bar-->
-    <script type="text/javascript" src="js_unpublished/UniBar02.js?v=1.0"></script> <!--Includes the script that draws a Universal bar-->
-    <script type="text/javascript" src="js_unpublished/UniBar03.js?v=1.0"></script> <!--Includes the script that draws a Universal bar-->
-    <script type="text/javascript" src="js_unpublished/SolarBar01.js?v=1.0"></script> <!--Includes the script that draws a Universal bar-->
-    <script type="text/javascript" src="js_unpublished/UVBar01.js?v=1.0"></script> <!--Includes the script that draws a Universal bar-->
-    <script type="text/javascript" src="js_unpublished/DataCollectALL.js?v=1.0"></script> <!--Includes the script that collects the data from the server-->
-    <script type="text/javascript" src="js_unpublished/ForecastHandler.js?v=1.0"></script>
-    <script type="text/javascript" src="js_unpublished/RecordHandler.js?v=1.0"></script>
-    <script type="text/javascript" src="js_unpublished/GraphHandler.js?v=1.0"></script>
-    <script type="text/javascript" src="js_unpublished/GraphHandlerRain.js?v=1.0"></script>
-    <script type="text/javascript" src="js_unpublished/GraphHandlerTemp.js?v=1.0"></script>
-    <script type="text/javascript" src="js_unpublished/GraphHandlerWind.js?v=1.0"></script>
-    <script type="text/javascript" src="js_unpublished/GraphHandlerBaro.js?v=1.0"></script>
-    <script type="text/javascript" src="js_unpublished/ButtonHandler.js?v=1.0"></script>
-    <script type="text/javascript" src="js_unpublished/ModalHandler.js?v=1.0"></script>   
-    <script type="text/javascript" src="js_unpublished/tickUpdater.js?v=1.0"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/opentip/2.4.6/css/opentip.css" rel="stylesheet" type="text/css" /> <!--Includes the tooltip's css sheet -->
-
+    <link rel="stylesheet" type="text/css" href="css/stylesheet01.css?v=1.0.1x"> <!--Includes the project's css sheet -->    
+    
     <!-- Loading Screen Setup -->
     <div id="loadingScreen">
         <div id="loadingText">
@@ -43,9 +11,45 @@
             <p id="loadingMessage">Collecting Data.</p>
         </div>        
     </div>
-    <script type="text/javascript" src="js_unpublished/Loading.js"></script>
-    <!-- Modal code must be outside of body so it can be referenced-->
+    <script type="text/javascript" src="js/Loading.js"></script>
     
+        <!-- Include Scripts -->
+    <script src="http://code.createjs.com/easeljs-0.8.0.min.js"></script> <!--Includes the drawing part of CreateJS: EaselJS-->
+    <script src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script> <!--Includes the animation part of CreateJS: TweenJS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/opentip/2.4.6/downloads/opentip-native.js"></script> <!--Includes the tooltip library: OpenTip-->
+    <script type="text/javascript" src="js/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
+    <script type="text/javascript" src="js/Globals.js?v=1.0.1"></script> <!--Includes the script that sets global variables-->
+    <script type="text/javascript" src="js/Humiditiy.js?v=1.0.1"></script> <!--Includes the script that draws the Humidity gauge-->
+    <script type="text/javascript" src="js/WindDirection.js?v=1.0.1"></script> <!--Includes the script that draws the Wind Direction gauge-->
+    <script type="text/javascript" src="js/Bar.js?v=1.0.1"></script> <!--Includes the script that draws the Temperature gauge-->
+    <script type="text/javascript" src="js/BarWindchill.js?v=1.0.1"></script> <!--Includes the script that draws the Wind Choll gauge-->
+    <script type="text/javascript" src="js/WindSpeed.js?v=1.0.1"></script> <!--Includes the script that draws the Wind Speed gauge-->
+    <script type="text/javascript" src="js/MoonSun.js?v=1.0.1"></script> <!--Includes the script that draws the Moon / Sun gauge-->
+    <script type="text/javascript" src="js/Barometer.js?v=1.0.1"></script> <!--Includes the script that draws the Barometer gauge-->
+    <script type="text/javascript" src="js/Apparent.js?v=1.0.1"></script> <!--Includes the script that draws the Apparent Temper gauge-->
+    <script type="text/javascript" src="js/Status.js?v=1.0.1"></script> <!--Includes the script that draws the Apparent Temper gauge-->
+    <script type="text/javascript" src="js/TITLErainfall.js?v=1.0.1"></script> <!--Includes the script the title ofthe "rainfall" section-->
+    <script type="text/javascript" src="js/UniBar01.js?v=1.0.1"></script> <!--Includes the script that draws a Universal bar-->
+    <script type="text/javascript" src="js/UniBar02.js?v=1.0.1"></script> <!--Includes the script that draws a Universal bar-->
+    <script type="text/javascript" src="js/UniBar03.js?v=1.0.1"></script> <!--Includes the script that draws a Universal bar-->
+    <script type="text/javascript" src="js/SolarBar01.js?v=1.0.1"></script> <!--Includes the script that draws a Universal bar-->
+    <script type="text/javascript" src="js/UVBar01.js?v=1.0.1"></script> <!--Includes the script that draws a Universal bar-->
+    <script type="text/javascript" src="js/DataCollectALL.js?v=1.0.1"></script> <!--Includes the script that collects the data from the server-->
+    <script type="text/javascript" src="js/ForecastHandler.js?v=1.0.1"></script>
+    <script type="text/javascript" src="js/RecordHandler.js?v=1.0.1"></script>
+    <script type="text/javascript" src="js/GraphHandler.js?v=1.0.1"></script>
+    <script type="text/javascript" src="js/GraphHandlerRain.js?v=1.0.1"></script>
+    <script type="text/javascript" src="js/GraphHandlerTemp.js?v=1.0.1"></script>
+    <script type="text/javascript" src="js/GraphHandlerWind.js?v=1.0.1"></script>
+    <script type="text/javascript" src="js/GraphHandlerBaro.js?v=1.0.1"></script>
+    <script type="text/javascript" src="js/ButtonHandler.js?v=1.0.1"></script>
+    <script type="text/javascript" src="js/ModalHandler.js?v=1.0.1"></script>   
+    <script type="text/javascript" src="js/tickUpdater.js?v=1.0.1"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/opentip/2.4.6/css/opentip.css" rel="stylesheet" type="text/css" /> <!--Includes the tooltip's css sheet -->
+    
+    <!-- Modal code must be outside of body so it can be referenced-->
+        
     <!-- The Records Modal -->
     <div id="recordsModal" class="modal">
 
@@ -117,10 +121,11 @@
 		<meta charset="utf-8" />
 		<title>FreshWDL</title>
 	</head>
-	<body onload='initialiseLayout(); forecastInitFor01(); initializeHum01(); initializeWind01(); initializeTemp01(); initializeRainGraph01(); initializeTempGraph01(); initializeWindGraph01(); initializeBaroGraph01(); initializeModalGraph01(); initModalHandler(); initializeTicker(); initialzeButtons(); initializeUniBarUni01(); initializeUniBarUni02(); initializeUniBarUni03(); initializeWS01(); initializeWC01(); initializeSolarBarSol01(); initializeUVBarUV01(); recordsInitRe01(); initializeMoonSunMS01(); initializeBarometerB01(); initializeApparentA01(); initializeTitleRainfallTR01();'> <!--Once the page is loaded, start the initialization functions -->
+	<body onload='initialiseLayout(); forecastInitFor01(); initializeHum01(); initializeWind01(); initializeTemp01(); initializeRainGraph01(); initializeTempGraph01(); initializeWindGraph01(); initializeBaroGraph01(); initializeModalGraph01(); initModalHandler(); initializeTicker(); initialzeButtons(); initializeUniBarUni01(); initializeUniBarUni02(); initializeUniBarUni03(); initializeWS01(); initializeWC01(); initializeSolarBarSol01(); initializeUVBarUV01(); recordsInitRe01(); initializeMoonSunMS01(); initializeBarometerB01(); initializeApparentA01(); initializeStatusS01(); initializeTitleRainfallTR01();'> <!--Once the page is loaded, start the initialization functions -->
         <div id="FWDLcontainer">
             <div id="top" class="widgetContainer">
                 <canvas id="MoonSun01"></canvas>
+                <canvas id="Status01"></canvas>
                 <div id="forecastText", style="overflow: hidden;"></div>
             </div>
             <div id="left" class="widgetContainer">

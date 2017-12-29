@@ -50,7 +50,7 @@ function resizeDivFor01() {
 	
 	//Adjusts div to match resized window. Always adjust to the smallest dimention
     width = parentDiv.clientHeight * size * ratio;
-    height = parentDiv.clientHeight * size;
+    height = parentDiv.clientHeight * size * 0.59; //0.59 to match status
     
     width = width.toString() + "px";
     height = height.toString() + "px";

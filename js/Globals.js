@@ -635,7 +635,7 @@ function checkOverflow(el) {
 }
 
 var numLoaded = 0,
-    numWidgets = 22;
+    numWidgets = 23;
 function checkOffLoaded() {
     //checks off when every widget finishes loading, and then sends the call to update. Only used as page loads.
     numLoaded += 1;

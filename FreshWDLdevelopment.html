@@ -28,6 +28,7 @@
     <script type="text/javascript" src="https://gitcdn.link/repo/Yerren/FreshWDL/Development/js/MoonSun.js?v=1.0"></script> <!--Includes the script that draws the Moon / Sun gauge-->
     <script type="text/javascript" src="https://gitcdn.link/repo/Yerren/FreshWDL/Development/js/Barometer.js?v=1.0"></script> <!--Includes the script that draws the Barometer gauge-->
     <script type="text/javascript" src="https://gitcdn.link/repo/Yerren/FreshWDL/Development/js/Apparent.js?v=1.0"></script> <!--Includes the script that draws the Apparent Temper gauge-->
+    <script type="text/javascript" src="https://gitcdn.link/repo/Yerren/FreshWDL/Development/js/Status.js?v=1.0"></script> <!--Includes the script that draws the Apparent Temper gauge-->
     <script type="text/javascript" src="https://gitcdn.link/repo/Yerren/FreshWDL/Development/js/TITLErainfall.js?v=1.0"></script> <!--Includes the script the title ofthe "rainfall" section-->
     <script type="text/javascript" src="https://gitcdn.link/repo/Yerren/FreshWDL/Development/js/UniBar01.js?v=1.0"></script> <!--Includes the script that draws a Universal bar-->
     <script type="text/javascript" src="https://gitcdn.link/repo/Yerren/FreshWDL/Development/js/UniBar02.js?v=1.0"></script> <!--Includes the script that draws a Universal bar-->
@@ -120,10 +121,11 @@
 		<meta charset="utf-8" />
 		<title>FreshWDL</title>
 	</head>
-	<body onload='initialiseLayout(); forecastInitFor01(); initializeHum01(); initializeWind01(); initializeTemp01(); initializeRainGraph01(); initializeTempGraph01(); initializeWindGraph01(); initializeBaroGraph01(); initializeModalGraph01(); initModalHandler(); initializeTicker(); initialzeButtons(); initializeUniBarUni01(); initializeUniBarUni02(); initializeUniBarUni03(); initializeWS01(); initializeWC01(); initializeSolarBarSol01(); initializeUVBarUV01(); recordsInitRe01(); initializeMoonSunMS01(); initializeBarometerB01(); initializeApparentA01(); initializeTitleRainfallTR01();'> <!--Once the page is loaded, start the initialization functions -->
+	<body onload='initialiseLayout(); forecastInitFor01(); initializeHum01(); initializeWind01(); initializeTemp01(); initializeRainGraph01(); initializeTempGraph01(); initializeWindGraph01(); initializeBaroGraph01(); initializeModalGraph01(); initModalHandler(); initializeTicker(); initialzeButtons(); initializeUniBarUni01(); initializeUniBarUni02(); initializeUniBarUni03(); initializeWS01(); initializeWC01(); initializeSolarBarSol01(); initializeUVBarUV01(); recordsInitRe01(); initializeMoonSunMS01(); initializeBarometerB01(); initializeApparentA01(); initializeStatusS01(); initializeTitleRainfallTR01();'> <!--Once the page is loaded, start the initialization functions -->
         <div id="FWDLcontainer">
             <div id="top" class="widgetContainer">
                 <canvas id="MoonSun01"></canvas>
+                <canvas id="Status01"></canvas>
                 <div id="forecastText", style="overflow: hidden;"></div>
             </div>
             <div id="left" class="widgetContainer">
