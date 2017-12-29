@@ -496,6 +496,9 @@ function initialiseLayout() {
 	
     //Set the canvas size intially.
 	resizeContainer();
+    
+    //Set version number:
+    document.getElementById("Version").innerHTML = "Version 1.0.1 Alpha. yerren@renerica.com";
 }
 
 //Set global Graph options
