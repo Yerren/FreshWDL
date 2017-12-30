@@ -98,10 +98,11 @@ function drawStatusS01(statusIn) {
 function updateTweensS01() {
     //Updates any tweened or changing objects. This is called every frame
     if (status01.tweens.circRad.percent < 0.01) {
-    	status01.circStrokeCommand.radius = 0; //fix for glitching effect
+    	status01.circStrokeCommand.width = 0; //fix for glitching effect
         status01.circCommand.radius = 0;
         status01.circColourCommand.style = status01.blinkColour; //Only change colour when not visable
     } else {
+        status01.circStrokeCommand.width = status01.setupVars.strokeSize * Math.pow((status01.tweens.circRad.percent / 100), 2); //fix for glitching effect
     	status01.circCommand.radius = status01.setupVars.circRad * (status01.tweens.circRad.percent / 100);
     }
     
