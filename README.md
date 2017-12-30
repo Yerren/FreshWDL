@@ -16,3 +16,7 @@ See it in action at: http://www.goldenbaynzweather.info/wdl/freshwdl.html
 3. Upload both the FreshWDLmaster.html page and the config.js page to **the same place as your clientraw files are uploaded to**.
 
 You should now be good to go! Simply navigate to the FreshDWLmaster.html page in any web browser to see your new FreshWDL page up and running!
+
+## Troubleshooting
+#### (24 Hour) Graphs having strange straight line portions for 12 hours spans:
+- Caused by the clientraw files uploading in 12 hour format. Adjust settings so that uploads are in 24 hour format.
