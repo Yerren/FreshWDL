@@ -7,7 +7,9 @@ Currently it is still simple, offering little customisability, but with interest
 
 See it in action at: http://www.goldenbaynzweather.info/wdl/freshwdl.html
 
+
 ## Setup
+**Warning:** The following is not yet functioning, but will be very soon. This is simply in preperation.
 
 1. Go to: [WD DOWNLOAD LINK], or download the FreshWDLmaster.html and config.js files from the master branch.
 2. Adjust the config.js file in any text editor, changing that 'clientraw' file names to match the names you use (if needed).
