@@ -353,7 +353,7 @@ function loadArray(url) {
 function updateClientraw() {
 	//updates the Clientraw Array with data from server
     var xhttpCR;
-    xhttpCR = loadArray(baseURL + "clientraw.txt");
+    xhttpCR = loadArray(baseURL + clientRawName);
     
     xhttpCR.onreadystatechange = function () {
         if (xhttpCR.readyState === 4) {
@@ -375,7 +375,7 @@ function updateClientrawExtra() {
 	//updates the Clientraw Extra Array with data from server
 	
 	var xhttpCRE;
-	xhttpCRE = loadArray(baseURL + "clientrawextra.txt");
+	xhttpCRE = loadArray(baseURL + clientRawExtraName);
 	
     xhttpCRE.onreadystatechange = function () {
         if (xhttpCRE.readyState === 4) {
@@ -396,7 +396,7 @@ function updateClientrawHour() {
 	//updates the Clientraw Hour Array with data from server
 	
 	var xhttpCRH;
-	xhttpCRH = loadArray(baseURL + "clientrawhour.txt");
+	xhttpCRH = loadArray(baseURL + clientRawHourName);
     
     xhttpCRH.onreadystatechange = function () {
         if (xhttpCRH.readyState === 4) {
@@ -417,7 +417,7 @@ function updateClientrawDaily() {
 	//updates the Clientraw Daily Array with data from server
 	
 	var xhttpCRD;
-	xhttpCRD = loadArray(baseURL + "clientrawdaily.txt");
+	xhttpCRD = loadArray(baseURL + clientRawDailyName);
     
     xhttpCRD.onreadystatechange = function () {
         if (xhttpCRD.readyState === 4) {

@@ -498,7 +498,7 @@ function initialiseLayout() {
 	resizeContainer();
     
     //Set version number:
-    document.getElementById("Version").innerHTML = "Version 1.0.1 Alpha. yerren@renerica.com *";
+    document.getElementById("Version").innerHTML = "Version 1.0.1 Alpha. yerren@renerica.com";
 }
 
 //Set global Graph options
@@ -555,17 +555,6 @@ var units = {
             celsius: [1, String.fromCharCode(176) + "C"], 
             fahrenheit: [1, String.fromCharCode(176) + "F"]
         }
-    },
-    currentUnits = {
-        pressure: "hPa",
-        altitude: "m",
-        wind: "kmh",
-        rainfall: "mm",
-        windDirection: "deg",
-        humidity: "percent",
-        solar: "Wm",
-        uv: "noUnit",
-        temp: "celsius"
     };
 
 //Globally used helper funtions
