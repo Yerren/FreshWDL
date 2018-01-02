@@ -19,4 +19,4 @@ You should now be good to go! Simply navigate to the FreshDWLmaster.html page in
 
 ## Troubleshooting
 #### (24 Hour) Graphs having strange straight line portions for 12 hours spans:
-- Caused by the clientraw files uploading in 12 hour format. Adjust settings so that uploads are in 24 hour format.
+- Caused by the clientraw files uploading in 12 hour format. Download the newest version of WD to fix this issue.
