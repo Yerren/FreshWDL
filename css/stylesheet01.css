@@ -261,7 +261,7 @@ html, body {
 }
 
 #titleText {
-    font-family: 'Montserrat', sans-serif;
+    font-family: sans-serif;
     font-size: 5vw;
     color: white;
     padding-bottom: 0%;
@@ -270,7 +270,7 @@ html, body {
 
 #loadingMessage {
     float: left;
-    font-family: 'Montserrat', sans-serif;
+    font-family: sans-serif;
     font-size: 1.5vw;
     color: white;
     margin: 0;
