@@ -11,7 +11,7 @@ See it in action at: http://www.goldenbaynzweather.info/wdl/freshwdl.html
 ## Setup
 
 1. Go to: http://www.weather-display.com/files.php, and download the FreshWDL files.
-2. (If needed) Adjust the config.js file in any text editor, changing that 'clientraw' file names to match the names you use. You can also change the default units here. If you need, it is also possible to set the path to where your 'clientraw' files are uploaded (see part 4).
+2. (If needed) Adjust the config.js file in any text editor, changing the 'clientraw' file names to match the names you use. You can also change the default units here. If you need, it is also possible to set the path to where your 'clientraw' files are uploaded (see part 4).
 3. (Optional) You can rename the html page to anything you wish. 
 4. Upload both the html page and the config.js file to the same location on your server. If you set a custom path to your clientraw files in config.js, you can upload them anywhere. Otherwise, they must be in the same place your clientraw files are uploaded to.
 
