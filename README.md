@@ -21,7 +21,7 @@ You should now be good to go! Simply navigate to the html page in any web browse
 #### (24 Hour) Graphs having strange straight line portions for 12 hours spans:
 - Caused by the clientraw files uploading in 12 hour format. Download the newest version of WD to fix this issue.
 
-#### "Data Currently Unavailable" showing on loading screen.
+#### "Data Currently Unavailable" showing on loading screen:
 - This can happen briefly if there is a 'hiccup' on the server, and should normally go away quickly.
 - If you have just set up your FreshWDL page, and the "Data Currently Unavailable" message persists, it is most likely because either the names of the clientraw files or the custom path to the clientraw files in config.js are not correct or, if no custom path was set, the html page and config.js have not been uploaded to where the clientraw files are uploaded to.
 
