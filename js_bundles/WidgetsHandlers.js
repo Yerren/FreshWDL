@@ -5040,8 +5040,14 @@ function shiftArrayFtL(arrayIn) {
 }
 
 //Proccesses Base URL
-to = to === -1 ? baseURL.length : to + 1;
-baseURL = baseURL.substring(0, to);
+
+//Check to see if a custom URL was set in the config file, if it isn't, gernerate automatically using current loaction.
+if (typeof customBaseURL === "undefined" || customBaseURL === false) {
+    to = to === -1 ? baseURL.length : to + 1;
+    baseURL = baseURL.substring(0, to);
+}   else {
+    baseURL = customBaseURL
+}
 
 //Array comparison, credit to Tomas Zato @ https://stackoverflow.com/questions/7837456/how-to-compare-arrays-in-javascript.
 // Warn if overriding existing method

@@ -5,6 +5,7 @@ var clientRawName = "clientraw.txt", //The names of your clientraw files
     clientRawExtraName = "clientrawextra.txt",
     clientRawHourName = "clientrawhour.txt",
     clientRawDailyName = "clientrawdaily.txt",
+    customBaseURL = false, // Set the path to where your clientraw files are uploaded e.g., "http://www.goldenbaynzweather.info/wdl/" (note: final backslash and quotation marks must be included).
     currentUnits = { //Default units (what the page will display when first loaded)
         pressure: "hPa",        //Options: "hPa" "mmHG" "kPa" "inHg" "mb"
         altitude: "m",          //Options: "m" "yds" "ft"
