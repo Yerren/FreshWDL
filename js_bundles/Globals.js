@@ -140,28 +140,28 @@ var globalGraphs = {
                 title: "Barometer Last 31 Days",
                 timestamp: "timestampDay",
                 data: ["baroDays31"],
-                timeDisplay: "DDD/MM/YYYY",
+                timeDisplay: "day",
                 legendOptions: {}
             },
             hourlyDay: {
                 title: "Barometer Last 24 Hours",
                 timestamp: "timestampHour",
                 data: ["baroHours24"],
-                timeDisplay: "HH:mm",
+                timeDisplay: "hour",
                 legendOptions: {}
             },
             quarterDailyWeek: {
                 title: "Barometer Last 7 Days",
                 timestamp: "timestampQuarterDay",
                 data: ["baroQuarterDays28"],
-                timeDisplay: "DDD/MM/YYYY",
+                timeDisplay: "day",
                 legendOptions: {}
             },
             minutlyHour: {
                 title: "Barometer Last Hour",
                 timestamp: "timestampMinute",
                 data: ["baroMinutes60"],
-                timeDisplay: "HH:mm",
+                timeDisplay: "minute",
                 legendOptions: {}
             }
         }
@@ -181,28 +181,28 @@ var globalGraphs = {
                 title: "Humidity Last 31 Days",
                 timestamp: "timestampDay",
                 data: ["humidityDays31"],
-                timeDisplay: "DDD/MM/YYYY",
+                timeDisplay: "day",
                 legendOptions: {}
             },
             hourlyDay: {
                 title: "Humidity Last 24 Hours",
                 timestamp: "timestampHour",
                 data: ["humidityHours24"],
-                timeDisplay: "HH:mm",
+                timeDisplay: "hour",
                 legendOptions: {}
             },
             quarterDailyWeek: {
                 title: "Humidity Last 7 Days",
                 timestamp: "timestampQuarterDay",
                 data: ["humidityQuarterDays28"],
-                timeDisplay: "DDD/MM/YYYY",
+                timeDisplay: "day",
                 legendOptions: {}
             },
             minutlyHour: {
                 title: "Humidity Last Hour",
                 timestamp: "timestampMinute",
                 data: ["humidityMinutes60"],
-                timeDisplay: "HH:mm",
+                timeDisplay: "minute",
                 legendOptions: {}
             }
         }
@@ -220,21 +220,21 @@ var globalGraphs = {
                 title: "Solar Last 24 Hours",
                 timestamp: "timestampHour",
                 data: ["solarHours24"],
-                timeDisplay: "HH:mm",
+                timeDisplay: "hour",
                 legendOptions: {}
             },
             quarterDailyWeek: {
                 title: "Solar Last 7 Days",
                 timestamp: "timestampQuarterDay",
                 data: ["solarQuarterDays28"],
-                timeDisplay: "DDD/MM/YYYY",
+                timeDisplay: "day",
                 legendOptions: {}
             },
             minutlyHour: {
                 title: "Solar Last Hour",
                 timestamp: "timestampMinute",
                 data: ["solarMinutes60"],
-                timeDisplay: "HH:mm",
+                timeDisplay: "minute",
                 legendOptions: {}
             }
         }
@@ -252,7 +252,7 @@ var globalGraphs = {
                 title: "Temperature Last 31 Days",
                 timestamp: "timestampDay",
                 data: ["tempHighDays31", "tempLowDays31"],
-                timeDisplay: "DDD/MM/YYYY",
+                timeDisplay: "day",
                 additionalStyles: ["tempLow"],
                 legendLabels: ["Max", "Min"],
                 legendOptions: {
@@ -263,21 +263,21 @@ var globalGraphs = {
                 title: "Temperature Last 24 Hours",
                 timestamp: "timestampHour",
                 data: ["tempHours24"],
-                timeDisplay: "HH:mm",
+                timeDisplay: "hour",
                 legendOptions: {}
             },
             quarterDailyWeek: {
                 title: "Temperature Last 7 Days",
                 timestamp: "timestampQuarterDay",
                 data: ["tempQuarterDays28"],
-                timeDisplay: "DDD/MM/YYYY",
+                timeDisplay: "day",
                 legendOptions: {}
             },
             minutlyHour: {
                 title: "Temperature Last Hour",
                 timestamp: "timestampMinute",
                 data: ["tempMinutes60"],
-                timeDisplay: "HH:mm",
+                timeDisplay: "minute",
                 legendOptions: {}
             }
         }
@@ -295,14 +295,14 @@ var globalGraphs = {
                 title: "UV Last 24 Hours",
                 timestamp: "timestampHour",
                 data: ["uvHours24"],
-                timeDisplay: "HH:mm",
+                timeDisplay: "hour",
                 legendOptions: {}
             },
             quarterDailyWeek: {
                 title: "UV Last 7 Days",
                 timestamp: "timestampQuarterDay",
                 data: ["uvQuarterDays28"],
-                timeDisplay: "DDD/MM/YYYY",
+                timeDisplay: "day",
                 legendOptions: {}
             }
         }
@@ -323,7 +323,7 @@ var globalGraphs = {
                 title: "Wind Direction Last 31 Days",
                 timestamp: "timestampDay",
                 data: ["windDirDays31"],
-                timeDisplay: "DDD/MM/YYYY",
+                timeDisplay: "day",
                 legendOptions: {}
                 
             },
@@ -331,21 +331,21 @@ var globalGraphs = {
                 title: "Wind Direction Last 24 Hours",
                 timestamp: "timestampHour",
                 data: ["windDirHours24"],
-                timeDisplay: "HH:mm",
+                timeDisplay: "hour",
                 legendOptions: {}
             },
             quarterDailyWeek: {
                 title: "Wind Direction Last 7 Days",
                 timestamp: "timestampQuarterDay",
                 data: ["windDirQuarterDays28"],
-                timeDisplay: "DDD/MM/YYYY",
+                timeDisplay: "day",
                 legendOptions: {}
             },
             minutlyHour: {
                 title: "Wind Direction Last Hour",
                 timestamp: "timestampMinute",
                 data: ["windDirMinutes60"],
-                timeDisplay: "HH:mm",
+                timeDisplay: "minute",
                 legendOptions: {}
             }
         }
@@ -363,28 +363,28 @@ var globalGraphs = {
                 title: "Wind Speed Last 31 Days",
                 timestamp: "timestampDay",
                 data: ["windSpeedDays31"],
-                timeDisplay: "DDD/MM/YYYY",
+                timeDisplay: "day",
                 legendOptions: {}
             },
             hourlyDay: {
                 title: "Wind Speed Last 24 Hours",
                 timestamp: "timestampHour",
                 data: ["windSpeedHours24"],
-                timeDisplay: "HH:mm",
+                timeDisplay: "hour",
                 legendOptions: {}
             },
             quarterDailyWeek: {
                 title: "Wind Speed Last 7 Days",
                 timestamp: "timestampQuarterDay",
                 data: ["windSpeedQuarterDays28"],
-                timeDisplay: "DDD/MM/YYYY",
+                timeDisplay: "day",
                 legendOptions: {}
             },
             minutlyHour: {
                 title: "Wind Speed Last Hour",
                 timestamp: "timestampMinute",
                 data: ["windSpeedMinutes60", "windGustMinutes60"],
-                timeDisplay: "HH:mm",
+                timeDisplay: "minute",
                 additionalStyles: ["windGust"],
                 legendLabels: ["Avg", "Gust"],
                 legendOptions: {
@@ -406,14 +406,14 @@ var globalGraphs = {
                 title: "Rainfall Last 24 Hours",
                 timestamp: "timestampHour",
                 data: ["rainHours24"],
-                timeDisplay: "HH:mm",
+                timeDisplay: "hour",
                 legendOptions: {}
             },
             minutlyHour: {
                 title: "Rainfall Last Hour",
                 timestamp: "timestampMinute",
                 data: ["rainMinutes60"],
-                timeDisplay: "HH:mm",
+                timeDisplay: "minute",
                 legendOptions: {}
             }
         }
@@ -498,7 +498,7 @@ function initialiseLayout() {
 	resizeContainer();
     
     //Set version number:
-    document.getElementById("Version").innerHTML = "Version 1.1.0 Alpha. yerren@renerica.com";
+    document.getElementById("Version").innerHTML = "Version 1.1.1 Alpha. yerren@renerica.com";
 }
 
 //Set global Graph options

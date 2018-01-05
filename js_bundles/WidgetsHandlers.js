@@ -1292,7 +1292,22 @@ function drawBaroGraphLine01() {
                     }
 				}],
                 xAxes: [{
-                    type: 'time'
+                    type: 'time',
+                    ticks: {
+                        minor: {
+                            autoSkip: true,
+                            autoSkipPadding: 0
+                        },
+                        major: {
+                            autoSkip: true,
+                            autoSkipPadding: 0
+                        }
+                    },
+                    time: {
+                        unit: 'hour',
+                        unitStepSize: 1,
+                        displayFormats: {hour: "HH:mm"}
+                    }
                 }]
 			}
 		};
@@ -1310,8 +1325,8 @@ function resizeTextBaroG01() {
     parentDiv = baroGraph.canvasDiv.parentElement;
     baroGraph.chart.options.title.fontSize = parentDiv.clientWidth * 0.05;
     baroGraph.chart.options.scales.yAxes[0].scaleLabel.fontSize = parentDiv.clientWidth * 0.05;
-    baroGraph.chart.options.scales.yAxes[0].ticks.fontSize = parentDiv.clientWidth * 0.05;
-    baroGraph.chart.options.scales.xAxes[0].ticks.fontSize = parentDiv.clientWidth * 0.04;
+    baroGraph.chart.options.scales.yAxes[0].ticks.minor.fontSize = baroGraph.chart.options.scales.yAxes[0].ticks.major.fontSize = parentDiv.clientWidth * 0.05;
+    baroGraph.chart.options.scales.xAxes[0].ticks.minor.fontSize = baroGraph.chart.options.scales.xAxes[0].ticks.major.fontSize = parentDiv.clientWidth * 0.04;
 }
 
 function configureGraphBaroLine01(baseIn, graphIn) {
@@ -1331,13 +1346,14 @@ function configureGraphBaroLine01(baseIn, graphIn) {
     }
     
     baroGraph.chart.destroy();
+    baroGraph.chart = null;
     
     //configure as line chart
-    drawGraphLine();
+    drawBaroGraphLine01();
     baroGraph.chart.data.datasets[0] = graphStyles[style];
     baroGraph.chart.data.datasets[0].label = baseIn.label.toString() + " (" + units[baseIn.unit.toString()][currentUnits[baseIn.unit.toString()]][1].toString() + ")";
     baroGraph.chart.data.datasets[0].data = graphData;
-    baroGraph.chart.options.scales.xAxes[0].time.displayFormats.hour = graphIn.timeDisplay.toString();
+    baroGraph.chart.options.scales.xAxes[0].time.unit = graphIn.timeDisplay.toString();
     baroGraph.chart.options.scales.yAxes[0].scaleLabel.labelString = baseIn.label.toString() + " (" + units[baseIn.unit.toString()][currentUnits[baseIn.unit.toString()]][1].toString() + ")";
     baroGraph.chart.options.title.text = graphIn.title.toString();
     //configure ticks
@@ -1354,13 +1370,6 @@ function resizeCanvasBaroG01() {
 	//Dynamic Canvas Resizing for desktop
     var ratio = 0.7,
         parentDiv = baroGraph.canvasDiv.parentElement;
-    
-    //Weird fix for mobile, stops graphs appearing at 1/4 size. No idea why this works. Just roll with it.
-    baroGraph.canvasDiv.style.width = "0px";
-	baroGraph.canvasDiv.style.height = "0px";
-	baroGraph.chart.resize();
-	baroGraph.chart.update();
-    //Weird fix end.
     
 	//Always adjust to the smallest dimention
     baroGraph.canvasDiv.style.width = (parentDiv.clientWidth).toString() + "px";
@@ -1435,8 +1444,8 @@ function resizeTextRainBar01() {
     parentDiv = rainGraph.canvasDiv.parentElement;
     rainGraph.chart.options.title.fontSize = parentDiv.clientWidth * 0.05;
     rainGraph.chart.options.scales.yAxes[0].scaleLabel.fontSize = parentDiv.clientWidth * 0.05;
-    rainGraph.chart.options.scales.yAxes[0].ticks.fontSize = parentDiv.clientWidth * 0.05;
-    rainGraph.chart.options.scales.xAxes[0].ticks.fontSize = parentDiv.clientWidth * 0.04;
+    rainGraph.chart.options.scales.yAxes[0].ticks.minor.fontSize = rainGraph.chart.options.scales.yAxes[0].ticks.major.fontSize = parentDiv.clientWidth * 0.05;
+    rainGraph.chart.options.scales.xAxes[0].ticks.minor.fontSize = rainGraph.chart.options.scales.xAxes[0].ticks.major.fontSize = parentDiv.clientWidth * 0.04;
 }
 
 function configureGraphRainBar01(baseIn, graphIn) {
@@ -1454,6 +1463,7 @@ function configureGraphRainBar01(baseIn, graphIn) {
     }
     
     rainGraph.chart.destroy();
+    rainGraph.chart = null;
     
     //configure as bar chart
     drawRainGraphBar01();
@@ -1478,13 +1488,6 @@ function resizeCanvasRainG01() {
 	//Dynamic Canvas Resizing for desktop
     var ratio = 0.7,
         parentDiv = rainGraph.canvasDiv.parentElement;
-    
-    //Weird fix for mobile, stops graphs appearing at 1/4 size. No idea why this works. Just roll with it. (Isn't needed for this one graph for some reason, but included anyway for safety)
-    rainGraph.canvasDiv.style.width = "0px";
-	rainGraph.canvasDiv.style.height = "0px";
-	rainGraph.chart.resize();
-	rainGraph.chart.update();
-    //Weird fix end.
     
 	//Always adjust to the smallest dimention
     rainGraph.canvasDiv.style.width = (parentDiv.clientWidth).toString() + "px";
@@ -1541,7 +1544,22 @@ function drawTempGraphLine01() {
                     }
 				}],
                 xAxes: [{
-                    type: 'time'
+                    type: 'time',
+                    ticks: {
+                        minor: {
+                            autoSkip: true,
+                            autoSkipPadding: 0
+                        },
+                        major: {
+                            autoSkip: true,
+                            autoSkipPadding: 0
+                        }
+                    },
+                    time: {
+                        unit: 'hour',
+                        unitStepSize: 1,
+                        displayFormats: {hour: "HH:mm"}
+                    }
                 }]
 			}
 		};
@@ -1559,8 +1577,8 @@ function resizeTextTempG01() {
     parentDiv = tempGraph.canvasDiv.parentElement;
     tempGraph.chart.options.title.fontSize = parentDiv.clientWidth * 0.05;
     tempGraph.chart.options.scales.yAxes[0].scaleLabel.fontSize = parentDiv.clientWidth * 0.05;
-    tempGraph.chart.options.scales.yAxes[0].ticks.fontSize = parentDiv.clientWidth * 0.05;
-    tempGraph.chart.options.scales.xAxes[0].ticks.fontSize = parentDiv.clientWidth * 0.04;
+    tempGraph.chart.options.scales.yAxes[0].ticks.minor.fontSize = tempGraph.chart.options.scales.yAxes[0].ticks.major.fontSize = parentDiv.clientWidth * 0.05;
+    tempGraph.chart.options.scales.xAxes[0].ticks.minor.fontSize = tempGraph.chart.options.scales.xAxes[0].ticks.major.fontSize = parentDiv.clientWidth * 0.04;
 }
 
 function configureGraphTempLine01(baseIn, graphIn) {
@@ -1580,13 +1598,14 @@ function configureGraphTempLine01(baseIn, graphIn) {
     }
     
     tempGraph.chart.destroy();
+    tempGraph.chart = null;
     
     //configure as line chart
-    drawGraphLine();
+    drawTempGraphLine01();;
     tempGraph.chart.data.datasets[0] = graphStyles[style];
     tempGraph.chart.data.datasets[0].label = baseIn.label.toString() + " (" + units[baseIn.unit.toString()][currentUnits[baseIn.unit.toString()]][1].toString() + ")";
     tempGraph.chart.data.datasets[0].data = graphData;
-    tempGraph.chart.options.scales.xAxes[0].time.displayFormats.hour = graphIn.timeDisplay.toString();
+    tempGraph.chart.options.scales.xAxes[0].time.unit = graphIn.timeDisplay.toString();
     tempGraph.chart.options.scales.yAxes[0].scaleLabel.labelString = baseIn.label.toString() + " (" + units[baseIn.unit.toString()][currentUnits[baseIn.unit.toString()]][1].toString() + ")";
     tempGraph.chart.options.title.text = graphIn.title.toString();
     
@@ -1603,13 +1622,6 @@ function resizeCanvasTempG01() {
 	//Dynamic Canvas Resizing for desktop
     var ratio = 0.7,
         parentDiv = tempGraph.canvasDiv.parentElement;
-    
-    //Weird fix for mobile, stops graphs appearing at 1/4 size. No idea why this works. Just roll with it.
-    tempGraph.canvasDiv.style.width = "0px";
-	tempGraph.canvasDiv.style.height = "0px";
-	tempGraph.chart.resize();
-	tempGraph.chart.update();
-    //Weird fix end.
     
 	//Always adjust to the smallest dimention
     tempGraph.canvasDiv.style.width = (parentDiv.clientWidth).toString() + "px";
@@ -1666,7 +1678,22 @@ function drawWindGraphLine01() {
                     }
 				}],
                 xAxes: [{
-                    type: 'time'
+                    type: 'time',
+                    ticks: {
+                        minor: {
+                            autoSkip: true,
+                            autoSkipPadding: 0
+                        },
+                        major: {
+                            autoSkip: true,
+                            autoSkipPadding: 0
+                        }
+                    },
+                    time: {
+                        unit: 'hour',
+                        unitStepSize: 1,
+                        displayFormats: {hour: "HH:mm"}
+                    }
                 }]
 			}
 		};
@@ -1684,8 +1711,8 @@ function resizeTextWindG01() {
     parentDiv = windGraph.canvasDiv.parentElement;
     windGraph.chart.options.title.fontSize = parentDiv.clientWidth * 0.05;
     windGraph.chart.options.scales.yAxes[0].scaleLabel.fontSize = parentDiv.clientWidth * 0.05;
-    windGraph.chart.options.scales.yAxes[0].ticks.fontSize = parentDiv.clientWidth * 0.05;
-    windGraph.chart.options.scales.xAxes[0].ticks.fontSize = parentDiv.clientWidth * 0.04;
+    windGraph.chart.options.scales.yAxes[0].ticks.minor.fontSize = windGraph.chart.options.scales.yAxes[0].ticks.major.fontSize = parentDiv.clientWidth * 0.05;
+    windGraph.chart.options.scales.xAxes[0].ticks.minor.fontSize = windGraph.chart.options.scales.xAxes[0].ticks.major.fontSize = parentDiv.clientWidth * 0.04;
 }
 
 function configureGraphWindLine01(baseIn, graphIn) {
@@ -1705,13 +1732,14 @@ function configureGraphWindLine01(baseIn, graphIn) {
     }
     
     windGraph.chart.destroy();
+    windGraph.chart = null;
     
     //configure as line chart
-    drawGraphLine();
+    drawWindGraphLine01();
     windGraph.chart.data.datasets[0] = graphStyles[style];
     windGraph.chart.data.datasets[0].label = baseIn.label.toString() + " (" + units[baseIn.unit.toString()][currentUnits[baseIn.unit.toString()]][1].toString() + ")";
     windGraph.chart.data.datasets[0].data = graphData;
-    windGraph.chart.options.scales.xAxes[0].time.displayFormats.hour = graphIn.timeDisplay.toString();
+    windGraph.chart.options.scales.xAxes[0].time.unit = graphIn.timeDisplay.toString();
     windGraph.chart.options.scales.yAxes[0].scaleLabel.labelString = baseIn.label.toString() + " (" + units[baseIn.unit.toString()][currentUnits[baseIn.unit.toString()]][1].toString() + ")";
     windGraph.chart.options.title.text = graphIn.title.toString();
     
@@ -1728,13 +1756,6 @@ function resizeCanvasWindG01() {
 	//Dynamic Canvas Resizing for desktop
     var ratio = 0.7,
         parentDiv = windGraph.canvasDiv.parentElement;
-    
-    //Weird fix for mobile, stops graphs appearing at 1/4 size. No idea why this works. Just roll with it.
-    windGraph.canvasDiv.style.width = "0px";
-	windGraph.canvasDiv.style.height = "0px";
-	windGraph.chart.resize();
-	windGraph.chart.update();
-    //Weird fix end.
     
 	//Always adjust to the smallest dimention
     windGraph.canvasDiv.style.width = (parentDiv.clientWidth).toString() + "px";
@@ -5622,7 +5643,7 @@ function updateValuesRe01() {
         }
         
         var dateDiff = moment(arrayClientraw[29] + arrayClientraw[30] + arrayClientraw[31] + arrayClientraw[74], "HHmmssdd/mm/yyyy").diff(recordsDict[records.currentOption][recordKeys[i]][1], 'days');
-        if (dateDiff < 1) {
+        if (dateDiff < 2) {
             row.style.backgroundColor = "rgb(245, 141, 122)";
         } else if (dateDiff <= 7) {
             row.style.backgroundColor = "rgb(236, 242, 98)";
@@ -5745,7 +5766,32 @@ function drawGraphLine() {
                     }
 				}],
                 xAxes: [{
-                    type: 'time'
+                    type: 'time',
+                    ticks: {
+                        minor: {
+                            autoSkip: true,
+                            autoSkipPadding: 0
+                        },
+                        major: {
+                            autoSkip: true,
+                            autoSkipPadding: 0
+                        }
+                    },
+                    time: {
+                        unit: 'hour',
+                        unitStepSize: 1,
+                        displayFormats: {
+                            day: "MMM D",
+                            hour: "HH:mm",
+                            millisecond: "h:mm:ss.SSS a",
+                            minute: "HH:mm",
+                            month: "MMM YYYY",
+                            quarter: "[Q]Q - YYYY",
+                            second: "h:mm:ss a",
+                            week: "ll",
+                            year: "YYYY"
+                        }
+                    }
                 }]
 			},
             legend: {
@@ -5793,13 +5839,8 @@ function drawGraphBar() {
 }
 
 function cleanCanvas() {
-    var newCanvas = document.createElement("CANVAS"),
-        newID = modalGraph.canvas.id;
-    newCanvas.id = newID;
-    modalGraph.canvasDiv.removeChild(modalGraph.canvas);
-    modalGraph.canvasDiv.innerHTML = "";
-    modalGraph.canvasDiv.appendChild(newCanvas);
-    modalGraph.canvas = newCanvas;
+    modalGraph.chart.destroy();
+    modalGraph.chart = null;
 }
 
 function configureGraphLine(baseIn, graphIn) {
@@ -5839,7 +5880,7 @@ function configureGraphLine(baseIn, graphIn) {
     modalGraph.chart.data.datasets[0] = graphStyles[style];
     modalGraph.chart.data.datasets[0].label = baseIn.label.toString() + " (" + units[baseIn.unit.toString()][currentUnits[baseIn.unit.toString()]][1].toString() + ")";
     modalGraph.chart.data.datasets[0].data = graphData;
-    modalGraph.chart.options.scales.xAxes[0].time.displayFormats.hour = graphIn.timeDisplay.toString();
+    modalGraph.chart.options.scales.xAxes[0].time.unit = graphIn.timeDisplay.toString();
     modalGraph.chart.options.scales.yAxes[0].scaleLabel.labelString = baseIn.label.toString() + " (" + units[baseIn.unit.toString()][currentUnits[baseIn.unit.toString()]][1].toString() + ")";
     //if 2 dataSets
     if (multipleSets == true) {
@@ -5995,6 +6036,7 @@ function updateUnits(unitType) {
     } else if (unitType == "temp") {
         drawTemperatureBarTemp01(arrayClientraw[4], arrayClientraw[46], arrayClientraw[47], true);
         drawWindchillBarWC01(arrayClientraw[44], arrayClientraw[77], arrayClientraw[78], true);
+        drawApparentA01(arrayClientraw[130], true);
         configureGraphTempLine01("temp", "hourlyDay");
     }    
     
