@@ -4,7 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.0.1 Alpha 12/29/2017
+## 1.1.1 Alpha 2018-01-05
+
+## Added
+- Config file
+
+## Changed
+- To dynamic HTML fetching
+- To chartJS version 2.7.1
+
+## Fixed
+- Minor memory leak
+
+## 1.0.1 Alpha 2017-12-29
 
 ### Added
 - Status Widget
