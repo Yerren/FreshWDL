@@ -536,7 +536,7 @@ var units = {
             ms: [0.514444, "m/s"]
         },
         windDirection: {
-            deg: [1, "\u00B0"]
+            deg: [1, "\xB0"]
         },
         rainfall: {
             mm: [1, "mm"],

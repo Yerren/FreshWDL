@@ -4191,8 +4191,8 @@ function drawWindGaugeWind01(windIn, avgIn, unitChange) {
     if (windGauge.valuesOLD.windIn != windIn || windGauge.valuesOLD.avgIn != avgIn || unitChange === true) {
         windIn = parseFloat(windIn, 0);
         avgIn = parseFloat(avgIn, 0);
-        windGauge.textDisplay.text = windIn.toString() + "\u00B0";
-        windGauge.avgDisplay.text = avgIn.toString() + "\u00B0";
+        windGauge.textDisplay.text = windIn.toString() + "\xB0";
+        windGauge.avgDisplay.text = avgIn.toString() + "\xB0";
 
         var angleDiff = windIn - (windGauge.values.windOld % 360),
             avgAngleDiff = avgIn - (windGauge.values.avgOld % 360);
@@ -4425,13 +4425,13 @@ function setUpWind01() {
 	windGauge.stage.addChild(windGauge.innerDot);
     
     //Set up text display (current value)
-	windGauge.textDisplay = new createjs.Text("0\u00B0", "0px Arial", "black");
+	windGauge.textDisplay = new createjs.Text("0\xB0", "0px Arial", "black");
 	windGauge.textDisplay.textBaseline = "middle";
 	windGauge.textDisplay.textAlign = "center";
 	windGauge.stage.addChild(windGauge.textDisplay);
     
     //Set up avg display (average value)
-	windGauge.avgDisplay = new createjs.Text("0\u00B0", "0px Arial", "rgb(" + colour.wind + ")");
+	windGauge.avgDisplay = new createjs.Text("0\xB0", "0px Arial", "rgb(" + colour.wind + ")");
 	windGauge.avgDisplay.textBaseline = "middle";
 	windGauge.avgDisplay.textAlign = "center";
 	windGauge.stage.addChild(windGauge.avgDisplay);
@@ -5093,13 +5093,13 @@ function processRecord(startingIndex) {
 function processRecordsData(dictIn, startingIndex, startingIndex2) {
     dictIn["Highest temperature"] = processRecord(startingIndex).concat(["temp"]);
     dictIn["Lowest temperature"] = processRecord(startingIndex + 6).concat(["temp"]);
-    dictIn["Highest gust"] = processRecord(startingIndex + 12).concat(["wind", ", " + arrayClientrawExtra[startingIndex + 78].toString() + "\u00B0"]);
+    dictIn["Highest gust"] = processRecord(startingIndex + 12).concat(["wind", ", " + arrayClientrawExtra[startingIndex + 78].toString() + "\xB0"]);
     dictIn["Highest rain rate"] = processRecord(startingIndex + 18).concat(["rainfall", "/min"]);
     dictIn["Lowest barometer"] = processRecord(startingIndex + 24).concat(["pressure"]);
     dictIn["Highest barometer"] = processRecord(startingIndex + 30).concat(["pressure"]);
     dictIn["Highest daily rainfall"] = processRecord(startingIndex + 36).concat(["rainfall"]);
     dictIn["Highest hourly rainfall"] = processRecord(startingIndex + 42).concat(["rainfall"]);
-    dictIn["Highest average wind speed"] = processRecord(startingIndex + 48).concat(["wind", ", " + arrayClientrawExtra[startingIndex + 84].toString() + "\u00B0"]);
+    dictIn["Highest average wind speed"] = processRecord(startingIndex + 48).concat(["wind", ", " + arrayClientrawExtra[startingIndex + 84].toString() + "\xB0"]);
     dictIn["Lowest wind chill"] = processRecord(startingIndex + 72).concat(["temp"]);
     dictIn["Warmest day"] = processRecord(startingIndex + 90).concat(["temp"]);
     dictIn["Coldest night"] = processRecord(startingIndex + 96).concat(["temp"]);

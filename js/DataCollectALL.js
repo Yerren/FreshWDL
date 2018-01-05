@@ -102,13 +102,13 @@ function processRecord(startingIndex) {
 function processRecordsData(dictIn, startingIndex, startingIndex2) {
     dictIn["Highest temperature"] = processRecord(startingIndex).concat(["temp"]);
     dictIn["Lowest temperature"] = processRecord(startingIndex + 6).concat(["temp"]);
-    dictIn["Highest gust"] = processRecord(startingIndex + 12).concat(["wind", ", " + arrayClientrawExtra[startingIndex + 78].toString() + "\u00B0"]);
+    dictIn["Highest gust"] = processRecord(startingIndex + 12).concat(["wind", ", " + arrayClientrawExtra[startingIndex + 78].toString() + "\xB0"]);
     dictIn["Highest rain rate"] = processRecord(startingIndex + 18).concat(["rainfall", "/min"]);
     dictIn["Lowest barometer"] = processRecord(startingIndex + 24).concat(["pressure"]);
     dictIn["Highest barometer"] = processRecord(startingIndex + 30).concat(["pressure"]);
     dictIn["Highest daily rainfall"] = processRecord(startingIndex + 36).concat(["rainfall"]);
     dictIn["Highest hourly rainfall"] = processRecord(startingIndex + 42).concat(["rainfall"]);
-    dictIn["Highest average wind speed"] = processRecord(startingIndex + 48).concat(["wind", ", " + arrayClientrawExtra[startingIndex + 84].toString() + "\u00B0"]);
+    dictIn["Highest average wind speed"] = processRecord(startingIndex + 48).concat(["wind", ", " + arrayClientrawExtra[startingIndex + 84].toString() + "\xB0"]);
     dictIn["Lowest wind chill"] = processRecord(startingIndex + 72).concat(["temp"]);
     dictIn["Warmest day"] = processRecord(startingIndex + 90).concat(["temp"]);
     dictIn["Coldest night"] = processRecord(startingIndex + 96).concat(["temp"]);
