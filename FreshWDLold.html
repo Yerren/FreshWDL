@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- Include Scripts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet"> <!--Includes the font for loading screen-->
+    <link rel="stylesheet" type="text/css" href="css/stylesheet01.css?v=1.0.1x"> <!--Includes the project's css sheet -->    
+    
+    <!-- Loading Screen Setup -->
+    <div id="loadingScreen">
+        <div id="loadingText">
+            <p id="titleText">Fresh<b>WDL</b></p>
+            <p id="loadingMessage">Collecting Data.</p>
+        </div>        
+    </div>
+    <script type="text/javascript" src="js/Loading.js"></script>
+    
+        <!-- Include Scripts -->
+    <script type="text/javascript" src="config.js?v=1.0.1x"></script> <!--Includes the script that sets customisable variables-->
+    <script src="http://code.createjs.com/easeljs-0.8.0.min.js"></script> <!--Includes the drawing part of CreateJS: EaselJS-->
+    <script src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script> <!--Includes the animation part of CreateJS: TweenJS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/opentip/2.4.6/downloads/opentip-native.js"></script> <!--Includes the tooltip library: OpenTip-->
+    <script type="text/javascript" src="js/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
+    <script type="text/javascript" src="js/Globals.js?v=1.0.1x"></script> <!--Includes the script that sets global variables-->
+    <script type="text/javascript" src="js/Humiditiy.js?v=1.0.1x"></script> <!--Includes the script that draws the Humidity gauge-->
+    <script type="text/javascript" src="js/WindDirection.js?v=1.0.1x"></script> <!--Includes the script that draws the Wind Direction gauge-->
+    <script type="text/javascript" src="js/Bar.js?v=1.0.1x"></script> <!--Includes the script that draws the Temperature gauge-->
+    <script type="text/javascript" src="js/BarWindchill.js?v=1.0.1x"></script> <!--Includes the script that draws the Wind Choll gauge-->
+    <script type="text/javascript" src="js/WindSpeed.js?v=1.0.1x"></script> <!--Includes the script that draws the Wind Speed gauge-->
+    <script type="text/javascript" src="js/MoonSun.js?v=1.0.1x"></script> <!--Includes the script that draws the Moon / Sun gauge-->
+    <script type="text/javascript" src="js/Barometer.js?v=1.0.1x"></script> <!--Includes the script that draws the Barometer gauge-->
+    <script type="text/javascript" src="js/Apparent.js?v=1.0.1x"></script> <!--Includes the script that draws the Apparent Temper gauge-->
+    <script type="text/javascript" src="js/Status.js?v=1.0.1xa"></script> <!--Includes the script that draws the Apparent Temper gauge-->
+    <script type="text/javascript" src="js/TITLErainfall.js?v=1.0.1x"></script> <!--Includes the script the title ofthe "rainfall" section-->
+    <script type="text/javascript" src="js/UniBar01.js?v=1.0.1x"></script> <!--Includes the script that draws a Universal bar-->
+    <script type="text/javascript" src="js/UniBar02.js?v=1.0.1x"></script> <!--Includes the script that draws a Universal bar-->
+    <script type="text/javascript" src="js/UniBar03.js?v=1.0.1x"></script> <!--Includes the script that draws a Universal bar-->
+    <script type="text/javascript" src="js/SolarBar01.js?v=1.0.1x"></script> <!--Includes the script that draws a Universal bar-->
+    <script type="text/javascript" src="js/UVBar01.js?v=1.0.1x"></script> <!--Includes the script that draws a Universal bar-->
+    <script type="text/javascript" src="js/DataCollectALL.js?v=1.0.1x"></script> <!--Includes the script that collects the data from the server-->
+    <script type="text/javascript" src="js/ForecastHandler.js?v=1.0.1x"></script>
+    <script type="text/javascript" src="js/RecordHandler.js?v=1.0.1x"></script>
+    <script type="text/javascript" src="js/GraphHandler.js?v=1.0.1x"></script>
+    <script type="text/javascript" src="js/GraphHandlerRain.js?v=1.0.1x"></script>
+    <script type="text/javascript" src="js/GraphHandlerTemp.js?v=1.0.1x"></script>
+    <script type="text/javascript" src="js/GraphHandlerWind.js?v=1.0.1x"></script>
+    <script type="text/javascript" src="js/GraphHandlerBaro.js?v=1.0.1x"></script>
+    <script type="text/javascript" src="js/ButtonHandler.js?v=1.0.1x"></script>
+    <script type="text/javascript" src="js/ModalHandler.js?v=1.0.1x"></script>   
+    <script type="text/javascript" src="js/tickUpdater.js?v=1.0.1x"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/opentip/2.4.6/css/opentip.css" rel="stylesheet" type="text/css" /> <!--Includes the tooltip's css sheet -->
+    
+    <!-- Modal code must be outside of body so it can be referenced-->
+        
+    <!-- The Records Modal -->
+    <div id="recordsModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div id="recordsHeader" class="modal-header">
+                <span id="recordsClose" class="close">&#215</span>
+                <h2 id="recordsHeaderText" class="header-text">Records</h2>
+            </div>
+            <div id="modalRecordsDiv">
+                <table id="recordsTable">               
+                </table>
+            </div>
+            <div id="recordsFooter" class="modal-footer">
+                <h3 class="footer-text"></h3>
+                <div class="select-style">
+                    <select id="selectMenuRecords" onchange="changeCurrentOptionRe01(this.value);">
+                        <option value=0>Records for this month</option>
+                        <option value=1>Records for this year</option>
+                        <option value=2>All time records</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- The Forecast Modal -->
+    <div id="forecastModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div id="forecastHeader" class="modal-header">
+                <span id="forecastClose" class="close">&#215</span>
+                <h2 id="forecastHeaderText" class="header-text">Forecast</h2>
+            </div>
+            <div id="modalForecastDiv">
+            </div>
+            <div id="forecastFooter" class="modal-footer">
+                <h3 class="footer-text"></h3>
+            </div>
+        </div>
+    </div>
+    
+    <!-- The Graph Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div id="graphHeader" class="modal-header">
+                <span id="graphClose" class="close">&#215</span>
+                <h2 id="graphHeaderText" class="header-text">Modal Header</h2>
+            </div>
+            <div id="ModalCanvasDiv" class="OuterCanvasDiv">
+                <canvas id="ModalCanvas" style="background-color:#FFFFFF">
+                Your browser does not support the canvas element.
+                </canvas>
+            </div>
+            <div id="graphFooter" class="modal-footer">
+                <h3 class="footer-text"></h3>
+                <div class="select-style">
+                    <select id="selectMenu" onchange="graphChange(this);">
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+	<head>
+		<meta charset="utf-8" />
+		<title>FreshWDL</title>
+	</head>
+	<body onload='initialiseLayout(); forecastInitFor01(); initializeHum01(); initializeWind01(); initializeTemp01(); initializeRainGraph01(); initializeTempGraph01(); initializeWindGraph01(); initializeBaroGraph01(); initializeModalGraph01(); initModalHandler(); initializeTicker(); initialzeButtons(); initializeUniBarUni01(); initializeUniBarUni02(); initializeUniBarUni03(); initializeWS01(); initializeWC01(); initializeSolarBarSol01(); initializeUVBarUV01(); recordsInitRe01(); initializeMoonSunMS01(); initializeBarometerB01(); initializeApparentA01(); initializeStatusS01(); initializeTitleRainfallTR01();'> <!--Once the page is loaded, start the initialization functions -->
+        <div id="FWDLcontainer">
+            <div id="top" class="widgetContainer">
+                <canvas id="MoonSun01"></canvas>
+                <canvas id="Status01"></canvas>
+                <div id="forecastText", style="overflow: hidden;"></div>
+            </div>
+            <div id="left" class="widgetContainer">
+                <canvas id="TempBar01"></canvas>
+                <canvas id="HumidityGauge01"></canvas>
+            </div>
+            <div id="center" class="widgetContainer">
+                <div id="centerTop" class="widgetContainer">
+                    <canvas id="Windchill01"></canvas>
+                    <canvas id="WindGauge01"></canvas>
+                    <canvas id="WindSpeed01"></canvas>
+                </div>
+                <div id="centerBottom" class="widgetContainer">
+                    <div id="leftCenterBottom" class="widgetContainer">
+                        <canvas id="SolarBar01"></canvas>
+                        <canvas id="UVBar01"></canvas>
+                        <canvas id="Barometer01"></canvas>
+                        <canvas id="Apparent01"></canvas>
+                    </div>
+                    <div id="rightCenterBottom" class="widgetContainer">
+                        <canvas id="TitleRainfall01"></canvas>
+                        <canvas id="RainBar1"></canvas>
+                        <canvas id="RainBar2"></canvas>
+                        <canvas id="RainBar3"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div id="right" class="widgetContainer">
+                <div id="rightLeft" class="widgetContainer">
+                    <div id="rainGraphCanvas01CanvasDiv" class="OuterCanvasDiv">
+                        <canvas id="rainGraphCanvas01"></canvas>
+                    </div>
+                    <div id="windGraphCanvas01CanvasDiv" class="OuterCanvasDiv">
+                        <canvas id="windGraphCanvas01"></canvas>
+                    </div>
+                </div>
+                <div id="rightRight" class="widgetContainer">
+                    <div id="tempGraphCanvas01CanvasDiv" class="OuterCanvasDiv">
+                        <canvas id="tempGraphCanvas01"></canvas>
+                    </div>
+                    <div id="baroGraphCanvas01CanvasDiv" class="OuterCanvasDiv">
+                        <canvas id="baroGraphCanvas01"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div id="bottom" class="widgetContainer">
+                <button id="AltitudeButton" class="buttons">Altitude</button>
+                <button id="PressureButton" class="buttons">Pressure</button>
+                <button id="WindButton" class="buttons">Wind</button>
+                <button id="RainfallButton" class="buttons">Rainfall</button>
+                <button id="TempButton" class="buttons">Temp</button>
+                <button id="RecordsButton" class="buttons">Records</button>
+                <button id="GraphsButton" class="buttons">Graphs</button>
+            </div>
+        </div>
+        <div id="Version" style="float: right; font-size: 0.8em;"> <p>yerren@renerica.com</p></div>
+        <a title="Web Statistics" href="http://clicky.com/100669726"><img alt="Web Statistics" src="//static.getclicky.com/media/links/badge.gif" border="0"></a>
+        <script src="//static.getclicky.com/js" type="text/javascript"></script>
+        <script type="text/javascript">try{ clicky.init(100669726); }catch(e){}</script>
+        <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/100669726ns.gif" /></p></noscript>
+	</body>
+</html>
