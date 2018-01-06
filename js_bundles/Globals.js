@@ -431,21 +431,21 @@ var globalGraphs = {
                 title: "Rainfall Last 31 Days",
                 timestamp: "timestampDay",
                 data: "rainDays31",
-                timeDisplay: "DD/MM",
+                timeDisplay: "MMM D",
                 legendOptions: {}
             },
             monthlyYear: {
                 title: "Rainfall Last 12 Months",
                 timestamp: "timestampMonth",
                 data: "rainMonths12",
-                timeDisplay: "MMM",
+                timeDisplay: "MMM YYYY",
                 legendOptions: {}
             },
             dailyWeek: {
                 title: "Rainfall Last 7 Days",
                 timestamp: "timestampWeekDay",
                 data: "rainDays7",
-                timeDisplay: "dddd",
+                timeDisplay: "MMM D",
                 legendOptions: {}
             }
         }
