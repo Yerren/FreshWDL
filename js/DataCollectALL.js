@@ -171,10 +171,10 @@ function processGraphData() {
     }
     
     //sort weekly rain dict into correct order; (p + 1) is day index
-    var pMax = 0;
+    var pMax = 0
     for (p = 0; p + 1 < moment(arrayClientrawExtra[700], "DD").day(); p++) {
         graphDict["timestampWeekDay"][p].add(7, "days");
-        pMax = p;
+        pMax = p
     }
     for (q = 0; q <= pMax; q++) {
         graphDict["timestampWeekDay"] = shiftArrayFtL(graphDict["timestampWeekDay"]);
@@ -187,11 +187,10 @@ function processGraphData() {
         graphDict["timestampMonth"].push(moment(arrayClientraw[36], "MM").month(i - 12));
     }
     
-    pMax = 0;
     //sort monthly rain dict into correct order;
-    for (p = 0; p < moment(arrayClientrawExtra[36], "MM").; p++) {
+    for (p = 0; p < 3; p++) {
         graphDict["timestampMonth"][p].add(12, "M");
-        pMax = p;
+        pMax = p
     }
     for (q = 0; q <= pMax; q++) {
         graphDict["timestampMonth"] = shiftArrayFtL(graphDict["timestampMonth"]);

@@ -5187,7 +5187,7 @@ function processGraphData() {
     //sort monthly rain dict into correct order;
     pMax = 0;
     for (p = 0; p < moment(arrayClientraw[36], "MM").month() + 1; p++) { //'moment' months go from 0 - 11...
-        graphDict["timestampMonth"][p].add(12, "M");
+        //graphDict["timestampMonth"][p].subtract(12, "M"); Testing without this part
         pMax = p;
     }
     for (q = 0; q < pMax; q++) {
