@@ -7,27 +7,27 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.1.1 Alpha 2018-01-05
 First Public Release
 
-## Added
+#### Added
 - Config file
 
-### Changed
+#### Changed
 - To dynamic HTML fetching
 - To chartJS version 2.7.1
 
-### Fixed
+#### Fixed
 - Minor memory leak
 
 ## 1.0.1 Alpha 2017-12-29
 
-### Added
+#### Added
 - Status Widget
 
-### Improved
+#### Improved
 - Unit Buttons
 - Checks if widgets need to be updated
 - Data collection backend
 
 ## 1.0.0 Alpha
 
-### Added
+#### Added
 - Base System
