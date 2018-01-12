@@ -53,12 +53,12 @@ function resizeDivRe01() {
         increaseCount = 0;
     
 	//Adjusts modal div to math resized window. always adjust to the smallest dimention
-    if (window.innerHeight <= window.innerWidth) {
-		width = window.innerHeight * modalDivSize * 1.5;
-		height = window.innerHeight * modalDivSize;
+    if (document.documentElement.clientHeight <= document.documentElement.clientWidth) {
+		width = document.documentElement.clientHeight * modalDivSize * 1.5;
+		height = document.documentElement.clientHeight * modalDivSize;
 	} else {
-		width = window.innerWidth * modalDivSize * 1.5;
-		height = window.innerWidth * modalDivSize;
+		width = document.documentElement.clientWidth * modalDivSize * 1.5;
+		height = document.documentElement.clientWidth * modalDivSize;
 	}
     
     records.table.style.fontSize = sharpenValue(Math.pow(height, 2) / 10000) + "px";

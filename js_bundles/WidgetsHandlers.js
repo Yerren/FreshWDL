@@ -153,7 +153,13 @@ function initializeApparentA01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasA01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasA01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasA01();
@@ -604,7 +610,13 @@ function initializeTemp01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasTemp01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasTemp01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasTemp01();
@@ -805,7 +817,13 @@ function initializeBarometerB01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasB01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasB01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasB01();
@@ -1257,7 +1275,13 @@ function initializeWC01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasWC01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasWC01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasWC01();
@@ -1393,7 +1417,13 @@ function initializeBaroGraph01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasBaroG01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasBaroG01();
+        });
+    }
 	
 	resizeCanvasBaroG01(); //Set canvas size initally 
     checkOffLoaded();
@@ -1511,7 +1541,13 @@ function initializeRainGraph01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasRainG01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasRainG01();
+        });
+    }
 	
 	resizeCanvasRainG01(); //Set canvas size initally
     checkOffLoaded();
@@ -1645,7 +1681,13 @@ function initializeTempGraph01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasTempG01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasTempG01();
+        });
+    }
 	
 	resizeCanvasTempG01(); //Set canvas size initally
     checkOffLoaded();
@@ -1779,7 +1821,13 @@ function initializeWindGraph01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasWindG01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasWindG01();
+        });
+    }
 	
 	resizeCanvasWindG01(); //Set canvas size initally
     checkOffLoaded();
@@ -2110,7 +2158,13 @@ function initializeHum01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasHum01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasHum01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasHum01();
@@ -2378,7 +2432,13 @@ function initializeMoonSunMS01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasMS01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasMS01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasMS01();
@@ -2655,7 +2715,13 @@ function initializeSolarBarSol01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasSol01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasSol01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasSol01();
@@ -2867,7 +2933,13 @@ function initializeStatusS01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasS01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasS01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasS01();
@@ -2952,7 +3024,13 @@ function initializeTitleRainfallTR01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasTR01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasTR01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasTR01();
@@ -3259,7 +3337,13 @@ function initializeUniBarUni01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasUni01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasUni01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasUni01();
@@ -3566,7 +3650,13 @@ function initializeUniBarUni02() {
 		window.addEventListener('resize', function () {
 			resizeCanvasUni02();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasUni02();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasUni02();
@@ -3873,7 +3963,13 @@ function initializeUniBarUni03() {
 		window.addEventListener('resize', function () {
 			resizeCanvasUni03();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasUni03();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasUni03();
@@ -4102,7 +4198,13 @@ function initializeUVBarUV01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasUV01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasUV01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasUV01();
@@ -4492,7 +4594,13 @@ function initializeWind01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasWind01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasWind01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasWind01();
@@ -4981,7 +5089,13 @@ function initializeWS01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasWS01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasWS01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasWS01();
@@ -5564,12 +5678,12 @@ function resizeDivFor01() {
     forecast.displayDiv.style.height = height.toString();
     
 	//Adjusts modal div to math resized window. always adjust to the smallest dimention
-    if (window.innerHeight <= window.innerWidth) {
-		width = window.innerHeight * modalDivSize * 2;
-		height = window.innerHeight * modalDivSize;
+    if (document.documentElement.clientHeight <= document.documentElement.clientWidth) {
+		width = document.documentElement.clientHeight * modalDivSize * 2;
+		height = document.documentElement.clientHeight * modalDivSize;
 	} else {
-		width = window.innerWidth * modalDivSize * 2;
-		height = window.innerWidth * modalDivSize;
+		width = document.documentElement.clientWidth * modalDivSize * 2;
+		height = document.documentElement.clientWidth * modalDivSize;
 	}
     
     width = width.toString() + "px";
@@ -5612,7 +5726,13 @@ function forecastInitFor01() {
 		window.addEventListener('resize', function () {
 			resizeDivFor01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeDivFor01();
+        });
+    }
 	
     //Set the div size intially.
     resizeDivFor01();
@@ -5675,12 +5795,12 @@ function resizeDivRe01() {
         increaseCount = 0;
     
 	//Adjusts modal div to math resized window. always adjust to the smallest dimention
-    if (window.innerHeight <= window.innerWidth) {
-		width = window.innerHeight * modalDivSize * 1.5;
-		height = window.innerHeight * modalDivSize;
+    if (document.documentElement.clientHeight <= document.documentElement.clientWidth) {
+		width = document.documentElement.clientHeight * modalDivSize * 1.5;
+		height = document.documentElement.clientHeight * modalDivSize;
 	} else {
-		width = window.innerWidth * modalDivSize * 1.5;
-		height = window.innerWidth * modalDivSize;
+		width = document.documentElement.clientWidth * modalDivSize * 1.5;
+		height = document.documentElement.clientWidth * modalDivSize;
 	}
     
     records.table.style.fontSize = sharpenValue(Math.pow(height, 2) / 10000) + "px";
@@ -5737,7 +5857,13 @@ function recordsInitRe01() {
 		window.addEventListener('resize', function () {
 			resizeDivRe01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeDivRe01();
+        });
+    }
 	
     //Set the div size intially.
     resizeDivRe01();
@@ -5986,12 +6112,12 @@ function resizeCanvasModG01() {
 	//Dynamic Canvas Resizing for desktop
 	var size = 0.4;
 	//Always adjust to the smallest dimention
-	if (window.innerHeight <= window.innerWidth) {
-		modalGraph.canvasDiv.style.width = (window.innerHeight * size * 2).toString() + "px";
-		modalGraph.canvasDiv.style.height = (window.innerHeight * size).toString() + "px";
+	if (document.documentElement.clientHeight <= document.documentElement.clientWidth) {
+		modalGraph.canvasDiv.style.width = (document.documentElement.clientHeight * size * 2).toString() + "px";
+		modalGraph.canvasDiv.style.height = (document.documentElement.clientHeight * size).toString() + "px";
 	} else {
-		modalGraph.canvasDiv.style.width = (window.innerWidth * size * 2).toString() + "px";
-		modalGraph.canvasDiv.style.height = (window.innerWidth * size).toString() + "px";
+		modalGraph.canvasDiv.style.width = (document.documentElement.clientWidth * size * 2).toString() + "px";
+		modalGraph.canvasDiv.style.height = (document.documentElement.clientWidth * size).toString() + "px";
 	}
 		
 	modalGraph.chart.resize();
@@ -6014,7 +6140,13 @@ function initializeModalGraph01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasModG01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasModG01();
+        });
+    }
 	
 	resizeCanvasModG01(); //Set canvas size initally
     

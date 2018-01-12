@@ -463,12 +463,12 @@ function resizeContainer() {
         styleString = null;
 
 	//Adjusts div to match resized window. Always adjust to the smallest dimention
-	if ((window.innerHeight / ratio) <= window.innerWidth) {
-		width = window.innerHeight * size;
-		height = window.innerHeight * size * ratio;
+	if ((document.documentElement.clientHeight / ratio) <= document.documentElement.clientWidth) {
+		width = document.documentElement.clientHeight * size;
+		height = document.documentElement.clientHeight * size * ratio;
 	} else {
-		width = window.innerWidth * ratio * size;
-		height = window.innerWidth * ratio * size * ratio;
+		width = document.documentElement.clientWidth * ratio * size;
+		height = document.documentElement.clientWidth * ratio * size * ratio;
 	}
     
     width = width.toString() + "px";

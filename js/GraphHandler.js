@@ -212,12 +212,12 @@ function resizeCanvasModG01() {
 	//Dynamic Canvas Resizing for desktop
 	var size = 0.4;
 	//Always adjust to the smallest dimention
-	if (window.innerHeight <= window.innerWidth) {
-		modalGraph.canvasDiv.style.width = (window.innerHeight * size * 2).toString() + "px";
-		modalGraph.canvasDiv.style.height = (window.innerHeight * size).toString() + "px";
+	if (document.documentElement.clientHeight <= document.documentElement.clientWidth) {
+		modalGraph.canvasDiv.style.width = (document.documentElement.clientHeight * size * 2).toString() + "px";
+		modalGraph.canvasDiv.style.height = (document.documentElement.clientHeight * size).toString() + "px";
 	} else {
-		modalGraph.canvasDiv.style.width = (window.innerWidth * size * 2).toString() + "px";
-		modalGraph.canvasDiv.style.height = (window.innerWidth * size).toString() + "px";
+		modalGraph.canvasDiv.style.width = (document.documentElement.clientWidth * size * 2).toString() + "px";
+		modalGraph.canvasDiv.style.height = (document.documentElement.clientWidth * size).toString() + "px";
 	}
 		
 	modalGraph.chart.resize();

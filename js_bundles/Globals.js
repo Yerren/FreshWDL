@@ -456,19 +456,19 @@ var globalGraphs = {
 //Responsivly resize container to window
 function resizeContainer() {
     var container = document.getElementById('FWDLcontainer'),
-        ratio = 0.5625,
+        ratio = 0.5625, //9:16 ratio
         size = 1.7,
         width = 0,
         height = 0,
         styleString = null;
 
 	//Adjusts div to match resized window. Always adjust to the smallest dimention
-	if ((window.innerHeight / ratio) <= window.innerWidth) {
-		width = window.innerHeight * size;
-		height = window.innerHeight * size * ratio;
+	if ((document.documentElement.clientHeight / ratio) <= document.documentElement.clientWidth) {
+		width = document.documentElement.clientHeight * size;
+		height = document.documentElement.clientHeight * size * ratio;
 	} else {
-		width = window.innerWidth * ratio * size;
-		height = window.innerWidth * ratio * size * ratio;
+		width = document.documentElement.clientWidth * ratio * size;
+		height = document.documentElement.clientWidth * ratio * size * ratio;
 	}
     
     width = width.toString() + "px";
@@ -492,7 +492,13 @@ function initialiseLayout() {
 		window.addEventListener('resize', function () {
 			resizeContainer();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeContainer();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeContainer();
