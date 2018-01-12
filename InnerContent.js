@@ -49,7 +49,7 @@ document.write('\
             </div>\
         </div>\
         <div id="bottom" class="widgetContainer">\
-            <button id="AltitudeButton" class="buttons">Altitude</button>\
+            <button style="display: none;" id="AltitudeButton" class="buttons">Altitude</button>\
             <button id="PressureButton" class="buttons">Pressure</button>\
             <button id="WindButton" class="buttons">Wind</button>\
             <button id="RainfallButton" class="buttons">Rainfall</button>\
