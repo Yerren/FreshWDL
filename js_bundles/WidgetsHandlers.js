@@ -5761,7 +5761,7 @@ function updateValuesRe01() {
             cell2 = row.insertCell(2);
 
         cell0.innerHTML = recordKeys[i];
-        cell2.innerHTML = recordsDict[records.currentOption][recordKeys[i]][1].format("HH:mm, DD/MM/YYYY");
+        cell2.innerHTML = recordsDict[records.currentOption][recordKeys[i]][1].format("HH:mm, MMM D YYYY");
 
         if (recordsDict[records.currentOption][recordKeys[i]].length == 3) {
             cell1.innerHTML = formatDataToUnit(recordsDict[records.currentOption][recordKeys[i]][0], recordsDict[records.currentOption][recordKeys[i]][2]) + units[recordsDict[records.currentOption][recordKeys[i]][2].toString()][currentUnits[recordsDict[records.currentOption][recordKeys[i]][2].toString()]][1].toString();
