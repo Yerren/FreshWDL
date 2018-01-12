@@ -2776,11 +2776,8 @@ var status01 = {
 	values: {
         status: null,
         dataStatus: null,
-        lastSuccessTime: null
-	},
-    valuesOld: {
-        status: null,
-        dataStatus: null
+        stationName: null,
+        time: null
 	},
     config: {
         canvasID: "Status01"
@@ -2791,46 +2788,48 @@ function checkDataStatus() {
     //Checks if sucessful data was found
     if (dataCollectErrorCR === true && dataCollectErrorCRE === true && dataCollectErrorCRD === true && dataCollectErrorCRH === true) {
         //Partial Error
-        return ["Full Error", moment().format("HH:mm:ss")];
+        return "Full Error";
     } else if ((dataCollectErrorCR === true || dataCollectErrorCRE === true || dataCollectErrorCRD === true || dataCollectErrorCRH === true) && noDataChanged === true) {
         //Partial Error
-        return ["Partial Error, No New Data", moment().format("HH:mm:ss")];
+        return "Partial Error, No New Data";
     } else if (dataCollectErrorCR === true || dataCollectErrorCRE === true || dataCollectErrorCRD === true || dataCollectErrorCRH === true) {
         //Partial Error
-        return ["Partial Error, New Data", moment().format("HH:mm:ss")];
+        return "Partial Error, New Data";
     } else if (noDataChanged === true) {
         //No New Data
-        return ["No New Data", moment().format("HH:mm:ss")];
+        return "No New Data";
     } else {
         //No Errors
-        return ["Normal", moment().format("HH:mm:ss")];
+        return "Normal";
     }
 }
 
-function drawStatusS01(statusIn) {
+function drawStatusS01(statusIn, stationTimeIn) {
     //Is called when new data is sent.
     
-    var dataStatusIn = checkDataStatus();
+    var dataStatusIn = checkDataStatus(),
+        stationNameIn = stationTimeIn.substring(0, stationTimeIn.indexOf("-")),
+        timeIn = stationTimeIn.substring(stationTimeIn.indexOf("-") + 1);
     
     //The one widget which doesn't need to be checked if widget actually needs to be updated (Breaks it if you do)
     
     //Sets inputs to new data
     status01.values.status = statusIn.replace(/_/g, " ");
+    status01.values.stationName = stationNameIn.replace(/_/g, " ");
+    status01.values.time = timeIn;
     //Format Data Status, and set blink colour
-    if (dataStatusIn[0] == "Full Error") {
-        status01.values.dataStatus = "No data since: " + status01.values.lastSuccessTime.toString();
+    if (dataStatusIn == "Full Error") {
+        status01.values.dataStatus = status01.values.stationName.toString() +  " | No data since: " + status01.values.time.toString();
         status01.blinkColour = "rgba(209, 32, 32, 0.9)"; //Same as high temp
-    } else if (dataStatusIn[0] == "Partial Error, New Data") {
-        status01.values.dataStatus = "New data received at: " + dataStatusIn[1];
-        status01.values.lastSuccessTime = dataStatusIn[1];
+    } else if (dataStatusIn == "Partial Error, New Data") {
+        status01.values.dataStatus = status01.values.stationName.toString() +  " | New data received at: " + status01.values.time.toString();
         status01.blinkColour = "rgba(234, 242, 45, 0.9)"; //Same as UV
-    } else if (dataStatusIn[0] == "Partial Error, No New Data") {
+    } else if (dataStatusIn == "Partial Error, No New Data") {
         status01.blinkColour = "rgba(234, 242, 45, 0.9)"; //Same as UV
-    } else if (dataStatusIn[0] == "No New Data") {
+    } else if (dataStatusIn == "No New Data") {
         status01.blinkColour = status01.blankBlinkColour;
-    } else if (dataStatusIn[0] == "Normal") {
-        status01.values.dataStatus = "New data received at: " + dataStatusIn[1];
-        status01.values.lastSuccessTime = dataStatusIn[1];
+    } else if (dataStatusIn == "Normal") {
+        status01.values.dataStatus = status01.values.stationName.toString() +  " | New data received at: " + status01.values.time.toString();
         status01.blinkColour = "rgba(23, 145, 27, 0.9)"; //Same as wind direction
     } else {
         console.log("Invalid dataStatus");
@@ -2839,9 +2838,6 @@ function drawStatusS01(statusIn) {
     //Text Displays
     status01.textDisplayS.text = status01.values.status;
     status01.textDisplayD.text = status01.values.dataStatus;
-
-    status01.valuesOld.status = statusIn;
-    status01.valuesOld.dataStatus = dataStatusIn;
     
 }
 
@@ -5405,11 +5401,11 @@ function tryUpdateWidgets() {
             if (arrayClientraw.equals(arrayClientrawOld) === true && arrayClientrawExtra.equals(arrayClientrawExtraOld) === true && arrayClientrawDaily.equals(arrayClientrawDailyOld) === true && arrayClientrawHour.equals(arrayClientrawHourOld) === true) {
                 noDataChanged = true;
                 
-                drawStatusS01(arrayClientraw[49]); //Status widget must always be updated
+                drawStatusS01(arrayClientraw[49], arrayClientraw[32]); //Status widget must always be updated
             } else {
                 noDataChanged = false;
                 
-                drawStatusS01(arrayClientraw[49]); //Status widget must always be updated
+                drawStatusS01(arrayClientraw[49], arrayClientraw[32]); //Status widget must always be updated
                 
                 if (arrayClientraw.equals(arrayClientrawOld) === false) {
                     drawHumidityGaugeHum01(arrayClientraw[5]);
