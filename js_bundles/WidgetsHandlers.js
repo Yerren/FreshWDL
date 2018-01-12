@@ -4876,7 +4876,7 @@ function updateTopWS01() {
             
 			//Text Label Positioning - located here as they line up with the large dashes
 			windSpeed.label[i / 2].y = dashY;
-			windSpeed.label[i / 2].x = (windSpeed.setupVars.posDash.x - windSpeed.setupVars.dashLength) * (6 / 5);
+			windSpeed.label[i / 2].x = (windSpeed.setupVars.posDash.x - windSpeed.setupVars.dashLength) * (125 / 100);
 			windSpeed.label[i / 2].font = windSpeed.setupVars.textSize + "px arial";
 		} else {
 			//Med
@@ -4896,7 +4896,28 @@ function updateTopWS01() {
 	windSpeed.rectFillRightCommand.w = windSpeed.setupVars.barWidth;
 	
     //Text Title
-	windSpeed.textTitle.x = windSpeed.setupVars.posTextTitle.x;
+	
+	//High Wind Marker
+	windSpeed.windHighMarkerStrokeCommand.width = windSpeed.setupVars.strokeSize * 4;
+	windSpeed.windHighMarkerStartCommand.x =  windSpeed.setupVars.posBarLeft.x;
+	windSpeed.windHighMarkerEndCommand.x = windSpeed.setupVars.posBarLeft.x + windSpeed.setupVars.barWidth;
+	
+	//High Gust Marker
+	windSpeed.gustHighMarkerStrokeCommand.width = windSpeed.setupVars.strokeSize * 4;
+	windSpeed.gustHighMarkerStartCommand.x = windSpeed.setupVars.posBarRight.x;
+	windSpeed.gustHighMarkerEndCommand.x = windSpeed.setupVars.posBarRight.x + windSpeed.setupVars.barWidth;
+	
+	//High Wind Display
+	windSpeed.windHighDisplay.x = windSpeed.setupVars.posLabelWind.x;
+    windSpeed.windHighDisplay.y = windSpeed.setupVars.posLabelWind.y;
+	windSpeed.windHighDisplay.font = windSpeed.setupVars.textDisplaySize + "px arial";
+	
+	//High Gust Display
+	windSpeed.gustHighDisplay.x = windSpeed.setupVars.posLabelGust.x;
+    windSpeed.gustHighDisplay.y = windSpeed.setupVars.posLabelGust.y;
+	windSpeed.gustHighDisplay.font = windSpeed.setupVars.textDisplaySize + "px arial";
+    
+    windSpeed.textTitle.x = windSpeed.setupVars.posTextTitle.x;
 	windSpeed.textTitle.y = windSpeed.setupVars.posTextTitle.y;
 	windSpeed.textTitle.font = "bold " + (windSpeed.setupVars.textDisplaySize * 1.5) + "px arial";
     
@@ -4918,26 +4939,6 @@ function updateTopWS01() {
 	windSpeed.textDisplayGust.x = windSpeed.setupVars.posTextLabelRight.x;
 	windSpeed.textDisplayGust.y = windSpeed.setupVars.posTextLabelRight.y;
 	windSpeed.textDisplayGust.font = "bold " + windSpeed.setupVars.textDisplaySize + "px arial";
-	
-	//High Wind Marker
-	windSpeed.windHighMarkerStrokeCommand.width = windSpeed.setupVars.strokeSize * 4;
-	windSpeed.windHighMarkerStartCommand.x =  windSpeed.setupVars.posBarLeft.x;
-	windSpeed.windHighMarkerEndCommand.x = windSpeed.setupVars.posBarLeft.x + windSpeed.setupVars.barWidth;
-	
-	//High Gust Marker
-	windSpeed.gustHighMarkerStrokeCommand.width = windSpeed.setupVars.strokeSize * 4;
-	windSpeed.gustHighMarkerStartCommand.x = windSpeed.setupVars.posBarRight.x;
-	windSpeed.gustHighMarkerEndCommand.x = windSpeed.setupVars.posBarRight.x + windSpeed.setupVars.barWidth;
-	
-	//High Wind Display
-	windSpeed.windHighDisplay.x = windSpeed.setupVars.posLabelWind.x;
-    windSpeed.windHighDisplay.y = windSpeed.setupVars.posLabelWind.y;
-	windSpeed.windHighDisplay.font = windSpeed.setupVars.textDisplaySize + "px arial";
-	
-	//High Gust Display
-	windSpeed.gustHighDisplay.x = windSpeed.setupVars.posLabelGust.x;
-    windSpeed.gustHighDisplay.y = windSpeed.setupVars.posLabelGust.y;
-	windSpeed.gustHighDisplay.font = windSpeed.setupVars.textDisplaySize + "px arial";
     
     //Gives the call to update the animated sections of the widgets
     updateTweensWS01();
@@ -5003,6 +5004,24 @@ function setUpWS01() {
     windSpeed.rectFillRight.graphics.setStrokeStyle(0);
 	windSpeed.rectFillRightCommand = windSpeed.rectFillRight.graphics.drawRect(0, 0, 0, 0).command;
 	windSpeed.stage.addChild(windSpeed.rectFillRight);
+    
+    //Set up windHigh speed marker
+	windSpeed.windHighMarker = new createjs.Shape();
+	windSpeed.windHighMarker.snapToPixel = true;
+	windSpeed.windHighMarker.graphics.beginStroke("rgb(" + colour.wind + ")", 1);
+	windSpeed.windHighMarkerStrokeCommand = windSpeed.windHighMarker.graphics.setStrokeStyle(0).command;
+	windSpeed.windHighMarkerStartCommand = windSpeed.windHighMarker.graphics.moveTo(0, 0).command;
+	windSpeed.windHighMarkerEndCommand = windSpeed.windHighMarker.graphics.lineTo(0, 0).command;
+	windSpeed.stage.addChild(windSpeed.windHighMarker);
+	
+	//Set up gustHigh speed marker
+	windSpeed.gustHighMarker = new createjs.Shape();
+	windSpeed.gustHighMarker.snapToPixel = true;
+	windSpeed.gustHighMarker.graphics.beginStroke("rgb(" + colour.windGust + ")", 1);
+	windSpeed.gustHighMarkerStrokeCommand = windSpeed.gustHighMarker.graphics.setStrokeStyle(0).command;
+	windSpeed.gustHighMarkerStartCommand = windSpeed.gustHighMarker.graphics.moveTo(0, 0).command;
+	windSpeed.gustHighMarkerEndCommand = windSpeed.gustHighMarker.graphics.lineTo(0, 0).command;
+	windSpeed.stage.addChild(windSpeed.gustHighMarker);
 	
 	//Set up text labels
 	for (i = 0; i < windSpeed.largeDashTotal; i++) {
@@ -5039,24 +5058,7 @@ function setUpWS01() {
 	windSpeed.textDisplayGust.textBaseline = "bottom";
 	windSpeed.textDisplayGust.textAlign = "center";
 	windSpeed.stage.addChild(windSpeed.textDisplayGust);
-	
-	//Set up windHigh speed marker
-	windSpeed.windHighMarker = new createjs.Shape();
-	windSpeed.windHighMarker.snapToPixel = true;
-	windSpeed.windHighMarker.graphics.beginStroke("rgb(" + colour.wind + ")", 1);
-	windSpeed.windHighMarkerStrokeCommand = windSpeed.windHighMarker.graphics.setStrokeStyle(0).command;
-	windSpeed.windHighMarkerStartCommand = windSpeed.windHighMarker.graphics.moveTo(0, 0).command;
-	windSpeed.windHighMarkerEndCommand = windSpeed.windHighMarker.graphics.lineTo(0, 0).command;
-	windSpeed.stage.addChild(windSpeed.windHighMarker);
-	
-	//Set up gustHigh speed marker
-	windSpeed.gustHighMarker = new createjs.Shape();
-	windSpeed.gustHighMarker.snapToPixel = true;
-	windSpeed.gustHighMarker.graphics.beginStroke("rgb(" + colour.windGust + ")", 1);
-	windSpeed.gustHighMarkerStrokeCommand = windSpeed.gustHighMarker.graphics.setStrokeStyle(0).command;
-	windSpeed.gustHighMarkerStartCommand = windSpeed.gustHighMarker.graphics.moveTo(0, 0).command;
-	windSpeed.gustHighMarkerEndCommand = windSpeed.gustHighMarker.graphics.lineTo(0, 0).command;
-	windSpeed.stage.addChild(windSpeed.gustHighMarker);
+
 	
 	//Set up windHigh speed label
 	windSpeed.windHighDisplay = new createjs.Text("0", "0px Arial", "black");
