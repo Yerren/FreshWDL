@@ -441,7 +441,7 @@ var globalGraphs = {
                 timeDisplay: "MMM",
                 legendOptions: {}
             },
-            dailyWeek: {
+            quarterDailyWeek: {
                 title: "Rainfall Last 7 Days",
                 timestamp: "timestampWeekDay",
                 data: "rainDays7",

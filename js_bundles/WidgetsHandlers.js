@@ -5889,6 +5889,14 @@ function configureGraphLine(baseIn, graphIn) {
     modalGraph.chart.data.datasets[0].data = graphData;
     modalGraph.chart.options.scales.xAxes[0].time.unit = graphIn.timeDisplay.toString();
     modalGraph.chart.options.scales.yAxes[0].scaleLabel.labelString = baseIn.label.toString() + " (" + units[baseIn.unit.toString()][currentUnits[baseIn.unit.toString()]][1].toString() + ")";
+    
+    //If weekly graph, change to weekday display
+    if (modalGraph.currentGraph[1].toString() === "quarterDailyWeek") {
+        modalGraph.chart.options.scales.xAxes[0].time.displayFormats.day = "ddd";
+    } else {
+        modalGraph.chart.options.scales.xAxes[0].time.displayFormats.day = "MMM D"; 
+    }
+    
     //if 2 dataSets
     if (multipleSets == true) {
         modalGraph.chart.data.datasets[1] = graphStyles[style2];
