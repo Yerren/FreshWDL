@@ -2799,7 +2799,7 @@ function drawStatusS01(statusIn) {
     //Format Data Status, and set blink colour
     if (dataStatusIn[0] == "Full Error") {
         status01.values.dataStatus = "No data since: " + status01.values.lastSuccessTime.toString();
-        status01.blinkColour = "rgba(209, 32, 32, 0.4)"; //Same as high temp
+        status01.blinkColour = "rgba(209, 32, 32, 0.9)"; //Same as high temp
     } else if (dataStatusIn[0] == "Partial Error, New Data") {
         status01.values.dataStatus = "New data received at: " + dataStatusIn[1];
         status01.values.lastSuccessTime = dataStatusIn[1];
@@ -2811,7 +2811,7 @@ function drawStatusS01(statusIn) {
     } else if (dataStatusIn[0] == "Normal") {
         status01.values.dataStatus = "New data received at: " + dataStatusIn[1];
         status01.values.lastSuccessTime = dataStatusIn[1];
-        status01.blinkColour = "rgba(23, 145, 27, 0.4)"; //Same as wind direction
+        status01.blinkColour = "rgba(23, 145, 27, 0.9)"; //Same as wind direction
     } else {
         console.log("Invalid dataStatus");
     }
@@ -2892,7 +2892,7 @@ function resizeCanvasS01() {
 function setUpS01() {
 	//Sets up the shapes. Initializses all the varaibles and shapes, and stores the values which need to be adjusted in commands which can be accessed later
 	//Set up status circle
-    status01.blankBlinkColour = "rgba(100, 100, 100, 0.4)";
+    status01.blankBlinkColour = "rgba(100, 100, 100, 0.9)";
 	status01.circle  = new createjs.Shape();
 	status01.circle.snapToPixel = true;
 	status01.circColourCommand = status01.circle.graphics.beginStroke(status01.blankBlinkColour).command;
