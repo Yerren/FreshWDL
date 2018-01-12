@@ -3096,7 +3096,7 @@ var uniBar01 = {
         unitsIn: "rainfall",
         title: "Daily",
         canvasID: "RainBar1",
-        tickScaler: 10
+        tickScaler: 1
     }
 };
 
@@ -3390,8 +3390,8 @@ var uniBar02 = {
 	constants: {
 		minUni: 0,
 		minUniDEFAULT: 0,
-		maxUni: 500,
-		maxUniDEFAULT: 500
+		maxUni: 1,
+		maxUniDEFAULT: 1
 	},
     tweens: {
         barFill: {
@@ -3409,7 +3409,7 @@ var uniBar02 = {
         unitsIn: "rainfall",
         title: "Monthly",
         canvasID: "RainBar2",
-        tickScaler: 50
+        tickScaler: 5
     }
 };
 
@@ -3703,8 +3703,8 @@ var uniBar03 = {
 	constants: {
 		minUni: 0,
 		minUniDEFAULT: 0,
-		maxUni: 1000,
-		maxUniDEFAULT: 1000
+		maxUni: 1,
+		maxUniDEFAULT: 1
 	},
     tweens: {
         barFill: {
@@ -3722,7 +3722,7 @@ var uniBar03 = {
         unitsIn: "rainfall",
         title: "Annual",
         canvasID: "RainBar3",
-        tickScaler: 100
+        tickScaler: 5
     }
 };
 
@@ -4662,8 +4662,8 @@ var windSpeed = {
 	constants: {
 		minSpeed: 0,
 		minSpeedDEFAULT: 0,
-		maxSpeed: 40,
-		maxSpeedDEFAULT: 40
+		maxSpeed: 10,
+		maxSpeedDEFAULT: 10
 	},
     tweens: {
         barFillLeft: {
