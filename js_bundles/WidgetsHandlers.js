@@ -218,7 +218,8 @@ var tempBar = {
         posFillCirc: {},
         posFillBar: {},
 		posHLLabel: {},
-        cutOffLength: null
+        cutOffLength: null,
+        minHLspace: null
 	},
 	constants: {
 		minTemp: -10,
@@ -319,12 +320,20 @@ function updateTweensTemp01() {
 	//Low Marker
 	tempBar.lowMarkerEndCommand.y = tempBar.lowMarkerStartCommand.y = tempBar.tweens.lowTemp.h * (tempBar.rectCommand.h - tempBar.rectCommand.y);
 	
+    //Adjust y position of HL labels if they would otherwise overlap
+    var highLabelY = tempBar.highMarkerEndCommand.y,
+        lowLabelY = tempBar.lowMarkerEndCommand.y
+    while ((lowLabelY - highLabelY) / tempBar.canvas.height < tempBar.setupVars.minHLspace) {
+        lowLabelY += 1;
+        highLabelY -= 1;
+    }
+    
 	//High Display
-	tempBar.highDisplay.y = tempBar.highMarkerEndCommand.y;
+	tempBar.highDisplay.y = highLabelY;
 	tempBar.highDisplay.text = tempBar.values.highTempIn.toString() + units[tempBar.values.unitsIn.toString()][currentUnits[tempBar.values.unitsIn.toString()]][1].toString();
 	
 	//Low Display
-	tempBar.lowDisplay.y = tempBar.lowMarkerEndCommand.y;
+	tempBar.lowDisplay.y = lowLabelY;
 	tempBar.lowDisplay.text = tempBar.values.lowTempIn.toString() + units[tempBar.values.unitsIn.toString()][currentUnits[tempBar.values.unitsIn.toString()]][1].toString();
 	
 	//Labels
@@ -354,6 +363,7 @@ function updateTopTemp01() {
     tempBar.setupVars.textSize = tempBar.canvas.height / 17;
     tempBar.setupVars.textDisplaySize = tempBar.canvas.height / 19;
 	tempBar.setupVars.textHLSize = tempBar.canvas.height / 21;
+    tempBar.setupVars.minHLspace = 0.04;
     tempBar.setupVars.posBar = {
         x: ((tempBar.canvas.height / 2) - (tempBar.setupVars.barWidth / 2)),
         y: ((tempBar.canvas.height / 2) - (tempBar.setupVars.barHeight / 2))
@@ -882,7 +892,8 @@ var windchill01 = {
         posFillCirc: {},
         posFillBar: {},
 		posHLLabel: {},
-        cutOffLength: null
+        cutOffLength: null,
+        minHLspace: null
 	},
 	constants: {
 		minTemp: -10,
@@ -984,12 +995,20 @@ function updateTweensWC01() {
 	//Low Marker
 	windchill01.lowMarkerEndCommand.y = windchill01.lowMarkerStartCommand.y = windchill01.tweens.lowTemp.h * (windchill01.rectCommand.h - windchill01.rectCommand.y);
 	
+    //Adjust y position of HL labels if they would otherwise overlap
+    var highLabelY = windchill01.highMarkerEndCommand.y,
+        lowLabelY = windchill01.lowMarkerEndCommand.y
+    while ((lowLabelY - highLabelY) / windchill01.canvas.height < windchill01.setupVars.minHLspace) {
+        lowLabelY += 1;
+        highLabelY -= 1;
+    }
+    
 	//High Display
-	windchill01.highDisplay.y = windchill01.highMarkerEndCommand.y;
+	windchill01.highDisplay.y = highLabelY;
 	windchill01.highDisplay.text = windchill01.values.highTempIn.toString() + units[windchill01.values.unitsIn.toString()][currentUnits[windchill01.values.unitsIn.toString()]][1].toString();
 	
 	//Low Display
-	windchill01.lowDisplay.y = windchill01.lowMarkerEndCommand.y;
+	windchill01.lowDisplay.y = lowLabelY;
 	windchill01.lowDisplay.text = windchill01.values.lowTempIn.toString() + units[windchill01.values.unitsIn.toString()][currentUnits[windchill01.values.unitsIn.toString()]][1].toString();
 	
 	//Labels
@@ -1019,6 +1038,7 @@ function updateTopWC01() {
     windchill01.setupVars.textSize = windchill01.canvas.height / 17;
     windchill01.setupVars.textDisplaySize = windchill01.canvas.height / 19;
 	windchill01.setupVars.textHLSize = windchill01.canvas.height / 21;
+	windchill01.setupVars.minHLspace = 0.04;
     windchill01.setupVars.posBar = {
         x: ((windchill01.canvas.height / 2) - (windchill01.setupVars.barWidth / 2)),
         y: ((windchill01.canvas.height / 2) - (windchill01.setupVars.barHeight / 2))
