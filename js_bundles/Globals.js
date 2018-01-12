@@ -2,8 +2,7 @@
 
 //Sets GLOBAL variables
 //Customizables
-var roundTo = 1, //number of decimal places to round to
-    globalFontFamily = "Arial", //The font used throughout the page
+var globalFontFamily = "Arial", //The font used throughout the page
     colour = {
         barometer: "40, 104, 206",
         rainfall: "0, 71, 183",
@@ -521,45 +520,45 @@ Chart.defaults.global.maintainAspectRatio = false;
 Chart.defaults.global.legend.display = false;
 Chart.defaults.global.defaultFontFamily = globalFontFamily;
 
-//Set units
+//Set units. In the format of: "multiplier, "Display", number of decimal places to round to]
 var units = {
         pressure: {
-            hPa: [1, "hPa"],
-            mmHG: [0.750061561303, "mmHG"],
-            kPa: [0.1, "kPa"],
-            inHg: [0.0295299830714, "inHg"],
-            mb: [1, "mb"]
+            hPa: [1, "hPa", 1],
+            mmHG: [0.750061561303, "mmHG", 1],
+            kPa: [0.1, "kPa", 2],
+            inHg: [0.0295299830714, "inHg", 2],
+            mb: [1, "mb", 1]
         },
         altitude: {
-            m: [0.3048, "m"],
-            yds: [0.333333, "yds"],
-            ft: [1, "ft"]
+            m: [0.3048, "m", 0],
+            yds: [0.333333, "yds", 0],
+            ft: [1, "ft", 0]
         },
         wind: {
-            kmh: [1.852, "km/h"],
-            mph: [1.15078, "mph"],
-            kts: [1, "kts"],
-            ms: [0.514444, "m/s"]
+            kmh: [1.852, "km/h", 1],
+            mph: [1.15078, "mph", 1],
+            kts: [1, "kts", 1],
+            ms: [0.514444, "m/s", 1]
         },
         windDirection: {
-            deg: [1, "\xB0"]
+            deg: [1, "\xB0", 0]
         },
         rainfall: {
-            mm: [1, "mm"],
-            inch: [0.0393701, "in"]
+            mm: [1, "mm", 1],
+            inch: [0.0393701, "in", 2]
         },
         humidity: {
-            percent: [1, "%"]
+            percent: [1, "%", 0]
         },
         solar: {
-            Wm: [1, "W/m\xB2"]
+            Wm: [1, "W/m\xB2", 1]
         },
         uv: {
-            noUnit: [1, " "]
+            noUnit: [1, " ", 1]
         },
         temp: {
-            celsius: [1, String.fromCharCode(176) + "C"], 
-            fahrenheit: [1, String.fromCharCode(176) + "F"]
+            celsius: [1, String.fromCharCode(176) + "C", 1],
+            fahrenheit: [1, String.fromCharCode(176) + "F", 1]
         }
     };
 
@@ -569,27 +568,26 @@ function betterRound(value, decimals) {
     return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
 }
 
-function formatDataToUnit(dataIn, unitsIn, roundTo, alwaysValue) {
+function formatDataToUnit(dataIn, unitsIn) {
     //Format to the correct unit
-    
-    alwaysValue = alwaysValue || false;
+    var roundTo = units[unitsIn.toString()][currentUnits[unitsIn.toString()]][2];
     
     if (unitsIn.toString() == "temp") {
         if (currentUnits[unitsIn.toString()] == "fahrenheit") {
-            var fahTemp = dataIn * (9/5) + 32;
+            var fahTemp = dataIn * (9 / 5) + 32;
             return betterRound(fahTemp, roundTo);
         } else {
             return dataIn;
         }
-    } else if (alwaysValue === false || parseFloat(dataIn) == 0) {
+    } else if (parseFloat(dataIn) == 0) {
         return betterRound((dataIn * units[unitsIn.toString()][currentUnits[unitsIn.toString()]][0].toString()), roundTo);
-    } else if (alwaysValue === true) {
+    } else {
         var decPlaces = roundTo,
             result = 0,
             max = 5;
         while (result == 0 && decPlaces <= max) {
             result = betterRound((dataIn * units[unitsIn.toString()][currentUnits[unitsIn.toString()]][0].toString()), decPlaces);
-            if (isNaN(result) === true) {result = 0};
+            if (isNaN(result) === true) {result = 0; }
             decPlaces += 1;
         }
         return result;

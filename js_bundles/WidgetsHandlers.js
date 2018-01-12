@@ -44,7 +44,7 @@ function drawApparentA01(tempIn, unitChange) {
         apparent01.values.temp = tempIn;
 
         //Adjust to units
-        apparent01.values.temp = formatDataToUnit(apparent01.values.temp, apparent01.config.unitsIn, 2);
+        apparent01.values.temp = formatDataToUnit(apparent01.values.temp, apparent01.config.unitsIn);
 
         //Text Displays
         apparent01.textDisplayT.text = apparent01.values.temp + units[apparent01.config.unitsIn.toString()][currentUnits[apparent01.config.unitsIn.toString()]][1].toString();
@@ -262,9 +262,9 @@ function formatInputTemp01() {
 	//Formats the temperature to be displayed correctly
 	
     //Adjust to units
-    tempBar.values.tempIn = formatDataToUnit(tempBar.values.tempIn, tempBar.values.unitsIn, roundTo);
-    tempBar.values.highTempIn = formatDataToUnit(tempBar.values.highTempIn, tempBar.values.unitsIn, roundTo);
-    tempBar.values.lowTempIn = formatDataToUnit(tempBar.values.lowTempIn, tempBar.values.unitsIn, roundTo);
+    tempBar.values.tempIn = formatDataToUnit(tempBar.values.tempIn, tempBar.values.unitsIn);
+    tempBar.values.highTempIn = formatDataToUnit(tempBar.values.highTempIn, tempBar.values.unitsIn);
+    tempBar.values.lowTempIn = formatDataToUnit(tempBar.values.lowTempIn, tempBar.values.unitsIn);
     
 	//Adjust Range if needed: if any of the inputs (current, high, low), are less than the current minimum of the range, decrease the minimum. If any of the inputs (current, high, low), are bigger than the current maximum of the range, increase the maximum. 
 	while (tempBar.values.tempIn < tempBar.constants.minTemp || tempBar.values.highTempIn < tempBar.constants.minTemp || tempBar.values.lowTempIn < tempBar.constants.minTemp) {tempBar.constants.minTemp -= tempBar.largeDashTotal - 1; }
@@ -672,8 +672,8 @@ function drawBarometerB01(pressureIn, trendIn, unitChange) {
         barometer01.values.trend = trendIn;
 
         //Adjust to units
-        barometer01.values.pressure = formatDataToUnit(barometer01.values.pressure, barometer01.config.unitsIn, 2);
-        barometer01.values.trend = formatDataToUnit(barometer01.values.trend, barometer01.config.unitsIn, 2, true);
+        barometer01.values.pressure = formatDataToUnit(barometer01.values.pressure, barometer01.config.unitsIn);
+        barometer01.values.trend = formatDataToUnit(barometer01.values.trend, barometer01.config.unitsIn);
 
         //Text Displays
         barometer01.textDisplayP.text = barometer01.values.pressure + units[barometer01.config.unitsIn.toString()][currentUnits[barometer01.config.unitsIn.toString()]][1].toString();
@@ -926,9 +926,9 @@ function formatInputWC01() {
 	//Formats the temperature to be displayed correctly
 	
     //Adjust to units
-    windchill01.values.tempIn = formatDataToUnit(windchill01.values.tempIn, windchill01.values.unitsIn, roundTo);
-    windchill01.values.highTempIn = formatDataToUnit(windchill01.values.highTempIn, windchill01.values.unitsIn, roundTo);
-    windchill01.values.lowTempIn = formatDataToUnit(windchill01.values.lowTempIn, windchill01.values.unitsIn, roundTo);
+    windchill01.values.tempIn = formatDataToUnit(windchill01.values.tempIn, windchill01.values.unitsIn);
+    windchill01.values.highTempIn = formatDataToUnit(windchill01.values.highTempIn, windchill01.values.unitsIn);
+    windchill01.values.lowTempIn = formatDataToUnit(windchill01.values.lowTempIn, windchill01.values.unitsIn);
     
 	//Adjust Range if needed: if any of the inputs (current, high, low), are less than the current minimum of the range, decrease the minimum. If any of the inputs (current, high, low), are bigger than the current maximum of the range, increase the maximum. 
 	while (windchill01.values.tempIn < windchill01.constants.minTemp || windchill01.values.highTempIn < windchill01.constants.minTemp || windchill01.values.lowTempIn < windchill01.constants.minTemp) {windchill01.constants.minTemp -= windchill01.largeDashTotal - 1; }
@@ -1365,7 +1365,7 @@ function configureGraphBaroLine01(baseIn, graphIn) {
     for (i = 0; i < graphDict[graphIn.timestamp].length; i++) {
         graphData[i] = {
             x: graphDict[graphIn.timestamp][i],
-            y: formatDataToUnit(graphDict[graphIn.data[0]][i], baseIn.unit, 2)
+            y: formatDataToUnit(graphDict[graphIn.data[0]][i], baseIn.unit)
         };
     }
     
@@ -1488,7 +1488,7 @@ function configureGraphRainBar01(baseIn, graphIn) {
         style = baseIn.style.toString();
     
     for (i = 0; i < graphDict[graphIn.timestamp].length; i++) {
-        graphData[i] = formatDataToUnit(graphDict[graphIn.data][i], baseIn.unit, 2);
+        graphData[i] = formatDataToUnit(graphDict[graphIn.data][i], baseIn.unit);
         graphLabels[i] = graphDict[graphIn.timestamp][i].format(graphIn.timeDisplay.toString());
     }
     
@@ -1629,7 +1629,7 @@ function configureGraphTempLine01(baseIn, graphIn) {
     for (i = 0; i < graphDict[graphIn.timestamp].length; i++) {
         graphData[i] = {
             x: graphDict[graphIn.timestamp][i],
-            y: formatDataToUnit(graphDict[graphIn.data[0]][i], baseIn.unit, 2)
+            y: formatDataToUnit(graphDict[graphIn.data[0]][i], baseIn.unit)
         };
     }
     
@@ -1769,7 +1769,7 @@ function configureGraphWindLine01(baseIn, graphIn) {
     for (i = 0; i < graphDict[graphIn.timestamp].length; i++) {
         graphData[i] = {
             x: graphDict[graphIn.timestamp][i],
-            y: formatDataToUnit(graphDict[graphIn.data[0]][i], baseIn.unit, 2)
+            y: formatDataToUnit(graphDict[graphIn.data[0]][i], baseIn.unit)
         };
     }
     
@@ -2509,7 +2509,7 @@ function formatInputSol01() {
 	//Formats the universal to be displayed correctly
     
     //Adjust to units
-    solarBar01.values.percentIn = formatDataToUnit(solarBar01.values.percentIn, solarBar01.config.unitsIn, roundTo);
+    solarBar01.values.percentIn = formatDataToUnit(solarBar01.values.percentIn, solarBar01.config.unitsIn);
     
     //Map the inputs to the current scale (as a proportion)
 	solarBar01.values.percentOut = solarBar01.values.percentIn.map(0, 100, 0, 1);
@@ -3110,7 +3110,7 @@ function formatInputUni01() {
 	var gapNum = uniBar01.largeDashTotal - 1;
     
     //Adjust to units
-    uniBar01.values.uniIn = formatDataToUnit(uniBar01.values.uniIn, uniBar01.config.unitsIn, roundTo);
+    uniBar01.values.uniIn = formatDataToUnit(uniBar01.values.uniIn, uniBar01.config.unitsIn);
     
 	//Adjust Range if needed: if the input is less than the current minimum of the range, decrease the minimum. If the input is bigger than the current maximum of the range, increase the maximum. 
 	while (uniBar01.values.uniIn < uniBar01.constants.minUni) {uniBar01.constants.minUni -= uniBar01.config.tickScaler * (gapNum); }
@@ -3423,7 +3423,7 @@ function formatInputUni02() {
 	var gapNum = uniBar02.largeDashTotal - 1;
     
     //Adjust to units
-    uniBar02.values.uniIn = formatDataToUnit(uniBar02.values.uniIn, uniBar02.config.unitsIn, roundTo);
+    uniBar02.values.uniIn = formatDataToUnit(uniBar02.values.uniIn, uniBar02.config.unitsIn);
     
 	//Adjust Range if needed: if the input is less than the current minimum of the range, decrease the minimum. If the input is bigger than the current maximum of the range, increase the maximum. 
 	while (uniBar02.values.uniIn < uniBar02.constants.minUni) {uniBar02.constants.minUni -= uniBar02.config.tickScaler * (gapNum); }
@@ -3736,7 +3736,7 @@ function formatInputUni03() {
 	var gapNum = uniBar03.largeDashTotal - 1;
     
     //Adjust to units
-    uniBar03.values.uniIn = formatDataToUnit(uniBar03.values.uniIn, uniBar03.config.unitsIn, roundTo);
+    uniBar03.values.uniIn = formatDataToUnit(uniBar03.values.uniIn, uniBar03.config.unitsIn);
     
 	//Adjust Range if needed: if the input is less than the current minimum of the range, decrease the minimum. If the input is bigger than the current maximum of the range, increase the maximum. 
 	while (uniBar03.values.uniIn < uniBar03.constants.minUni) {uniBar03.constants.minUni -= uniBar03.config.tickScaler * (gapNum); }
@@ -4031,7 +4031,7 @@ function formatInputUV01() {
 	//Formats the universal to be displayed correctly
     
     //Adjust to units
-    uvBar01.values.uniIn = formatDataToUnit(uvBar01.values.uniIn, uvBar01.config.unitsIn, roundTo);
+    uvBar01.values.uniIn = formatDataToUnit(uvBar01.values.uniIn, uvBar01.config.unitsIn);
     
     //Map the inputs to the current scale (as a proportion)
 	uvBar01.values.uniOut = uvBar01.values.uniIn.map(0, 16, 0, 1);
@@ -4707,10 +4707,10 @@ function formatInputWS01() {
 	//Formats the speedrature to be displayed correctly
 	
     //Adjust to units
-    windSpeed.values.speedIn = formatDataToUnit(windSpeed.values.speedIn, windSpeed.values.unitsIn, roundTo);
-    windSpeed.values.gustIn = formatDataToUnit(windSpeed.values.gustIn, windSpeed.values.unitsIn, roundTo);
-    windSpeed.values.windHighSpeedIn = formatDataToUnit(windSpeed.values.windHighSpeedIn, windSpeed.values.unitsIn, roundTo);
-    windSpeed.values.gustHighSpeedIn = formatDataToUnit(windSpeed.values.gustHighSpeedIn, windSpeed.values.unitsIn, roundTo);
+    windSpeed.values.speedIn = formatDataToUnit(windSpeed.values.speedIn, windSpeed.values.unitsIn);
+    windSpeed.values.gustIn = formatDataToUnit(windSpeed.values.gustIn, windSpeed.values.unitsIn);
+    windSpeed.values.windHighSpeedIn = formatDataToUnit(windSpeed.values.windHighSpeedIn, windSpeed.values.unitsIn);
+    windSpeed.values.gustHighSpeedIn = formatDataToUnit(windSpeed.values.gustHighSpeedIn, windSpeed.values.unitsIn);
     
 	//Adjust Range if needed: if any of the inputs (current, windHigh, gustHigh), are less than the current minimum of the range, decrease the minimum. If any of the inputs (current, windHigh, gustHigh), are bigger than the current maximum of the range, increase the maximum. 
 	while (windSpeed.values.speedIn < windSpeed.constants.minSpeed || windSpeed.values.gustIn < windSpeed.constants.minSpeed || windSpeed.values.windHighSpeedIn < windSpeed.constants.minSpeed || windSpeed.values.gustHighSpeedIn < windSpeed.constants.minSpeed) {windSpeed.constants.minSpeed -= windSpeed.largeDashTotal - 1; }
@@ -5764,9 +5764,9 @@ function updateValuesRe01() {
         cell2.innerHTML = recordsDict[records.currentOption][recordKeys[i]][1].format("HH:mm, DD/MM/YYYY");
 
         if (recordsDict[records.currentOption][recordKeys[i]].length == 3) {
-            cell1.innerHTML = formatDataToUnit(recordsDict[records.currentOption][recordKeys[i]][0], recordsDict[records.currentOption][recordKeys[i]][2], roundTo) + units[recordsDict[records.currentOption][recordKeys[i]][2].toString()][currentUnits[recordsDict[records.currentOption][recordKeys[i]][2].toString()]][1].toString();
+            cell1.innerHTML = formatDataToUnit(recordsDict[records.currentOption][recordKeys[i]][0], recordsDict[records.currentOption][recordKeys[i]][2]) + units[recordsDict[records.currentOption][recordKeys[i]][2].toString()][currentUnits[recordsDict[records.currentOption][recordKeys[i]][2].toString()]][1].toString();
         } else if (recordsDict[records.currentOption][recordKeys[i]].length == 4) {
-            cell1.innerHTML = formatDataToUnit(recordsDict[records.currentOption][recordKeys[i]][0], recordsDict[records.currentOption][recordKeys[i]][2], roundTo) + units[recordsDict[records.currentOption][recordKeys[i]][2].toString()][currentUnits[recordsDict[records.currentOption][recordKeys[i]][2].toString()]][1].toString() + recordsDict[records.currentOption][recordKeys[i]][3];
+            cell1.innerHTML = formatDataToUnit(recordsDict[records.currentOption][recordKeys[i]][0], recordsDict[records.currentOption][recordKeys[i]][2]) + units[recordsDict[records.currentOption][recordKeys[i]][2].toString()][currentUnits[recordsDict[records.currentOption][recordKeys[i]][2].toString()]][1].toString() + recordsDict[records.currentOption][recordKeys[i]][3];
         }
         
         var dateDiff = moment(arrayClientraw[29] + arrayClientraw[30] + arrayClientraw[31] + arrayClientraw[74], "HHmmssdd/mm/yyyy").diff(recordsDict[records.currentOption][recordKeys[i]][1], 'days');
@@ -5995,13 +5995,13 @@ function configureGraphLine(baseIn, graphIn) {
     for (i = 0; i < graphDict[graphIn.timestamp].length; i++) {
         graphData[i] = {
             x: graphDict[graphIn.timestamp][i],
-            y: formatDataToUnit(graphDict[graphIn.data[0]][i], baseIn.unit, 2)
+            y: formatDataToUnit(graphDict[graphIn.data[0]][i], baseIn.unit)
         };
         //if 2 dataSets
         if (multipleSets == true) {
             graphData2[i] = {
                 x: graphDict[graphIn.timestamp][i],
-                y: formatDataToUnit(graphDict[graphIn.data[1]][i], baseIn.unit, 2)
+                y: formatDataToUnit(graphDict[graphIn.data[1]][i], baseIn.unit)
             };
         }
     }
@@ -6064,7 +6064,7 @@ function configureGraphBar(baseIn, graphIn) {
         style = baseIn.style.toString();   
     
     for (i = 0; i < graphDict[graphIn.timestamp].length; i++) {
-        graphData[i] = formatDataToUnit(graphDict[graphIn.data][i], baseIn.unit, 2);
+        graphData[i] = formatDataToUnit(graphDict[graphIn.data][i], baseIn.unit);
         graphLabels[i] = graphDict[graphIn.timestamp][i].format(graphIn.timeDisplay.toString());
     }
     
