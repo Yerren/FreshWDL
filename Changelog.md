@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.1.3 Alpha 2018-01-14
+
+#### Added
+- Station name to status
+- Ability to hide gauges using config file
+
+#### Changed
+- Status indicator colour clearer
+- Tweaked auto scaling on rain and windspeed gauges
+- Record date display now unambiguous
+- Temporarily hidden altitude button
+- Status time now represents time given in clientraw file
+
+#### Fixed
+- Date format on some graphs
+- Screen rotation on mobile no longer cuts of bottom section
+- Units now round to correct number of DP
+- Overlap of temperature min/max
+
 ## 1.1.1 Alpha 2018-01-05
 About: First Public Release.
 

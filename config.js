@@ -16,5 +16,13 @@ var clientRawName = "clientraw.txt", //The names of your clientraw files
         solar: "Wm",            //Options: "Wm" (only one)
         uv: "noUnit",           //Options: no units for UV
         temp: "celsius"         //Options: "celsius" "fahrenheit"
+    },
+    gaugeSettings = {
+        solar: {
+            enabled: true
+        },
+        UV: {
+            enabled: true
+        }
     };
     

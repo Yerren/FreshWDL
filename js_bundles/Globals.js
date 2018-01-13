@@ -2,8 +2,7 @@
 
 //Sets GLOBAL variables
 //Customizables
-var roundTo = 1, //number of decimal places to round to
-    globalFontFamily = "Arial", //The font used throughout the page
+var globalFontFamily = "Arial", //The font used throughout the page
     colour = {
         barometer: "40, 104, 206",
         rainfall: "0, 71, 183",
@@ -441,34 +440,73 @@ var globalGraphs = {
                 timeDisplay: "MMM YYYY",
                 legendOptions: {}
             },
-            dailyWeek: {
+            quarterDailyWeek: {
                 title: "Rainfall Last 7 Days",
                 timestamp: "timestampWeekDay",
                 data: "rainDays7",
-                timeDisplay: "MMM D",
+                timeDisplay: "ddd",
                 legendOptions: {}
             }
         }
     }
 };
 
+//Widget Config / Settings
+var widgetList = {
+    apparent: {enabled: true},
+    temperature: {enabled: true},
+    barometer: {enabled: true},
+    windChill: {enabled: true},
+    forecastHandler: {enabled: true},
+    graphHandler: {enabled: true},
+    graphHandlerBarometer: {enabled: true},
+    graphHandlerRainfall: {enabled: true},
+    graphHandlerTemperature: {enabled: true},
+    graphHandlerWindSpeed: {enabled: true},
+    humidity: {enabled: true},
+    modalHandler: {enabled: true},
+    moonSun: {enabled: true},
+    recordHandler: {enabled: true},
+    solar: {enabled: true},
+    status: {enabled: true},
+    rainfallTitle: {enabled: true},
+    rainfallDay: {enabled: true},
+    rainfallMonth: {enabled: true},
+    rainfallYear: {enabled: true},
+    UV: {enabled: true},
+    windDirection: {enabled: true},
+    windSpeed: {enabled: true}
+};
+//Alter widgetList settings to match any changes made in the config file
+if (typeof gaugeSettings !== "undefined") {//Check to see if gauge setting list exists.
+    gaugeSettingsWidgets = Object.keys(gaugeSettings);
+    for (i = 0; i < gaugeSettingsWidgets.length; i++) {
+        if (typeof widgetList[gaugeSettingsWidgets[i]] !== "undefined") {
+            var gaugeWidgetKeys = Object.keys(gaugeSettings[gaugeSettingsWidgets[i]]);
+            for (p = 0; p < gaugeWidgetKeys.length; p++) {
+                widgetList[gaugeSettingsWidgets[i].toString()][gaugeWidgetKeys[p]] = gaugeSettings[gaugeSettingsWidgets[i].toString()][gaugeWidgetKeys[p]];
+            }
+        }
+    }
+}
+
 //Functions globally used
 //Responsivly resize container to window
 function resizeContainer() {
     var container = document.getElementById('FWDLcontainer'),
-        ratio = 0.5625,
+        ratio = 0.5625, //9:16 ratio
         size = 1.7,
         width = 0,
         height = 0,
         styleString = null;
 
 	//Adjusts div to match resized window. Always adjust to the smallest dimention
-	if ((window.innerHeight / ratio) <= window.innerWidth) {
-		width = window.innerHeight * size;
-		height = window.innerHeight * size * ratio;
+	if ((document.documentElement.clientHeight / ratio) <= document.documentElement.clientWidth) {
+		width = document.documentElement.clientHeight * size;
+		height = document.documentElement.clientHeight * size * ratio;
 	} else {
-		width = window.innerWidth * ratio * size;
-		height = window.innerWidth * ratio * size * ratio;
+		width = document.documentElement.clientWidth * ratio * size;
+		height = document.documentElement.clientWidth * ratio * size * ratio;
 	}
     
     width = width.toString() + "px";
@@ -492,13 +530,19 @@ function initialiseLayout() {
 		window.addEventListener('resize', function () {
 			resizeContainer();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeContainer();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeContainer();
     
     //Set version number:
-    document.getElementById("Version").innerHTML = "Version 1.1.2 Alpha. yerren@renerica.com";
+    document.getElementById("Version").innerHTML = "Version 1.1.3 Alpha. yerren@renerica.com";
 }
 
 //Set global Graph options
@@ -515,45 +559,45 @@ Chart.defaults.global.maintainAspectRatio = false;
 Chart.defaults.global.legend.display = false;
 Chart.defaults.global.defaultFontFamily = globalFontFamily;
 
-//Set units
+//Set units. In the format of: "multiplier, "Display", number of decimal places to round to]
 var units = {
         pressure: {
-            hPa: [1, "hPa"],
-            mmHG: [0.750061561303, "mmHG"],
-            kPa: [0.1, "kPa"],
-            inHg: [0.0295299830714, "inHg"],
-            mb: [1, "mb"]
+            hPa: [1, "hPa", 1],
+            mmHG: [0.750061561303, "mmHG", 1],
+            kPa: [0.1, "kPa", 2],
+            inHg: [0.0295299830714, "inHg", 2],
+            mb: [1, "mb", 1]
         },
         altitude: {
-            m: [0.3048, "m"],
-            yds: [0.333333, "yds"],
-            ft: [1, "ft"]
+            m: [0.3048, "m", 0],
+            yds: [0.333333, "yds", 0],
+            ft: [1, "ft", 0]
         },
         wind: {
-            kmh: [1.852, "km/h"],
-            mph: [1.15078, "mph"],
-            kts: [1, "kts"],
-            ms: [0.514444, "m/s"]
+            kmh: [1.852, "km/h", 1],
+            mph: [1.15078, "mph", 1],
+            kts: [1, "kts", 1],
+            ms: [0.514444, "m/s", 1]
         },
         windDirection: {
-            deg: [1, "\xB0"]
+            deg: [1, "\xB0", 0]
         },
         rainfall: {
-            mm: [1, "mm"],
-            inch: [0.0393701, "in"]
+            mm: [1, "mm", 1],
+            inch: [0.0393701, "in", 2]
         },
         humidity: {
-            percent: [1, "%"]
+            percent: [1, "%", 0]
         },
         solar: {
-            Wm: [1, "W/m\xB2"]
+            Wm: [1, "W/m\xB2", 1]
         },
         uv: {
-            noUnit: [1, " "]
+            noUnit: [1, " ", 1]
         },
         temp: {
-            celsius: [1, String.fromCharCode(176) + "C"], 
-            fahrenheit: [1, String.fromCharCode(176) + "F"]
+            celsius: [1, String.fromCharCode(176) + "C", 1],
+            fahrenheit: [1, String.fromCharCode(176) + "F", 1]
         }
     };
 
@@ -563,27 +607,26 @@ function betterRound(value, decimals) {
     return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
 }
 
-function formatDataToUnit(dataIn, unitsIn, roundTo, alwaysValue) {
+function formatDataToUnit(dataIn, unitsIn) {
     //Format to the correct unit
-    
-    alwaysValue = alwaysValue || false;
+    var roundTo = units[unitsIn.toString()][currentUnits[unitsIn.toString()]][2];
     
     if (unitsIn.toString() == "temp") {
         if (currentUnits[unitsIn.toString()] == "fahrenheit") {
-            var fahTemp = dataIn * (9/5) + 32;
+            var fahTemp = dataIn * (9 / 5) + 32;
             return betterRound(fahTemp, roundTo);
         } else {
             return dataIn;
         }
-    } else if (alwaysValue === false || parseFloat(dataIn) == 0) {
+    } else if (parseFloat(dataIn) == 0) {
         return betterRound((dataIn * units[unitsIn.toString()][currentUnits[unitsIn.toString()]][0].toString()), roundTo);
-    } else if (alwaysValue === true) {
+    } else {
         var decPlaces = roundTo,
             result = 0,
             max = 5;
         while (result == 0 && decPlaces <= max) {
             result = betterRound((dataIn * units[unitsIn.toString()][currentUnits[unitsIn.toString()]][0].toString()), decPlaces);
-            if (isNaN(result) === true) {result = 0};
+            if (isNaN(result) === true) {result = 0; }
             decPlaces += 1;
         }
         return result;
@@ -627,7 +670,13 @@ function checkOverflow(el) {
 }
 
 var numLoaded = 0,
-    numWidgets = 23;
+    numWidgets = 0,
+    widgetListKeys = Object.keys(widgetList);
+
+for (i = 0; i < widgetListKeys.length; i++) {
+    if (widgetList[widgetListKeys[i]].enabled === true) {numWidgets++}
+}
+
 function checkOffLoaded() {
     //checks off when every widget finishes loading, and then sends the call to update. Only used as page loads.
     numLoaded += 1;

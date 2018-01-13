@@ -44,7 +44,7 @@ function drawApparentA01(tempIn, unitChange) {
         apparent01.values.temp = tempIn;
 
         //Adjust to units
-        apparent01.values.temp = formatDataToUnit(apparent01.values.temp, apparent01.config.unitsIn, 2);
+        apparent01.values.temp = formatDataToUnit(apparent01.values.temp, apparent01.config.unitsIn);
 
         //Text Displays
         apparent01.textDisplayT.text = apparent01.values.temp + units[apparent01.config.unitsIn.toString()][currentUnits[apparent01.config.unitsIn.toString()]][1].toString();
@@ -138,10 +138,14 @@ function setUpA01() {
 
 function initializeApparentA01() {
 	//The first function that is called
-	//Define canvas and stage varaibles
-	apparent01.canvas = document.getElementById(apparent01.config.canvasID.toString());
 	apparent01.stage = new createjs.Stage(apparent01.canvas);
     
+    window.addEventListener("frameUpdate", function () {
+        apparent01.stage.update();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawApparentA01(arrayClientraw[130]);
+    });
     //Creates information tooltip
     new Opentip(apparent01.canvas, "Perceived temperature based on temperature, humidity, sun, and wind.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
@@ -153,7 +157,13 @@ function initializeApparentA01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasA01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasA01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasA01();
@@ -212,7 +222,8 @@ var tempBar = {
         posFillCirc: {},
         posFillBar: {},
 		posHLLabel: {},
-        cutOffLength: null
+        cutOffLength: null,
+        minHLspace: null
 	},
 	constants: {
 		minTemp: -10,
@@ -256,9 +267,9 @@ function formatInputTemp01() {
 	//Formats the temperature to be displayed correctly
 	
     //Adjust to units
-    tempBar.values.tempIn = formatDataToUnit(tempBar.values.tempIn, tempBar.values.unitsIn, roundTo);
-    tempBar.values.highTempIn = formatDataToUnit(tempBar.values.highTempIn, tempBar.values.unitsIn, roundTo);
-    tempBar.values.lowTempIn = formatDataToUnit(tempBar.values.lowTempIn, tempBar.values.unitsIn, roundTo);
+    tempBar.values.tempIn = formatDataToUnit(tempBar.values.tempIn, tempBar.values.unitsIn);
+    tempBar.values.highTempIn = formatDataToUnit(tempBar.values.highTempIn, tempBar.values.unitsIn);
+    tempBar.values.lowTempIn = formatDataToUnit(tempBar.values.lowTempIn, tempBar.values.unitsIn);
     
 	//Adjust Range if needed: if any of the inputs (current, high, low), are less than the current minimum of the range, decrease the minimum. If any of the inputs (current, high, low), are bigger than the current maximum of the range, increase the maximum. 
 	while (tempBar.values.tempIn < tempBar.constants.minTemp || tempBar.values.highTempIn < tempBar.constants.minTemp || tempBar.values.lowTempIn < tempBar.constants.minTemp) {tempBar.constants.minTemp -= tempBar.largeDashTotal - 1; }
@@ -313,12 +324,20 @@ function updateTweensTemp01() {
 	//Low Marker
 	tempBar.lowMarkerEndCommand.y = tempBar.lowMarkerStartCommand.y = tempBar.tweens.lowTemp.h * (tempBar.rectCommand.h - tempBar.rectCommand.y);
 	
+    //Adjust y position of HL labels if they would otherwise overlap
+    var highLabelY = tempBar.highMarkerEndCommand.y,
+        lowLabelY = tempBar.lowMarkerEndCommand.y
+    while ((lowLabelY - highLabelY) / tempBar.canvas.height < tempBar.setupVars.minHLspace) {
+        lowLabelY += 1;
+        highLabelY -= 1;
+    }
+    
 	//High Display
-	tempBar.highDisplay.y = tempBar.highMarkerEndCommand.y;
+	tempBar.highDisplay.y = highLabelY;
 	tempBar.highDisplay.text = tempBar.values.highTempIn.toString() + units[tempBar.values.unitsIn.toString()][currentUnits[tempBar.values.unitsIn.toString()]][1].toString();
 	
 	//Low Display
-	tempBar.lowDisplay.y = tempBar.lowMarkerEndCommand.y;
+	tempBar.lowDisplay.y = lowLabelY;
 	tempBar.lowDisplay.text = tempBar.values.lowTempIn.toString() + units[tempBar.values.unitsIn.toString()][currentUnits[tempBar.values.unitsIn.toString()]][1].toString();
 	
 	//Labels
@@ -348,6 +367,7 @@ function updateTopTemp01() {
     tempBar.setupVars.textSize = tempBar.canvas.height / 17;
     tempBar.setupVars.textDisplaySize = tempBar.canvas.height / 19;
 	tempBar.setupVars.textHLSize = tempBar.canvas.height / 21;
+    tempBar.setupVars.minHLspace = 0.04;
     tempBar.setupVars.posBar = {
         x: ((tempBar.canvas.height / 2) - (tempBar.setupVars.barWidth / 2)),
         y: ((tempBar.canvas.height / 2) - (tempBar.setupVars.barHeight / 2))
@@ -590,8 +610,15 @@ function initializeTemp01() {
 	//The first function that is called
     
 	//Define canvas and stage varaibles
-	tempBar.canvas = document.getElementById('TempBar01');
 	tempBar.stage = new createjs.Stage(tempBar.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        tempBar.stage.update();
+        updateTweensTemp01();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawTemperatureBarTemp01(arrayClientraw[4], arrayClientraw[46], arrayClientraw[47]);
+    });
     
     //Creates information tooltip
     new Opentip(tempBar.canvas, "Current air temperature.\nBlue: Low daily temperature.\nRed: High daily temperature.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -604,7 +631,13 @@ function initializeTemp01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasTemp01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasTemp01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasTemp01();
@@ -660,8 +693,8 @@ function drawBarometerB01(pressureIn, trendIn, unitChange) {
         barometer01.values.trend = trendIn;
 
         //Adjust to units
-        barometer01.values.pressure = formatDataToUnit(barometer01.values.pressure, barometer01.config.unitsIn, 2);
-        barometer01.values.trend = formatDataToUnit(barometer01.values.trend, barometer01.config.unitsIn, 2, true);
+        barometer01.values.pressure = formatDataToUnit(barometer01.values.pressure, barometer01.config.unitsIn);
+        barometer01.values.trend = formatDataToUnit(barometer01.values.trend, barometer01.config.unitsIn);
 
         //Text Displays
         barometer01.textDisplayP.text = barometer01.values.pressure + units[barometer01.config.unitsIn.toString()][currentUnits[barometer01.config.unitsIn.toString()]][1].toString();
@@ -791,8 +824,15 @@ function setUpB01() {
 function initializeBarometerB01() {
 	//The first function that is called
 	//Define canvas and stage varaibles
-	barometer01.canvas = document.getElementById(barometer01.config.canvasID.toString());
 	barometer01.stage = new createjs.Stage(barometer01.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        barometer01.stage.update();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawBarometerB01(arrayClientraw[6], arrayClientraw[50]);
+    });
+    
     
     //Creates information tooltip
     new Opentip(barometer01.canvas, "The weight of the air, adjusted for the station's altitude.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -805,7 +845,13 @@ function initializeBarometerB01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasB01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasB01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasB01();
@@ -864,7 +910,8 @@ var windchill01 = {
         posFillCirc: {},
         posFillBar: {},
 		posHLLabel: {},
-        cutOffLength: null
+        cutOffLength: null,
+        minHLspace: null
 	},
 	constants: {
 		minTemp: -10,
@@ -908,9 +955,9 @@ function formatInputWC01() {
 	//Formats the temperature to be displayed correctly
 	
     //Adjust to units
-    windchill01.values.tempIn = formatDataToUnit(windchill01.values.tempIn, windchill01.values.unitsIn, roundTo);
-    windchill01.values.highTempIn = formatDataToUnit(windchill01.values.highTempIn, windchill01.values.unitsIn, roundTo);
-    windchill01.values.lowTempIn = formatDataToUnit(windchill01.values.lowTempIn, windchill01.values.unitsIn, roundTo);
+    windchill01.values.tempIn = formatDataToUnit(windchill01.values.tempIn, windchill01.values.unitsIn);
+    windchill01.values.highTempIn = formatDataToUnit(windchill01.values.highTempIn, windchill01.values.unitsIn);
+    windchill01.values.lowTempIn = formatDataToUnit(windchill01.values.lowTempIn, windchill01.values.unitsIn);
     
 	//Adjust Range if needed: if any of the inputs (current, high, low), are less than the current minimum of the range, decrease the minimum. If any of the inputs (current, high, low), are bigger than the current maximum of the range, increase the maximum. 
 	while (windchill01.values.tempIn < windchill01.constants.minTemp || windchill01.values.highTempIn < windchill01.constants.minTemp || windchill01.values.lowTempIn < windchill01.constants.minTemp) {windchill01.constants.minTemp -= windchill01.largeDashTotal - 1; }
@@ -966,12 +1013,20 @@ function updateTweensWC01() {
 	//Low Marker
 	windchill01.lowMarkerEndCommand.y = windchill01.lowMarkerStartCommand.y = windchill01.tweens.lowTemp.h * (windchill01.rectCommand.h - windchill01.rectCommand.y);
 	
+    //Adjust y position of HL labels if they would otherwise overlap
+    var highLabelY = windchill01.highMarkerEndCommand.y,
+        lowLabelY = windchill01.lowMarkerEndCommand.y
+    while ((lowLabelY - highLabelY) / windchill01.canvas.height < windchill01.setupVars.minHLspace) {
+        lowLabelY += 1;
+        highLabelY -= 1;
+    }
+    
 	//High Display
-	windchill01.highDisplay.y = windchill01.highMarkerEndCommand.y;
+	windchill01.highDisplay.y = highLabelY;
 	windchill01.highDisplay.text = windchill01.values.highTempIn.toString() + units[windchill01.values.unitsIn.toString()][currentUnits[windchill01.values.unitsIn.toString()]][1].toString();
 	
 	//Low Display
-	windchill01.lowDisplay.y = windchill01.lowMarkerEndCommand.y;
+	windchill01.lowDisplay.y = lowLabelY;
 	windchill01.lowDisplay.text = windchill01.values.lowTempIn.toString() + units[windchill01.values.unitsIn.toString()][currentUnits[windchill01.values.unitsIn.toString()]][1].toString();
 	
 	//Labels
@@ -1001,6 +1056,7 @@ function updateTopWC01() {
     windchill01.setupVars.textSize = windchill01.canvas.height / 17;
     windchill01.setupVars.textDisplaySize = windchill01.canvas.height / 19;
 	windchill01.setupVars.textHLSize = windchill01.canvas.height / 21;
+	windchill01.setupVars.minHLspace = 0.04;
     windchill01.setupVars.posBar = {
         x: ((windchill01.canvas.height / 2) - (windchill01.setupVars.barWidth / 2)),
         y: ((windchill01.canvas.height / 2) - (windchill01.setupVars.barHeight / 2))
@@ -1243,8 +1299,15 @@ function initializeWC01() {
 	//The first function that is called
     
 	//Define canvas and stage varaibles
-	windchill01.canvas = document.getElementById('Windchill01');
 	windchill01.stage = new createjs.Stage(windchill01.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        windchill01.stage.update();
+        updateTweensWC01();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawWindchillBarWC01(arrayClientraw[44], arrayClientraw[77], arrayClientraw[78]);
+    });
     
     //Creates information tooltip
     new Opentip(windchill01.canvas, "How cold it actually feels. Calculated by combining heat and wind speed.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -1257,7 +1320,13 @@ function initializeWC01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasWC01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasWC01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasWC01();
@@ -1341,7 +1410,7 @@ function configureGraphBaroLine01(baseIn, graphIn) {
     for (i = 0; i < graphDict[graphIn.timestamp].length; i++) {
         graphData[i] = {
             x: graphDict[graphIn.timestamp][i],
-            y: formatDataToUnit(graphDict[graphIn.data[0]][i], baseIn.unit, 2)
+            y: formatDataToUnit(graphDict[graphIn.data[0]][i], baseIn.unit)
         };
     }
     
@@ -1385,7 +1454,7 @@ function initializeBaroGraph01() {
 	//Define variables
 	baroGraph.canvas = document.getElementById('baroGraphCanvas01').getContext("2d", {alpha: false});
 	baroGraph.canvasDiv = document.getElementById('baroGraphCanvas01CanvasDiv');
-	
+    
 	drawBaroGraphLine01();
     
 	//If on desktop, dynamically resize the canvas
@@ -1393,7 +1462,13 @@ function initializeBaroGraph01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasBaroG01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasBaroG01();
+        });
+    }
 	
 	resizeCanvasBaroG01(); //Set canvas size initally 
     checkOffLoaded();
@@ -1458,7 +1533,7 @@ function configureGraphRainBar01(baseIn, graphIn) {
         style = baseIn.style.toString();
     
     for (i = 0; i < graphDict[graphIn.timestamp].length; i++) {
-        graphData[i] = formatDataToUnit(graphDict[graphIn.data][i], baseIn.unit, 2);
+        graphData[i] = formatDataToUnit(graphDict[graphIn.data][i], baseIn.unit);
         graphLabels[i] = graphDict[graphIn.timestamp][i].format(graphIn.timeDisplay.toString());
     }
     
@@ -1511,7 +1586,13 @@ function initializeRainGraph01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasRainG01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasRainG01();
+        });
+    }
 	
 	resizeCanvasRainG01(); //Set canvas size initally
     checkOffLoaded();
@@ -1593,7 +1674,7 @@ function configureGraphTempLine01(baseIn, graphIn) {
     for (i = 0; i < graphDict[graphIn.timestamp].length; i++) {
         graphData[i] = {
             x: graphDict[graphIn.timestamp][i],
-            y: formatDataToUnit(graphDict[graphIn.data[0]][i], baseIn.unit, 2)
+            y: formatDataToUnit(graphDict[graphIn.data[0]][i], baseIn.unit)
         };
     }
     
@@ -1635,7 +1716,6 @@ function resizeCanvasTempG01() {
 function initializeTempGraph01() {
 	//Initial Funtion Called
 	//Define variables
-	tempGraph.canvas = document.getElementById('tempGraphCanvas01').getContext("2d", {alpha: false});
 	tempGraph.canvasDiv = document.getElementById('tempGraphCanvas01CanvasDiv');
 	
 	drawTempGraphLine01();
@@ -1645,7 +1725,13 @@ function initializeTempGraph01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasTempG01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasTempG01();
+        });
+    }
 	
 	resizeCanvasTempG01(); //Set canvas size initally
     checkOffLoaded();
@@ -1727,7 +1813,7 @@ function configureGraphWindLine01(baseIn, graphIn) {
     for (i = 0; i < graphDict[graphIn.timestamp].length; i++) {
         graphData[i] = {
             x: graphDict[graphIn.timestamp][i],
-            y: formatDataToUnit(graphDict[graphIn.data[0]][i], baseIn.unit, 2)
+            y: formatDataToUnit(graphDict[graphIn.data[0]][i], baseIn.unit)
         };
     }
     
@@ -1769,7 +1855,6 @@ function resizeCanvasWindG01() {
 function initializeWindGraph01() {
 	//Initial Funtion Called
 	//Define variables
-	windGraph.canvas = document.getElementById('windGraphCanvas01').getContext("2d", {alpha: false});
 	windGraph.canvasDiv = document.getElementById('windGraphCanvas01CanvasDiv');
 	
 	drawWindGraphLine01();
@@ -1779,7 +1864,13 @@ function initializeWindGraph01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasWindG01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasWindG01();
+        });
+    }
 	
 	resizeCanvasWindG01(); //Set canvas size initally
     checkOffLoaded();
@@ -2096,8 +2187,16 @@ function initializeHum01() {
 	//The first function that is called
     
 	//Define canvas and stage varaibles
-	humidityGauge.canvas = document.getElementById('HumidityGauge01');
 	humidityGauge.stage = new createjs.Stage(humidityGauge.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        humidityGauge.stage.update();
+        updateTweensHum01();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawHumidityGaugeHum01(arrayClientraw[5]);
+    });
+    
     
     //Creates information tooltip
     new Opentip(humidityGauge.canvas, "The amount of water vapour in the air as a percentage of the amount the air is capable of holding.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -2110,7 +2209,13 @@ function initializeHum01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasHum01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasHum01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasHum01();
@@ -2364,8 +2469,14 @@ function setUpMS01() {
 function initializeMoonSunMS01() {
 	//The first function that is called
 	//Define canvas and stage varaibles
-	moonSun01.canvas = document.getElementById(moonSun01.config.canvasID.toString());
 	moonSun01.stage = new createjs.Stage(moonSun01.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        moonSun01.stage.update();
+    });
+    window.addEventListener("clientRawExtraDataUpdate", function () {
+        drawMoonSunMS01(arrayClientrawExtra[556], arrayClientrawExtra[557], arrayClientrawExtra[558], arrayClientrawExtra[559], arrayClientrawExtra[560], arrayClientrawExtra[561]);
+    });
     
     //Creates information tooltip (none for this widget)
     //new Opentip(moonSun01.canvas, "Information",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -2378,7 +2489,13 @@ function initializeMoonSunMS01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasMS01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasMS01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasMS01();
@@ -2449,7 +2566,7 @@ function formatInputSol01() {
 	//Formats the universal to be displayed correctly
     
     //Adjust to units
-    solarBar01.values.percentIn = formatDataToUnit(solarBar01.values.percentIn, solarBar01.config.unitsIn, roundTo);
+    solarBar01.values.percentIn = formatDataToUnit(solarBar01.values.percentIn, solarBar01.config.unitsIn);
     
     //Map the inputs to the current scale (as a proportion)
 	solarBar01.values.percentOut = solarBar01.values.percentIn.map(0, 100, 0, 1);
@@ -2641,8 +2758,18 @@ function setUpSol01() {
 function initializeSolarBarSol01() {
 	//The first function that is called
 	//Define canvas and stage varaibles
-	solarBar01.canvas = document.getElementById(solarBar01.config.canvasID.toString());
 	solarBar01.stage = new createjs.Stage(solarBar01.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        solarBar01.stage.update();
+        updateTweensSol01();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawSolarBarSol01(arrayClientraw[34], arrayClientraw[127], arrayClientrawExtra[696]);
+    });
+    window.addEventListener("clientRawExtraDataUpdate", function () {
+        drawSolarBarSol01(arrayClientraw[34], arrayClientraw[127], arrayClientrawExtra[696]);
+    });
     
     //Creates information tooltip
     new Opentip(solarBar01.canvas, "The intensity of the sun's radiation.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -2655,7 +2782,13 @@ function initializeSolarBarSol01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasSol01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasSol01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasSol01();
@@ -2690,11 +2823,8 @@ var status01 = {
 	values: {
         status: null,
         dataStatus: null,
-        lastSuccessTime: null
-	},
-    valuesOld: {
-        status: null,
-        dataStatus: null
+        stationName: null,
+        time: null
 	},
     config: {
         canvasID: "Status01"
@@ -2705,47 +2835,49 @@ function checkDataStatus() {
     //Checks if sucessful data was found
     if (dataCollectErrorCR === true && dataCollectErrorCRE === true && dataCollectErrorCRD === true && dataCollectErrorCRH === true) {
         //Partial Error
-        return ["Full Error", moment().format("HH:mm:ss")];
+        return "Full Error";
     } else if ((dataCollectErrorCR === true || dataCollectErrorCRE === true || dataCollectErrorCRD === true || dataCollectErrorCRH === true) && noDataChanged === true) {
         //Partial Error
-        return ["Partial Error, No New Data", moment().format("HH:mm:ss")];
+        return "Partial Error, No New Data";
     } else if (dataCollectErrorCR === true || dataCollectErrorCRE === true || dataCollectErrorCRD === true || dataCollectErrorCRH === true) {
         //Partial Error
-        return ["Partial Error, New Data", moment().format("HH:mm:ss")];
+        return "Partial Error, New Data";
     } else if (noDataChanged === true) {
         //No New Data
-        return ["No New Data", moment().format("HH:mm:ss")];
+        return "No New Data";
     } else {
         //No Errors
-        return ["Normal", moment().format("HH:mm:ss")];
+        return "Normal";
     }
 }
 
-function drawStatusS01(statusIn) {
+function drawStatusS01(statusIn, stationTimeIn) {
     //Is called when new data is sent.
     
-    var dataStatusIn = checkDataStatus();
+    var dataStatusIn = checkDataStatus(),
+        stationNameIn = stationTimeIn.substring(0, stationTimeIn.indexOf("-")),
+        timeIn = stationTimeIn.substring(stationTimeIn.indexOf("-") + 1);
     
     //The one widget which doesn't need to be checked if widget actually needs to be updated (Breaks it if you do)
     
     //Sets inputs to new data
     status01.values.status = statusIn.replace(/_/g, " ");
+    status01.values.stationName = stationNameIn.replace(/_/g, " ");
+    status01.values.time = timeIn;
     //Format Data Status, and set blink colour
-    if (dataStatusIn[0] == "Full Error") {
-        status01.values.dataStatus = "No data since: " + status01.values.lastSuccessTime.toString();
-        status01.blinkColour = "rgba(209, 32, 32, 0.4)"; //Same as high temp
-    } else if (dataStatusIn[0] == "Partial Error, New Data") {
-        status01.values.dataStatus = "New data received at: " + dataStatusIn[1];
-        status01.values.lastSuccessTime = dataStatusIn[1];
+    if (dataStatusIn == "Full Error") {
+        status01.values.dataStatus = status01.values.stationName.toString() +  " | No data since: " + status01.values.time.toString();
+        status01.blinkColour = "rgba(209, 32, 32, 0.9)"; //Same as high temp
+    } else if (dataStatusIn == "Partial Error, New Data") {
+        status01.values.dataStatus = status01.values.stationName.toString() +  " | New data received at: " + status01.values.time.toString();
         status01.blinkColour = "rgba(234, 242, 45, 0.9)"; //Same as UV
-    } else if (dataStatusIn[0] == "Partial Error, No New Data") {
+    } else if (dataStatusIn == "Partial Error, No New Data") {
         status01.blinkColour = "rgba(234, 242, 45, 0.9)"; //Same as UV
-    } else if (dataStatusIn[0] == "No New Data") {
+    } else if (dataStatusIn == "No New Data") {
         status01.blinkColour = status01.blankBlinkColour;
-    } else if (dataStatusIn[0] == "Normal") {
-        status01.values.dataStatus = "New data received at: " + dataStatusIn[1];
-        status01.values.lastSuccessTime = dataStatusIn[1];
-        status01.blinkColour = "rgba(23, 145, 27, 0.4)"; //Same as wind direction
+    } else if (dataStatusIn == "Normal") {
+        status01.values.dataStatus = status01.values.stationName.toString() +  " | New data received at: " + status01.values.time.toString();
+        status01.blinkColour = "rgba(23, 145, 27, 0.9)"; //Same as wind direction
     } else {
         console.log("Invalid dataStatus");
     }
@@ -2753,9 +2885,6 @@ function drawStatusS01(statusIn) {
     //Text Displays
     status01.textDisplayS.text = status01.values.status;
     status01.textDisplayD.text = status01.values.dataStatus;
-
-    status01.valuesOld.status = statusIn;
-    status01.valuesOld.dataStatus = dataStatusIn;
     
 }
 
@@ -2826,7 +2955,7 @@ function resizeCanvasS01() {
 function setUpS01() {
 	//Sets up the shapes. Initializses all the varaibles and shapes, and stores the values which need to be adjusted in commands which can be accessed later
 	//Set up status circle
-    status01.blankBlinkColour = "rgba(100, 100, 100, 0.4)";
+    status01.blankBlinkColour = "rgba(100, 100, 100, 0.9)";
 	status01.circle  = new createjs.Shape();
 	status01.circle.snapToPixel = true;
 	status01.circColourCommand = status01.circle.graphics.beginStroke(status01.blankBlinkColour).command;
@@ -2856,6 +2985,11 @@ function initializeStatusS01() {
 	status01.canvas = document.getElementById(status01.config.canvasID.toString());
 	status01.stage = new createjs.Stage(status01.canvas);
     
+    window.addEventListener("frameUpdate", function () {
+        status01.stage.update();
+        updateTweensS01();
+    });
+    
     //Creates information tooltip
     new Opentip(status01.canvas, "Green: New data collected from server.\nGrey: Data on server hasn't changed.\nYellow: Some error during data collection from server.\nRed: No data able to be collected from server.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
@@ -2867,7 +3001,13 @@ function initializeStatusS01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasS01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasS01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasS01();
@@ -2938,8 +3078,11 @@ function setUpTR01() {
 function initializeTitleRainfallTR01() {
 	//The first function that is called
 	//Define canvas and stage varaibles
-	titleRainfall01.canvas = document.getElementById(titleRainfall01.config.canvasID.toString());
 	titleRainfall01.stage = new createjs.Stage(titleRainfall01.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        titleRainfall01.stage.update();
+    });
     
     //Creates information tooltip
     //new Opentip(titleRainfall01.canvas, "Perceived temperature based on temperature, humidity, sun, and wind.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -2952,7 +3095,13 @@ function initializeTitleRainfallTR01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasTR01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasTR01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasTR01();
@@ -3018,7 +3167,7 @@ var uniBar01 = {
         unitsIn: "rainfall",
         title: "Daily",
         canvasID: "RainBar1",
-        tickScaler: 10
+        tickScaler: 1
     }
 };
 
@@ -3032,7 +3181,7 @@ function formatInputUni01() {
 	var gapNum = uniBar01.largeDashTotal - 1;
     
     //Adjust to units
-    uniBar01.values.uniIn = formatDataToUnit(uniBar01.values.uniIn, uniBar01.config.unitsIn, roundTo);
+    uniBar01.values.uniIn = formatDataToUnit(uniBar01.values.uniIn, uniBar01.config.unitsIn);
     
 	//Adjust Range if needed: if the input is less than the current minimum of the range, decrease the minimum. If the input is bigger than the current maximum of the range, increase the maximum. 
 	while (uniBar01.values.uniIn < uniBar01.constants.minUni) {uniBar01.constants.minUni -= uniBar01.config.tickScaler * (gapNum); }
@@ -3248,8 +3397,15 @@ function setUpUni01() {
 function initializeUniBarUni01() {
 	//The first function that is called
 	//Define canvas and stage varaibles
-	uniBar01.canvas = document.getElementById(uniBar01.config.canvasID.toString());
 	uniBar01.stage = new createjs.Stage(uniBar01.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        uniBar01.stage.update();
+        updateTweensUni01();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawUniratureBarUni01(arrayClientraw[7]);
+    });
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpUni01();
@@ -3259,7 +3415,13 @@ function initializeUniBarUni01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasUni01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasUni01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasUni01();
@@ -3306,8 +3468,8 @@ var uniBar02 = {
 	constants: {
 		minUni: 0,
 		minUniDEFAULT: 0,
-		maxUni: 500,
-		maxUniDEFAULT: 500
+		maxUni: 1,
+		maxUniDEFAULT: 1
 	},
     tweens: {
         barFill: {
@@ -3325,7 +3487,7 @@ var uniBar02 = {
         unitsIn: "rainfall",
         title: "Monthly",
         canvasID: "RainBar2",
-        tickScaler: 50
+        tickScaler: 5
     }
 };
 
@@ -3339,7 +3501,7 @@ function formatInputUni02() {
 	var gapNum = uniBar02.largeDashTotal - 1;
     
     //Adjust to units
-    uniBar02.values.uniIn = formatDataToUnit(uniBar02.values.uniIn, uniBar02.config.unitsIn, roundTo);
+    uniBar02.values.uniIn = formatDataToUnit(uniBar02.values.uniIn, uniBar02.config.unitsIn);
     
 	//Adjust Range if needed: if the input is less than the current minimum of the range, decrease the minimum. If the input is bigger than the current maximum of the range, increase the maximum. 
 	while (uniBar02.values.uniIn < uniBar02.constants.minUni) {uniBar02.constants.minUni -= uniBar02.config.tickScaler * (gapNum); }
@@ -3555,8 +3717,15 @@ function setUpUni02() {
 function initializeUniBarUni02() {
 	//The first function that is called
 	//Define canvas and stage varaibles
-	uniBar02.canvas = document.getElementById(uniBar02.config.canvasID.toString());
 	uniBar02.stage = new createjs.Stage(uniBar02.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        uniBar02.stage.update();
+        updateTweensUni02();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawUniratureBarUni02(arrayClientraw[8]);
+    });
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpUni02();
@@ -3566,7 +3735,13 @@ function initializeUniBarUni02() {
 		window.addEventListener('resize', function () {
 			resizeCanvasUni02();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasUni02();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasUni02();
@@ -3613,8 +3788,8 @@ var uniBar03 = {
 	constants: {
 		minUni: 0,
 		minUniDEFAULT: 0,
-		maxUni: 1000,
-		maxUniDEFAULT: 1000
+		maxUni: 1,
+		maxUniDEFAULT: 1
 	},
     tweens: {
         barFill: {
@@ -3632,7 +3807,7 @@ var uniBar03 = {
         unitsIn: "rainfall",
         title: "Annual",
         canvasID: "RainBar3",
-        tickScaler: 100
+        tickScaler: 5
     }
 };
 
@@ -3646,7 +3821,7 @@ function formatInputUni03() {
 	var gapNum = uniBar03.largeDashTotal - 1;
     
     //Adjust to units
-    uniBar03.values.uniIn = formatDataToUnit(uniBar03.values.uniIn, uniBar03.config.unitsIn, roundTo);
+    uniBar03.values.uniIn = formatDataToUnit(uniBar03.values.uniIn, uniBar03.config.unitsIn);
     
 	//Adjust Range if needed: if the input is less than the current minimum of the range, decrease the minimum. If the input is bigger than the current maximum of the range, increase the maximum. 
 	while (uniBar03.values.uniIn < uniBar03.constants.minUni) {uniBar03.constants.minUni -= uniBar03.config.tickScaler * (gapNum); }
@@ -3862,8 +4037,15 @@ function setUpUni03() {
 function initializeUniBarUni03() {
 	//The first function that is called
 	//Define canvas and stage varaibles
-	uniBar03.canvas = document.getElementById(uniBar03.config.canvasID.toString());
 	uniBar03.stage = new createjs.Stage(uniBar03.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        uniBar03.stage.update();
+        updateTweensUni03();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawUniratureBarUni03(arrayClientraw[9]);
+    });
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpUni03();
@@ -3873,7 +4055,13 @@ function initializeUniBarUni03() {
 		window.addEventListener('resize', function () {
 			resizeCanvasUni03();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasUni03();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasUni03();
@@ -3935,7 +4123,7 @@ function formatInputUV01() {
 	//Formats the universal to be displayed correctly
     
     //Adjust to units
-    uvBar01.values.uniIn = formatDataToUnit(uvBar01.values.uniIn, uvBar01.config.unitsIn, roundTo);
+    uvBar01.values.uniIn = formatDataToUnit(uvBar01.values.uniIn, uvBar01.config.unitsIn);
     
     //Map the inputs to the current scale (as a proportion)
 	uvBar01.values.uniOut = uvBar01.values.uniIn.map(0, 16, 0, 1);
@@ -4088,8 +4276,16 @@ function setUpUV01() {
 function initializeUVBarUV01() {
 	//The first function that is called
 	//Define canvas and stage varaibles
-	uvBar01.canvas = document.getElementById(uvBar01.config.canvasID.toString());
 	uvBar01.stage = new createjs.Stage(uvBar01.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        uvBar01.stage.update();
+        updateTweensUV01();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawUVBarUV01(arrayClientraw[79]);
+    });
+    
     
     //Creates information tooltip
     new Opentip(uvBar01.canvas, "The intensity of UV radiation - 0-2 is minimal risk of skin damage whilst 8+ is very high.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -4102,7 +4298,13 @@ function initializeUVBarUV01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasUV01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasUV01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasUV01();
@@ -4478,8 +4680,15 @@ function initializeWind01() {
 	//The first function that is called
     
 	//Define canvas and stage varaibles
-	windGauge.canvas = document.getElementById('WindGauge01');
 	windGauge.stage = new createjs.Stage(windGauge.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        windGauge.stage.update();
+        updateTweensWind01();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawWindGaugeWind01(arrayClientraw[3], arrayClientraw[117]);
+    });
     
     //Creates information tooltip
     new Opentip(windGauge.canvas, "The wind direction. Green arrow indicates average wind direction.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -4492,7 +4701,13 @@ function initializeWind01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasWind01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasWind01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasWind01();
@@ -4554,8 +4769,8 @@ var windSpeed = {
 	constants: {
 		minSpeed: 0,
 		minSpeedDEFAULT: 0,
-		maxSpeed: 40,
-		maxSpeedDEFAULT: 40
+		maxSpeed: 10,
+		maxSpeedDEFAULT: 10
 	},
     tweens: {
         barFillLeft: {
@@ -4599,10 +4814,10 @@ function formatInputWS01() {
 	//Formats the speedrature to be displayed correctly
 	
     //Adjust to units
-    windSpeed.values.speedIn = formatDataToUnit(windSpeed.values.speedIn, windSpeed.values.unitsIn, roundTo);
-    windSpeed.values.gustIn = formatDataToUnit(windSpeed.values.gustIn, windSpeed.values.unitsIn, roundTo);
-    windSpeed.values.windHighSpeedIn = formatDataToUnit(windSpeed.values.windHighSpeedIn, windSpeed.values.unitsIn, roundTo);
-    windSpeed.values.gustHighSpeedIn = formatDataToUnit(windSpeed.values.gustHighSpeedIn, windSpeed.values.unitsIn, roundTo);
+    windSpeed.values.speedIn = formatDataToUnit(windSpeed.values.speedIn, windSpeed.values.unitsIn);
+    windSpeed.values.gustIn = formatDataToUnit(windSpeed.values.gustIn, windSpeed.values.unitsIn);
+    windSpeed.values.windHighSpeedIn = formatDataToUnit(windSpeed.values.windHighSpeedIn, windSpeed.values.unitsIn);
+    windSpeed.values.gustHighSpeedIn = formatDataToUnit(windSpeed.values.gustHighSpeedIn, windSpeed.values.unitsIn);
     
 	//Adjust Range if needed: if any of the inputs (current, windHigh, gustHigh), are less than the current minimum of the range, decrease the minimum. If any of the inputs (current, windHigh, gustHigh), are bigger than the current maximum of the range, increase the maximum. 
 	while (windSpeed.values.speedIn < windSpeed.constants.minSpeed || windSpeed.values.gustIn < windSpeed.constants.minSpeed || windSpeed.values.windHighSpeedIn < windSpeed.constants.minSpeed || windSpeed.values.gustHighSpeedIn < windSpeed.constants.minSpeed) {windSpeed.constants.minSpeed -= windSpeed.largeDashTotal - 1; }
@@ -4768,7 +4983,7 @@ function updateTopWS01() {
             
 			//Text Label Positioning - located here as they line up with the large dashes
 			windSpeed.label[i / 2].y = dashY;
-			windSpeed.label[i / 2].x = (windSpeed.setupVars.posDash.x - windSpeed.setupVars.dashLength) * (6 / 5);
+			windSpeed.label[i / 2].x = (windSpeed.setupVars.posDash.x - windSpeed.setupVars.dashLength) * (125 / 100);
 			windSpeed.label[i / 2].font = windSpeed.setupVars.textSize + "px arial";
 		} else {
 			//Med
@@ -4788,7 +5003,28 @@ function updateTopWS01() {
 	windSpeed.rectFillRightCommand.w = windSpeed.setupVars.barWidth;
 	
     //Text Title
-	windSpeed.textTitle.x = windSpeed.setupVars.posTextTitle.x;
+	
+	//High Wind Marker
+	windSpeed.windHighMarkerStrokeCommand.width = windSpeed.setupVars.strokeSize * 4;
+	windSpeed.windHighMarkerStartCommand.x =  windSpeed.setupVars.posBarLeft.x;
+	windSpeed.windHighMarkerEndCommand.x = windSpeed.setupVars.posBarLeft.x + windSpeed.setupVars.barWidth;
+	
+	//High Gust Marker
+	windSpeed.gustHighMarkerStrokeCommand.width = windSpeed.setupVars.strokeSize * 4;
+	windSpeed.gustHighMarkerStartCommand.x = windSpeed.setupVars.posBarRight.x;
+	windSpeed.gustHighMarkerEndCommand.x = windSpeed.setupVars.posBarRight.x + windSpeed.setupVars.barWidth;
+	
+	//High Wind Display
+	windSpeed.windHighDisplay.x = windSpeed.setupVars.posLabelWind.x;
+    windSpeed.windHighDisplay.y = windSpeed.setupVars.posLabelWind.y;
+	windSpeed.windHighDisplay.font = windSpeed.setupVars.textDisplaySize + "px arial";
+	
+	//High Gust Display
+	windSpeed.gustHighDisplay.x = windSpeed.setupVars.posLabelGust.x;
+    windSpeed.gustHighDisplay.y = windSpeed.setupVars.posLabelGust.y;
+	windSpeed.gustHighDisplay.font = windSpeed.setupVars.textDisplaySize + "px arial";
+    
+    windSpeed.textTitle.x = windSpeed.setupVars.posTextTitle.x;
 	windSpeed.textTitle.y = windSpeed.setupVars.posTextTitle.y;
 	windSpeed.textTitle.font = "bold " + (windSpeed.setupVars.textDisplaySize * 1.5) + "px arial";
     
@@ -4810,26 +5046,6 @@ function updateTopWS01() {
 	windSpeed.textDisplayGust.x = windSpeed.setupVars.posTextLabelRight.x;
 	windSpeed.textDisplayGust.y = windSpeed.setupVars.posTextLabelRight.y;
 	windSpeed.textDisplayGust.font = "bold " + windSpeed.setupVars.textDisplaySize + "px arial";
-	
-	//High Wind Marker
-	windSpeed.windHighMarkerStrokeCommand.width = windSpeed.setupVars.strokeSize * 4;
-	windSpeed.windHighMarkerStartCommand.x =  windSpeed.setupVars.posBarLeft.x;
-	windSpeed.windHighMarkerEndCommand.x = windSpeed.setupVars.posBarLeft.x + windSpeed.setupVars.barWidth;
-	
-	//High Gust Marker
-	windSpeed.gustHighMarkerStrokeCommand.width = windSpeed.setupVars.strokeSize * 4;
-	windSpeed.gustHighMarkerStartCommand.x = windSpeed.setupVars.posBarRight.x;
-	windSpeed.gustHighMarkerEndCommand.x = windSpeed.setupVars.posBarRight.x + windSpeed.setupVars.barWidth;
-	
-	//High Wind Display
-	windSpeed.windHighDisplay.x = windSpeed.setupVars.posLabelWind.x;
-    windSpeed.windHighDisplay.y = windSpeed.setupVars.posLabelWind.y;
-	windSpeed.windHighDisplay.font = windSpeed.setupVars.textDisplaySize + "px arial";
-	
-	//High Gust Display
-	windSpeed.gustHighDisplay.x = windSpeed.setupVars.posLabelGust.x;
-    windSpeed.gustHighDisplay.y = windSpeed.setupVars.posLabelGust.y;
-	windSpeed.gustHighDisplay.font = windSpeed.setupVars.textDisplaySize + "px arial";
     
     //Gives the call to update the animated sections of the widgets
     updateTweensWS01();
@@ -4895,6 +5111,24 @@ function setUpWS01() {
     windSpeed.rectFillRight.graphics.setStrokeStyle(0);
 	windSpeed.rectFillRightCommand = windSpeed.rectFillRight.graphics.drawRect(0, 0, 0, 0).command;
 	windSpeed.stage.addChild(windSpeed.rectFillRight);
+    
+    //Set up windHigh speed marker
+	windSpeed.windHighMarker = new createjs.Shape();
+	windSpeed.windHighMarker.snapToPixel = true;
+	windSpeed.windHighMarker.graphics.beginStroke("rgb(" + colour.wind + ")", 1);
+	windSpeed.windHighMarkerStrokeCommand = windSpeed.windHighMarker.graphics.setStrokeStyle(0).command;
+	windSpeed.windHighMarkerStartCommand = windSpeed.windHighMarker.graphics.moveTo(0, 0).command;
+	windSpeed.windHighMarkerEndCommand = windSpeed.windHighMarker.graphics.lineTo(0, 0).command;
+	windSpeed.stage.addChild(windSpeed.windHighMarker);
+	
+	//Set up gustHigh speed marker
+	windSpeed.gustHighMarker = new createjs.Shape();
+	windSpeed.gustHighMarker.snapToPixel = true;
+	windSpeed.gustHighMarker.graphics.beginStroke("rgb(" + colour.windGust + ")", 1);
+	windSpeed.gustHighMarkerStrokeCommand = windSpeed.gustHighMarker.graphics.setStrokeStyle(0).command;
+	windSpeed.gustHighMarkerStartCommand = windSpeed.gustHighMarker.graphics.moveTo(0, 0).command;
+	windSpeed.gustHighMarkerEndCommand = windSpeed.gustHighMarker.graphics.lineTo(0, 0).command;
+	windSpeed.stage.addChild(windSpeed.gustHighMarker);
 	
 	//Set up text labels
 	for (i = 0; i < windSpeed.largeDashTotal; i++) {
@@ -4931,24 +5165,7 @@ function setUpWS01() {
 	windSpeed.textDisplayGust.textBaseline = "bottom";
 	windSpeed.textDisplayGust.textAlign = "center";
 	windSpeed.stage.addChild(windSpeed.textDisplayGust);
-	
-	//Set up windHigh speed marker
-	windSpeed.windHighMarker = new createjs.Shape();
-	windSpeed.windHighMarker.snapToPixel = true;
-	windSpeed.windHighMarker.graphics.beginStroke("rgb(" + colour.wind + ")", 1);
-	windSpeed.windHighMarkerStrokeCommand = windSpeed.windHighMarker.graphics.setStrokeStyle(0).command;
-	windSpeed.windHighMarkerStartCommand = windSpeed.windHighMarker.graphics.moveTo(0, 0).command;
-	windSpeed.windHighMarkerEndCommand = windSpeed.windHighMarker.graphics.lineTo(0, 0).command;
-	windSpeed.stage.addChild(windSpeed.windHighMarker);
-	
-	//Set up gustHigh speed marker
-	windSpeed.gustHighMarker = new createjs.Shape();
-	windSpeed.gustHighMarker.snapToPixel = true;
-	windSpeed.gustHighMarker.graphics.beginStroke("rgb(" + colour.windGust + ")", 1);
-	windSpeed.gustHighMarkerStrokeCommand = windSpeed.gustHighMarker.graphics.setStrokeStyle(0).command;
-	windSpeed.gustHighMarkerStartCommand = windSpeed.gustHighMarker.graphics.moveTo(0, 0).command;
-	windSpeed.gustHighMarkerEndCommand = windSpeed.gustHighMarker.graphics.lineTo(0, 0).command;
-	windSpeed.stage.addChild(windSpeed.gustHighMarker);
+
 	
 	//Set up windHigh speed label
 	windSpeed.windHighDisplay = new createjs.Text("0", "0px Arial", "black");
@@ -4967,8 +5184,15 @@ function initializeWS01() {
 	//The first function that is called
     
 	//Define canvas and stage varaibles
-	windSpeed.canvas = document.getElementById('WindSpeed01');
 	windSpeed.stage = new createjs.Stage(windSpeed.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        windSpeed.stage.update();
+        updateTweensWS01(); 
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawSpeedBarWS01(arrayClientraw[1], arrayClientraw[2], arrayClientraw[113], arrayClientraw[71]);
+    });
     
     //Creates information tooltip
     new Opentip(windSpeed.canvas, "Green bar indicates average wind speed.\nPurple bar indicates gust speed.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -4981,7 +5205,13 @@ function initializeWS01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasWS01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasWS01();
+        });
+    }
 	
     //Set the canvas size intially.
 	resizeCanvasWS01();
@@ -5013,7 +5243,13 @@ var arrayClientraw = [],
 	baseURL = window.location.href,
 	to = baseURL.lastIndexOf("/"),
     loaded = null,
-    firstTime = true;
+    firstTime = true,
+    loadEvents = {
+        clientRaw: new CustomEvent("clientRawDataUpdate"),
+        clientRawExtra: new CustomEvent("clientRawExtraDataUpdate"),
+        clientRawHour: new CustomEvent("clientRawHourDataUpdate"),
+        clientRawDaily: new CustomEvent("clientRawDailyDataUpdate"),
+    };
 
 //Helper Functions
 function formatTimestampsToMoments(dataArrayIn, dayIn, formatIn) {
@@ -5269,43 +5505,24 @@ function tryUpdateWidgets() {
             if (arrayClientraw.equals(arrayClientrawOld) === true && arrayClientrawExtra.equals(arrayClientrawExtraOld) === true && arrayClientrawDaily.equals(arrayClientrawDailyOld) === true && arrayClientrawHour.equals(arrayClientrawHourOld) === true) {
                 noDataChanged = true;
                 
-                drawStatusS01(arrayClientraw[49]); //Status widget must always be updated
+                drawStatusS01(arrayClientraw[49], arrayClientraw[32]); //Status widget must always be updated
             } else {
                 noDataChanged = false;
                 
-                drawStatusS01(arrayClientraw[49]); //Status widget must always be updated
+                drawStatusS01(arrayClientraw[49], arrayClientraw[32]); //Status widget must always be updated
                 
                 if (arrayClientraw.equals(arrayClientrawOld) === false) {
-                    drawHumidityGaugeHum01(arrayClientraw[5]);
-                    drawTemperatureBarTemp01(arrayClientraw[4], arrayClientraw[46], arrayClientraw[47]);
-                    drawUniratureBarUni01(arrayClientraw[7]);
-                    drawUniratureBarUni02(arrayClientraw[8]);
-                    drawUniratureBarUni03(arrayClientraw[9]);
-                    drawWindGaugeWind01(arrayClientraw[3], arrayClientraw[117]);
-                    drawSpeedBarWS01(arrayClientraw[1], arrayClientraw[2], arrayClientraw[113], arrayClientraw[71]);
-                    drawWindchillBarWC01(arrayClientraw[44], arrayClientraw[77], arrayClientraw[78]);
-                    drawUVBarUV01(arrayClientraw[79]);
-                    drawBarometerB01(arrayClientraw[6], arrayClientraw[50]);
-                    drawApparentA01(arrayClientraw[130]);
+                    window.dispatchEvent(loadEvents.clientRaw);
                 }
                 if (arrayClientrawExtra.equals(arrayClientrawExtraOld) === false) {
-                    processRecordsData(recordsDict[2], 313, 684);
-                    processRecordsData(recordsDict[1], 187, 672);
-                    processRecordsData(recordsDict[0], 61, 660);
-                    updateValuesRe01();
-                    formatAndDisplayForecastFor01(arrayClientrawExtra[531]);
-                    drawMoonSunMS01(arrayClientrawExtra[556], arrayClientrawExtra[557], arrayClientrawExtra[558], arrayClientrawExtra[559], arrayClientrawExtra[560], arrayClientrawExtra[561]);
+                    window.dispatchEvent(loadEvents.clientRawExtra);
                 }
                 if (arrayClientrawDaily.equals(arrayClientrawDailyOld) === false) {
-
+//                    window.dispatchEvent(loadEvents.clientRawDaily);
                 }
                 if (arrayClientrawHour.equals(arrayClientrawHourOld) === false) {
-
+//                    window.dispatchEvent(loadEvents.clientRawHour);
                 }
-                if (arrayClientraw.equals(arrayClientrawOld) === false || arrayClientrawExtra.equals(arrayClientrawExtraOld) === false) {
-                    drawSolarBarSol01(arrayClientraw[34], arrayClientraw[127], arrayClientrawExtra[696]);
-                }
-
                 arrayClientrawOld = arrayClientraw;
                 arrayClientrawExtraOld = arrayClientrawExtra;
                 arrayClientrawDailyOld = arrayClientrawDaily;
@@ -5451,53 +5668,20 @@ intervalJobCRD = setInterval(updateClientrawDaily, 5000);
 //Ticker frame updates
 //Set the framerate (default 60) and set which function is called each frame (tickHandler)
 
+var ticker01 = {
+    event: null
+};
+
 function initializeTicker() {
     createjs.Ticker.setFPS(60);
     createjs.Ticker.addEventListener("tick", tickHandler);
+    ticker01.event = new CustomEvent("frameUpdate");
 }
 
 function tickHandler(e) {
-    //Updates every tick. Tells the stage to update, and the tweens (animations) to move to their next frame
+    //Updates every tick. Fires update event.
+    window.dispatchEvent(ticker01.event);
     
-    //Animated Widgets
-    tempBar.stage.update();
-    updateTweensTemp01();
-    
-    windchill01.stage.update();
-    updateTweensWC01();
-    
-    windSpeed.stage.update();
-    updateTweensWS01();
-    
-    humidityGauge.stage.update();
-    updateTweensHum01();
-    
-    windGauge.stage.update();
-    updateTweensWind01();
-    
-    uniBar01.stage.update();
-    updateTweensUni01();
-    
-    uniBar02.stage.update();
-    updateTweensUni02();
-    
-    uniBar03.stage.update();
-    updateTweensUni03();
-    
-    solarBar01.stage.update();
-    updateTweensSol01();
-    
-    uvBar01.stage.update();
-    updateTweensUV01();
-    
-    status01.stage.update();
-    updateTweensS01();
-    
-    //Non Animated Widgets
-    moonSun01.stage.update();
-    barometer01.stage.update();
-    apparent01.stage.update();
-    titleRainfall01.stage.update();
 }
 
 //FORCAST HANDLER
@@ -5564,12 +5748,12 @@ function resizeDivFor01() {
     forecast.displayDiv.style.height = height.toString();
     
 	//Adjusts modal div to math resized window. always adjust to the smallest dimention
-    if (window.innerHeight <= window.innerWidth) {
-		width = window.innerHeight * modalDivSize * 2;
-		height = window.innerHeight * modalDivSize;
+    if (document.documentElement.clientHeight <= document.documentElement.clientWidth) {
+		width = document.documentElement.clientHeight * modalDivSize * 2;
+		height = document.documentElement.clientHeight * modalDivSize;
 	} else {
-		width = window.innerWidth * modalDivSize * 2;
-		height = window.innerWidth * modalDivSize;
+		width = document.documentElement.clientWidth * modalDivSize * 2;
+		height = document.documentElement.clientWidth * modalDivSize;
 	}
     
     width = width.toString() + "px";
@@ -5587,6 +5771,10 @@ function resizeDivFor01() {
 function forecastInitFor01() {
     forecast.displayDiv = document.getElementById("forecastText");
     forecast.modalForecastDiv = document.getElementById("modalForecastDiv");
+    
+    window.addEventListener("clientRawExtraDataUpdate", function () {
+        formatAndDisplayForecastFor01(arrayClientrawExtra[531]);
+    });
     
     // Get the modal
     forecast.modal = document.getElementById('forecastModal');
@@ -5612,7 +5800,13 @@ function forecastInitFor01() {
 		window.addEventListener('resize', function () {
 			resizeDivFor01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeDivFor01();
+        });
+    }
 	
     //Set the div size intially.
     resizeDivFor01();
@@ -5641,12 +5835,12 @@ function updateValuesRe01() {
             cell2 = row.insertCell(2);
 
         cell0.innerHTML = recordKeys[i];
-        cell2.innerHTML = recordsDict[records.currentOption][recordKeys[i]][1].format("HH:mm, DD/MM/YYYY");
+        cell2.innerHTML = recordsDict[records.currentOption][recordKeys[i]][1].format("HH:mm, MMM D YYYY");
 
         if (recordsDict[records.currentOption][recordKeys[i]].length == 3) {
-            cell1.innerHTML = formatDataToUnit(recordsDict[records.currentOption][recordKeys[i]][0], recordsDict[records.currentOption][recordKeys[i]][2], roundTo) + units[recordsDict[records.currentOption][recordKeys[i]][2].toString()][currentUnits[recordsDict[records.currentOption][recordKeys[i]][2].toString()]][1].toString();
+            cell1.innerHTML = formatDataToUnit(recordsDict[records.currentOption][recordKeys[i]][0], recordsDict[records.currentOption][recordKeys[i]][2]) + units[recordsDict[records.currentOption][recordKeys[i]][2].toString()][currentUnits[recordsDict[records.currentOption][recordKeys[i]][2].toString()]][1].toString();
         } else if (recordsDict[records.currentOption][recordKeys[i]].length == 4) {
-            cell1.innerHTML = formatDataToUnit(recordsDict[records.currentOption][recordKeys[i]][0], recordsDict[records.currentOption][recordKeys[i]][2], roundTo) + units[recordsDict[records.currentOption][recordKeys[i]][2].toString()][currentUnits[recordsDict[records.currentOption][recordKeys[i]][2].toString()]][1].toString() + recordsDict[records.currentOption][recordKeys[i]][3];
+            cell1.innerHTML = formatDataToUnit(recordsDict[records.currentOption][recordKeys[i]][0], recordsDict[records.currentOption][recordKeys[i]][2]) + units[recordsDict[records.currentOption][recordKeys[i]][2].toString()][currentUnits[recordsDict[records.currentOption][recordKeys[i]][2].toString()]][1].toString() + recordsDict[records.currentOption][recordKeys[i]][3];
         }
         
         var dateDiff = moment(arrayClientraw[29] + arrayClientraw[30] + arrayClientraw[31] + arrayClientraw[74], "HHmmssdd/mm/yyyy").diff(recordsDict[records.currentOption][recordKeys[i]][1], 'days');
@@ -5675,12 +5869,12 @@ function resizeDivRe01() {
         increaseCount = 0;
     
 	//Adjusts modal div to math resized window. always adjust to the smallest dimention
-    if (window.innerHeight <= window.innerWidth) {
-		width = window.innerHeight * modalDivSize * 1.5;
-		height = window.innerHeight * modalDivSize;
+    if (document.documentElement.clientHeight <= document.documentElement.clientWidth) {
+		width = document.documentElement.clientHeight * modalDivSize * 1.5;
+		height = document.documentElement.clientHeight * modalDivSize;
 	} else {
-		width = window.innerWidth * modalDivSize * 1.5;
-		height = window.innerWidth * modalDivSize;
+		width = document.documentElement.clientWidth * modalDivSize * 1.5;
+		height = document.documentElement.clientWidth * modalDivSize;
 	}
     
     records.table.style.fontSize = sharpenValue(Math.pow(height, 2) / 10000) + "px";
@@ -5708,6 +5902,14 @@ function recordsInitRe01() {
     records.modalRecordsDiv = document.getElementById("modalRecordsDiv");
     records.button = document.getElementById("RecordsButton");
     records.table = document.getElementById("recordsTable");
+    
+    window.addEventListener("clientRawExtraDataUpdate", function () {
+        processRecordsData(recordsDict[2], 313, 684);
+        processRecordsData(recordsDict[1], 187, 672);
+        processRecordsData(recordsDict[0], 61, 660);
+        updateValuesRe01();
+    });
+    
     // Get the modal
     records.modal = document.getElementById('recordsModal');
     records.modal.style.display = "none";
@@ -5737,7 +5939,13 @@ function recordsInitRe01() {
 		window.addEventListener('resize', function () {
 			resizeDivRe01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeDivRe01();
+        });
+    }
 	
     //Set the div size intially.
     resizeDivRe01();
@@ -5869,13 +6077,13 @@ function configureGraphLine(baseIn, graphIn) {
     for (i = 0; i < graphDict[graphIn.timestamp].length; i++) {
         graphData[i] = {
             x: graphDict[graphIn.timestamp][i],
-            y: formatDataToUnit(graphDict[graphIn.data[0]][i], baseIn.unit, 2)
+            y: formatDataToUnit(graphDict[graphIn.data[0]][i], baseIn.unit)
         };
         //if 2 dataSets
         if (multipleSets == true) {
             graphData2[i] = {
                 x: graphDict[graphIn.timestamp][i],
-                y: formatDataToUnit(graphDict[graphIn.data[1]][i], baseIn.unit, 2)
+                y: formatDataToUnit(graphDict[graphIn.data[1]][i], baseIn.unit)
             };
         }
     }
@@ -5889,6 +6097,14 @@ function configureGraphLine(baseIn, graphIn) {
     modalGraph.chart.data.datasets[0].data = graphData;
     modalGraph.chart.options.scales.xAxes[0].time.unit = graphIn.timeDisplay.toString();
     modalGraph.chart.options.scales.yAxes[0].scaleLabel.labelString = baseIn.label.toString() + " (" + units[baseIn.unit.toString()][currentUnits[baseIn.unit.toString()]][1].toString() + ")";
+    
+    //If weekly graph, change to weekday display
+    if (modalGraph.currentGraph[1].toString() === "quarterDailyWeek") {
+        modalGraph.chart.options.scales.xAxes[0].time.displayFormats.day = "ddd";
+    } else {
+        modalGraph.chart.options.scales.xAxes[0].time.displayFormats.day = "MMM D"; 
+    }
+    
     //if 2 dataSets
     if (multipleSets == true) {
         modalGraph.chart.data.datasets[1] = graphStyles[style2];
@@ -5930,7 +6146,7 @@ function configureGraphBar(baseIn, graphIn) {
         style = baseIn.style.toString();   
     
     for (i = 0; i < graphDict[graphIn.timestamp].length; i++) {
-        graphData[i] = formatDataToUnit(graphDict[graphIn.data][i], baseIn.unit, 2);
+        graphData[i] = formatDataToUnit(graphDict[graphIn.data][i], baseIn.unit);
         graphLabels[i] = graphDict[graphIn.timestamp][i].format(graphIn.timeDisplay.toString());
     }
     
@@ -5978,12 +6194,12 @@ function resizeCanvasModG01() {
 	//Dynamic Canvas Resizing for desktop
 	var size = 0.4;
 	//Always adjust to the smallest dimention
-	if (window.innerHeight <= window.innerWidth) {
-		modalGraph.canvasDiv.style.width = (window.innerHeight * size * 2).toString() + "px";
-		modalGraph.canvasDiv.style.height = (window.innerHeight * size).toString() + "px";
+	if (document.documentElement.clientHeight <= document.documentElement.clientWidth) {
+		modalGraph.canvasDiv.style.width = (document.documentElement.clientHeight * size * 2).toString() + "px";
+		modalGraph.canvasDiv.style.height = (document.documentElement.clientHeight * size).toString() + "px";
 	} else {
-		modalGraph.canvasDiv.style.width = (window.innerWidth * size * 2).toString() + "px";
-		modalGraph.canvasDiv.style.height = (window.innerWidth * size).toString() + "px";
+		modalGraph.canvasDiv.style.width = (document.documentElement.clientWidth * size * 2).toString() + "px";
+		modalGraph.canvasDiv.style.height = (document.documentElement.clientWidth * size).toString() + "px";
 	}
 		
 	modalGraph.chart.resize();
@@ -5998,7 +6214,7 @@ function initializeModalGraph01() {
     modalGraph.footer = document.getElementById("graphFooter");
     modalGraph.headerText = document.getElementById("graphHeaderText");
     modalGraph.currentGraph = ["barometer", "hourlyDay"];
-	
+    
 	drawGraphLine();
     
 	//If on desktop, dynamically resize the canvas
@@ -6006,7 +6222,13 @@ function initializeModalGraph01() {
 		window.addEventListener('resize', function () {
 			resizeCanvasModG01();
 		}, false);
-	}
+	} else {
+        //only resize when rotated on mobile
+        var mql = window.matchMedia("(orientation: portrait)");
+        mql.addListener(function(m) {
+            resizeCanvasModG01();
+        });
+    }
 	
 	resizeCanvasModG01(); //Set canvas size initally
     
@@ -6068,7 +6290,7 @@ function changeUnit(unit) {
     
 }
 
-function initialzeButtons() {
+function initializeButtons() {
     buttons.altitude = document.getElementById("AltitudeButton");
     buttons.pressure = document.getElementById("PressureButton");
     buttons.wind = document.getElementById("WindButton");
@@ -6201,31 +6423,50 @@ function graphChange(obj) {
 
 //INITIALISATION OF ALL
 function initAll() {
-    //Calls initialisation functions of everything
+    //Calls initialisation functions of everything needed
+    apparent01.canvas = document.getElementById(apparent01.config.canvasID.toString());
+    solarBar01.canvas = document.getElementById(solarBar01.config.canvasID.toString());
+    uvBar01.canvas = document.getElementById(uvBar01.config.canvasID.toString());
+    tempBar.canvas = document.getElementById('TempBar01');
+    barometer01.canvas = document.getElementById(barometer01.config.canvasID.toString());
+    windchill01.canvas = document.getElementById('Windchill01');
+    baroGraph.canvas = document.getElementById('baroGraphCanvas01').getContext("2d", {alpha: false});
+    rainGraph.canvas = document.getElementById('rainGraphCanvas01').getContext("2d", {alpha: false});
+    tempGraph.canvas = document.getElementById('tempGraphCanvas01').getContext("2d", {alpha: false});
+    windGraph.canvas = document.getElementById('windGraphCanvas01').getContext("2d", {alpha: false});
+    humidityGauge.canvas = document.getElementById('HumidityGauge01');
+    moonSun01.canvas = document.getElementById(moonSun01.config.canvasID.toString());
+    status01.canvas = document.getElementById(status01.config.canvasID.toString());
+    titleRainfall01.canvas = document.getElementById(titleRainfall01.config.canvasID.toString());
+    uniBar01.canvas = document.getElementById(uniBar01.config.canvasID.toString());
+    uniBar02.canvas = document.getElementById(uniBar02.config.canvasID.toString());
+    uniBar03.canvas = document.getElementById(uniBar03.config.canvasID.toString());
+    windGauge.canvas = document.getElementById('WindGauge01');
+    windSpeed.canvas = document.getElementById('WindSpeed01');
     initialiseLayout();
-    forecastInitFor01();
-    initializeHum01();
-    initializeWind01();
-    initializeTemp01();
+    if (widgetList["apparent"].enabled === true) {initializeApparentA01();} else {apparent01.canvas.style.display = "none";}
+    if (widgetList["temperature"].enabled === true) {initializeTemp01();} else {tempBar.canvas.style.display = "none";}
+    if (widgetList["barometer"].enabled === true) {initializeBarometerB01();} else {barometer01.canvas.style.display = "none";}
+    if (widgetList["windChill"].enabled === true) {initializeWC01();} else {windchill01.canvas.style.display = "none";}
+    if (widgetList["forecastHandler"].enabled === true) {forecastInitFor01();}
+    if (widgetList["graphHandler"].enabled === true) {initializeModalGraph01();}
+    if (widgetList["graphHandlerBarometer"].enabled === true) {initializeBaroGraph01();} else {baroGraph.canvas.style.display = "none";}
+    if (widgetList["graphHandlerRainfall"].enabled === true) {initializeRainGraph01();} else {rainGraph.canvas.style.display = "none";}
+    if (widgetList["graphHandlerTemperature"].enabled === true) {initializeTempGraph01();} else {tempGraph.canvas.style.display = "none";}
+    if (widgetList["graphHandlerWindSpeed"].enabled === true) {initializeWindGraph01();} else {windGraph.canvas.style.display = "none";}
+    if (widgetList["humidity"].enabled === true) {initializeHum01();} else {humidityGauge.canvas.style.display = "none";}
+    if (widgetList["modalHandler"].enabled === true) {initModalHandler();}
+    if (widgetList["moonSun"].enabled === true) {initializeMoonSunMS01();} else {moonSun01.canvas.style.display = "none";}
+    if (widgetList["recordHandler"].enabled === true) {recordsInitRe01();}
+    if (widgetList["solar"].enabled === true) {initializeSolarBarSol01();} else {solarBar01.canvas.style.display = "none";}
+    if (widgetList["status"].enabled === true) {initializeStatusS01();} else {status01.canvas.style.display = "none";}
+    if (widgetList["rainfallTitle"].enabled === true) {initializeTitleRainfallTR01();} else {titleRainfall01.canvas.style.display = "none";}
+    if (widgetList["rainfallDay"].enabled === true) {initializeUniBarUni01();} else {uniBar01.canvas.style.display = "none";}
+    if (widgetList["rainfallMonth"].enabled === true) {initializeUniBarUni02();} else {uniBar02.canvas.style.display = "none";}
+    if (widgetList["rainfallYear"].enabled === true) {initializeUniBarUni03();} else {uniBar03.canvas.style.display = "none";}
+    if (widgetList["UV"].enabled === true) {initializeUVBarUV01();} else {uvBar01.canvas.style.display = "none";}
+    if (widgetList["windDirection"].enabled === true) {initializeWind01();} else {windGauge.canvas.style.display = "none";}
+    if (widgetList["windSpeed"].enabled === true) {initializeWS01();} else {windSpeed.canvas.style.display = "none";}
     initializeTicker();
-    initialzeButtons();
-    initializeUniBarUni01();
-    initializeUniBarUni02();
-    initializeUniBarUni03();
-    initializeWS01();
-    initializeWC01();
-    initializeSolarBarSol01();
-    initializeUVBarUV01();
-    recordsInitRe01();
-    initializeMoonSunMS01();
-    initializeBarometerB01();
-    initializeApparentA01();
-    initializeStatusS01();
-    initializeTitleRainfallTR01();
-    initializeRainGraph01();
-    initializeTempGraph01();
-    initializeWindGraph01();
-    initializeBaroGraph01();
-    initializeModalGraph01();
-    initModalHandler();
+    initializeButtons();
 }
