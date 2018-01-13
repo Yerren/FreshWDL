@@ -138,10 +138,14 @@ function setUpA01() {
 
 function initializeApparentA01() {
 	//The first function that is called
-	//Define canvas and stage varaibles
-	apparent01.canvas = document.getElementById(apparent01.config.canvasID.toString());
 	apparent01.stage = new createjs.Stage(apparent01.canvas);
     
+    window.addEventListener("frameUpdate", function () {
+        apparent01.stage.update();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawApparentA01(arrayClientraw[130]);
+    });
     //Creates information tooltip
     new Opentip(apparent01.canvas, "Perceived temperature based on temperature, humidity, sun, and wind.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
@@ -606,8 +610,15 @@ function initializeTemp01() {
 	//The first function that is called
     
 	//Define canvas and stage varaibles
-	tempBar.canvas = document.getElementById('TempBar01');
 	tempBar.stage = new createjs.Stage(tempBar.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        tempBar.stage.update();
+        updateTweensTemp01();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawTemperatureBarTemp01(arrayClientraw[4], arrayClientraw[46], arrayClientraw[47]);
+    });
     
     //Creates information tooltip
     new Opentip(tempBar.canvas, "Current air temperature.\nBlue: Low daily temperature.\nRed: High daily temperature.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -813,8 +824,15 @@ function setUpB01() {
 function initializeBarometerB01() {
 	//The first function that is called
 	//Define canvas and stage varaibles
-	barometer01.canvas = document.getElementById(barometer01.config.canvasID.toString());
 	barometer01.stage = new createjs.Stage(barometer01.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        barometer01.stage.update();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawBarometerB01(arrayClientraw[6], arrayClientraw[50]);
+    });
+    
     
     //Creates information tooltip
     new Opentip(barometer01.canvas, "The weight of the air, adjusted for the station's altitude.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -1281,8 +1299,15 @@ function initializeWC01() {
 	//The first function that is called
     
 	//Define canvas and stage varaibles
-	windchill01.canvas = document.getElementById('Windchill01');
 	windchill01.stage = new createjs.Stage(windchill01.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        windchill01.stage.update();
+        updateTweensWC01();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawWindchillBarWC01(arrayClientraw[44], arrayClientraw[77], arrayClientraw[78]);
+    });
     
     //Creates information tooltip
     new Opentip(windchill01.canvas, "How cold it actually feels. Calculated by combining heat and wind speed.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -1429,7 +1454,7 @@ function initializeBaroGraph01() {
 	//Define variables
 	baroGraph.canvas = document.getElementById('baroGraphCanvas01').getContext("2d", {alpha: false});
 	baroGraph.canvasDiv = document.getElementById('baroGraphCanvas01CanvasDiv');
-	
+    
 	drawBaroGraphLine01();
     
 	//If on desktop, dynamically resize the canvas
@@ -1691,7 +1716,6 @@ function resizeCanvasTempG01() {
 function initializeTempGraph01() {
 	//Initial Funtion Called
 	//Define variables
-	tempGraph.canvas = document.getElementById('tempGraphCanvas01').getContext("2d", {alpha: false});
 	tempGraph.canvasDiv = document.getElementById('tempGraphCanvas01CanvasDiv');
 	
 	drawTempGraphLine01();
@@ -1831,7 +1855,6 @@ function resizeCanvasWindG01() {
 function initializeWindGraph01() {
 	//Initial Funtion Called
 	//Define variables
-	windGraph.canvas = document.getElementById('windGraphCanvas01').getContext("2d", {alpha: false});
 	windGraph.canvasDiv = document.getElementById('windGraphCanvas01CanvasDiv');
 	
 	drawWindGraphLine01();
@@ -2164,8 +2187,16 @@ function initializeHum01() {
 	//The first function that is called
     
 	//Define canvas and stage varaibles
-	humidityGauge.canvas = document.getElementById('HumidityGauge01');
 	humidityGauge.stage = new createjs.Stage(humidityGauge.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        humidityGauge.stage.update();
+        updateTweensHum01();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawHumidityGaugeHum01(arrayClientraw[5]);
+    });
+    
     
     //Creates information tooltip
     new Opentip(humidityGauge.canvas, "The amount of water vapour in the air as a percentage of the amount the air is capable of holding.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -2438,8 +2469,14 @@ function setUpMS01() {
 function initializeMoonSunMS01() {
 	//The first function that is called
 	//Define canvas and stage varaibles
-	moonSun01.canvas = document.getElementById(moonSun01.config.canvasID.toString());
 	moonSun01.stage = new createjs.Stage(moonSun01.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        moonSun01.stage.update();
+    });
+    window.addEventListener("clientRawExtraDataUpdate", function () {
+        drawMoonSunMS01(arrayClientrawExtra[556], arrayClientrawExtra[557], arrayClientrawExtra[558], arrayClientrawExtra[559], arrayClientrawExtra[560], arrayClientrawExtra[561]);
+    });
     
     //Creates information tooltip (none for this widget)
     //new Opentip(moonSun01.canvas, "Information",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -2721,8 +2758,18 @@ function setUpSol01() {
 function initializeSolarBarSol01() {
 	//The first function that is called
 	//Define canvas and stage varaibles
-	solarBar01.canvas = document.getElementById(solarBar01.config.canvasID.toString());
 	solarBar01.stage = new createjs.Stage(solarBar01.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        solarBar01.stage.update();
+        updateTweensSol01();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawSolarBarSol01(arrayClientraw[34], arrayClientraw[127], arrayClientrawExtra[696]);
+    });
+    window.addEventListener("clientRawExtraDataUpdate", function () {
+        drawSolarBarSol01(arrayClientraw[34], arrayClientraw[127], arrayClientrawExtra[696]);
+    });
     
     //Creates information tooltip
     new Opentip(solarBar01.canvas, "The intensity of the sun's radiation.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -2938,6 +2985,11 @@ function initializeStatusS01() {
 	status01.canvas = document.getElementById(status01.config.canvasID.toString());
 	status01.stage = new createjs.Stage(status01.canvas);
     
+    window.addEventListener("frameUpdate", function () {
+        status01.stage.update();
+        updateTweensS01();
+    });
+    
     //Creates information tooltip
     new Opentip(status01.canvas, "Green: New data collected from server.\nGrey: Data on server hasn't changed.\nYellow: Some error during data collection from server.\nRed: No data able to be collected from server.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
@@ -3026,8 +3078,11 @@ function setUpTR01() {
 function initializeTitleRainfallTR01() {
 	//The first function that is called
 	//Define canvas and stage varaibles
-	titleRainfall01.canvas = document.getElementById(titleRainfall01.config.canvasID.toString());
 	titleRainfall01.stage = new createjs.Stage(titleRainfall01.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        titleRainfall01.stage.update();
+    });
     
     //Creates information tooltip
     //new Opentip(titleRainfall01.canvas, "Perceived temperature based on temperature, humidity, sun, and wind.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -3342,8 +3397,15 @@ function setUpUni01() {
 function initializeUniBarUni01() {
 	//The first function that is called
 	//Define canvas and stage varaibles
-	uniBar01.canvas = document.getElementById(uniBar01.config.canvasID.toString());
 	uniBar01.stage = new createjs.Stage(uniBar01.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        uniBar01.stage.update();
+        updateTweensUni01();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawUniratureBarUni01(arrayClientraw[7]);
+    });
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpUni01();
@@ -3655,8 +3717,15 @@ function setUpUni02() {
 function initializeUniBarUni02() {
 	//The first function that is called
 	//Define canvas and stage varaibles
-	uniBar02.canvas = document.getElementById(uniBar02.config.canvasID.toString());
 	uniBar02.stage = new createjs.Stage(uniBar02.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        uniBar02.stage.update();
+        updateTweensUni02();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawUniratureBarUni02(arrayClientraw[8]);
+    });
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpUni02();
@@ -3968,8 +4037,15 @@ function setUpUni03() {
 function initializeUniBarUni03() {
 	//The first function that is called
 	//Define canvas and stage varaibles
-	uniBar03.canvas = document.getElementById(uniBar03.config.canvasID.toString());
 	uniBar03.stage = new createjs.Stage(uniBar03.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        uniBar03.stage.update();
+        updateTweensUni03();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawUniratureBarUni03(arrayClientraw[9]);
+    });
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpUni03();
@@ -4200,8 +4276,16 @@ function setUpUV01() {
 function initializeUVBarUV01() {
 	//The first function that is called
 	//Define canvas and stage varaibles
-	uvBar01.canvas = document.getElementById(uvBar01.config.canvasID.toString());
 	uvBar01.stage = new createjs.Stage(uvBar01.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        uvBar01.stage.update();
+        updateTweensUV01();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawUVBarUV01(arrayClientraw[79]);
+    });
+    
     
     //Creates information tooltip
     new Opentip(uvBar01.canvas, "The intensity of UV radiation - 0-2 is minimal risk of skin damage whilst 8+ is very high.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -4596,8 +4680,15 @@ function initializeWind01() {
 	//The first function that is called
     
 	//Define canvas and stage varaibles
-	windGauge.canvas = document.getElementById('WindGauge01');
 	windGauge.stage = new createjs.Stage(windGauge.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        windGauge.stage.update();
+        updateTweensWind01();
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawWindGaugeWind01(arrayClientraw[3], arrayClientraw[117]);
+    });
     
     //Creates information tooltip
     new Opentip(windGauge.canvas, "The wind direction. Green arrow indicates average wind direction.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -5093,8 +5184,15 @@ function initializeWS01() {
 	//The first function that is called
     
 	//Define canvas and stage varaibles
-	windSpeed.canvas = document.getElementById('WindSpeed01');
 	windSpeed.stage = new createjs.Stage(windSpeed.canvas);
+    
+    window.addEventListener("frameUpdate", function () {
+        windSpeed.stage.update();
+        updateTweensWS01(); 
+    });
+    window.addEventListener("clientRawDataUpdate", function () {
+        drawSpeedBarWS01(arrayClientraw[1], arrayClientraw[2], arrayClientraw[113], arrayClientraw[71]);
+    });
     
     //Creates information tooltip
     new Opentip(windSpeed.canvas, "Green bar indicates average wind speed.\nPurple bar indicates gust speed.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
@@ -5145,7 +5243,13 @@ var arrayClientraw = [],
 	baseURL = window.location.href,
 	to = baseURL.lastIndexOf("/"),
     loaded = null,
-    firstTime = true;
+    firstTime = true,
+    loadEvents = {
+        clientRaw: new CustomEvent("clientRawDataUpdate"),
+        clientRawExtra: new CustomEvent("clientRawExtraDataUpdate"),
+        clientRawHour: new CustomEvent("clientRawHourDataUpdate"),
+        clientRawDaily: new CustomEvent("clientRawDailyDataUpdate"),
+    };
 
 //Helper Functions
 function formatTimestampsToMoments(dataArrayIn, dayIn, formatIn) {
@@ -5408,36 +5512,17 @@ function tryUpdateWidgets() {
                 drawStatusS01(arrayClientraw[49], arrayClientraw[32]); //Status widget must always be updated
                 
                 if (arrayClientraw.equals(arrayClientrawOld) === false) {
-                    drawHumidityGaugeHum01(arrayClientraw[5]);
-                    drawTemperatureBarTemp01(arrayClientraw[4], arrayClientraw[46], arrayClientraw[47]);
-                    drawUniratureBarUni01(arrayClientraw[7]);
-                    drawUniratureBarUni02(arrayClientraw[8]);
-                    drawUniratureBarUni03(arrayClientraw[9]);
-                    drawWindGaugeWind01(arrayClientraw[3], arrayClientraw[117]);
-                    drawSpeedBarWS01(arrayClientraw[1], arrayClientraw[2], arrayClientraw[113], arrayClientraw[71]);
-                    drawWindchillBarWC01(arrayClientraw[44], arrayClientraw[77], arrayClientraw[78]);
-                    drawUVBarUV01(arrayClientraw[79]);
-                    drawBarometerB01(arrayClientraw[6], arrayClientraw[50]);
-                    drawApparentA01(arrayClientraw[130]);
+                    window.dispatchEvent(loadEvents.clientRaw);
                 }
                 if (arrayClientrawExtra.equals(arrayClientrawExtraOld) === false) {
-                    processRecordsData(recordsDict[2], 313, 684);
-                    processRecordsData(recordsDict[1], 187, 672);
-                    processRecordsData(recordsDict[0], 61, 660);
-                    updateValuesRe01();
-                    formatAndDisplayForecastFor01(arrayClientrawExtra[531]);
-                    drawMoonSunMS01(arrayClientrawExtra[556], arrayClientrawExtra[557], arrayClientrawExtra[558], arrayClientrawExtra[559], arrayClientrawExtra[560], arrayClientrawExtra[561]);
+                    window.dispatchEvent(loadEvents.clientRawExtra);
                 }
                 if (arrayClientrawDaily.equals(arrayClientrawDailyOld) === false) {
-
+//                    window.dispatchEvent(loadEvents.clientRawDaily);
                 }
                 if (arrayClientrawHour.equals(arrayClientrawHourOld) === false) {
-
+//                    window.dispatchEvent(loadEvents.clientRawHour);
                 }
-                if (arrayClientraw.equals(arrayClientrawOld) === false || arrayClientrawExtra.equals(arrayClientrawExtraOld) === false) {
-                    drawSolarBarSol01(arrayClientraw[34], arrayClientraw[127], arrayClientrawExtra[696]);
-                }
-
                 arrayClientrawOld = arrayClientraw;
                 arrayClientrawExtraOld = arrayClientrawExtra;
                 arrayClientrawDailyOld = arrayClientrawDaily;
@@ -5583,53 +5668,20 @@ intervalJobCRD = setInterval(updateClientrawDaily, 5000);
 //Ticker frame updates
 //Set the framerate (default 60) and set which function is called each frame (tickHandler)
 
+var ticker01 = {
+    event: null
+};
+
 function initializeTicker() {
     createjs.Ticker.setFPS(60);
     createjs.Ticker.addEventListener("tick", tickHandler);
+    ticker01.event = new CustomEvent("frameUpdate");
 }
 
 function tickHandler(e) {
-    //Updates every tick. Tells the stage to update, and the tweens (animations) to move to their next frame
+    //Updates every tick. Fires update event.
+    window.dispatchEvent(ticker01.event);
     
-    //Animated Widgets
-    tempBar.stage.update();
-    updateTweensTemp01();
-    
-    windchill01.stage.update();
-    updateTweensWC01();
-    
-    windSpeed.stage.update();
-    updateTweensWS01();
-    
-    humidityGauge.stage.update();
-    updateTweensHum01();
-    
-    windGauge.stage.update();
-    updateTweensWind01();
-    
-    uniBar01.stage.update();
-    updateTweensUni01();
-    
-    uniBar02.stage.update();
-    updateTweensUni02();
-    
-    uniBar03.stage.update();
-    updateTweensUni03();
-    
-    solarBar01.stage.update();
-    updateTweensSol01();
-    
-    uvBar01.stage.update();
-    updateTweensUV01();
-    
-    status01.stage.update();
-    updateTweensS01();
-    
-    //Non Animated Widgets
-    moonSun01.stage.update();
-    barometer01.stage.update();
-    apparent01.stage.update();
-    titleRainfall01.stage.update();
 }
 
 //FORCAST HANDLER
@@ -5719,6 +5771,10 @@ function resizeDivFor01() {
 function forecastInitFor01() {
     forecast.displayDiv = document.getElementById("forecastText");
     forecast.modalForecastDiv = document.getElementById("modalForecastDiv");
+    
+    window.addEventListener("clientRawExtraDataUpdate", function () {
+        formatAndDisplayForecastFor01(arrayClientrawExtra[531]);
+    });
     
     // Get the modal
     forecast.modal = document.getElementById('forecastModal');
@@ -5846,6 +5902,14 @@ function recordsInitRe01() {
     records.modalRecordsDiv = document.getElementById("modalRecordsDiv");
     records.button = document.getElementById("RecordsButton");
     records.table = document.getElementById("recordsTable");
+    
+    window.addEventListener("clientRawExtraDataUpdate", function () {
+        processRecordsData(recordsDict[2], 313, 684);
+        processRecordsData(recordsDict[1], 187, 672);
+        processRecordsData(recordsDict[0], 61, 660);
+        updateValuesRe01();
+    });
+    
     // Get the modal
     records.modal = document.getElementById('recordsModal');
     records.modal.style.display = "none";
@@ -6150,7 +6214,7 @@ function initializeModalGraph01() {
     modalGraph.footer = document.getElementById("graphFooter");
     modalGraph.headerText = document.getElementById("graphHeaderText");
     modalGraph.currentGraph = ["barometer", "hourlyDay"];
-	
+    
 	drawGraphLine();
     
 	//If on desktop, dynamically resize the canvas
@@ -6226,7 +6290,7 @@ function changeUnit(unit) {
     
 }
 
-function initialzeButtons() {
+function initializeButtons() {
     buttons.altitude = document.getElementById("AltitudeButton");
     buttons.pressure = document.getElementById("PressureButton");
     buttons.wind = document.getElementById("WindButton");
@@ -6359,31 +6423,50 @@ function graphChange(obj) {
 
 //INITIALISATION OF ALL
 function initAll() {
-    //Calls initialisation functions of everything
+    //Calls initialisation functions of everything needed
+    apparent01.canvas = document.getElementById(apparent01.config.canvasID.toString());
+    solarBar01.canvas = document.getElementById(solarBar01.config.canvasID.toString());
+    uvBar01.canvas = document.getElementById(uvBar01.config.canvasID.toString());
+    tempBar.canvas = document.getElementById('TempBar01');
+    barometer01.canvas = document.getElementById(barometer01.config.canvasID.toString());
+    windchill01.canvas = document.getElementById('Windchill01');
+    baroGraph.canvas = document.getElementById('baroGraphCanvas01').getContext("2d", {alpha: false});
+    rainGraph.canvas = document.getElementById('rainGraphCanvas01').getContext("2d", {alpha: false});
+    tempGraph.canvas = document.getElementById('tempGraphCanvas01').getContext("2d", {alpha: false});
+    windGraph.canvas = document.getElementById('windGraphCanvas01').getContext("2d", {alpha: false});
+    humidityGauge.canvas = document.getElementById('HumidityGauge01');
+    moonSun01.canvas = document.getElementById(moonSun01.config.canvasID.toString());
+    status01.canvas = document.getElementById(status01.config.canvasID.toString());
+    titleRainfall01.canvas = document.getElementById(titleRainfall01.config.canvasID.toString());
+    uniBar01.canvas = document.getElementById(uniBar01.config.canvasID.toString());
+    uniBar02.canvas = document.getElementById(uniBar02.config.canvasID.toString());
+    uniBar03.canvas = document.getElementById(uniBar03.config.canvasID.toString());
+    windGauge.canvas = document.getElementById('WindGauge01');
+    windSpeed.canvas = document.getElementById('WindSpeed01');
     initialiseLayout();
-    forecastInitFor01();
-    initializeHum01();
-    initializeWind01();
-    initializeTemp01();
+    if (widgetList["apparent"].enabled === true) {initializeApparentA01();} else {apparent01.canvas.style.display = "none";}
+    if (widgetList["temperature"].enabled === true) {initializeTemp01();} else {tempBar.canvas.style.display = "none";}
+    if (widgetList["barometer"].enabled === true) {initializeBarometerB01();} else {barometer01.canvas.style.display = "none";}
+    if (widgetList["windChill"].enabled === true) {initializeWC01();} else {windchill01.canvas.style.display = "none";}
+    if (widgetList["forecastHandler"].enabled === true) {forecastInitFor01();}
+    if (widgetList["graphHandler"].enabled === true) {initializeModalGraph01();}
+    if (widgetList["graphHandlerBarometer"].enabled === true) {initializeBaroGraph01();} else {baroGraph.canvas.style.display = "none";}
+    if (widgetList["graphHandlerRainfall"].enabled === true) {initializeRainGraph01();} else {rainGraph.canvas.style.display = "none";}
+    if (widgetList["graphHandlerTemperature"].enabled === true) {initializeTempGraph01();} else {tempGraph.canvas.style.display = "none";}
+    if (widgetList["graphHandlerWindSpeed"].enabled === true) {initializeWindGraph01();} else {windGraph.canvas.style.display = "none";}
+    if (widgetList["humidity"].enabled === true) {initializeHum01();} else {humidityGauge.canvas.style.display = "none";}
+    if (widgetList["modalHandler"].enabled === true) {initModalHandler();}
+    if (widgetList["moonSun"].enabled === true) {initializeMoonSunMS01();} else {moonSun01.canvas.style.display = "none";}
+    if (widgetList["recordHandler"].enabled === true) {recordsInitRe01();}
+    if (widgetList["solar"].enabled === true) {initializeSolarBarSol01();} else {solarBar01.canvas.style.display = "none";}
+    if (widgetList["status"].enabled === true) {initializeStatusS01();} else {status01.canvas.style.display = "none";}
+    if (widgetList["rainfallTitle"].enabled === true) {initializeTitleRainfallTR01();} else {titleRainfall01.canvas.style.display = "none";}
+    if (widgetList["rainfallDay"].enabled === true) {initializeUniBarUni01();} else {uniBar01.canvas.style.display = "none";}
+    if (widgetList["rainfallMonth"].enabled === true) {initializeUniBarUni02();} else {uniBar02.canvas.style.display = "none";}
+    if (widgetList["rainfallYear"].enabled === true) {initializeUniBarUni03();} else {uniBar03.canvas.style.display = "none";}
+    if (widgetList["UV"].enabled === true) {initializeUVBarUV01();} else {uvBar01.canvas.style.display = "none";}
+    if (widgetList["windDirection"].enabled === true) {initializeWind01();} else {windGauge.canvas.style.display = "none";}
+    if (widgetList["windSpeed"].enabled === true) {initializeWS01();} else {windSpeed.canvas.style.display = "none";}
     initializeTicker();
-    initialzeButtons();
-    initializeUniBarUni01();
-    initializeUniBarUni02();
-    initializeUniBarUni03();
-    initializeWS01();
-    initializeWC01();
-    initializeSolarBarSol01();
-    initializeUVBarUV01();
-    recordsInitRe01();
-    initializeMoonSunMS01();
-    initializeBarometerB01();
-    initializeApparentA01();
-    initializeStatusS01();
-    initializeTitleRainfallTR01();
-    initializeRainGraph01();
-    initializeTempGraph01();
-    initializeWindGraph01();
-    initializeBaroGraph01();
-    initializeModalGraph01();
-    initModalHandler();
+    initializeButtons();
 }

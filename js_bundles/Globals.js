@@ -451,6 +451,45 @@ var globalGraphs = {
     }
 };
 
+//Widget Config / Settings
+var widgetList = {
+    apparent: {enabled: true},
+    temperature: {enabled: true},
+    barometer: {enabled: true},
+    windChill: {enabled: true},
+    forecastHandler: {enabled: true},
+    graphHandler: {enabled: true},
+    graphHandlerBarometer: {enabled: true},
+    graphHandlerRainfall: {enabled: true},
+    graphHandlerTemperature: {enabled: true},
+    graphHandlerWindSpeed: {enabled: true},
+    humidity: {enabled: true},
+    modalHandler: {enabled: true},
+    moonSun: {enabled: true},
+    recordHandler: {enabled: true},
+    solar: {enabled: true},
+    status: {enabled: true},
+    rainfallTitle: {enabled: true},
+    rainfallDay: {enabled: true},
+    rainfallMonth: {enabled: true},
+    rainfallYear: {enabled: true},
+    UV: {enabled: true},
+    windDirection: {enabled: true},
+    windSpeed: {enabled: true}
+};
+//Alter widgetList settings to match any changes made in the config file
+if (typeof gaugeSettings !== "undefined") {//Check to see if gauge setting list exists.
+    gaugeSettingsWidgets = Object.keys(gaugeSettings);
+    for (i = 0; i < gaugeSettingsWidgets.length; i++) {
+        if (typeof widgetList[gaugeSettingsWidgets[i]] !== "undefined") {
+            var gaugeWidgetKeys = Object.keys(gaugeSettings[gaugeSettingsWidgets[i]]);
+            for (p = 0; p < gaugeWidgetKeys.length; p++) {
+                widgetList[gaugeSettingsWidgets[i].toString()][gaugeWidgetKeys[p]] = gaugeSettings[gaugeSettingsWidgets[i].toString()][gaugeWidgetKeys[p]];
+            }
+        }
+    }
+}
+
 //Functions globally used
 //Responsivly resize container to window
 function resizeContainer() {
@@ -631,7 +670,13 @@ function checkOverflow(el) {
 }
 
 var numLoaded = 0,
-    numWidgets = 23;
+    numWidgets = 0,
+    widgetListKeys = Object.keys(widgetList);
+
+for (i = 0; i < widgetListKeys.length; i++) {
+    if (widgetList[widgetListKeys[i]].enabled === true) {numWidgets++}
+}
+
 function checkOffLoaded() {
     //checks off when every widget finishes loading, and then sends the call to update. Only used as page loads.
     numLoaded += 1;
