@@ -17,12 +17,12 @@ var clientRawName = "clientraw.txt", //The names of your clientraw files
         uv: "noUnit",           //Options: no units for UV
         temp: "celsius"         //Options: "celsius" "fahrenheit"
     },
-    gaugeSettings = {
+    gaugeSettings = { //Gauges: apparent temperature barometer windChill graphHandlerBarometer graphHandlerRainfall graphHandlerTemperature graphHandlerWindSpeed humidity moonSun solar status rainfallTitle rainfallDay rainfallMonth rainfallYear UV windDirection windSpeed 
         solar: {
-            enabled: true
+            enabled: false
         },
         UV: {
-            enabled: true
+            enabled: false
         }
     };
     
