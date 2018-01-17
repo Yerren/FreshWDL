@@ -5248,7 +5248,7 @@ var arrayClientraw = [],
         clientRaw: new CustomEvent("clientRawDataUpdate"),
         clientRawExtra: new CustomEvent("clientRawExtraDataUpdate"),
         clientRawHour: new CustomEvent("clientRawHourDataUpdate"),
-        clientRawDaily: new CustomEvent("clientRawDailyDataUpdate"),
+        clientRawDaily: new CustomEvent("clientRawDailyDataUpdate")
     };
 
 //Helper Functions
