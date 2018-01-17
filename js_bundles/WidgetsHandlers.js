@@ -2869,14 +2869,14 @@ function drawStatusS01(statusIn, stationTimeIn) {
         status01.values.dataStatus = status01.values.stationName.toString() +  " | No data since: " + status01.values.time.toString();
         status01.blinkColour = "rgba(209, 32, 32, 0.9)"; //Same as high temp
     } else if (dataStatusIn == "Partial Error, New Data") {
-        status01.values.dataStatus = status01.values.stationName.toString() +  " | New data received at: " + status01.values.time.toString();
+        status01.values.dataStatus = status01.values.stationName.toString() +  " | Latest data received at: " + status01.values.time.toString();
         status01.blinkColour = "rgba(234, 242, 45, 0.9)"; //Same as UV
     } else if (dataStatusIn == "Partial Error, No New Data") {
         status01.blinkColour = "rgba(234, 242, 45, 0.9)"; //Same as UV
     } else if (dataStatusIn == "No New Data") {
         status01.blinkColour = status01.blankBlinkColour;
     } else if (dataStatusIn == "Normal") {
-        status01.values.dataStatus = status01.values.stationName.toString() +  " | New data received at: " + status01.values.time.toString();
+        status01.values.dataStatus = status01.values.stationName.toString() +  " | Latest data received at: " + status01.values.time.toString();
         status01.blinkColour = "rgba(23, 145, 27, 0.9)"; //Same as wind direction
     } else {
         console.log("Invalid dataStatus");
@@ -3148,8 +3148,8 @@ var uniBar01 = {
 	constants: {
 		minUni: 0,
 		minUniDEFAULT: 0,
-		maxUni: 1,
-		maxUniDEFAULT: 1
+		maxUni: 4,
+		maxUniDEFAULT: 4
 	},
     tweens: {
         barFill: {
@@ -3468,8 +3468,8 @@ var uniBar02 = {
 	constants: {
 		minUni: 0,
 		minUniDEFAULT: 0,
-		maxUni: 1,
-		maxUniDEFAULT: 1
+		maxUni: 4,
+		maxUniDEFAULT: 4
 	},
     tweens: {
         barFill: {
@@ -3788,8 +3788,8 @@ var uniBar03 = {
 	constants: {
 		minUni: 0,
 		minUniDEFAULT: 0,
-		maxUni: 1,
-		maxUniDEFAULT: 1
+		maxUni: 4,
+		maxUniDEFAULT: 4
 	},
     tweens: {
         barFill: {
@@ -4166,7 +4166,7 @@ function updateTopUV01() {
     uvBar01.setupVars.textMaxLabelSize = uvBar01.canvas.height / 19;
     uvBar01.setupVars.posBar = {
         x: ((uvBar01.canvas.height / 2) - (uvBar01.setupVars.barWidth / 2)),
-        y: ((uvBar01.canvas.height / 2) - (solarBar01.canvas.height * 0.8 / 2))
+        y: ((uvBar01.canvas.height / 2) - (uvBar01.canvas.height * 0.8 / 2))
     };
     uvBar01.setupVars.posText = {
         x: uvBar01.setupVars.posBar.x + uvBar01.setupVars.barWidth / 2,
@@ -5248,7 +5248,7 @@ var arrayClientraw = [],
         clientRaw: new CustomEvent("clientRawDataUpdate"),
         clientRawExtra: new CustomEvent("clientRawExtraDataUpdate"),
         clientRawHour: new CustomEvent("clientRawHourDataUpdate"),
-        clientRawDaily: new CustomEvent("clientRawDailyDataUpdate"),
+        clientRawDaily: new CustomEvent("clientRawDailyDataUpdate")
     };
 
 //Helper Functions
@@ -5400,16 +5400,15 @@ function processGraphData() {
     //Rainfall per week day - divide by ten for "historical Reasons"
     for (i = 0; i < 7; i++) {
         graphDict["rainDays7"].push(arrayClientrawExtra[484 + i] / 10);
-        graphDict["timestampWeekDay"].push(moment(arrayClientrawExtra[700], "DD").day(i - 6));
+        graphDict["timestampWeekDay"].push(moment(arrayClientrawExtra[700], "DD").isoWeekday(i - 6));
     }
     
     //sort weekly rain dict into correct order; (p + 1) is day index
-    var pMax = 0;
-    for (p = 0; p + 1 < moment(arrayClientrawExtra[700], "DD").day(); p++) {
+    var pMax = moment(arrayClientrawExtra[700], "DD").isoWeekday() - 1;
+    for (p = 0; p < pMax; p++) {
         graphDict["timestampWeekDay"][p].add(7, "days");
-        pMax = p;
     }
-    for (q = 0; q <= pMax; q++) {
+    for (q = 0; q < pMax; q++) {
         graphDict["timestampWeekDay"] = shiftArrayFtL(graphDict["timestampWeekDay"]);
         graphDict["rainDays7"] = shiftArrayFtL(graphDict["rainDays7"]);
     }   
@@ -5421,10 +5420,9 @@ function processGraphData() {
     }
     
     //sort monthly rain dict into correct order;
-    pMax = 0;
-    for (p = 0; p < moment(arrayClientraw[36], "MM").month() + 1; p++) { //'moment' months go from 0 - 11...
-        //graphDict["timestampMonth"][p].subtract(12, "M"); Testing without this part
-        pMax = p;
+    pMax = moment(arrayClientraw[36], "MM").month(); //'moment' months go from 0 - 11
+    for (p = 0; p < pMax; p++) {
+        graphDict["timestampMonth"][p].add(12, "M");
     }
     for (q = 0; q < pMax; q++) {
         graphDict["timestampMonth"] = shiftArrayFtL(graphDict["timestampMonth"]);
