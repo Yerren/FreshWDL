@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.1.4 Alpha 2018-01-17
+
+#### Changes
+- Status gauge rephrased
+
+#### Fixed
+- Now compatible with Internet Explorer
+- Yearly rain graph date display issue solved
+- Weekly rain graph date display issue solved
+- Rain gauge ticks now always whole values
+- UV bar display error when solar not enabled
+
 ## 1.1.3 Alpha 2018-01-14
 
 #### Added
