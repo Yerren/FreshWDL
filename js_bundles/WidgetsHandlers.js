@@ -5400,16 +5400,15 @@ function processGraphData() {
     //Rainfall per week day - divide by ten for "historical Reasons"
     for (i = 0; i < 7; i++) {
         graphDict["rainDays7"].push(arrayClientrawExtra[484 + i] / 10);
-        graphDict["timestampWeekDay"].push(moment(arrayClientrawExtra[700], "DD").day(i - 6));
+        graphDict["timestampWeekDay"].push(moment(arrayClientrawExtra[700], "DD").isoWeekday(i - 6));
     }
     
     //sort weekly rain dict into correct order; (p + 1) is day index
-    var pMax = 0;
-    for (p = 0; p + 1 < moment(arrayClientrawExtra[700], "DD").day(); p++) {
+    var pMax = moment(arrayClientrawExtra[700], "DD").isoWeekday() - 1;
+    for (p = 0; p < pMax; p++) {
         graphDict["timestampWeekDay"][p].add(7, "days");
-        pMax = p;
     }
-    for (q = 0; q <= pMax; q++) {
+    for (q = 0; q < pMax; q++) {
         graphDict["timestampWeekDay"] = shiftArrayFtL(graphDict["timestampWeekDay"]);
         graphDict["rainDays7"] = shiftArrayFtL(graphDict["rainDays7"]);
     }   
