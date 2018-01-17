@@ -3148,8 +3148,8 @@ var uniBar01 = {
 	constants: {
 		minUni: 0,
 		minUniDEFAULT: 0,
-		maxUni: 1,
-		maxUniDEFAULT: 1
+		maxUni: 4,
+		maxUniDEFAULT: 4
 	},
     tweens: {
         barFill: {
@@ -3468,8 +3468,8 @@ var uniBar02 = {
 	constants: {
 		minUni: 0,
 		minUniDEFAULT: 0,
-		maxUni: 1,
-		maxUniDEFAULT: 1
+		maxUni: 4,
+		maxUniDEFAULT: 4
 	},
     tweens: {
         barFill: {
@@ -3788,8 +3788,8 @@ var uniBar03 = {
 	constants: {
 		minUni: 0,
 		minUniDEFAULT: 0,
-		maxUni: 1,
-		maxUniDEFAULT: 1
+		maxUni: 4,
+		maxUniDEFAULT: 4
 	},
     tweens: {
         barFill: {
