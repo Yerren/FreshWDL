@@ -5420,10 +5420,9 @@ function processGraphData() {
     }
     
     //sort monthly rain dict into correct order;
-    pMax = 0;
-    for (p = 0; p < moment(arrayClientraw[36], "MM").month() + 1; p++) { //'moment' months go from 0 - 11...
-        //graphDict["timestampMonth"][p].subtract(12, "M"); Testing without this part
-        pMax = p;
+    pMax = moment(arrayClientraw[36], "MM").month(); //'moment' months go from 0 - 11
+    for (p = 0; p < pMax; p++) {
+        graphDict["timestampMonth"][p].add(12, "M");
     }
     for (q = 0; q < pMax; q++) {
         graphDict["timestampMonth"] = shiftArrayFtL(graphDict["timestampMonth"]);
