@@ -4166,7 +4166,7 @@ function updateTopUV01() {
     uvBar01.setupVars.textMaxLabelSize = uvBar01.canvas.height / 19;
     uvBar01.setupVars.posBar = {
         x: ((uvBar01.canvas.height / 2) - (uvBar01.setupVars.barWidth / 2)),
-        y: ((uvBar01.canvas.height / 2) - (solarBar01.canvas.height * 0.8 / 2))
+        y: ((uvBar01.canvas.height / 2) - (uvBar01.canvas.height * 0.8 / 2))
     };
     uvBar01.setupVars.posText = {
         x: uvBar01.setupVars.posBar.x + uvBar01.setupVars.barWidth / 2,
