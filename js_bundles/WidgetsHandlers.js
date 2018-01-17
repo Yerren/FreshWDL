@@ -2869,14 +2869,14 @@ function drawStatusS01(statusIn, stationTimeIn) {
         status01.values.dataStatus = status01.values.stationName.toString() +  " | No data since: " + status01.values.time.toString();
         status01.blinkColour = "rgba(209, 32, 32, 0.9)"; //Same as high temp
     } else if (dataStatusIn == "Partial Error, New Data") {
-        status01.values.dataStatus = status01.values.stationName.toString() +  " | New data received at: " + status01.values.time.toString();
+        status01.values.dataStatus = status01.values.stationName.toString() +  " | Latest data received at: " + status01.values.time.toString();
         status01.blinkColour = "rgba(234, 242, 45, 0.9)"; //Same as UV
     } else if (dataStatusIn == "Partial Error, No New Data") {
         status01.blinkColour = "rgba(234, 242, 45, 0.9)"; //Same as UV
     } else if (dataStatusIn == "No New Data") {
         status01.blinkColour = status01.blankBlinkColour;
     } else if (dataStatusIn == "Normal") {
-        status01.values.dataStatus = status01.values.stationName.toString() +  " | New data received at: " + status01.values.time.toString();
+        status01.values.dataStatus = status01.values.stationName.toString() +  " | Latest data received at: " + status01.values.time.toString();
         status01.blinkColour = "rgba(23, 145, 27, 0.9)"; //Same as wind direction
     } else {
         console.log("Invalid dataStatus");
