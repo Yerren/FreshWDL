@@ -5507,29 +5507,26 @@ function tryUpdateWidgets() {
             } else {
                 noDataChanged = false;
                 
-                //Set first, so that MeteoHub compadibility changes from - to 0 aren't recorded
-                arrayClientrawOld = arrayClientraw;
-                arrayClientrawExtraOld = arrayClientrawExtra;
-                arrayClientrawDailyOld = arrayClientrawDaily;
-                arrayClientrawHourOld = arrayClientrawHour;
-                
-                //Meteohub compadibility changes
-                for(i = 0; i < arrayClientrawExtra.length; i++) {
-                    if (arrayClientrawExtra[i].toString() === "-") {arrayClientrawExtra[i] = "0"}
-                }
-                
                 drawStatusS01(arrayClientraw[49], arrayClientraw[32]); //Status widget must always be updated
                 
                 if (arrayClientraw.equals(arrayClientrawOld) === false) {
+                    arrayClientrawOld = arrayClientraw;
                     window.dispatchEvent(loadEvents.clientRaw);
                 }
                 if (arrayClientrawExtra.equals(arrayClientrawExtraOld) === false) {
+                    arrayClientrawExtraOld = arrayClientrawExtra;
+                    //Meteohub compadibility changes
+                    for(i = 0; i < arrayClientrawExtra.length; i++) {
+                        if (arrayClientrawExtra[i].toString() === "-") {arrayClientrawExtra[i] = "0"}
+                    }
                     window.dispatchEvent(loadEvents.clientRawExtra);
                 }
                 if (arrayClientrawDaily.equals(arrayClientrawDailyOld) === false) {
+                    arrayClientrawDailyOld = arrayClientrawDaily;
 //                    window.dispatchEvent(loadEvents.clientRawDaily);
                 }
                 if (arrayClientrawHour.equals(arrayClientrawHourOld) === false) {
+                    arrayClientrawHourOld = arrayClientrawHour;
 //                    window.dispatchEvent(loadEvents.clientRawHour);
                 }
 
