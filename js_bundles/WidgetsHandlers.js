@@ -5510,21 +5510,25 @@ function tryUpdateWidgets() {
                 drawStatusS01(arrayClientraw[49], arrayClientraw[32]); //Status widget must always be updated
                 
                 if (arrayClientraw.equals(arrayClientrawOld) === false) {
+                    arrayClientrawOld = arrayClientraw;
                     window.dispatchEvent(loadEvents.clientRaw);
                 }
                 if (arrayClientrawExtra.equals(arrayClientrawExtraOld) === false) {
+                    arrayClientrawExtraOld = arrayClientrawExtra;
+                    //Meteohub compadibility changes
+                    for(i = 0; i < arrayClientrawExtra.length; i++) {
+                        if (arrayClientrawExtra[i].toString() === "-") {arrayClientrawExtra[i] = "0"}
+                    }
                     window.dispatchEvent(loadEvents.clientRawExtra);
                 }
                 if (arrayClientrawDaily.equals(arrayClientrawDailyOld) === false) {
+                    arrayClientrawDailyOld = arrayClientrawDaily;
 //                    window.dispatchEvent(loadEvents.clientRawDaily);
                 }
                 if (arrayClientrawHour.equals(arrayClientrawHourOld) === false) {
+                    arrayClientrawHourOld = arrayClientrawHour;
 //                    window.dispatchEvent(loadEvents.clientRawHour);
                 }
-                arrayClientrawOld = arrayClientraw;
-                arrayClientrawExtraOld = arrayClientrawExtra;
-                arrayClientrawDailyOld = arrayClientrawDaily;
-                arrayClientrawHourOld = arrayClientrawHour;
 
                 processGraphData();
                 configureGraphRainBar01("rainfallBar", "dailyMonth");

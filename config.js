@@ -19,10 +19,10 @@ var clientRawName = "clientraw.txt", //The names of your clientraw files
     },
     gaugeSettings = { //Gauges: apparent temperature barometer windChill graphHandlerBarometer graphHandlerRainfall graphHandlerTemperature graphHandlerWindSpeed humidity moonSun solar status rainfallTitle rainfallDay rainfallMonth rainfallYear UV windDirection windSpeed 
         solar: {
-            enabled: false
+            enabled: true
         },
         UV: {
-            enabled: false
+            enabled: true
         }
     };
     
