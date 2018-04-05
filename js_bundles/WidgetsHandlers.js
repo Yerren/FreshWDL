@@ -298,11 +298,11 @@ function drawTemperatureBarTemp01(tempIn, highTempIn, lowTempIn, unitChange) {
 
         //Starts the tweens (animations) of the inputs
         formatInputTemp01();
-        createjs.Tween.get(tempBar.tweens.barFill)
+        createjs.Tween.get(tempBar.tweens.barFill, {override:true})
             .to({h: tempBar.values.tempOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(tempBar.tweens.highTemp)
+        createjs.Tween.get(tempBar.tweens.highTemp, {override:true})
             .to({h: tempBar.values.highTempOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(tempBar.tweens.lowTemp)
+        createjs.Tween.get(tempBar.tweens.lowTemp, {override:true})
             .to({h: tempBar.values.lowTempOut}, 2000, createjs.Ease.quartInOut);
         
         tempBar.valuesOld.TempIn = tempIn;
@@ -986,11 +986,11 @@ function drawWindchillBarWC01(tempIn, highTempIn, lowTempIn, unitChange) {
 
         //Starts the tweens (animations) of the inputs
         formatInputWC01();
-        createjs.Tween.get(windchill01.tweens.barFill)
+        createjs.Tween.get(windchill01.tweens.barFill, {override:true})
             .to({h: windchill01.values.tempOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(windchill01.tweens.highTemp)
+        createjs.Tween.get(windchill01.tweens.highTemp, {override:true})
             .to({h: windchill01.values.highTempOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(windchill01.tweens.lowTemp)
+        createjs.Tween.get(windchill01.tweens.lowTemp, {override:true})
             .to({h: windchill01.values.lowTempOut}, 2000, createjs.Ease.quartInOut);
         
         windchill01.valuesOld.TempIn = tempIn;
@@ -1949,7 +1949,7 @@ function drawHumidityGaugeHum01(humidityIn, unitChange) {
 
         humidityGauge.values.humidityIn = parseFloat(humidityIn, 0);
         humidityGauge.values.humidityOut = humidityGauge.values.humidityIn.map(0, 100, -halfAngleDeg, halfAngleDeg);
-        createjs.Tween.get(humidityGauge.tweens)
+        createjs.Tween.get(humidityGauge.tweens, {override:true})
             .to({r: humidityGauge.values.humidityOut}, 2000, createjs.Ease.quartInOut);
         
         humidityGauge.valuesOLD.humidityIn = humidityIn;
@@ -2584,7 +2584,7 @@ function drawSolarBarSol01(percentIn, uniIn, sunHoursIn, unitChange) {
 
         //Starts the tweens (animations) of the inputs
         formatInputSol01();
-        createjs.Tween.get(solarBar01.tweens.barFill)
+        createjs.Tween.get(solarBar01.tweens.barFill, {override:true})
             .to({h: solarBar01.values.percentOut}, 2000, createjs.Ease.quartInOut);
         
         solarBar01.valuesOLD.uniIn = percentIn;
@@ -2855,8 +2855,8 @@ function drawStatusS01(statusIn, stationTimeIn) {
     //Is called when new data is sent.
     
     var dataStatusIn = checkDataStatus(),
-        stationNameIn = stationTimeIn.substring(0, stationTimeIn.indexOf("-")),
-        timeIn = stationTimeIn.substring(stationTimeIn.indexOf("-") + 1);
+        stationNameIn = stationTimeIn.substring(0, stationTimeIn.lastIndexOf("-")),
+        timeIn = stationTimeIn.substring(stationTimeIn.lastIndexOf("-") + 1);
     
     //The one widget which doesn't need to be checked if widget actually needs to be updated (Breaks it if you do)
     
@@ -3149,7 +3149,8 @@ var uniBar01 = {
 		minUni: 0,
 		minUniDEFAULT: 0,
 		maxUni: 4,
-		maxUniDEFAULT: 4
+		maxUniDEFAULT: 4,
+        actualMaxPercent: 0.75
 	},
     tweens: {
         barFill: {
@@ -3178,18 +3179,15 @@ Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
 
 function formatInputUni01() {
 	//Formats the universal to be displayed correctly
-	var gapNum = uniBar01.largeDashTotal - 1;
     
     //Adjust to units
     uniBar01.values.uniIn = formatDataToUnit(uniBar01.values.uniIn, uniBar01.config.unitsIn);
     
-	//Adjust Range if needed: if the input is less than the current minimum of the range, decrease the minimum. If the input is bigger than the current maximum of the range, increase the maximum. 
-	while (uniBar01.values.uniIn < uniBar01.constants.minUni) {uniBar01.constants.minUni -= uniBar01.config.tickScaler * (gapNum); }
-	while (uniBar01.values.uniIn > uniBar01.constants.maxUni) {uniBar01.constants.maxUni += uniBar01.config.tickScaler * (gapNum); }
+	//Adjust Range if needed: If the input is bigger than the current maximum of the range, increase the maximum. 
+	while (uniBar01.values.uniIn > uniBar01.constants.maxUni * uniBar01.constants.actualMaxPercent) {uniBar01.constants.maxUni *= 2; }
 
-    //Adjust Range if needed: if the input is bigger than the current minimum of the range, increase the minimum. If the input is less than the current maximum of the range, decrease the maximum. 
-	while ((uniBar01.values.uniIn >= uniBar01.constants.minUni + uniBar01.config.tickScaler * (gapNum) && uniBar01.constants.minUni < uniBar01.constants.minUniDEFAULT)) {uniBar01.constants.minUni += uniBar01.config.tickScaler * (gapNum); }
-	while ((uniBar01.values.uniIn <= uniBar01.constants.maxUni - uniBar01.config.tickScaler * (gapNum) && uniBar01.constants.maxUni > uniBar01.constants.maxUniDEFAULT)) {uniBar01.constants.maxUni -= uniBar01.config.tickScaler * (gapNum); }
+    //Adjust Range if needed: If the input is less than the current maximum of the range, decrease the maximum. 
+	while ((uniBar01.values.uniIn <= (uniBar01.constants.maxUni / 2) * uniBar01.constants.actualMaxPercent && uniBar01.constants.maxUni > uniBar01.constants.maxUniDEFAULT)) {uniBar01.constants.maxUni /= 2; }
 	
     //Map the inputs to the current scale (as a percentage)
 	uniBar01.values.uniOut = uniBar01.values.uniIn.map(uniBar01.constants.minUni, uniBar01.constants.maxUni, 0, 1);
@@ -3207,7 +3205,7 @@ function drawUniratureBarUni01(uniIn, unitChange) {
 
         //Starts the tweens (animations) of the inputs
         formatInputUni01();
-        createjs.Tween.get(uniBar01.tweens.barFill)
+        createjs.Tween.get(uniBar01.tweens.barFill, {override:true})
             .to({h: uniBar01.values.uniOut}, 2000, createjs.Ease.quartInOut);
         
         uniBar01.valuesOLD.uniIn = uniIn;
@@ -3469,7 +3467,8 @@ var uniBar02 = {
 		minUni: 0,
 		minUniDEFAULT: 0,
 		maxUni: 4,
-		maxUniDEFAULT: 4
+		maxUniDEFAULT: 4,
+        actualMaxPercent: 0.75
 	},
     tweens: {
         barFill: {
@@ -3498,18 +3497,15 @@ Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
 
 function formatInputUni02() {
 	//Formats the universal to be displayed correctly
-	var gapNum = uniBar02.largeDashTotal - 1;
     
     //Adjust to units
     uniBar02.values.uniIn = formatDataToUnit(uniBar02.values.uniIn, uniBar02.config.unitsIn);
     
-	//Adjust Range if needed: if the input is less than the current minimum of the range, decrease the minimum. If the input is bigger than the current maximum of the range, increase the maximum. 
-	while (uniBar02.values.uniIn < uniBar02.constants.minUni) {uniBar02.constants.minUni -= uniBar02.config.tickScaler * (gapNum); }
-	while (uniBar02.values.uniIn > uniBar02.constants.maxUni) {uniBar02.constants.maxUni += uniBar02.config.tickScaler * (gapNum); }
+	//Adjust Range if needed: If the input is bigger than the current maximum of the range, increase the maximum. 
+	while (uniBar02.values.uniIn > uniBar02.constants.maxUni * uniBar02.constants.actualMaxPercent) {uniBar02.constants.maxUni *= 2; }
 
-    //Adjust Range if needed: if the input is bigger than the current minimum of the range, increase the minimum. If the input is less than the current maximum of the range, decrease the maximum. 
-	while ((uniBar02.values.uniIn >= uniBar02.constants.minUni + uniBar02.config.tickScaler * (gapNum) && uniBar02.constants.minUni < uniBar02.constants.minUniDEFAULT)) {uniBar02.constants.minUni += uniBar02.config.tickScaler * (gapNum); }
-	while ((uniBar02.values.uniIn <= uniBar02.constants.maxUni - uniBar02.config.tickScaler * (gapNum) && uniBar02.constants.maxUni > uniBar02.constants.maxUniDEFAULT)) {uniBar02.constants.maxUni -= uniBar02.config.tickScaler * (gapNum); }
+    //Adjust Range if needed: If the input is less than the current maximum of the range, decrease the maximum. 
+	while ((uniBar02.values.uniIn <= (uniBar02.constants.maxUni / 2) * uniBar02.constants.actualMaxPercent && uniBar02.constants.maxUni > uniBar02.constants.maxUniDEFAULT)) {uniBar02.constants.maxUni /= 2; }
 	
     //Map the inputs to the current scale (as a percentage)
 	uniBar02.values.uniOut = uniBar02.values.uniIn.map(uniBar02.constants.minUni, uniBar02.constants.maxUni, 0, 1);
@@ -3527,7 +3523,7 @@ function drawUniratureBarUni02(uniIn, unitChange) {
 
         //Starts the tweens (animations) of the inputs
         formatInputUni02();
-        createjs.Tween.get(uniBar02.tweens.barFill)
+        createjs.Tween.get(uniBar02.tweens.barFill, {override:true})
             .to({h: uniBar02.values.uniOut}, 2000, createjs.Ease.quartInOut);
         
         uniBar02.valuesOLD.uniIn = uniIn;
@@ -3789,7 +3785,8 @@ var uniBar03 = {
 		minUni: 0,
 		minUniDEFAULT: 0,
 		maxUni: 4,
-		maxUniDEFAULT: 4
+		maxUniDEFAULT: 4,
+        actualMaxPercent: 0.75
 	},
     tweens: {
         barFill: {
@@ -3818,18 +3815,15 @@ Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
 
 function formatInputUni03() {
 	//Formats the universal to be displayed correctly
-	var gapNum = uniBar03.largeDashTotal - 1;
     
     //Adjust to units
     uniBar03.values.uniIn = formatDataToUnit(uniBar03.values.uniIn, uniBar03.config.unitsIn);
     
-	//Adjust Range if needed: if the input is less than the current minimum of the range, decrease the minimum. If the input is bigger than the current maximum of the range, increase the maximum. 
-	while (uniBar03.values.uniIn < uniBar03.constants.minUni) {uniBar03.constants.minUni -= uniBar03.config.tickScaler * (gapNum); }
-	while (uniBar03.values.uniIn > uniBar03.constants.maxUni) {uniBar03.constants.maxUni += uniBar03.config.tickScaler * (gapNum); }
+	//Adjust Range if needed: If the input is bigger than the current maximum of the range, increase the maximum. 
+	while (uniBar03.values.uniIn > uniBar03.constants.maxUni * uniBar03.constants.actualMaxPercent) {uniBar03.constants.maxUni *= 2; }
 
-    //Adjust Range if needed: if the input is bigger than the current minimum of the range, increase the minimum. If the input is less than the current maximum of the range, decrease the maximum. 
-	while ((uniBar03.values.uniIn >= uniBar03.constants.minUni + uniBar03.config.tickScaler * (gapNum) && uniBar03.constants.minUni < uniBar03.constants.minUniDEFAULT)) {uniBar03.constants.minUni += uniBar03.config.tickScaler * (gapNum); }
-	while ((uniBar03.values.uniIn <= uniBar03.constants.maxUni - uniBar03.config.tickScaler * (gapNum) && uniBar03.constants.maxUni > uniBar03.constants.maxUniDEFAULT)) {uniBar03.constants.maxUni -= uniBar03.config.tickScaler * (gapNum); }
+    //Adjust Range if needed: If the input is less than the current maximum of the range, decrease the maximum. 
+	while ((uniBar03.values.uniIn <= (uniBar03.constants.maxUni / 2) * uniBar03.constants.actualMaxPercent && uniBar03.constants.maxUni > uniBar03.constants.maxUniDEFAULT)) {uniBar03.constants.maxUni /= 2; }
 	
     //Map the inputs to the current scale (as a percentage)
 	uniBar03.values.uniOut = uniBar03.values.uniIn.map(uniBar03.constants.minUni, uniBar03.constants.maxUni, 0, 1);
@@ -3847,7 +3841,7 @@ function drawUniratureBarUni03(uniIn, unitChange) {
 
         //Starts the tweens (animations) of the inputs
         formatInputUni03();
-        createjs.Tween.get(uniBar03.tweens.barFill)
+        createjs.Tween.get(uniBar03.tweens.barFill, {override:true})
             .to({h: uniBar03.values.uniOut}, 2000, createjs.Ease.quartInOut);
         
         uniBar03.valuesOLD.uniIn = uniIn;
@@ -4137,7 +4131,7 @@ function drawUVBarUV01(uniIn) {
 
     //Starts the tweens (animations) of the inputs
 	formatInputUV01();
-	createjs.Tween.get(uvBar01.tweens.barFill)
+	createjs.Tween.get(uvBar01.tweens.barFill, {override:true})
 		.to({h: uvBar01.values.uniOut}, 2000, createjs.Ease.quartInOut);
 }
 
@@ -4417,9 +4411,9 @@ function drawWindGaugeWind01(windIn, avgIn, unitChange) {
             windGauge.values.avgOut = windGauge.values.avgOld + avgAngleDiff - 360;
         }
 
-        createjs.Tween.get(windGauge.tweens)
+        createjs.Tween.get(windGauge.tweens, {override:true})
             .to({r: windGauge.values.windOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(windGauge.tweens)
+        createjs.Tween.get(windGauge.tweens, {override:true})
             .to({aR: windGauge.values.avgOut}, 2000, createjs.Ease.quartInOut);
 
         windGauge.values.windOld = windGauge.values.windOut;
@@ -4848,13 +4842,13 @@ function drawSpeedBarWS01(speedIn, gustIn, windHighSpeedIn, gustHighSpeedIn, uni
 
         //Starts the tweens (animations) of the inputs
         formatInputWS01();
-        createjs.Tween.get(windSpeed.tweens.barFillLeft)
+        createjs.Tween.get(windSpeed.tweens.barFillLeft, {override:true})
             .to({h: windSpeed.values.speedOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(windSpeed.tweens.barFillRight)
+        createjs.Tween.get(windSpeed.tweens.barFillRight, {override:true})
             .to({h: windSpeed.values.gustOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(windSpeed.tweens.windHighSpeed)
+        createjs.Tween.get(windSpeed.tweens.windHighSpeed, {override:true})
             .to({h: windSpeed.values.windHighSpeedOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(windSpeed.tweens.gustHighSpeed)
+        createjs.Tween.get(windSpeed.tweens.gustHighSpeed, {override:true})
             .to({h: windSpeed.values.gustHighSpeedOut}, 2000, createjs.Ease.quartInOut);
         
         windSpeed.valuesOld.speedIn = speedIn;

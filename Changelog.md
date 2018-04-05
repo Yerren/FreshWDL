@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## 1.1.5 Alpha
+
+#### Changes
+- Rain gauge ticks reworked
+
+#### Fixed
+- Issue with "-" character in station name
+
 ## 1.1.4 Alpha 2018-01-17
 
 #### Changes
