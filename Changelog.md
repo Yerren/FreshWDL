@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 #### Fixed
 - Issue with "-" character in station name
+- Tweens (animations) no longer gitch if overidden by other animations
 
 ## 1.1.4 Alpha 2018-01-17
 
