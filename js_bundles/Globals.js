@@ -1,5 +1,12 @@
 /*jslint plusplus: true, sloppy: true, indent: 4 */
 
+//Check to see if a langauge was set in the config file, if it isn't, set to default (English).
+if (typeof lang === "undefined") {
+    lang = "en";
+}
+
+//TODO: SET MOMENT.JS LANGAUGE HERE
+
 //Sets GLOBAL variables
 //Customizables
 var globalFontFamily = "Arial", //The font used throughout the page

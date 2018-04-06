@@ -130,7 +130,7 @@ function setUpA01() {
 	apparent01.stage.addChild(apparent01.textDisplayT);
     
     //Set up text titles
-	apparent01.textTitleApparent = new createjs.Text("Apparent", "0px Arial", "black");
+	apparent01.textTitleApparent = new createjs.Text(dict.apparentTitle[lang], "0px Arial", "black");
 	apparent01.textTitleApparent.textBaseline = "middle";
 	apparent01.textTitleApparent.textAlign = "center";
 	apparent01.stage.addChild(apparent01.textTitleApparent);
@@ -147,7 +147,7 @@ function initializeApparentA01() {
         drawApparentA01(arrayClientraw[130]);
     });
     //Creates information tooltip
-    new Opentip(apparent01.canvas, "Perceived temperature based on temperature, humidity, sun, and wind.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    new Opentip(apparent01.canvas, dict.apparentDescription[lang],  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpA01();
@@ -570,7 +570,7 @@ function setUpTemp01() {
 	tempBar.stage.addChild(tempBar.textDisplay);
 	
     //Set up title
-	tempBar.textTitle = new createjs.Text("Temperature", "0px Arial", "black");
+	tempBar.textTitle = new createjs.Text(dict.temperatureTitle[lang], "0px Arial", "black");
 	tempBar.textTitle.textBaseline = "middle";
 	tempBar.textTitle.textAlign = "center";
 	tempBar.stage.addChild(tempBar.textTitle);
@@ -621,7 +621,7 @@ function initializeTemp01() {
     });
     
     //Creates information tooltip
-    new Opentip(tempBar.canvas, "Current air temperature.\nBlue: Low daily temperature.\nRed: High daily temperature.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    new Opentip(tempBar.canvas, dict.temperatureDescription[lang],  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpTemp01();
@@ -703,7 +703,7 @@ function drawBarometerB01(pressureIn, trendIn, unitChange) {
         if (parseFloat(barometer01.values.trend) != 0.0) {
             barometer01.textDisplayT.text = barometer01.values.trend + units[barometer01.config.unitsIn.toString()][currentUnits[barometer01.config.unitsIn.toString()]][1].toString() + "/hr";
         } else {
-            barometer01.textDisplayT.text = "Steady";
+            barometer01.textDisplayT.text = dict.barometerSteady[lang];
         }
         
         barometer01.valuesOld.pressure = pressureIn;
@@ -804,18 +804,18 @@ function setUpB01() {
 	barometer01.textDisplayP.textAlign = "center";
 	barometer01.stage.addChild(barometer01.textDisplayP);
     
-    barometer01.textDisplayRate = new createjs.Text("Rate:", "0px Arial", "black");
+    barometer01.textDisplayRate = new createjs.Text(dict.barometerRate[lang] + ":", "0px Arial", "black");
 	barometer01.textDisplayRate.textBaseline = "middle";
 	barometer01.textDisplayRate.textAlign = "center";
 	barometer01.stage.addChild(barometer01.textDisplayRate);
     
-    barometer01.textDisplayT = new createjs.Text("Rate:", "0px Arial", "black");
+    barometer01.textDisplayT = new createjs.Text("RATE", "0px Arial", "black");
 	barometer01.textDisplayT.textBaseline = "middle";
 	barometer01.textDisplayT.textAlign = "center";
 	barometer01.stage.addChild(barometer01.textDisplayT);
     
     //Set up text titles
-	barometer01.textTitleBarometer = new createjs.Text("Barometer", "0px Arial", "black");
+	barometer01.textTitleBarometer = new createjs.Text(dict.barometerTitle[lang] , "0px Arial", "black");
 	barometer01.textTitleBarometer.textBaseline = "middle";
 	barometer01.textTitleBarometer.textAlign = "center";
 	barometer01.stage.addChild(barometer01.textTitleBarometer);
@@ -835,7 +835,7 @@ function initializeBarometerB01() {
     
     
     //Creates information tooltip
-    new Opentip(barometer01.canvas, "The weight of the air, adjusted for the station's altitude.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    new Opentip(barometer01.canvas, dict.barometerDescription[lang],  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpB01();
@@ -1259,7 +1259,7 @@ function setUpWC01() {
 	windchill01.stage.addChild(windchill01.textDisplay);
 	
     //Set up title
-	windchill01.textTitle = new createjs.Text("Windchill", "0px Arial", "black");
+	windchill01.textTitle = new createjs.Text(dict.windchillTitle[lang], "0px Arial", "black");
 	windchill01.textTitle.textBaseline = "middle";
 	windchill01.textTitle.textAlign = "center";
 	windchill01.stage.addChild(windchill01.textTitle);
@@ -1310,7 +1310,7 @@ function initializeWC01() {
     });
     
     //Creates information tooltip
-    new Opentip(windchill01.canvas, "How cold it actually feels. Calculated by combining heat and wind speed.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    new Opentip(windchill01.canvas, dict.windchillDescription[lang],  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpWC01();
@@ -2160,7 +2160,7 @@ function setUpHum01() {
 	humidityGauge.textTitle.textBaseline = "middle";
 	humidityGauge.textTitle.textAlign = "center";
 	humidityGauge.stage.addChild(humidityGauge.textTitle);
-	humidityGauge.textTitle.text = "Humidity (%)";
+	humidityGauge.textTitle.text = dict.humidityTitle[lang] + " (%)";
     
     //Set up text labels
 	for (i = 0; i < humidityGauge.largeDashTotal; i++) {
@@ -2199,7 +2199,7 @@ function initializeHum01() {
     
     
     //Creates information tooltip
-    new Opentip(humidityGauge.canvas, "The amount of water vapour in the air as a percentage of the amount the air is capable of holding.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    new Opentip(humidityGauge.canvas, dict.humidityDescription[lang],  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpHum01();
@@ -2289,12 +2289,12 @@ function drawMoonSunMS01(sunRiseIn, sunSetIn, moonRiseIn, moonSetIn, moonPhaseIn
         //Adjust to units (no units for this widget)
 
         //Text Displays
-        moonSun01.textDisplaySR.text = "Rise: " + moonSun01.values.sunRiseIn;
-        moonSun01.textDisplaySS.text = "Set: " + moonSun01.values.sunSetIn;
-        moonSun01.textDisplayMR.text = "Rise: " + moonSun01.values.moonRiseIn;
-        moonSun01.textDisplayMS.text = "Set: " + moonSun01.values.moonSetIn;
-        moonSun01.textDisplayMP.text = "Phase: " + moonSun01.values.moonPhaseIn + "%";
-        moonSun01.textDisplayMA.text = "Age: " + moonSun01.values.moonAgeIn;
+        moonSun01.textDisplaySR.text = dict.moonSunRise[lang] + ": " + moonSun01.values.sunRiseIn;
+        moonSun01.textDisplaySS.text = dict.moonSunSet[lang] + ": " + moonSun01.values.sunSetIn;
+        moonSun01.textDisplayMR.text = dict.moonSunRise[lang] + ": " + moonSun01.values.moonRiseIn;
+        moonSun01.textDisplayMS.text = dict.moonSunSet[lang] + ": " + moonSun01.values.moonSetIn;
+        moonSun01.textDisplayMP.text = dict.moonSunPhase[lang] + ": " + moonSun01.values.moonPhaseIn + "%";
+        moonSun01.textDisplayMA.text = dict.moonSunAge[lang] + ": " + moonSun01.values.moonAgeIn;
         
         moonSun01.valuesOld.sunRiseIn = sunRiseIn;
         moonSun01.valuesOld.sunSetIn = sunSetIn;
@@ -2454,13 +2454,13 @@ function setUpMS01() {
 	moonSun01.stage.addChild(moonSun01.textDisplayMA);
     
     //Set up text titles
-	moonSun01.textTitleSun = new createjs.Text("Sun", "0px Arial", "black");
+	moonSun01.textTitleSun = new createjs.Text(dict.moonSunTitleSun[lang], "0px Arial", "black");
 	moonSun01.textTitleSun.textBaseline = "middle";
 	moonSun01.textTitleSun.textAlign = "center";
 	moonSun01.stage.addChild(moonSun01.textTitleSun);
     
     //Set up text titles
-	moonSun01.textTitleMoon = new createjs.Text("Moon", "0px Arial", "black");
+	moonSun01.textTitleMoon = new createjs.Text(dict.moonSunTitleMoon[lang], "0px Arial", "black");
 	moonSun01.textTitleMoon.textBaseline = "middle";
 	moonSun01.textTitleMoon.textAlign = "center";
 	moonSun01.stage.addChild(moonSun01.textTitleMoon);
@@ -2551,7 +2551,7 @@ var solarBar01 = {
 	},
     config: {
         unitsIn: "solar",
-        title: "Solar",
+        title: dict.solarTitle[lang],
         canvasID: "SolarBar01",
         textMaxLabel: "100%"
     }
@@ -2605,7 +2605,7 @@ function updateTweensSol01() {
     
 	solarBar01.textPercentage.text = solarBar01.values.percentIn.toString() + "%";
     
-	solarBar01.textSunHours.text = "Sun Hours: " + solarBar01.values.sunHoursIn.toString();
+	solarBar01.textSunHours.text = dict.solarSunHours[lang] + ": " + solarBar01.values.sunHoursIn.toString();
 }
 
 function updateTopSol01() {
@@ -2772,7 +2772,7 @@ function initializeSolarBarSol01() {
     });
     
     //Creates information tooltip
-    new Opentip(solarBar01.canvas, "The intensity of the sun's radiation.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    new Opentip(solarBar01.canvas, dict.solarDescription[lang],  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpSol01();
@@ -2834,7 +2834,7 @@ var status01 = {
 function checkDataStatus() {
     //Checks if sucessful data was found
     if (dataCollectErrorCR === true && dataCollectErrorCRE === true && dataCollectErrorCRD === true && dataCollectErrorCRH === true) {
-        //Partial Error
+        //Full Error
         return "Full Error";
     } else if ((dataCollectErrorCR === true || dataCollectErrorCRE === true || dataCollectErrorCRD === true || dataCollectErrorCRH === true) && noDataChanged === true) {
         //Partial Error
@@ -2866,17 +2866,17 @@ function drawStatusS01(statusIn, stationTimeIn) {
     status01.values.time = timeIn;
     //Format Data Status, and set blink colour
     if (dataStatusIn == "Full Error") {
-        status01.values.dataStatus = status01.values.stationName.toString() +  " | No data since: " + status01.values.time.toString();
+        status01.values.dataStatus = status01.values.stationName.toString() +  " | " + dict.statusNoDataSince[lang] + ": " + status01.values.time.toString();
         status01.blinkColour = "rgba(209, 32, 32, 0.9)"; //Same as high temp
     } else if (dataStatusIn == "Partial Error, New Data") {
-        status01.values.dataStatus = status01.values.stationName.toString() +  " | Latest data received at: " + status01.values.time.toString();
+        status01.values.dataStatus = status01.values.stationName.toString() +  " | " + dict.statusDataAt[lang] + ": " + status01.values.time.toString();
         status01.blinkColour = "rgba(234, 242, 45, 0.9)"; //Same as UV
     } else if (dataStatusIn == "Partial Error, No New Data") {
         status01.blinkColour = "rgba(234, 242, 45, 0.9)"; //Same as UV
     } else if (dataStatusIn == "No New Data") {
         status01.blinkColour = status01.blankBlinkColour;
     } else if (dataStatusIn == "Normal") {
-        status01.values.dataStatus = status01.values.stationName.toString() +  " | Latest data received at: " + status01.values.time.toString();
+        status01.values.dataStatus = status01.values.stationName.toString() +  " | " + dict.statusDataAt[lang] + ": " + status01.values.time.toString();
         status01.blinkColour = "rgba(23, 145, 27, 0.9)"; //Same as wind direction
     } else {
         console.log("Invalid dataStatus");
@@ -2991,7 +2991,7 @@ function initializeStatusS01() {
     });
     
     //Creates information tooltip
-    new Opentip(status01.canvas, "Green: New data collected from server.\nGrey: Data on server hasn't changed.\nYellow: Some error during data collection from server.\nRed: No data able to be collected from server.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    new Opentip(status01.canvas, dict.statusDescription[lang],  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpS01();
@@ -3069,7 +3069,7 @@ function setUpTR01() {
 	//Sets up the shapes. Initializses all the varaibles and shapes, and stores the values which need to be adjusted in commands which can be accessed later
     
     //Set up text titles
-	titleRainfall01.textTitleRainfall = new createjs.Text("Rainfall", "0px Arial", "black");
+	titleRainfall01.textTitleRainfall = new createjs.Text(dict.rainfallTitle[lang], "0px Arial", "black");
 	titleRainfall01.textTitleRainfall.textBaseline = "middle";
 	titleRainfall01.textTitleRainfall.textAlign = "center";
 	titleRainfall01.stage.addChild(titleRainfall01.textTitleRainfall);
@@ -3085,7 +3085,7 @@ function initializeTitleRainfallTR01() {
     });
     
     //Creates information tooltip
-    //new Opentip(titleRainfall01.canvas, "Perceived temperature based on temperature, humidity, sun, and wind.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    //new Opentip(titleRainfall01.canvas, "Information",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpTR01();
@@ -3166,9 +3166,8 @@ var uniBar01 = {
 	},
     config: {
         unitsIn: "rainfall",
-        title: "Daily",
-        canvasID: "RainBar1",
-        tickScaler: 1
+        title: dict.rainfallDailyTitle[lang],
+        canvasID: "RainBar1"
     }
 };
 
@@ -3484,9 +3483,8 @@ var uniBar02 = {
 	},
     config: {
         unitsIn: "rainfall",
-        title: "Monthly",
-        canvasID: "RainBar2",
-        tickScaler: 5
+        title: dict.rainfallMonthlyTitle[lang],
+        canvasID: "RainBar2"
     }
 };
 
@@ -3802,9 +3800,8 @@ var uniBar03 = {
 	},
     config: {
         unitsIn: "rainfall",
-        title: "Annual",
-        canvasID: "RainBar3",
-        tickScaler: 5
+        title: dict.rainfallAnnualTitle[lang],
+        canvasID: "RainBar3"
     }
 };
 
