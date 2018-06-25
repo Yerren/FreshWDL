@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml' lang="en">
+
+<head> <!-- Include initially needed CSS -->
+    <link rel="stylesheet" type="text/css" href="https://gitcdn.xyz/cdn/Yerren/FreshWDL/master/css/stylesheet01.css" /> <!--Includes the project's css sheet -->   
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/opentip/2.4.6/css/opentip.css" rel="stylesheet" type="text/css" /> <!--Includes the tooltip's css sheet -->
+    <!-- Modal code must be outside of body so it can be referenced-->
+    <script type="text/javascript" src="https://gitcdn.xyz/cdn/Yerren/FreshWDL/master/UpperContent.js"></script>
+ 	<meta http-equiv="Content-Script-Type" content="javascript" />
+ 	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<title>FreshWDL</title>
+</head>
+	<body onload='initAll();'> <!--Once the page is loaded, start the initialization functions -->
+        <script type="text/javascript" src="https://gitcdn.xyz/cdn/Yerren/FreshWDL/master/InnerContent.js"></script>
+    <!-- Loading Screen Setup -->
+    <div id="loadingScreen">
+        <div id="loadingText">
+            <p id="titleText">FreshWDL</p>
+            <p id="loadingMessage">Collecting Data.</p>
+        </div>       
+    </div>
+   
+    <!-- First script that must be loaded -->
+    <script type="text/javascript" src="https://gitcdn.xyz/cdn/Yerren/FreshWDL/master/js_bundles/Loading.js"></script>
+   
+    <!-- Include remiaing Scripts -->
+    <script type="text/javascript" src="config.js"></script> <!--Includes the local script that sets customisable variables-->
+    <script type="text/javascript" src="https://code.createjs.com/easeljs-0.8.2.min.js"></script> <!--Includes the drawing part of CreateJS: EaselJS-->
+    <script type="text/javascript" src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script> <!--Includes the animation part of CreateJS: TweenJS-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/opentip/2.4.6/downloads/opentip-native.js"></script> <!--Includes the tooltip library: OpenTip-->
+    <script type="text/javascript" src="https://gitcdn.xyz/cdn/Yerren/FreshWDL/master/js_bundles/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script type="text/javascript" src="https://gitcdn.xyz/cdn/Yerren/FreshWDL/master/js_bundles/Globals.js"></script> <!--Includes the script that sets global variables-->
+    <script type="text/javascript" src="https://gitcdn.xyz/cdn/Yerren/FreshWDL/master/js_bundles/WidgetsHandlers.min.js"></script> <!--Includes most of the Scripting-->
+     
+    </body>
+</html>

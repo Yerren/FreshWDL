@@ -1,7 +1,6 @@
 var dict = {
     apparentTitle: {
-        en: "Apparent",
-        du: "Kennelijk"
+        en: "Apparent"
     },
     apparentDescription: {
         en: "Perceived temperature based on temperature, humidity, sun, and wind."
@@ -83,5 +82,152 @@ var dict = {
     },
     rainfallAnnualTitle: {
         en: "Annual"
+    },
+    uvTitle: {
+        en: "UV"
+    },
+    uvDescription: {
+        en:  "The intensity of UV radiation - 0-2 is minimal risk of skin damage whilst 8+ is very high."
+    },
+    windDirectionLabelN: {
+        en: "N"
+    },
+    windDirectionLabelNE: {
+        en: "NE"
+    },
+    windDirectionLabelE: {
+        en: "E"
+    },
+    windDirectionLabelSE: {
+        en: "SE"
+    },
+    windDirectionLabelS: {
+        en: "S"
+    },
+    windDirectionLabelSW: {
+        en: "SW"
+    },
+    windDirectionLabelW: {
+        en: "W"
+    },
+    windDirectionLabelNW: {
+        en: "NW"
+    },
+    windDirectionDescription: {
+        en: "The wind direction. Green arrow indicates average wind direction."
+    },
+    windSpeedMax: {
+        en: "max"
+    },
+    windSpeedTitle: {
+        en: "Wind Speed"
+    },
+    windSpeedWind: {
+        en: "Wind"
+    },
+    windSpeedGust: {
+        en: "Gust"
+    },
+    windSpeedAverage: {
+        en: "Average"
+    },
+    windSpeedDescription: {
+        en: "Green bar indicates average wind speed.\nPurple bar indicates gust speed."
+    },
+    recordsHighTemp: {
+        en: "Highest temperature"
+    },
+    recordsLowTemp: {
+        en: "Lowest temperature"
+    },
+    recordsHighGust: {
+        en: "Highest gust"
+    },
+    recordsHighRainRate: {
+        en: "Highest rain rate"
+    },
+    recordsLowBaro: {
+        en: "Lowest barometer"
+    },
+    recordsHighBaro: {
+        en: "Highest barometer"
+    },
+    recordsHighRainRateDaily: {
+        en: "Highest daily rainfall"
+    },
+    recordsHighRainRateHourly: {
+        en: "Highest hourly rainfall"
+    },
+    recordsHighAverageWind: {
+        en: "Highest average wind speed"
+    },
+    recordsLowWindChill: {
+        en: "Lowest wind chill"
+    },
+    recordsWarmestDay: {
+        en: "Warmest day"
+    },
+    recordsColdestNight: {
+        en: "Coldest night"
+    },
+    recordsColdestDay: {
+        en: "Coldest day"
+    },
+    recordsWarmestNight: {
+        en: "Warmest night"
+    },
+    recordsHighHeatIndex: {
+        en: "Highest heat index"
+    },
+    recordsHighSolar: {
+        en: "Highest solar"
+    },
+    recordsHighUV: {
+        en: "Highest uv index"
+    },
+    recordsHighDewPoint: {
+        en: "Highest dew point"
+    },
+    recordsLowDewPoint: {
+        en: "Lowest dew point"
+    },
+    forcastShowMore: {
+        en: "Show More"
+    },
+    graphMax: {
+        en: "Max"
+    },
+    graphMin: {
+        en: "Min"
+    },
+    graphLast: {        //NOTE: these are used as in: Last XX days, or Last XX Hours, etc.
+        en: "Last"
+    },
+    graphDays: {
+        en: "Days"
+    },
+    graphHours: {
+        en: "Hours"
+    },
+    graphHour: {
+        en: "Hour"
+    },
+    graphYears: {
+        en: "Years"
+    },
+    graphBaroLabel: {
+        en: "Pressure"
+    },
+    graphHumidityLabel: {
+        en: "Percent"
+    },
+    graphSolarLabel: {
+        en: "Irradiance"
+    },
+    graphLabelUV: {
+        en: "Index"
+    },
+    graphLabelWindDirection: {
+        en: "Direction"
     }
-}
+};
