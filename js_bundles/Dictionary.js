@@ -212,6 +212,9 @@ var dict = {
     graphHour: {
         en: "Hour"
     },
+    graphMonths: {
+        en: "Months"
+    },
     graphYears: {
         en: "Years"
     },
@@ -228,6 +231,27 @@ var dict = {
         en: "Index"
     },
     graphLabelWindDirection: {
-        en: "Direction"
+        en: "Wind Direction"
+    },
+    buttonLabelGraphs: {
+        en: "Graphs"
+    },
+    buttonLabelRecords: {
+        en: "Records"
+    },
+    buttonLabelAltitude: {
+        en: "Altitude"
+    },
+    recordsForMonth: {
+        en: "Records for this month"
+    },
+    recordsForYear: {
+        en: "Records for this year"
+    },
+    recordsAllTime: {
+        en: "All time records"
+    },
+    forecastTitle: {
+        en: "Forecast"
     }
 };

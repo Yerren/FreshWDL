@@ -2649,7 +2649,7 @@ function updateTopSol01() {
     //Text Title
 	solarBar01.textTitle.x = solarBar01.setupVars.posTextTitle.x;
 	solarBar01.textTitle.y = solarBar01.setupVars.posTextTitle.y;
-	solarBar01.textTitle.font = "bold " + solarBar01.setupVars.textTitleSize + "px arial;
+	solarBar01.textTitle.font = "bold " + solarBar01.setupVars.textTitleSize + "px arial";
     
     //Text Max Label
 	solarBar01.textMaxLabel.x = solarBar01.setupVars.posTextMaxLabel.x;
@@ -5705,6 +5705,9 @@ function resizeDivFor01() {
 function forecastInitFor01() {
     forecast.displayDiv = document.getElementById("forecastText");
     forecast.modalForecastDiv = document.getElementById("modalForecastDiv");
+    forecast.headerText = document.getElementById("forecastHeaderText");
+    
+    forecast.headerText.innerHTML = useDict("forecastTitle");
     
     window.addEventListener("clientRawExtraDataUpdate", function () {
         formatAndDisplayForecastFor01(arrayClientrawExtra[531]);
@@ -5836,6 +5839,27 @@ function recordsInitRe01() {
     records.modalRecordsDiv = document.getElementById("modalRecordsDiv");
     records.button = document.getElementById("RecordsButton");
     records.table = document.getElementById("recordsTable");
+    records.headerText = document.getElementById("recordsHeaderText");
+    records.selectMenu = document.getElementById("selectMenuRecords");
+    
+    records.headerText.innerHTML = useDict("buttonLabelRecords");
+    
+    //Set up drop down menu
+    var option1 = document.createElement("option"),
+        option2 = document.createElement("option"),
+        option3 = document.createElement("option");
+    
+    option1.text = useDict("recordsForMonth");
+    option2.text = useDict("recordsForYear");
+    option3.text = useDict("recordsAllTime");
+    
+    option1.value = 0;
+    option2.value = 1;
+    option3.value = 2;
+    
+    records.selectMenu.add(option1);
+    records.selectMenu.add(option2);
+    records.selectMenu.add(option3);
     
     window.addEventListener("clientRawExtraDataUpdate", function () {
         processRecordsData(recordsDict[2], 313, 684);
@@ -6232,6 +6256,13 @@ function initializeButtons() {
     buttons.temp = document.getElementById("TempButton");
     buttons.records = document.getElementById("RecordsButton");
     
+    buttons.altitude.innerHTML = useDict("buttonLabelAltitude");
+    buttons.pressure.innerHTML = useDict("graphBaroLabel");
+    buttons.wind.innerHTML = useDict("windSpeedWind");
+    buttons.rainfall.innerHTML = useDict("rainfallTitle");
+    buttons.temp.innerHTML = useDict("temperatureTitle");
+    buttons.records.innerHTML = useDict("buttonLabelRecords");
+    
     buttons.altitude.addEventListener('click', function() {changeUnit("altitude"); }, false);
     buttons.pressure.addEventListener('click', function() {changeUnit("pressure"); }, false);
     buttons.wind.addEventListener('click', function() {changeUnit("wind"); }, false);
@@ -6340,6 +6371,7 @@ function initModalHandler() {
     }, false);
     
     modal.button = document.getElementById("GraphsButton");
+    modal.button.innerHTML = useDict("buttonLabelGraphs");
     modal.button.addEventListener('click', function() {
         modal.selectMenu.value = "barometerhourlyDay";
         modal.modal.style.display = "block";

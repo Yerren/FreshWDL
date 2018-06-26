@@ -5,7 +5,8 @@ if (typeof lang === "undefined") {
     lang = "en";
 }
 
-//TODO: SET MOMENT.JS LANGAUGE HERE
+//Set Moment.js Langauge
+moment.locale(lang);
 
 function useDict(wordIn) {
     //If the word doesn't exist (incorrect wordIn), return an error
@@ -341,7 +342,7 @@ var globalGraphs = {
         },
         graphs: {
             dailyMonth: {
-                title: useDict("windDirectionTitle") + " " + useDict("graphLast") + " " + "31" +  " " + useDict("graphDays"),
+                title: useDict("graphLabelWindDirection") + " " + useDict("graphLast") + " " + "31" +  " " + useDict("graphDays"),
                 timestamp: "timestampDay",
                 data: ["windDirDays31"],
                 timeDisplay: "day",
@@ -349,21 +350,21 @@ var globalGraphs = {
                 
             },
             hourlyDay: {
-                title: useDict("windDirectionTitle") + " " + useDict("graphLast") + " " + "24" + " " + useDict("graphHours"),
+                title: useDict("graphLabelWindDirection") + " " + useDict("graphLast") + " " + "24" + " " + useDict("graphHours"),
                 timestamp: "timestampHour",
                 data: ["windDirHours24"],
                 timeDisplay: "hour",
                 legendOptions: {}
             },
             quarterDailyWeek: {
-                title: useDict("windDirectionTitle") + " " + useDict("graphLast") + " " + "7" + " " + useDict("graphDays"),
+                title: useDict("graphLabelWindDirection") + " " + useDict("graphLast") + " " + "7" + " " + useDict("graphDays"),
                 timestamp: "timestampQuarterDay",
                 data: ["windDirQuarterDays28"],
                 timeDisplay: "day",
                 legendOptions: {}
             },
             minutlyHour: {
-                title: useDict("windDirectionTitle") + " " + useDict("graphLast") + " " + useDict("graphHour"),
+                title: useDict("graphLabelWindDirection") + " " + useDict("graphLast") + " " + useDict("graphHour"),
                 timestamp: "timestampMinute",
                 data: ["windDirMinutes60"],
                 timeDisplay: "minute",
@@ -402,12 +403,12 @@ var globalGraphs = {
                 legendOptions: {}
             },
             minutlyHour: {
-                title: useDict("windDirectionTitle") + " " + useDict("graphLast") + " " + useDict("graphHour"),
+                title: useDict("graphLabelWindDirection") + " " + useDict("graphLast") + " " + useDict("graphHour"),
                 timestamp: "timestampMinute",
                 data: ["windSpeedMinutes60", "windGustMinutes60"],
                 timeDisplay: "minute",
                 additionalStyles: ["windGust"],
-                legendLabels: [useDict("windSpeedAverage"), useDict("WindSpeedGust")],
+                legendLabels: [useDict("windSpeedAverage"), useDict("windSpeedGust")],
                 legendOptions: {
                     display: true
                 }

@@ -6,7 +6,7 @@ document.write('\
         <div class="modal-content">\
             <div id="recordsHeader" class="modal-header">\
                 <span id="recordsClose" class="close">&#215</span>\
-                <h2 id="recordsHeaderText" class="header-text">Records</h2>\
+                <h2 id="recordsHeaderText" class="header-text"></h2>\
             </div>\
             <div id="modalRecordsDiv">\
                 <table id="recordsTable">\
@@ -16,9 +16,6 @@ document.write('\
                 <h3 class="footer-text"></h3>\
                 <div class="select-style">\
                     <select id="selectMenuRecords" onchange="changeCurrentOptionRe01(this.value);">\
-                        <option value=0>Records for this month</option>\
-                        <option value=1>Records for this year</option>\
-                        <option value=2>All time records</option>\
                     </select>\
                 </div>\
             </div>\
@@ -32,7 +29,7 @@ document.write('\
         <div class="modal-content">\
             <div id="forecastHeader" class="modal-header">\
                 <span id="forecastClose" class="close">&#215</span>\
-                <h2 id="forecastHeaderText" class="header-text">Forecast</h2>\
+                <h2 id="forecastHeaderText" class="header-text"></h2>\
             </div>\
             <div id="modalForecastDiv">\
             </div>\

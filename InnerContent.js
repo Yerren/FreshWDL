@@ -49,13 +49,13 @@ document.write('\
             </div>\
         </div>\
         <div id="bottom" class="widgetContainer">\
-            <button style="display: none;" id="AltitudeButton" class="buttons">Altitude</button>\
-            <button id="PressureButton" class="buttons">Pressure</button>\
-            <button id="WindButton" class="buttons">Wind</button>\
-            <button id="RainfallButton" class="buttons">Rainfall</button>\
-            <button id="TempButton" class="buttons">Temp</button>\
-            <button id="RecordsButton" class="buttons">Records</button>\
-            <button id="GraphsButton" class="buttons">Graphs</button>\
+            <button style="display: none;" id="AltitudeButton" class="buttons"></button>\
+            <button id="PressureButton" class="buttons"></button>\
+            <button id="WindButton" class="buttons"></button>\
+            <button id="RainfallButton" class="buttons"></button>\
+            <button id="TempButton" class="buttons"></button>\
+            <button id="RecordsButton" class="buttons"></button>\
+            <button id="GraphsButton" class="buttons"></button>\
         </div>\
     </div>\
     <div id="Version" style="float: right; font-size: 0.8em;"> <p>yerren@renerica.com</p></div>\
