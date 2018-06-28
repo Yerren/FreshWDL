@@ -1040,7 +1040,7 @@ function updateTopWC01() {
     windchill01.setupVars.cornerFillRad = windchill01.setupVars.barFillWidth / 2;
     windchill01.setupVars.strokeSize = windchill01.setupVars.barWidth / 40;
     windchill01.setupVars.textSize = windchill01.canvas.height / 17;
-    windchill01.setupVars.textDisplaySize = windchill01.canvas.height / 19;
+    windchill01.setupVars.textDisplaySize = windchill01.canvas.height / 22;
 	windchill01.setupVars.textHLSize = windchill01.canvas.height / 21;
 	windchill01.setupVars.minHLspace = 0.04;
     windchill01.setupVars.posBar = {
@@ -2589,7 +2589,7 @@ function updateTopSol01() {
     solarBar01.setupVars.barFillHeight = solarBar01.setupVars.barHeight;
     solarBar01.setupVars.strokeSize = solarBar01.setupVars.barWidth / 40;
     solarBar01.setupVars.textDisplaySize = solarBar01.canvas.height / 20;
-    solarBar01.setupVars.textTitleSize = solarBar01.canvas.height / 15;
+    solarBar01.setupVars.textTitleSize = solarBar01.canvas.height / 23;
     solarBar01.setupVars.textMaxLabelSize = solarBar01.canvas.height / 19;
     solarBar01.setupVars.posBar = {
         x: ((solarBar01.canvas.height / 2) - (solarBar01.setupVars.barWidth / 2)),
@@ -3209,7 +3209,7 @@ function updateTopUni01() {
     uniBar01.setupVars.strokeSize = uniBar01.setupVars.barWidth / 40;
     uniBar01.setupVars.textSize = uniBar01.canvas.height / 17;
     uniBar01.setupVars.textDisplaySize = uniBar01.canvas.height / 19;
-    uniBar01.setupVars.textTitleSize = uniBar01.canvas.height / 15;
+    uniBar01.setupVars.textTitleSize = uniBar01.canvas.height / 17;
     uniBar01.setupVars.posBar = {
         x: ((uniBar01.canvas.height / 2) - (uniBar01.setupVars.barWidth / 2)),
         y: ((uniBar01.canvas.height / 2) - (uniBar01.setupVars.barHeight / 2))
@@ -3521,7 +3521,7 @@ function updateTopUni02() {
     uniBar02.setupVars.strokeSize = uniBar02.setupVars.barWidth / 40;
     uniBar02.setupVars.textSize = uniBar02.canvas.height / 17;
     uniBar02.setupVars.textDisplaySize = uniBar02.canvas.height / 19;
-    uniBar02.setupVars.textTitleSize = uniBar02.canvas.height / 15;
+    uniBar02.setupVars.textTitleSize = uniBar02.canvas.height / 17;
     uniBar02.setupVars.posBar = {
         x: ((uniBar02.canvas.height / 2) - (uniBar02.setupVars.barWidth / 2)),
         y: ((uniBar02.canvas.height / 2) - (uniBar02.setupVars.barHeight / 2))
@@ -3833,7 +3833,7 @@ function updateTopUni03() {
     uniBar03.setupVars.strokeSize = uniBar03.setupVars.barWidth / 40;
     uniBar03.setupVars.textSize = uniBar03.canvas.height / 17;
     uniBar03.setupVars.textDisplaySize = uniBar03.canvas.height / 19;
-    uniBar03.setupVars.textTitleSize = uniBar03.canvas.height / 15;
+    uniBar03.setupVars.textTitleSize = uniBar03.canvas.height / 17;
     uniBar03.setupVars.posBar = {
         x: ((uniBar03.canvas.height / 2) - (uniBar03.setupVars.barWidth / 2)),
         y: ((uniBar03.canvas.height / 2) - (uniBar03.setupVars.barHeight / 2))
@@ -4106,7 +4106,7 @@ function updateTopUV01() {
     uvBar01.setupVars.barFillHeight = uvBar01.setupVars.barHeight;
     uvBar01.setupVars.strokeSize = uvBar01.setupVars.barWidth / 40;
     uvBar01.setupVars.textDisplaySize = uvBar01.canvas.height / 19;
-    uvBar01.setupVars.textTitleSize = uvBar01.canvas.height / 15;
+    uvBar01.setupVars.textTitleSize = uvBar01.canvas.height / 23;
     uvBar01.setupVars.textMaxLabelSize = uvBar01.canvas.height / 19;
     uvBar01.setupVars.posBar = {
         x: ((uvBar01.canvas.height / 2) - (uvBar01.setupVars.barWidth / 2)),
