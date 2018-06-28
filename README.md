@@ -19,7 +19,7 @@ You should now be good to go! Simply navigate to the html page in any web browse
 
 ## Language
 - Currently FreshWDL supports English, and Dutch.
-- *To set the language:* set the *lang* field in your config file to one of: en (English), nl (Dutch);
+- **To set the language:** set the **lang** field in your config file to one of: en (English), nl (Dutch);
 - If you want to help translate the system into your language, please don't hesitate to get in touch!
 
 ## Troubleshooting
