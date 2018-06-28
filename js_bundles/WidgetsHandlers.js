@@ -2795,7 +2795,8 @@ var status01 = {
         status: null,
         dataStatus: null,
         stationName: null,
-        time: null
+        time: null,
+        stationDate: null
 	},
     config: {
         canvasID: "Status01"
@@ -2822,7 +2823,7 @@ function checkDataStatus() {
     }
 }
 
-function drawStatusS01(statusIn, stationTimeIn) {
+function drawStatusS01(statusIn, stationTimeIn, stationDateIn) {
     //Is called when new data is sent.
     
     var dataStatusIn = checkDataStatus(),
@@ -2835,19 +2836,20 @@ function drawStatusS01(statusIn, stationTimeIn) {
     status01.values.status = statusIn.replace(/_/g, " ");
     status01.values.stationName = stationNameIn.replace(/_/g, " ");
     status01.values.time = timeIn;
+    status01.values.stationDate = stationDateIn;
     //Format Data Status, and set blink colour
     if (dataStatusIn == "Full Error") {
-        status01.values.dataStatus = status01.values.stationName.toString() +  " | " + useDict("statusNoDataSince") + ": " + status01.values.time.toString();
+        status01.values.dataStatus = status01.values.stationName.toString() +  " | " + useDict("statusNoDataSince") + ": " + status01.values.time.toString() + " | " + status01.values.stationDate.toString();
         status01.blinkColour = "rgba(209, 32, 32, 0.9)"; //Same as high temp
     } else if (dataStatusIn == "Partial Error, New Data") {
-        status01.values.dataStatus = status01.values.stationName.toString() +  " | " + useDict("statusDataAt") + ": " + status01.values.time.toString();
+        status01.values.dataStatus = status01.values.stationName.toString() +  " | " + useDict("statusDataAt") + ": " + status01.values.time.toString() + " | " + status01.values.stationDate.toString();
         status01.blinkColour = "rgba(234, 242, 45, 0.9)"; //Same as UV
     } else if (dataStatusIn == "Partial Error, No New Data") {
         status01.blinkColour = "rgba(234, 242, 45, 0.9)"; //Same as UV
     } else if (dataStatusIn == "No New Data") {
         status01.blinkColour = status01.blankBlinkColour;
     } else if (dataStatusIn == "Normal") {
-        status01.values.dataStatus = status01.values.stationName.toString() +  " | " + useDict("statusDataAt") + ": " + status01.values.time.toString();
+        status01.values.dataStatus = status01.values.stationName.toString() +  " | " + useDict("statusDataAt") + ": " + status01.values.time.toString() + " | " + status01.values.stationDate.toString();
         status01.blinkColour = "rgba(23, 145, 27, 0.9)"; //Same as wind direction
     } else {
         console.log("Invalid dataStatus");
@@ -5435,11 +5437,11 @@ function tryUpdateWidgets() {
             if (arrayClientraw.equals(arrayClientrawOld) === true && arrayClientrawExtra.equals(arrayClientrawExtraOld) === true && arrayClientrawDaily.equals(arrayClientrawDailyOld) === true && arrayClientrawHour.equals(arrayClientrawHourOld) === true) {
                 noDataChanged = true;
                 
-                drawStatusS01(arrayClientraw[49], arrayClientraw[32]); //Status widget must always be updated
+                drawStatusS01(arrayClientraw[49], arrayClientraw[32], arrayClientraw[74]); //Status widget must always be updated
             } else {
                 noDataChanged = false;
                 
-                drawStatusS01(arrayClientraw[49], arrayClientraw[32]); //Status widget must always be updated
+                drawStatusS01(arrayClientraw[49], arrayClientraw[32], arrayClientraw[74]); //Status widget must always be updated
                 
                 if (arrayClientraw.equals(arrayClientrawOld) === false) {
                     arrayClientrawOld = arrayClientraw;
