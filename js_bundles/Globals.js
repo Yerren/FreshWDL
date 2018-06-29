@@ -12,7 +12,7 @@ moment.locale(lang);
 var dict = {
     apparentTitle: {
         en: "Apparent",
-        nl: "Schijnbaar"
+        nl: "Gevoel"
     },
     apparentDescription: {
         en: "Perceived temperature based on temperature, humidity, sun, and wind.",
@@ -288,7 +288,7 @@ var dict = {
     },
     graphHours: {
         en: "Hours",
-        nl: "Uren"
+        nl: "Uur"
     },
     graphHour: {
         en: "Hour",
@@ -297,10 +297,6 @@ var dict = {
     graphMonths: {
         en: "Months",
         nl: "Maanden"
-    },
-    graphYears: {
-        en: "Years",
-        nl: "Jaren"
     },
     graphBaroLabel: {
         en: "Pressure",

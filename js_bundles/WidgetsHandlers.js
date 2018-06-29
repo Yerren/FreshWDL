@@ -3223,7 +3223,7 @@ function updateTopUni01() {
         y: uniBar01.setupVars.barHeight * (201 / 170)
     };
     uniBar01.setupVars.posTextTitle = {
-        x: uniBar01.setupVars.posBar.x,
+        x: uniBar01.setupVars.posBar.x * (9/10),
         y: uniBar01.setupVars.barHeight * (1 / 17)
     };
     uniBar01.setupVars.posFillBar = {
@@ -3535,7 +3535,7 @@ function updateTopUni02() {
         y: uniBar02.setupVars.barHeight * (201 / 170)
     };
     uniBar02.setupVars.posTextTitle = {
-        x: uniBar02.setupVars.posBar.x,
+        x: uniBar02.setupVars.posBar.x * (9/10),
         y: uniBar02.setupVars.barHeight * (1 / 17)
     };
     uniBar02.setupVars.posFillBar = {
@@ -3847,7 +3847,7 @@ function updateTopUni03() {
         y: uniBar03.setupVars.barHeight * (201 / 170)
     };
     uniBar03.setupVars.posTextTitle = {
-        x: uniBar03.setupVars.posBar.x,
+        x: uniBar03.setupVars.posBar.x * (9/10),
         y: uniBar03.setupVars.barHeight * (1 / 17)
     };
     uniBar03.setupVars.posFillBar = {
