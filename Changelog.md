@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## 1.1.6 Alpha 2018-06-28
+
+#### Added
+- Support for other langauges. (Note: please get in touch if you want to help with translating!)
+- The date supplied by the clientraw file now displays in status guage.
+
+#### Changes
+- Rain gauge ticks reworked
+- HTML now W3C valid
+
+#### Fixed
+- Issue with "-" character in station name
+- Tweens (animations) no longer gitch if overidden by other animations
+
+## 1.1.5 Alpha
+(Only used internally)
+
 ## 1.1.4 Alpha 2018-01-17
 
 #### Changes

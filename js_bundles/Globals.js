@@ -1,5 +1,373 @@
 /*jslint plusplus: true, sloppy: true, indent: 4 */
 
+//Check to see if a langauge was set in the config file, if it isn't, set to default (English).
+if (typeof lang === "undefined") {
+    lang = "en";
+}
+
+//Set Moment.js Langauge
+moment.locale(lang);
+
+//Dictionary
+var dict = {
+    apparentTitle: {
+        en: "Apparent",
+        nl: "Schijnbaar"
+    },
+    apparentDescription: {
+        en: "Perceived temperature based on temperature, humidity, sun, and wind.",
+        nl: "Waargenomen temperatuur gebaseerd op de temperatuur, vochtigheid, zon en wind."
+    },
+    temperatureTitle: {
+        en: "Temperature",
+        nl: "Temperatuur"
+    },
+    temperatureDescription: {
+        en: "Current air temperature.\nBlue: Low daily temperature.\nRed: High daily temperature.",
+        nl: "Huidige luchttemperatuur. \nBlauw: Minimum dagelijkse temperatuur. \nRood: Maximum dagelijkse temperatuur."
+    },
+    barometerSteady: {
+        en: "Steady",
+        nl: "Bestendig"
+    },
+    barometerRate: {
+        en: "Rate",
+        nl: "Snelheid"
+    },
+    barometerTitle: {
+        en: "Barometer",
+        nl: "Barometer"
+    },
+    barometerDescription: {
+        en: "The weight of the air, adjusted for the station's altitude.",
+        nl: "Het gewicht van de lucht, aangepast naar de hoogte van het weerstation."
+    },
+    windchillTitle: {
+        en: "Windchill",
+        nl: "Gevoelstemperatuur"
+    },
+    windchillDescription: {
+        en: "How cold it actually feels. Calculated by combining heat and wind speed.",
+        nl: "Hoe koud het daadwerkelijk aanvoelt. Wordt berekend door een combinatie van temperatuur en windsnelheid."
+    },
+    humidityTitle: {
+        en: "Humidity",
+        nl: "Vochtigheid"
+    },
+    humidityDescription: {
+        en: "The amount of water vapour in the air as a percentage of the amount the air is capable of holding.",
+        nl: "De hoeveelheid verdampt water in de lucht als een percentage van de hoeveelheid lucht dat in staat is om vocht vast te houden."
+    },
+    moonSunRise: {
+        en: "Rise",
+        nl: "Opkomst"
+    },
+    moonSunSet: {
+        en: "Set",
+        nl: "Ondergang"
+    },
+    moonSunPhase: {
+        en: "Phase",
+        nl: "Fase"
+    },
+    moonSunAge: {
+        en: "Age",
+        nl: "Leeftijd"
+    },
+    moonSunTitleSun: {
+        en: "Sun",
+        nl: "Zon"
+    },
+    moonSunTitleMoon: {
+        en: "Moon",
+        nl: "Maan"
+    },
+    solarTitle: {
+        en: "Solar",
+        nl: "Zonkracht"
+    },
+    solarSunHours: {
+        en: "Sun Hours",
+        nl: "Zonuren"
+    },
+    solarDescription: {
+        en: "The intensity of the sun's radiation.",
+        nl: "De intensiteit van de straling van de zon."
+    },
+    statusNoDataSince: {
+        en: "No data since",
+        nl: "Geen data sinds"
+    },
+    statusDataAt: {
+        en: "Latest data received at",
+        nl: "Laatste data ontvangen op"
+    },
+    statusDescription: {
+        en: "Green: New data collected from server.\nGrey: Data on server hasn't changed.\nYellow: Some error during data collection from server.\nRed: No data able to be collected from server.",
+        nl: "Groen: Nieuwe data ontvangen van server. \nGrijs: Data op server is niet veranderd. \nGeel: Een foutmelding tijdens de ontvangst van de data van de server. \nRood: Geen data beschikbaar om te ontvangen van de server."
+    },
+    rainfallTitle: {
+        en: "Rainfall",
+        nl: "Regen"
+    },
+    rainfallDailyTitle: {
+        en: "Daily",
+        nl: "Dagelijks"
+    },
+    rainfallMonthlyTitle: {
+        en: "Monthly",
+        nl: "Maandelijks"
+    },
+    rainfallAnnualTitle: {
+        en: "Annual",
+        nl: "Jaarlijks"
+    },
+    uvTitle: {
+        en: "UV",
+        nl: "UV"
+    },
+    uvDescription: {
+        en:  "The intensity of UV radiation - 0-2 is minimal risk of skin damage whilst 8+ is very high.",
+        nl: "De intensiteit van de UV straling - 0-2 is een minimaal risico op huidschade terwijl 8+ een hoog risico vormt."
+    },
+    windDirectionLabelN: {
+        en: "N",
+        nl: "N"
+    },
+    windDirectionLabelNE: {
+        en: "NE",
+        nl: "NO"
+    },
+    windDirectionLabelE: {
+        en: "E",
+        nl: "O"
+    },
+    windDirectionLabelSE: {
+        en: "SE",
+        nl: "ZO"
+    },
+    windDirectionLabelS: {
+        en: "S",
+        nl: "Z"
+    },
+    windDirectionLabelSW: {
+        en: "SW",
+        nl: "ZW"
+    },
+    windDirectionLabelW: {
+        en: "W",
+        nl: "W"
+    },
+    windDirectionLabelNW: {
+        en: "NW",
+        nl: "NW"
+    },
+    windDirectionDescription: {
+        en: "The wind direction. Green arrow indicates average wind direction.",
+        nl: "De windrichting. De groene pijl geeft de gemiddelde windrichting aan."
+    },
+    windSpeedMax: {
+        en: "max",
+        nl: "Max"
+    },
+    windSpeedTitle: {
+        en: "Wind Speed",
+        nl: "Windsnelheid"
+    },
+    windSpeedWind: {
+        en: "Wind",
+        nl: "Wind"
+    },
+    windSpeedGust: {
+        en: "Gust",
+        nl: "Vlaag"
+    },
+    windSpeedAverage: {
+        en: "Average",
+        nl: "Gemiddeld"
+    },
+    windSpeedDescription: {
+        en: "Green bar indicates average wind speed.\nPurple bar indicates gust speed.",
+        nl: "Groene balk geeft de gemiddelde windsnelheid aan. \nPaarse balk geeft de windsnelheid in vlagen aan."
+    },
+    recordsHighTemp: {
+        en: "Highest temperature",
+        nl: "Hoogste temperatuur"
+    },
+    recordsLowTemp: {
+        en: "Lowest temperature",
+        nl: "Laagste temperatuur"
+    },
+    recordsHighGust: {
+        en: "Highest gust",
+        nl: "Sterkste vlaag"
+    },
+    recordsHighRainRate: {
+        en: "Highest rain rate",
+        nl: "Hoogste hoeveelheid regen"
+    },
+    recordsLowBaro: {
+        en: "Lowest barometer",
+        nl: "Laagste stand barometer"
+    },
+    recordsHighBaro: {
+        en: "Highest barometer",
+        nl: "Hoogste stand barometer"
+    },
+    recordsHighRainRateDaily: {
+        en: "Highest daily rainfall",
+        nl: "Hoogste dagelijkse hoeveelheid regen"
+    },
+    recordsHighRainRateHourly: {
+        en: "Highest hourly rainfall",
+        nl: "Hoogste hoeveelheid regen per uur"
+    },
+    recordsHighAverageWind: {
+        en: "Highest average wind speed",
+        nl: "Hoogste gemiddelde windsnelheid"
+    },
+    recordsLowWindChill: {
+        en: "Lowest wind chill",
+        nl: "Laagste gevoelstemperatuur"
+    },
+    recordsWarmestDay: {
+        en: "Warmest day",
+        nl: "Warmste dag"
+    },
+    recordsColdestNight: {
+        en: "Coldest night",
+        nl: "Koudste nacht"
+    },
+    recordsColdestDay: {
+        en: "Coldest day",
+        nl: "Koudste dag"
+    },
+    recordsWarmestNight: {
+        en: "Warmest night",
+        nl: "Warmste nacht"
+    },
+    recordsHighHeatIndex: {
+        en: "Highest heat index",
+        nl: "Hoogste warmte index"
+    },
+    recordsHighSolar: {
+        en: "Highest solar",
+        nl: "Hoogste zonkracht"
+    },
+    recordsHighUV: {
+        en: "Highest uv index",
+        nl: "Hoogste uv index"
+    },
+    recordsHighDewPoint: {
+        en: "Highest dew point",
+        nl: "Hoogste dauwpunt"
+    },
+    recordsLowDewPoint: {
+        en: "Lowest dew point",
+        nl: "Laagste dauwpunt"
+    },
+    forcastShowMore: {
+        en: "Show More",
+        nl: "Toon meer"
+    },
+    graphMax: {
+        en: "Max",
+        nl: "Max"
+    },
+    graphMin: {
+        en: "Min",
+        nl: "Min",
+    },
+    graphLast: {        //NOTE: these are used as in: Last XX days, or Last XX Hours, etc.
+        en: "Last",
+        nl: "Laatste"
+    },
+    graphDays: {
+        en: "Days",
+        nl: "Dagen"
+    },
+    graphHours: {
+        en: "Hours",
+        nl: "Uren"
+    },
+    graphHour: {
+        en: "Hour",
+        nl: "Uur"
+    },
+    graphMonths: {
+        en: "Months",
+        nl: "Maanden"
+    },
+    graphYears: {
+        en: "Years",
+        nl: "Jaren"
+    },
+    graphBaroLabel: {
+        en: "Pressure",
+        nl: "Luchtdruk"
+    },
+    graphHumidityLabel: {
+        en: "Percent",
+        nl: "Procent"
+    },
+    graphSolarLabel: {
+        en: "Irradiance",
+        nl: "Instraling"
+    },
+    graphLabelUV: {
+        en: "Index",
+        nl: "Index"
+    },
+    graphLabelWindDirection: {
+        en: "Wind Direction",
+        nl: "Windrichting"
+    },
+    buttonLabelGraphs: {
+        en: "Graphs",
+        nl: "Grafieken"
+    },
+    buttonLabelRecords: {
+        en: "Records",
+        nl: "Records"
+    },
+    buttonLabelAltitude: {
+        en: "Altitude",
+        nl: "Hoogte"
+    },
+    recordsForMonth: {
+        en: "Records for this month",
+        nl: "Records voor deze maand"
+    },
+    recordsForYear: {
+        en: "Records for this year",
+        nl: "Records voor dit jaar"
+    },
+    recordsAllTime: {
+        en: "All time records",
+        nl: "Records aller tijden"
+    },
+    forecastTitle: {
+        en: "Forecast",
+        nl: "Voorspelling"
+    }
+};
+
+//Fetch string from dictionary
+function useDict(wordIn) {
+    //If the word doesn't exist (incorrect wordIn), return an error
+    if(typeof dict[wordIn] === "undefined") {
+        console.error("WORD NOT FOUND IN DICTIONARY");
+        return " ";
+    }
+    
+    //If the word doesn't exist in dictionary file for a given langauge, return it in the default langauge (English)
+    if(typeof dict[wordIn][lang] === "undefined") {
+        console.log("WORD NOT FOUND IN LANGUAGE. DEFAULTING TO ENGLISH");
+        return dict[wordIn]["en"];
+    }
+    return dict[wordIn][lang];
+}
+
 //Sets GLOBAL variables
 //Customizables
 var globalFontFamily = "Arial", //The font used throughout the page
@@ -127,7 +495,7 @@ var globalFontFamily = "Arial", //The font used throughout the page
 //All graphs (to be included in drop down modal menu) and their properties
 var globalGraphs = {
     barometer: {
-        label: "Pressure",
+        label: useDict("graphBaroLabel"),
         unit: "pressure",
         style: "barometer",
         graphType: "line",
@@ -136,28 +504,28 @@ var globalGraphs = {
         },
         graphs: {
             dailyMonth: {
-                title: "Barometer Last 31 Days",
+                title: useDict("barometerTitle") + " " + useDict("graphLast") + " " + "31" +  " " + useDict("graphDays"),
                 timestamp: "timestampDay",
                 data: ["baroDays31"],
                 timeDisplay: "day",
                 legendOptions: {}
             },
             hourlyDay: {
-                title: "Barometer Last 24 Hours",
+                title: useDict("barometerTitle") + " " + useDict("graphLast") + " " + "24" + " " + useDict("graphHours"),
                 timestamp: "timestampHour",
                 data: ["baroHours24"],
                 timeDisplay: "hour",
                 legendOptions: {}
             },
             quarterDailyWeek: {
-                title: "Barometer Last 7 Days",
+                title: useDict("barometerTitle") + " " + useDict("graphLast") + " " + "7" + " " + useDict("graphDays"),
                 timestamp: "timestampQuarterDay",
                 data: ["baroQuarterDays28"],
                 timeDisplay: "day",
                 legendOptions: {}
             },
             minutlyHour: {
-                title: "Barometer Last Hour",
+                title: useDict("barometerTitle") + " " + useDict("graphLast") + " " + useDict("graphHour"),
                 timestamp: "timestampMinute",
                 data: ["baroMinutes60"],
                 timeDisplay: "minute",
@@ -166,7 +534,7 @@ var globalGraphs = {
         }
     },
     humidity: {
-        label: "Percent",
+        label: useDict("graphHumidityLabel"),
         unit: "humidity",
         style: "humidity",
         graphType: "line",
@@ -177,28 +545,28 @@ var globalGraphs = {
         },
         graphs: {
             dailyMonth: {
-                title: "Humidity Last 31 Days",
+                title: useDict("humidityTitle") + " " + useDict("graphLast") + " " + "31" +  " " + useDict("graphDays"),
                 timestamp: "timestampDay",
                 data: ["humidityDays31"],
                 timeDisplay: "day",
                 legendOptions: {}
             },
             hourlyDay: {
-                title: "Humidity Last 24 Hours",
+                title: useDict("humidityTitle") + " " + useDict("graphLast") + " " + "24" + " " + useDict("graphHours"),
                 timestamp: "timestampHour",
                 data: ["humidityHours24"],
                 timeDisplay: "hour",
                 legendOptions: {}
             },
             quarterDailyWeek: {
-                title: "Humidity Last 7 Days",
+                title: useDict("humidityTitle") + " " + useDict("graphLast") + " " + "7" + " " + useDict("graphDays"),
                 timestamp: "timestampQuarterDay",
                 data: ["humidityQuarterDays28"],
                 timeDisplay: "day",
                 legendOptions: {}
             },
             minutlyHour: {
-                title: "Humidity Last Hour",
+                title: useDict("humidityTitle") + " " + useDict("graphLast") + " " + useDict("graphHour"),
                 timestamp: "timestampMinute",
                 data: ["humidityMinutes60"],
                 timeDisplay: "minute",
@@ -207,7 +575,7 @@ var globalGraphs = {
         }
     },
     solar: {
-        label: "Irradiance",
+        label: useDict("graphSolarLabel"),
         unit: "solar",
         style: "solar",
         graphType: "line",
@@ -216,21 +584,21 @@ var globalGraphs = {
         },
         graphs: {
             hourlyDay: {
-                title: "Solar Last 24 Hours",
+                title: useDict("solarTitle") + " " + useDict("graphLast") + " " + "24" + " " + useDict("graphHours"),
                 timestamp: "timestampHour",
                 data: ["solarHours24"],
                 timeDisplay: "hour",
                 legendOptions: {}
             },
             quarterDailyWeek: {
-                title: "Solar Last 7 Days",
+                title: useDict("solarTitle") + " " + useDict("graphLast") + " " + "7" + " " + useDict("graphDays"),
                 timestamp: "timestampQuarterDay",
                 data: ["solarQuarterDays28"],
                 timeDisplay: "day",
                 legendOptions: {}
             },
             minutlyHour: {
-                title: "Solar Last Hour",
+                title: useDict("solarTitle") + " " + useDict("graphLast") + " " + useDict("graphHour"),
                 timestamp: "timestampMinute",
                 data: ["solarMinutes60"],
                 timeDisplay: "minute",
@@ -239,7 +607,7 @@ var globalGraphs = {
         }
     },
     temp: {
-        label: "Temperature",
+        label: useDict("temperatureTitle"),
         unit: "temp",
         style: "tempHigh",
         graphType: "line",
@@ -248,32 +616,32 @@ var globalGraphs = {
         },
         graphs: {
             dailyMonth: {
-                title: "Temperature Last 31 Days",
+                title: useDict("temperatureTitle") + " " + useDict("graphLast") + " " + "31" +  " " + useDict("graphDays"),
                 timestamp: "timestampDay",
                 data: ["tempHighDays31", "tempLowDays31"],
                 timeDisplay: "day",
                 additionalStyles: ["tempLow"],
-                legendLabels: ["Max", "Min"],
+                legendLabels: [useDict("graphMax"), useDict("graphMin")],
                 legendOptions: {
                     display: true
                 }
             },
             hourlyDay: {
-                title: "Temperature Last 24 Hours",
+                title: useDict("temperatureTitle") + " " + useDict("graphLast") + " " + "24" + " " + useDict("graphHours"),
                 timestamp: "timestampHour",
                 data: ["tempHours24"],
                 timeDisplay: "hour",
                 legendOptions: {}
             },
             quarterDailyWeek: {
-                title: "Temperature Last 7 Days",
+                title: useDict("temperatureTitle") + " " + useDict("graphLast") + " " + "7" + " " + useDict("graphDays"),
                 timestamp: "timestampQuarterDay",
                 data: ["tempQuarterDays28"],
                 timeDisplay: "day",
                 legendOptions: {}
             },
             minutlyHour: {
-                title: "Temperature Last Hour",
+                title: useDict("temperatureTitle") + " " + useDict("graphLast") + " " + useDict("graphHour"),
                 timestamp: "timestampMinute",
                 data: ["tempMinutes60"],
                 timeDisplay: "minute",
@@ -282,7 +650,7 @@ var globalGraphs = {
         }
     },
     uv: {
-        label: "Index",
+        label: useDict("graphLabelUV"),
         unit: "uv",
         style: "uv",
         graphType: "line",
@@ -291,14 +659,14 @@ var globalGraphs = {
         },
         graphs: {
             hourlyDay: {
-                title: "UV Last 24 Hours",
+                title: useDict("uvTitle") + " " + useDict("graphLast") + " " + "24" + " " + useDict("graphHours"),
                 timestamp: "timestampHour",
                 data: ["uvHours24"],
                 timeDisplay: "hour",
                 legendOptions: {}
             },
             quarterDailyWeek: {
-                title: "UV Last 7 Days",
+                title: useDict("uvTitle") + " " + useDict("graphLast") + " " + "7" + " " + useDict("graphDays"),
                 timestamp: "timestampQuarterDay",
                 data: ["uvQuarterDays28"],
                 timeDisplay: "day",
@@ -307,7 +675,7 @@ var globalGraphs = {
         }
     },
     windDir: {
-        label: "Direction",
+        label: useDict("graphLabelWindDirection"),
         unit: "windDirection",
         style: "wind",
         graphType: "line",
@@ -319,7 +687,7 @@ var globalGraphs = {
         },
         graphs: {
             dailyMonth: {
-                title: "Wind Direction Last 31 Days",
+                title: useDict("graphLabelWindDirection") + " " + useDict("graphLast") + " " + "31" +  " " + useDict("graphDays"),
                 timestamp: "timestampDay",
                 data: ["windDirDays31"],
                 timeDisplay: "day",
@@ -327,21 +695,21 @@ var globalGraphs = {
                 
             },
             hourlyDay: {
-                title: "Wind Direction Last 24 Hours",
+                title: useDict("graphLabelWindDirection") + " " + useDict("graphLast") + " " + "24" + " " + useDict("graphHours"),
                 timestamp: "timestampHour",
                 data: ["windDirHours24"],
                 timeDisplay: "hour",
                 legendOptions: {}
             },
             quarterDailyWeek: {
-                title: "Wind Direction Last 7 Days",
+                title: useDict("graphLabelWindDirection") + " " + useDict("graphLast") + " " + "7" + " " + useDict("graphDays"),
                 timestamp: "timestampQuarterDay",
                 data: ["windDirQuarterDays28"],
                 timeDisplay: "day",
                 legendOptions: {}
             },
             minutlyHour: {
-                title: "Wind Direction Last Hour",
+                title: useDict("graphLabelWindDirection") + " " + useDict("graphLast") + " " + useDict("graphHour"),
                 timestamp: "timestampMinute",
                 data: ["windDirMinutes60"],
                 timeDisplay: "minute",
@@ -350,7 +718,7 @@ var globalGraphs = {
         }
     },
     windSpeed: {
-        label: "Speed",
+        label: useDict("windSpeedTitle"),
         unit: "wind",
         style: "wind",
         graphType: "line",
@@ -359,33 +727,33 @@ var globalGraphs = {
         },
         graphs: {
             dailyMonth: {
-                title: "Wind Speed Last 31 Days",
+                title: useDict("windSpeedTitle") + " " + useDict("graphLast") + " " + "31" +  " " + useDict("graphDays"),
                 timestamp: "timestampDay",
                 data: ["windSpeedDays31"],
                 timeDisplay: "day",
                 legendOptions: {}
             },
             hourlyDay: {
-                title: "Wind Speed Last 24 Hours",
+                title: useDict("windSpeedTitle") + " " + useDict("graphLast") + " " + "24" + " " + useDict("graphHours"),
                 timestamp: "timestampHour",
                 data: ["windSpeedHours24"],
                 timeDisplay: "hour",
                 legendOptions: {}
             },
             quarterDailyWeek: {
-                title: "Wind Speed Last 7 Days",
+                title: useDict("windSpeedTitle") + " " + useDict("graphLast") + " " + "7" + " " + useDict("graphDays"),
                 timestamp: "timestampQuarterDay",
                 data: ["windSpeedQuarterDays28"],
                 timeDisplay: "day",
                 legendOptions: {}
             },
             minutlyHour: {
-                title: "Wind Speed Last Hour",
+                title: useDict("graphLabelWindDirection") + " " + useDict("graphLast") + " " + useDict("graphHour"),
                 timestamp: "timestampMinute",
                 data: ["windSpeedMinutes60", "windGustMinutes60"],
                 timeDisplay: "minute",
                 additionalStyles: ["windGust"],
-                legendLabels: ["Avg", "Gust"],
+                legendLabels: [useDict("windSpeedAverage"), useDict("windSpeedGust")],
                 legendOptions: {
                     display: true
                 }
@@ -393,7 +761,7 @@ var globalGraphs = {
         }
     },
     rainfallLine: {
-        label: "Rainfall",
+        label: useDict("rainfallTitle"),
         unit: "rainfall",
         style: "rainfallLine",
         graphType: "line",
@@ -402,14 +770,14 @@ var globalGraphs = {
         },
         graphs: {
             hourlyDay: {
-                title: "Rainfall Last 24 Hours",
+                title: useDict("rainfallTitle") + " " + useDict("graphLast") + " " + "24" + " " + useDict("graphHours"),
                 timestamp: "timestampHour",
                 data: ["rainHours24"],
                 timeDisplay: "hour",
                 legendOptions: {}
             },
             minutlyHour: {
-                title: "Rainfall Last Hour",
+                title: useDict("rainfallTitle") + " " + useDict("graphLast") + " " + useDict("graphHour"),
                 timestamp: "timestampMinute",
                 data: ["rainMinutes60"],
                 timeDisplay: "minute",
@@ -418,7 +786,7 @@ var globalGraphs = {
         }
     },
     rainfallBar: {
-        label: "Rainfall",
+        label: useDict("rainfallTitle"),
         unit: "rainfall",
         style: "rainfallBar",
         graphType: "bar",
@@ -427,21 +795,21 @@ var globalGraphs = {
         },
         graphs: {
             dailyMonth: {
-                title: "Rainfall Last 31 Days",
+                title: useDict("rainfallTitle") + " " + useDict("graphLast") + " " + "31" +  " " + useDict("graphDays"),
                 timestamp: "timestampDay",
                 data: "rainDays31",
                 timeDisplay: "MMM D",
                 legendOptions: {}
             },
             monthlyYear: {
-                title: "Rainfall Last 12 Months",
+                title: useDict("rainfallTitle") + " " + useDict("graphLast") + " " + "12" +  " " + useDict("graphMonths"),
                 timestamp: "timestampMonth",
                 data: "rainMonths12",
                 timeDisplay: "MMM YYYY",
                 legendOptions: {}
             },
             quarterDailyWeek: {
-                title: "Rainfall Last 7 Days",
+                title: useDict("rainfallTitle") + " " + useDict("graphLast") + " " + "7" + " " + useDict("graphDays"),
                 timestamp: "timestampWeekDay",
                 data: "rainDays7",
                 timeDisplay: "ddd",
@@ -493,18 +861,18 @@ if (typeof gaugeSettings !== "undefined") {//Check to see if gauge setting list 
 //Functions globally used
 //IE compadibility fix
 (function () {
-  if ( typeof window.CustomEvent === "function" ) return false; //If not IE
+    if ( typeof window.CustomEvent === "function" ) return false; //If not IE
 
-  function CustomEvent ( event, params ) {
-    params = params || { bubbles: false, cancelable: false, detail: undefined };
-    var evt = document.createEvent( 'CustomEvent' );
-    evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
-    return evt;
-   }
+    function CustomEvent ( event, params ) {
+        params = params || { bubbles: false, cancelable: false, detail: undefined };
+        var evt = document.createEvent( 'CustomEvent' );
+        evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+        return evt;
+    }
 
-  CustomEvent.prototype = window.Event.prototype;
+    CustomEvent.prototype = window.Event.prototype;
 
-  window.CustomEvent = CustomEvent;
+    window.CustomEvent = CustomEvent;
 })();
 
 
@@ -559,7 +927,7 @@ function initialiseLayout() {
 	resizeContainer();
     
     //Set version number:
-    document.getElementById("Version").innerHTML = "FreshWDL - Version: 1.1.4 Alpha. yerren@renerica.com";
+    document.getElementById("Version").innerHTML = "FreshWDL - Version: 1.1.6 Alpha. yerren@renerica.com";
 }
 
 //Set global Graph options
@@ -691,7 +1059,7 @@ var numLoaded = 0,
     widgetListKeys = Object.keys(widgetList);
 
 for (i = 0; i < widgetListKeys.length; i++) {
-    if (widgetList[widgetListKeys[i]].enabled === true) {numWidgets++}
+    if (widgetList[widgetListKeys[i]].enabled === true) {numWidgets++; }
 }
 
 function checkOffLoaded() {

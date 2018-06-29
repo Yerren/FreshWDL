@@ -1,5 +1,11 @@
 /*jslint plusplus: true, sloppy: true, indent: 4 */
 
+//Functions used by multiple widgets
+Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
+	//Maps values: inputted variable from range in_min to in_max gets mapped to output ranging from out_min to out_max
+	return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+};
+
 //APPARENT 
 //Global Variables. These are set up in a hierarchical structure so that they can be easily accessed
 var apparent01 = {
@@ -25,11 +31,6 @@ var apparent01 = {
         canvasID: "Apparent01",
         unitsIn: "temp"
     }
-};
-
-Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
-	//Maps values: inputted variable from range in_min to in_max gets mapped to output ranging from out_min to out_max
-	return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 };
 
 function drawApparentA01(tempIn, unitChange) {
@@ -130,7 +131,7 @@ function setUpA01() {
 	apparent01.stage.addChild(apparent01.textDisplayT);
     
     //Set up text titles
-	apparent01.textTitleApparent = new createjs.Text("Apparent", "0px Arial", "black");
+	apparent01.textTitleApparent = new createjs.Text(useDict("apparentTitle"), "0px Arial", "black");
 	apparent01.textTitleApparent.textBaseline = "middle";
 	apparent01.textTitleApparent.textAlign = "center";
 	apparent01.stage.addChild(apparent01.textTitleApparent);
@@ -147,7 +148,7 @@ function initializeApparentA01() {
         drawApparentA01(arrayClientraw[130]);
     });
     //Creates information tooltip
-    new Opentip(apparent01.canvas, "Perceived temperature based on temperature, humidity, sun, and wind.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    new Opentip(apparent01.canvas, useDict("apparentDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpA01();
@@ -258,11 +259,6 @@ var tempBar = {
 	}
 };
 
-Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
-	//Maps values: inputted variable from range in_min to in_max gets mapped to output ranging from out_min to out_max
-	return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-};
-
 function formatInputTemp01() {
 	//Formats the temperature to be displayed correctly
 	
@@ -298,11 +294,11 @@ function drawTemperatureBarTemp01(tempIn, highTempIn, lowTempIn, unitChange) {
 
         //Starts the tweens (animations) of the inputs
         formatInputTemp01();
-        createjs.Tween.get(tempBar.tweens.barFill)
+        createjs.Tween.get(tempBar.tweens.barFill, {override:true})
             .to({h: tempBar.values.tempOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(tempBar.tweens.highTemp)
+        createjs.Tween.get(tempBar.tweens.highTemp, {override:true})
             .to({h: tempBar.values.highTempOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(tempBar.tweens.lowTemp)
+        createjs.Tween.get(tempBar.tweens.lowTemp, {override:true})
             .to({h: tempBar.values.lowTempOut}, 2000, createjs.Ease.quartInOut);
         
         tempBar.valuesOld.TempIn = tempIn;
@@ -570,7 +566,7 @@ function setUpTemp01() {
 	tempBar.stage.addChild(tempBar.textDisplay);
 	
     //Set up title
-	tempBar.textTitle = new createjs.Text("Temperature", "0px Arial", "black");
+	tempBar.textTitle = new createjs.Text(useDict("temperatureTitle"), "0px Arial", "black");
 	tempBar.textTitle.textBaseline = "middle";
 	tempBar.textTitle.textAlign = "center";
 	tempBar.stage.addChild(tempBar.textTitle);
@@ -621,7 +617,7 @@ function initializeTemp01() {
     });
     
     //Creates information tooltip
-    new Opentip(tempBar.canvas, "Current air temperature.\nBlue: Low daily temperature.\nRed: High daily temperature.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    new Opentip(tempBar.canvas, useDict("temperatureDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpTemp01();
@@ -675,11 +671,6 @@ var barometer01 = {
     }
 };
 
-Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
-	//Maps values: inputted variable from range in_min to in_max gets mapped to output ranging from out_min to out_max
-	return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-};
-
 function drawBarometerB01(pressureIn, trendIn, unitChange) {
     //Is called when new data is sent.
     
@@ -703,7 +694,7 @@ function drawBarometerB01(pressureIn, trendIn, unitChange) {
         if (parseFloat(barometer01.values.trend) != 0.0) {
             barometer01.textDisplayT.text = barometer01.values.trend + units[barometer01.config.unitsIn.toString()][currentUnits[barometer01.config.unitsIn.toString()]][1].toString() + "/hr";
         } else {
-            barometer01.textDisplayT.text = "Steady";
+            barometer01.textDisplayT.text = useDict("barometerSteady");
         }
         
         barometer01.valuesOld.pressure = pressureIn;
@@ -804,18 +795,18 @@ function setUpB01() {
 	barometer01.textDisplayP.textAlign = "center";
 	barometer01.stage.addChild(barometer01.textDisplayP);
     
-    barometer01.textDisplayRate = new createjs.Text("Rate:", "0px Arial", "black");
+    barometer01.textDisplayRate = new createjs.Text(useDict("barometerRate") + ":", "0px Arial", "black");
 	barometer01.textDisplayRate.textBaseline = "middle";
 	barometer01.textDisplayRate.textAlign = "center";
 	barometer01.stage.addChild(barometer01.textDisplayRate);
     
-    barometer01.textDisplayT = new createjs.Text("Rate:", "0px Arial", "black");
+    barometer01.textDisplayT = new createjs.Text("RATE", "0px Arial", "black");
 	barometer01.textDisplayT.textBaseline = "middle";
 	barometer01.textDisplayT.textAlign = "center";
 	barometer01.stage.addChild(barometer01.textDisplayT);
     
     //Set up text titles
-	barometer01.textTitleBarometer = new createjs.Text("Barometer", "0px Arial", "black");
+	barometer01.textTitleBarometer = new createjs.Text(useDict("barometerTitle") , "0px Arial", "black");
 	barometer01.textTitleBarometer.textBaseline = "middle";
 	barometer01.textTitleBarometer.textAlign = "center";
 	barometer01.stage.addChild(barometer01.textTitleBarometer);
@@ -835,7 +826,7 @@ function initializeBarometerB01() {
     
     
     //Creates information tooltip
-    new Opentip(barometer01.canvas, "The weight of the air, adjusted for the station's altitude.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    new Opentip(barometer01.canvas, useDict("barometerDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpB01();
@@ -946,11 +937,6 @@ var windchill01 = {
 	}
 };
 
-Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
-	//Maps values: inputted variable from range in_min to in_max gets mapped to output ranging from out_min to out_max
-	return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-};
-
 function formatInputWC01() {
 	//Formats the temperature to be displayed correctly
 	
@@ -986,11 +972,11 @@ function drawWindchillBarWC01(tempIn, highTempIn, lowTempIn, unitChange) {
 
         //Starts the tweens (animations) of the inputs
         formatInputWC01();
-        createjs.Tween.get(windchill01.tweens.barFill)
+        createjs.Tween.get(windchill01.tweens.barFill, {override:true})
             .to({h: windchill01.values.tempOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(windchill01.tweens.highTemp)
+        createjs.Tween.get(windchill01.tweens.highTemp, {override:true})
             .to({h: windchill01.values.highTempOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(windchill01.tweens.lowTemp)
+        createjs.Tween.get(windchill01.tweens.lowTemp, {override:true})
             .to({h: windchill01.values.lowTempOut}, 2000, createjs.Ease.quartInOut);
         
         windchill01.valuesOld.TempIn = tempIn;
@@ -1054,7 +1040,7 @@ function updateTopWC01() {
     windchill01.setupVars.cornerFillRad = windchill01.setupVars.barFillWidth / 2;
     windchill01.setupVars.strokeSize = windchill01.setupVars.barWidth / 40;
     windchill01.setupVars.textSize = windchill01.canvas.height / 17;
-    windchill01.setupVars.textDisplaySize = windchill01.canvas.height / 19;
+    windchill01.setupVars.textDisplaySize = windchill01.canvas.height / 22;
 	windchill01.setupVars.textHLSize = windchill01.canvas.height / 21;
 	windchill01.setupVars.minHLspace = 0.04;
     windchill01.setupVars.posBar = {
@@ -1259,7 +1245,7 @@ function setUpWC01() {
 	windchill01.stage.addChild(windchill01.textDisplay);
 	
     //Set up title
-	windchill01.textTitle = new createjs.Text("Windchill", "0px Arial", "black");
+	windchill01.textTitle = new createjs.Text(useDict("windchillTitle"), "0px Arial", "black");
 	windchill01.textTitle.textBaseline = "middle";
 	windchill01.textTitle.textAlign = "center";
 	windchill01.stage.addChild(windchill01.textTitle);
@@ -1310,7 +1296,7 @@ function initializeWC01() {
     });
     
     //Creates information tooltip
-    new Opentip(windchill01.canvas, "How cold it actually feels. Calculated by combining heat and wind speed.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    new Opentip(windchill01.canvas, useDict("windchillDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpWC01();
@@ -1934,11 +1920,6 @@ var humidityGauge = {
     }
 };
 
-Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
-	//Maps values: inputted variable from range in_min to in_max gets mapped to output ranging from out_min to out_max
-	return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-};
-
 function drawHumidityGaugeHum01(humidityIn, unitChange) {
     //Is called when new data is sent.
     
@@ -1949,7 +1930,7 @@ function drawHumidityGaugeHum01(humidityIn, unitChange) {
 
         humidityGauge.values.humidityIn = parseFloat(humidityIn, 0);
         humidityGauge.values.humidityOut = humidityGauge.values.humidityIn.map(0, 100, -halfAngleDeg, halfAngleDeg);
-        createjs.Tween.get(humidityGauge.tweens)
+        createjs.Tween.get(humidityGauge.tweens, {override:true})
             .to({r: humidityGauge.values.humidityOut}, 2000, createjs.Ease.quartInOut);
         
         humidityGauge.valuesOLD.humidityIn = humidityIn;
@@ -2160,7 +2141,7 @@ function setUpHum01() {
 	humidityGauge.textTitle.textBaseline = "middle";
 	humidityGauge.textTitle.textAlign = "center";
 	humidityGauge.stage.addChild(humidityGauge.textTitle);
-	humidityGauge.textTitle.text = "Humidity (%)";
+	humidityGauge.textTitle.text = useDict("humidityTitle") + " (%)";
     
     //Set up text labels
 	for (i = 0; i < humidityGauge.largeDashTotal; i++) {
@@ -2199,7 +2180,7 @@ function initializeHum01() {
     
     
     //Creates information tooltip
-    new Opentip(humidityGauge.canvas, "The amount of water vapour in the air as a percentage of the amount the air is capable of holding.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    new Opentip(humidityGauge.canvas, useDict("humidityDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpHum01();
@@ -2265,11 +2246,6 @@ var moonSun01 = {
     }
 };
 
-Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
-	//Maps values: inputted variable from range in_min to in_max gets mapped to output ranging from out_min to out_max
-	return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-};
-
 function drawMoonSunMS01(sunRiseIn, sunSetIn, moonRiseIn, moonSetIn, moonPhaseIn, moonAgeIn, unitChange) {
     //Is called when new data is sent.
     
@@ -2289,12 +2265,12 @@ function drawMoonSunMS01(sunRiseIn, sunSetIn, moonRiseIn, moonSetIn, moonPhaseIn
         //Adjust to units (no units for this widget)
 
         //Text Displays
-        moonSun01.textDisplaySR.text = "Rise: " + moonSun01.values.sunRiseIn;
-        moonSun01.textDisplaySS.text = "Set: " + moonSun01.values.sunSetIn;
-        moonSun01.textDisplayMR.text = "Rise: " + moonSun01.values.moonRiseIn;
-        moonSun01.textDisplayMS.text = "Set: " + moonSun01.values.moonSetIn;
-        moonSun01.textDisplayMP.text = "Phase: " + moonSun01.values.moonPhaseIn + "%";
-        moonSun01.textDisplayMA.text = "Age: " + moonSun01.values.moonAgeIn;
+        moonSun01.textDisplaySR.text = useDict("moonSunRise") + ": " + moonSun01.values.sunRiseIn;
+        moonSun01.textDisplaySS.text = useDict("moonSunSet") + ": " + moonSun01.values.sunSetIn;
+        moonSun01.textDisplayMR.text = useDict("moonSunRise") + ": " + moonSun01.values.moonRiseIn;
+        moonSun01.textDisplayMS.text = useDict("moonSunSet") + ": " + moonSun01.values.moonSetIn;
+        moonSun01.textDisplayMP.text = useDict("moonSunPhase") + ": " + moonSun01.values.moonPhaseIn + "%";
+        moonSun01.textDisplayMA.text = useDict("moonSunAge") + ": " + moonSun01.values.moonAgeIn;
         
         moonSun01.valuesOld.sunRiseIn = sunRiseIn;
         moonSun01.valuesOld.sunSetIn = sunSetIn;
@@ -2454,13 +2430,13 @@ function setUpMS01() {
 	moonSun01.stage.addChild(moonSun01.textDisplayMA);
     
     //Set up text titles
-	moonSun01.textTitleSun = new createjs.Text("Sun", "0px Arial", "black");
+	moonSun01.textTitleSun = new createjs.Text(useDict("moonSunTitleSun"), "0px Arial", "black");
 	moonSun01.textTitleSun.textBaseline = "middle";
 	moonSun01.textTitleSun.textAlign = "center";
 	moonSun01.stage.addChild(moonSun01.textTitleSun);
     
     //Set up text titles
-	moonSun01.textTitleMoon = new createjs.Text("Moon", "0px Arial", "black");
+	moonSun01.textTitleMoon = new createjs.Text(useDict("moonSunTitleMoon"), "0px Arial", "black");
 	moonSun01.textTitleMoon.textBaseline = "middle";
 	moonSun01.textTitleMoon.textAlign = "center";
 	moonSun01.stage.addChild(moonSun01.textTitleMoon);
@@ -2551,15 +2527,10 @@ var solarBar01 = {
 	},
     config: {
         unitsIn: "solar",
-        title: "Solar",
+        title: useDict("solarTitle"),
         canvasID: "SolarBar01",
         textMaxLabel: "100%"
     }
-};
-
-Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
-	//Maps values: inputted variable from range in_min to in_max gets mapped to output ranging from out_min to out_max
-	return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 };
 
 function formatInputSol01() {
@@ -2584,7 +2555,7 @@ function drawSolarBarSol01(percentIn, uniIn, sunHoursIn, unitChange) {
 
         //Starts the tweens (animations) of the inputs
         formatInputSol01();
-        createjs.Tween.get(solarBar01.tweens.barFill)
+        createjs.Tween.get(solarBar01.tweens.barFill, {override:true})
             .to({h: solarBar01.values.percentOut}, 2000, createjs.Ease.quartInOut);
         
         solarBar01.valuesOLD.uniIn = percentIn;
@@ -2605,7 +2576,7 @@ function updateTweensSol01() {
     
 	solarBar01.textPercentage.text = solarBar01.values.percentIn.toString() + "%";
     
-	solarBar01.textSunHours.text = "Sun Hours: " + solarBar01.values.sunHoursIn.toString();
+	solarBar01.textSunHours.text = useDict("solarSunHours") + ": " + solarBar01.values.sunHoursIn.toString();
 }
 
 function updateTopSol01() {
@@ -2618,7 +2589,7 @@ function updateTopSol01() {
     solarBar01.setupVars.barFillHeight = solarBar01.setupVars.barHeight;
     solarBar01.setupVars.strokeSize = solarBar01.setupVars.barWidth / 40;
     solarBar01.setupVars.textDisplaySize = solarBar01.canvas.height / 20;
-    solarBar01.setupVars.textTitleSize = solarBar01.canvas.height / 15;
+    solarBar01.setupVars.textTitleSize = solarBar01.canvas.height / 23;
     solarBar01.setupVars.textMaxLabelSize = solarBar01.canvas.height / 19;
     solarBar01.setupVars.posBar = {
         x: ((solarBar01.canvas.height / 2) - (solarBar01.setupVars.barWidth / 2)),
@@ -2772,7 +2743,7 @@ function initializeSolarBarSol01() {
     });
     
     //Creates information tooltip
-    new Opentip(solarBar01.canvas, "The intensity of the sun's radiation.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    new Opentip(solarBar01.canvas, useDict("solarDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpSol01();
@@ -2824,7 +2795,8 @@ var status01 = {
         status: null,
         dataStatus: null,
         stationName: null,
-        time: null
+        time: null,
+        stationDate: null
 	},
     config: {
         canvasID: "Status01"
@@ -2834,7 +2806,7 @@ var status01 = {
 function checkDataStatus() {
     //Checks if sucessful data was found
     if (dataCollectErrorCR === true && dataCollectErrorCRE === true && dataCollectErrorCRD === true && dataCollectErrorCRH === true) {
-        //Partial Error
+        //Full Error
         return "Full Error";
     } else if ((dataCollectErrorCR === true || dataCollectErrorCRE === true || dataCollectErrorCRD === true || dataCollectErrorCRH === true) && noDataChanged === true) {
         //Partial Error
@@ -2851,12 +2823,12 @@ function checkDataStatus() {
     }
 }
 
-function drawStatusS01(statusIn, stationTimeIn) {
+function drawStatusS01(statusIn, stationTimeIn, stationDateIn) {
     //Is called when new data is sent.
     
     var dataStatusIn = checkDataStatus(),
-        stationNameIn = stationTimeIn.substring(0, stationTimeIn.indexOf("-")),
-        timeIn = stationTimeIn.substring(stationTimeIn.indexOf("-") + 1);
+        stationNameIn = stationTimeIn.substring(0, stationTimeIn.lastIndexOf("-")),
+        timeIn = stationTimeIn.substring(stationTimeIn.lastIndexOf("-") + 1);
     
     //The one widget which doesn't need to be checked if widget actually needs to be updated (Breaks it if you do)
     
@@ -2864,19 +2836,20 @@ function drawStatusS01(statusIn, stationTimeIn) {
     status01.values.status = statusIn.replace(/_/g, " ");
     status01.values.stationName = stationNameIn.replace(/_/g, " ");
     status01.values.time = timeIn;
+    status01.values.stationDate = stationDateIn;
     //Format Data Status, and set blink colour
     if (dataStatusIn == "Full Error") {
-        status01.values.dataStatus = status01.values.stationName.toString() +  " | No data since: " + status01.values.time.toString();
+        status01.values.dataStatus = status01.values.stationName.toString() +  " | " + useDict("statusNoDataSince") + ": " + status01.values.time.toString() + " | " + status01.values.stationDate.toString();
         status01.blinkColour = "rgba(209, 32, 32, 0.9)"; //Same as high temp
     } else if (dataStatusIn == "Partial Error, New Data") {
-        status01.values.dataStatus = status01.values.stationName.toString() +  " | Latest data received at: " + status01.values.time.toString();
+        status01.values.dataStatus = status01.values.stationName.toString() +  " | " + useDict("statusDataAt") + ": " + status01.values.time.toString() + " | " + status01.values.stationDate.toString();
         status01.blinkColour = "rgba(234, 242, 45, 0.9)"; //Same as UV
     } else if (dataStatusIn == "Partial Error, No New Data") {
         status01.blinkColour = "rgba(234, 242, 45, 0.9)"; //Same as UV
     } else if (dataStatusIn == "No New Data") {
         status01.blinkColour = status01.blankBlinkColour;
     } else if (dataStatusIn == "Normal") {
-        status01.values.dataStatus = status01.values.stationName.toString() +  " | Latest data received at: " + status01.values.time.toString();
+        status01.values.dataStatus = status01.values.stationName.toString() +  " | " + useDict("statusDataAt") + ": " + status01.values.time.toString() + " | " + status01.values.stationDate.toString();
         status01.blinkColour = "rgba(23, 145, 27, 0.9)"; //Same as wind direction
     } else {
         console.log("Invalid dataStatus");
@@ -2991,7 +2964,7 @@ function initializeStatusS01() {
     });
     
     //Creates information tooltip
-    new Opentip(status01.canvas, "Green: New data collected from server.\nGrey: Data on server hasn't changed.\nYellow: Some error during data collection from server.\nRed: No data able to be collected from server.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    new Opentip(status01.canvas, useDict("statusDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpS01();
@@ -3069,7 +3042,7 @@ function setUpTR01() {
 	//Sets up the shapes. Initializses all the varaibles and shapes, and stores the values which need to be adjusted in commands which can be accessed later
     
     //Set up text titles
-	titleRainfall01.textTitleRainfall = new createjs.Text("Rainfall", "0px Arial", "black");
+	titleRainfall01.textTitleRainfall = new createjs.Text(useDict("rainfallTitle"), "0px Arial", "black");
 	titleRainfall01.textTitleRainfall.textBaseline = "middle";
 	titleRainfall01.textTitleRainfall.textAlign = "center";
 	titleRainfall01.stage.addChild(titleRainfall01.textTitleRainfall);
@@ -3085,7 +3058,7 @@ function initializeTitleRainfallTR01() {
     });
     
     //Creates information tooltip
-    //new Opentip(titleRainfall01.canvas, "Perceived temperature based on temperature, humidity, sun, and wind.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    //new Opentip(titleRainfall01.canvas, "Information",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpTR01();
@@ -3149,7 +3122,8 @@ var uniBar01 = {
 		minUni: 0,
 		minUniDEFAULT: 0,
 		maxUni: 4,
-		maxUniDEFAULT: 4
+		maxUniDEFAULT: 4,
+        actualMaxPercent: 0.75
 	},
     tweens: {
         barFill: {
@@ -3165,31 +3139,22 @@ var uniBar01 = {
 	},
     config: {
         unitsIn: "rainfall",
-        title: "Daily",
-        canvasID: "RainBar1",
-        tickScaler: 1
+        title: useDict("rainfallDailyTitle"),
+        canvasID: "RainBar1"
     }
-};
-
-Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
-	//Maps values: inputted variable from range in_min to in_max gets mapped to output ranging from out_min to out_max
-	return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 };
 
 function formatInputUni01() {
 	//Formats the universal to be displayed correctly
-	var gapNum = uniBar01.largeDashTotal - 1;
     
     //Adjust to units
     uniBar01.values.uniIn = formatDataToUnit(uniBar01.values.uniIn, uniBar01.config.unitsIn);
     
-	//Adjust Range if needed: if the input is less than the current minimum of the range, decrease the minimum. If the input is bigger than the current maximum of the range, increase the maximum. 
-	while (uniBar01.values.uniIn < uniBar01.constants.minUni) {uniBar01.constants.minUni -= uniBar01.config.tickScaler * (gapNum); }
-	while (uniBar01.values.uniIn > uniBar01.constants.maxUni) {uniBar01.constants.maxUni += uniBar01.config.tickScaler * (gapNum); }
+	//Adjust Range if needed: If the input is bigger than the current maximum of the range, increase the maximum. 
+	while (uniBar01.values.uniIn > uniBar01.constants.maxUni * uniBar01.constants.actualMaxPercent) {uniBar01.constants.maxUni *= 2; }
 
-    //Adjust Range if needed: if the input is bigger than the current minimum of the range, increase the minimum. If the input is less than the current maximum of the range, decrease the maximum. 
-	while ((uniBar01.values.uniIn >= uniBar01.constants.minUni + uniBar01.config.tickScaler * (gapNum) && uniBar01.constants.minUni < uniBar01.constants.minUniDEFAULT)) {uniBar01.constants.minUni += uniBar01.config.tickScaler * (gapNum); }
-	while ((uniBar01.values.uniIn <= uniBar01.constants.maxUni - uniBar01.config.tickScaler * (gapNum) && uniBar01.constants.maxUni > uniBar01.constants.maxUniDEFAULT)) {uniBar01.constants.maxUni -= uniBar01.config.tickScaler * (gapNum); }
+    //Adjust Range if needed: If the input is less than the current maximum of the range, decrease the maximum. 
+	while ((uniBar01.values.uniIn <= (uniBar01.constants.maxUni / 2) * uniBar01.constants.actualMaxPercent && uniBar01.constants.maxUni > uniBar01.constants.maxUniDEFAULT)) {uniBar01.constants.maxUni /= 2; }
 	
     //Map the inputs to the current scale (as a percentage)
 	uniBar01.values.uniOut = uniBar01.values.uniIn.map(uniBar01.constants.minUni, uniBar01.constants.maxUni, 0, 1);
@@ -3207,7 +3172,7 @@ function drawUniratureBarUni01(uniIn, unitChange) {
 
         //Starts the tweens (animations) of the inputs
         formatInputUni01();
-        createjs.Tween.get(uniBar01.tweens.barFill)
+        createjs.Tween.get(uniBar01.tweens.barFill, {override:true})
             .to({h: uniBar01.values.uniOut}, 2000, createjs.Ease.quartInOut);
         
         uniBar01.valuesOLD.uniIn = uniIn;
@@ -3244,7 +3209,7 @@ function updateTopUni01() {
     uniBar01.setupVars.strokeSize = uniBar01.setupVars.barWidth / 40;
     uniBar01.setupVars.textSize = uniBar01.canvas.height / 17;
     uniBar01.setupVars.textDisplaySize = uniBar01.canvas.height / 19;
-    uniBar01.setupVars.textTitleSize = uniBar01.canvas.height / 15;
+    uniBar01.setupVars.textTitleSize = uniBar01.canvas.height / 17;
     uniBar01.setupVars.posBar = {
         x: ((uniBar01.canvas.height / 2) - (uniBar01.setupVars.barWidth / 2)),
         y: ((uniBar01.canvas.height / 2) - (uniBar01.setupVars.barHeight / 2))
@@ -3469,7 +3434,8 @@ var uniBar02 = {
 		minUni: 0,
 		minUniDEFAULT: 0,
 		maxUni: 4,
-		maxUniDEFAULT: 4
+		maxUniDEFAULT: 4,
+        actualMaxPercent: 0.75
 	},
     tweens: {
         barFill: {
@@ -3485,31 +3451,22 @@ var uniBar02 = {
 	},
     config: {
         unitsIn: "rainfall",
-        title: "Monthly",
-        canvasID: "RainBar2",
-        tickScaler: 5
+        title: useDict("rainfallMonthlyTitle"),
+        canvasID: "RainBar2"
     }
-};
-
-Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
-	//Maps values: inputted variable from range in_min to in_max gets mapped to output ranging from out_min to out_max
-	return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 };
 
 function formatInputUni02() {
 	//Formats the universal to be displayed correctly
-	var gapNum = uniBar02.largeDashTotal - 1;
     
     //Adjust to units
     uniBar02.values.uniIn = formatDataToUnit(uniBar02.values.uniIn, uniBar02.config.unitsIn);
     
-	//Adjust Range if needed: if the input is less than the current minimum of the range, decrease the minimum. If the input is bigger than the current maximum of the range, increase the maximum. 
-	while (uniBar02.values.uniIn < uniBar02.constants.minUni) {uniBar02.constants.minUni -= uniBar02.config.tickScaler * (gapNum); }
-	while (uniBar02.values.uniIn > uniBar02.constants.maxUni) {uniBar02.constants.maxUni += uniBar02.config.tickScaler * (gapNum); }
+	//Adjust Range if needed: If the input is bigger than the current maximum of the range, increase the maximum. 
+	while (uniBar02.values.uniIn > uniBar02.constants.maxUni * uniBar02.constants.actualMaxPercent) {uniBar02.constants.maxUni *= 2; }
 
-    //Adjust Range if needed: if the input is bigger than the current minimum of the range, increase the minimum. If the input is less than the current maximum of the range, decrease the maximum. 
-	while ((uniBar02.values.uniIn >= uniBar02.constants.minUni + uniBar02.config.tickScaler * (gapNum) && uniBar02.constants.minUni < uniBar02.constants.minUniDEFAULT)) {uniBar02.constants.minUni += uniBar02.config.tickScaler * (gapNum); }
-	while ((uniBar02.values.uniIn <= uniBar02.constants.maxUni - uniBar02.config.tickScaler * (gapNum) && uniBar02.constants.maxUni > uniBar02.constants.maxUniDEFAULT)) {uniBar02.constants.maxUni -= uniBar02.config.tickScaler * (gapNum); }
+    //Adjust Range if needed: If the input is less than the current maximum of the range, decrease the maximum. 
+	while ((uniBar02.values.uniIn <= (uniBar02.constants.maxUni / 2) * uniBar02.constants.actualMaxPercent && uniBar02.constants.maxUni > uniBar02.constants.maxUniDEFAULT)) {uniBar02.constants.maxUni /= 2; }
 	
     //Map the inputs to the current scale (as a percentage)
 	uniBar02.values.uniOut = uniBar02.values.uniIn.map(uniBar02.constants.minUni, uniBar02.constants.maxUni, 0, 1);
@@ -3527,7 +3484,7 @@ function drawUniratureBarUni02(uniIn, unitChange) {
 
         //Starts the tweens (animations) of the inputs
         formatInputUni02();
-        createjs.Tween.get(uniBar02.tweens.barFill)
+        createjs.Tween.get(uniBar02.tweens.barFill, {override:true})
             .to({h: uniBar02.values.uniOut}, 2000, createjs.Ease.quartInOut);
         
         uniBar02.valuesOLD.uniIn = uniIn;
@@ -3564,7 +3521,7 @@ function updateTopUni02() {
     uniBar02.setupVars.strokeSize = uniBar02.setupVars.barWidth / 40;
     uniBar02.setupVars.textSize = uniBar02.canvas.height / 17;
     uniBar02.setupVars.textDisplaySize = uniBar02.canvas.height / 19;
-    uniBar02.setupVars.textTitleSize = uniBar02.canvas.height / 15;
+    uniBar02.setupVars.textTitleSize = uniBar02.canvas.height / 17;
     uniBar02.setupVars.posBar = {
         x: ((uniBar02.canvas.height / 2) - (uniBar02.setupVars.barWidth / 2)),
         y: ((uniBar02.canvas.height / 2) - (uniBar02.setupVars.barHeight / 2))
@@ -3789,7 +3746,8 @@ var uniBar03 = {
 		minUni: 0,
 		minUniDEFAULT: 0,
 		maxUni: 4,
-		maxUniDEFAULT: 4
+		maxUniDEFAULT: 4,
+        actualMaxPercent: 0.75
 	},
     tweens: {
         barFill: {
@@ -3805,31 +3763,22 @@ var uniBar03 = {
 	},
     config: {
         unitsIn: "rainfall",
-        title: "Annual",
-        canvasID: "RainBar3",
-        tickScaler: 5
+        title: useDict("rainfallAnnualTitle"),
+        canvasID: "RainBar3"
     }
-};
-
-Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
-	//Maps values: inputted variable from range in_min to in_max gets mapped to output ranging from out_min to out_max
-	return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 };
 
 function formatInputUni03() {
 	//Formats the universal to be displayed correctly
-	var gapNum = uniBar03.largeDashTotal - 1;
     
     //Adjust to units
     uniBar03.values.uniIn = formatDataToUnit(uniBar03.values.uniIn, uniBar03.config.unitsIn);
     
-	//Adjust Range if needed: if the input is less than the current minimum of the range, decrease the minimum. If the input is bigger than the current maximum of the range, increase the maximum. 
-	while (uniBar03.values.uniIn < uniBar03.constants.minUni) {uniBar03.constants.minUni -= uniBar03.config.tickScaler * (gapNum); }
-	while (uniBar03.values.uniIn > uniBar03.constants.maxUni) {uniBar03.constants.maxUni += uniBar03.config.tickScaler * (gapNum); }
+	//Adjust Range if needed: If the input is bigger than the current maximum of the range, increase the maximum. 
+	while (uniBar03.values.uniIn > uniBar03.constants.maxUni * uniBar03.constants.actualMaxPercent) {uniBar03.constants.maxUni *= 2; }
 
-    //Adjust Range if needed: if the input is bigger than the current minimum of the range, increase the minimum. If the input is less than the current maximum of the range, decrease the maximum. 
-	while ((uniBar03.values.uniIn >= uniBar03.constants.minUni + uniBar03.config.tickScaler * (gapNum) && uniBar03.constants.minUni < uniBar03.constants.minUniDEFAULT)) {uniBar03.constants.minUni += uniBar03.config.tickScaler * (gapNum); }
-	while ((uniBar03.values.uniIn <= uniBar03.constants.maxUni - uniBar03.config.tickScaler * (gapNum) && uniBar03.constants.maxUni > uniBar03.constants.maxUniDEFAULT)) {uniBar03.constants.maxUni -= uniBar03.config.tickScaler * (gapNum); }
+    //Adjust Range if needed: If the input is less than the current maximum of the range, decrease the maximum. 
+	while ((uniBar03.values.uniIn <= (uniBar03.constants.maxUni / 2) * uniBar03.constants.actualMaxPercent && uniBar03.constants.maxUni > uniBar03.constants.maxUniDEFAULT)) {uniBar03.constants.maxUni /= 2; }
 	
     //Map the inputs to the current scale (as a percentage)
 	uniBar03.values.uniOut = uniBar03.values.uniIn.map(uniBar03.constants.minUni, uniBar03.constants.maxUni, 0, 1);
@@ -3847,7 +3796,7 @@ function drawUniratureBarUni03(uniIn, unitChange) {
 
         //Starts the tweens (animations) of the inputs
         formatInputUni03();
-        createjs.Tween.get(uniBar03.tweens.barFill)
+        createjs.Tween.get(uniBar03.tweens.barFill, {override:true})
             .to({h: uniBar03.values.uniOut}, 2000, createjs.Ease.quartInOut);
         
         uniBar03.valuesOLD.uniIn = uniIn;
@@ -3884,7 +3833,7 @@ function updateTopUni03() {
     uniBar03.setupVars.strokeSize = uniBar03.setupVars.barWidth / 40;
     uniBar03.setupVars.textSize = uniBar03.canvas.height / 17;
     uniBar03.setupVars.textDisplaySize = uniBar03.canvas.height / 19;
-    uniBar03.setupVars.textTitleSize = uniBar03.canvas.height / 15;
+    uniBar03.setupVars.textTitleSize = uniBar03.canvas.height / 17;
     uniBar03.setupVars.posBar = {
         x: ((uniBar03.canvas.height / 2) - (uniBar03.setupVars.barWidth / 2)),
         y: ((uniBar03.canvas.height / 2) - (uniBar03.setupVars.barHeight / 2))
@@ -4108,15 +4057,10 @@ var uvBar01 = {
 	},
     config: {
         unitsIn: "uv",
-        title: "UV",
+        title: useDict("uvTitle"),
         canvasID: "UVBar01",
         textMaxLabel: "16"
     }
-};
-
-Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
-	//Maps values: inputted variable from range in_min to in_max gets mapped to output ranging from out_min to out_max
-	return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 };
 
 function formatInputUV01() {
@@ -4137,7 +4081,7 @@ function drawUVBarUV01(uniIn) {
 
     //Starts the tweens (animations) of the inputs
 	formatInputUV01();
-	createjs.Tween.get(uvBar01.tweens.barFill)
+	createjs.Tween.get(uvBar01.tweens.barFill, {override:true})
 		.to({h: uvBar01.values.uniOut}, 2000, createjs.Ease.quartInOut);
 }
 
@@ -4162,7 +4106,7 @@ function updateTopUV01() {
     uvBar01.setupVars.barFillHeight = uvBar01.setupVars.barHeight;
     uvBar01.setupVars.strokeSize = uvBar01.setupVars.barWidth / 40;
     uvBar01.setupVars.textDisplaySize = uvBar01.canvas.height / 19;
-    uvBar01.setupVars.textTitleSize = uvBar01.canvas.height / 15;
+    uvBar01.setupVars.textTitleSize = uvBar01.canvas.height / 23;
     uvBar01.setupVars.textMaxLabelSize = uvBar01.canvas.height / 19;
     uvBar01.setupVars.posBar = {
         x: ((uvBar01.canvas.height / 2) - (uvBar01.setupVars.barWidth / 2)),
@@ -4288,7 +4232,7 @@ function initializeUVBarUV01() {
     
     
     //Creates information tooltip
-    new Opentip(uvBar01.canvas, "The intensity of UV radiation - 0-2 is minimal risk of skin damage whilst 8+ is very high.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    new Opentip(uvBar01.canvas, useDict("uvDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpUV01();
@@ -4379,11 +4323,6 @@ var windGauge = {
 	}
 };
 
-Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
-	//Maps values: inputted variable from range in_min to in_max gets mapped to output ranging from out_min to out_max
-	return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-};
-
 function drawWindGaugeWind01(windIn, avgIn, unitChange) {
     //Is called when new data is sent.
     
@@ -4417,9 +4356,9 @@ function drawWindGaugeWind01(windIn, avgIn, unitChange) {
             windGauge.values.avgOut = windGauge.values.avgOld + avgAngleDiff - 360;
         }
 
-        createjs.Tween.get(windGauge.tweens)
+        createjs.Tween.get(windGauge.tweens, {override:true})
             .to({r: windGauge.values.windOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(windGauge.tweens)
+        createjs.Tween.get(windGauge.tweens, {override:true})
             .to({aR: windGauge.values.avgOut}, 2000, createjs.Ease.quartInOut);
 
         windGauge.values.windOld = windGauge.values.windOut;
@@ -4642,21 +4581,21 @@ function setUpWind01() {
 	for (i = 0; i < windGauge.largeDashTotal; i++) {
         var labelText = "";
         if (i == 0) {
-            labelText = "S";
+            labelText = useDict("windDirectionLabelS");
         } else if (i == 1) {
-            labelText = "SW";
+            labelText = useDict("windDirectionLabelSW");
         } else if (i == 2) {
-            labelText = "W";
+            labelText = useDict("windDirectionLabelW");
         } else if (i == 3) {
-            labelText = "NW";
+            labelText = useDict("windDirectionLabelNW");
         } else if (i == 4) {
-            labelText = "N";
+            labelText = useDict("windDirectionLabelN");
         } else if (i == 5) {
-            labelText = "NE";
+            labelText = useDict("windDirectionLabelNE");
         } else if (i == 6) {
-            labelText = "E";
+            labelText = useDict("windDirectionLabelE");
         } else if (i == 7) {
-            labelText = "SE";
+            labelText = useDict("windDirectionLabelSE");
         }
 		windGauge.label[i] = new createjs.Text(labelText.toString(), "black");
 		windGauge.label[i].textBaseline = "middle";
@@ -4691,7 +4630,7 @@ function initializeWind01() {
     });
     
     //Creates information tooltip
-    new Opentip(windGauge.canvas, "The wind direction. Green arrow indicates average wind direction.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    new Opentip(windGauge.canvas, useDict("windDirectionDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpWind01();
@@ -4805,11 +4744,6 @@ var windSpeed = {
 	}
 };
 
-Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
-	//Maps values: inputted variable from range in_min to in_max gets mapped to output ranging from out_min to out_max
-	return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-};
-
 function formatInputWS01() {
 	//Formats the speedrature to be displayed correctly
 	
@@ -4848,13 +4782,13 @@ function drawSpeedBarWS01(speedIn, gustIn, windHighSpeedIn, gustHighSpeedIn, uni
 
         //Starts the tweens (animations) of the inputs
         formatInputWS01();
-        createjs.Tween.get(windSpeed.tweens.barFillLeft)
+        createjs.Tween.get(windSpeed.tweens.barFillLeft, {override:true})
             .to({h: windSpeed.values.speedOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(windSpeed.tweens.barFillRight)
+        createjs.Tween.get(windSpeed.tweens.barFillRight, {override:true})
             .to({h: windSpeed.values.gustOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(windSpeed.tweens.windHighSpeed)
+        createjs.Tween.get(windSpeed.tweens.windHighSpeed, {override:true})
             .to({h: windSpeed.values.windHighSpeedOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(windSpeed.tweens.gustHighSpeed)
+        createjs.Tween.get(windSpeed.tweens.gustHighSpeed, {override:true})
             .to({h: windSpeed.values.gustHighSpeedOut}, 2000, createjs.Ease.quartInOut);
         
         windSpeed.valuesOld.speedIn = speedIn;
@@ -4882,10 +4816,10 @@ function updateTweensWS01() {
 	windSpeed.gustHighMarkerEndCommand.y = windSpeed.gustHighMarkerStartCommand.y = windSpeed.tweens.gustHighSpeed.h * windSpeed.rectRightCommand.h + windSpeed.rectRightCommand.y;
 	
 	//High Display
-	windSpeed.windHighDisplay.text = "max:\n" + windSpeed.values.windHighSpeedIn.toString();
+	windSpeed.windHighDisplay.text = useDict("windSpeedMax") + ":\n" + windSpeed.values.windHighSpeedIn.toString();
 	
 	//Low Display
-	windSpeed.gustHighDisplay.text = "max:\n" + windSpeed.values.gustHighSpeedIn.toString();
+	windSpeed.gustHighDisplay.text = useDict("windSpeedMax") + ":\n" + windSpeed.values.gustHighSpeedIn.toString();
 	
 	//Labels
 	for (i = 0; i < windSpeed.largeDashTotal; i++) {
@@ -5139,18 +5073,18 @@ function setUpWS01() {
 	}
     
     //Set up text title
-	windSpeed.textTitle = new createjs.Text("Wind Speed", "0px Arial", "black");
+	windSpeed.textTitle = new createjs.Text(useDict("windSpeedTitle"), "0px Arial", "black");
 	windSpeed.textTitle.textBaseline = "bottom";
 	windSpeed.textTitle.textAlign = "center";
 	windSpeed.stage.addChild(windSpeed.textTitle);
     
     //Set up text wind and gust titles
-	windSpeed.textTitleWind = new createjs.Text("Wind", "0px Arial", "black");
+	windSpeed.textTitleWind = new createjs.Text(useDict("windSpeedWind"), "0px Arial", "black");
 	windSpeed.textTitleWind.textBaseline = "top";
 	windSpeed.textTitleWind.textAlign = "center";
 	windSpeed.stage.addChild(windSpeed.textTitleWind);
     
-    windSpeed.textTitleGust = new createjs.Text("Gust", "0px Arial", "black");
+    windSpeed.textTitleGust = new createjs.Text(useDict("windSpeedGust"), "0px Arial", "black");
 	windSpeed.textTitleGust.textBaseline = "top";
 	windSpeed.textTitleGust.textAlign = "center";
 	windSpeed.stage.addChild(windSpeed.textTitleGust);
@@ -5195,7 +5129,7 @@ function initializeWS01() {
     });
     
     //Creates information tooltip
-    new Opentip(windSpeed.canvas, "Green bar indicates average wind speed.\nPurple bar indicates gust speed.",  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    new Opentip(windSpeed.canvas, useDict("windSpeedDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpWS01();
@@ -5333,25 +5267,25 @@ function processRecord(startingIndex) {
 }
 
 function processRecordsData(dictIn, startingIndex, startingIndex2) {
-    dictIn["Highest temperature"] = processRecord(startingIndex).concat(["temp"]);
-    dictIn["Lowest temperature"] = processRecord(startingIndex + 6).concat(["temp"]);
-    dictIn["Highest gust"] = processRecord(startingIndex + 12).concat(["wind", ", " + arrayClientrawExtra[startingIndex + 78].toString() + "\xB0"]);
-    dictIn["Highest rain rate"] = processRecord(startingIndex + 18).concat(["rainfall", "/min"]);
-    dictIn["Lowest barometer"] = processRecord(startingIndex + 24).concat(["pressure"]);
-    dictIn["Highest barometer"] = processRecord(startingIndex + 30).concat(["pressure"]);
-    dictIn["Highest daily rainfall"] = processRecord(startingIndex + 36).concat(["rainfall"]);
-    dictIn["Highest hourly rainfall"] = processRecord(startingIndex + 42).concat(["rainfall"]);
-    dictIn["Highest average wind speed"] = processRecord(startingIndex + 48).concat(["wind", ", " + arrayClientrawExtra[startingIndex + 84].toString() + "\xB0"]);
-    dictIn["Lowest wind chill"] = processRecord(startingIndex + 72).concat(["temp"]);
-    dictIn["Warmest day"] = processRecord(startingIndex + 90).concat(["temp"]);
-    dictIn["Coldest night"] = processRecord(startingIndex + 96).concat(["temp"]);
-    dictIn["Coldest day"] = processRecord(startingIndex + 102).concat(["temp"]);
-    dictIn["Warmest night"] = processRecord(startingIndex + 108).concat(["temp"]);
-    dictIn["Highest heat index"] = processRecord(startingIndex + 114).concat(["temp"]);
-    dictIn["Highest solar"] = processRecord(startingIndex2).concat(["solar"]);
-    dictIn["Highest uv index"] = processRecord(startingIndex2 + 6).concat(["uv"]);
-    dictIn["Highest dew point"] = processRecord(startingIndex2 + 69).concat(["temp"]);
-    dictIn["Lowest dew point"] = processRecord(startingIndex2 + 75).concat(["temp"]);
+    dictIn[useDict("recordsHighTemp")] = processRecord(startingIndex).concat(["temp"]);
+    dictIn[useDict("recordsLowTemp")] = processRecord(startingIndex + 6).concat(["temp"]);
+    dictIn[useDict("recordsHighGust")] = processRecord(startingIndex + 12).concat(["wind", ", " + arrayClientrawExtra[startingIndex + 78].toString() + "\xB0"]);
+    dictIn[useDict("recordsHighRainRate")] = processRecord(startingIndex + 18).concat(["rainfall", "/min"]);
+    dictIn[useDict("recordsLowBaro")] = processRecord(startingIndex + 24).concat(["pressure"]);
+    dictIn[useDict("recordsHighBaro")] = processRecord(startingIndex + 30).concat(["pressure"]);
+    dictIn[useDict("recordsHighRainRateDaily")] = processRecord(startingIndex + 36).concat(["rainfall"]);
+    dictIn[useDict("recordsHighRainRateHourly")] = processRecord(startingIndex + 42).concat(["rainfall"]);
+    dictIn[useDict("recordsHighAverageWind")] = processRecord(startingIndex + 48).concat(["wind", ", " + arrayClientrawExtra[startingIndex + 84].toString() + "\xB0"]);
+    dictIn[useDict("recordsLowWindChill")] = processRecord(startingIndex + 72).concat(["temp"]);
+    dictIn[useDict("recordsWarmestDay")] = processRecord(startingIndex + 90).concat(["temp"]);
+    dictIn[useDict("recordsColdestNight")] = processRecord(startingIndex + 96).concat(["temp"]);
+    dictIn[useDict("recordsColdestDay")] = processRecord(startingIndex + 102).concat(["temp"]);
+    dictIn[useDict("recordsWarmestNight")] = processRecord(startingIndex + 108).concat(["temp"]);
+    dictIn[useDict("recordsHighHeatIndex")] = processRecord(startingIndex + 114).concat(["temp"]);
+    dictIn[useDict("recordsHighSolar")] = processRecord(startingIndex2).concat(["solar"]);
+    dictIn[useDict("recordsHighUV")] = processRecord(startingIndex2 + 6).concat(["uv"]);
+    dictIn[useDict("recordsHighDewPoint")] = processRecord(startingIndex2 + 69).concat(["temp"]);
+    dictIn[useDict("recordsLowDewPoint")] = processRecord(startingIndex2 + 75).concat(["temp"]);
 }
 
 function processGraphData() {
@@ -5503,11 +5437,11 @@ function tryUpdateWidgets() {
             if (arrayClientraw.equals(arrayClientrawOld) === true && arrayClientrawExtra.equals(arrayClientrawExtraOld) === true && arrayClientrawDaily.equals(arrayClientrawDailyOld) === true && arrayClientrawHour.equals(arrayClientrawHourOld) === true) {
                 noDataChanged = true;
                 
-                drawStatusS01(arrayClientraw[49], arrayClientraw[32]); //Status widget must always be updated
+                drawStatusS01(arrayClientraw[49], arrayClientraw[32], arrayClientraw[74]); //Status widget must always be updated
             } else {
                 noDataChanged = false;
                 
-                drawStatusS01(arrayClientraw[49], arrayClientraw[32]); //Status widget must always be updated
+                drawStatusS01(arrayClientraw[49], arrayClientraw[32], arrayClientraw[74]); //Status widget must always be updated
                 
                 if (arrayClientraw.equals(arrayClientrawOld) === false) {
                     arrayClientrawOld = arrayClientraw;
@@ -5715,7 +5649,7 @@ function formatAndDisplayForecastFor01(textInput) {
             var charRemove = textArray.pop();
             charRemove = charRemove.length;
             editedText = editedText.slice(0, -(charRemove + 1));
-            forecast.displayDiv.innerHTML = editedText + '... <a id="showMoreLink", href="#">Show More</a>';
+            forecast.displayDiv.innerHTML = editedText + '... <a id="showMoreLink", href="#"> ' + useDict("forcastShowMore") + ' </a>';
             
             //Sets the link to open the modal
             forecast.showMoreLink = document.getElementById("showMoreLink");
@@ -5773,6 +5707,9 @@ function resizeDivFor01() {
 function forecastInitFor01() {
     forecast.displayDiv = document.getElementById("forecastText");
     forecast.modalForecastDiv = document.getElementById("modalForecastDiv");
+    forecast.headerText = document.getElementById("forecastHeaderText");
+    
+    forecast.headerText.innerHTML = useDict("forecastTitle");
     
     window.addEventListener("clientRawExtraDataUpdate", function () {
         formatAndDisplayForecastFor01(arrayClientrawExtra[531]);
@@ -5904,6 +5841,27 @@ function recordsInitRe01() {
     records.modalRecordsDiv = document.getElementById("modalRecordsDiv");
     records.button = document.getElementById("RecordsButton");
     records.table = document.getElementById("recordsTable");
+    records.headerText = document.getElementById("recordsHeaderText");
+    records.selectMenu = document.getElementById("selectMenuRecords");
+    
+    records.headerText.innerHTML = useDict("buttonLabelRecords");
+    
+    //Set up drop down menu
+    var option1 = document.createElement("option"),
+        option2 = document.createElement("option"),
+        option3 = document.createElement("option");
+    
+    option1.text = useDict("recordsForMonth");
+    option2.text = useDict("recordsForYear");
+    option3.text = useDict("recordsAllTime");
+    
+    option1.value = 0;
+    option2.value = 1;
+    option3.value = 2;
+    
+    records.selectMenu.add(option1);
+    records.selectMenu.add(option2);
+    records.selectMenu.add(option3);
     
     window.addEventListener("clientRawExtraDataUpdate", function () {
         processRecordsData(recordsDict[2], 313, 684);
@@ -6300,6 +6258,13 @@ function initializeButtons() {
     buttons.temp = document.getElementById("TempButton");
     buttons.records = document.getElementById("RecordsButton");
     
+    buttons.altitude.innerHTML = useDict("buttonLabelAltitude");
+    buttons.pressure.innerHTML = useDict("graphBaroLabel");
+    buttons.wind.innerHTML = useDict("windSpeedWind");
+    buttons.rainfall.innerHTML = useDict("rainfallTitle");
+    buttons.temp.innerHTML = useDict("temperatureTitle");
+    buttons.records.innerHTML = useDict("buttonLabelRecords");
+    
     buttons.altitude.addEventListener('click', function() {changeUnit("altitude"); }, false);
     buttons.pressure.addEventListener('click', function() {changeUnit("pressure"); }, false);
     buttons.wind.addEventListener('click', function() {changeUnit("wind"); }, false);
@@ -6408,6 +6373,7 @@ function initModalHandler() {
     }, false);
     
     modal.button = document.getElementById("GraphsButton");
+    modal.button.innerHTML = useDict("buttonLabelGraphs");
     modal.button.addEventListener('click', function() {
         modal.selectMenu.value = "barometerhourlyDay";
         modal.modal.style.display = "block";
