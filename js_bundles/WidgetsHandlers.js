@@ -4304,9 +4304,9 @@ var windGauge = {
         avgDisplaySize: null,
         posAvgDisplay: null
 	},
-    tweens: {
-        r: 0,
-        aR: 0
+    tweens: { //double leveled so they do not get cancled by overwriting.
+        r: {r: 0},
+        aR: {aR: 0}
     },
 	values: {
 		windIn: 0,
@@ -4356,9 +4356,9 @@ function drawWindGaugeWind01(windIn, avgIn, unitChange) {
             windGauge.values.avgOut = windGauge.values.avgOld + avgAngleDiff - 360;
         }
 
-        createjs.Tween.get(windGauge.tweens, {override:true})
+        createjs.Tween.get(windGauge.tweens.r, {override:true})
             .to({r: windGauge.values.windOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(windGauge.tweens, {override:true})
+        createjs.Tween.get(windGauge.tweens.aR, {override:true})
             .to({aR: windGauge.values.avgOut}, 2000, createjs.Ease.quartInOut);
 
         windGauge.values.windOld = windGauge.values.windOut;
@@ -4372,8 +4372,8 @@ function drawWindGaugeWind01(windIn, avgIn, unitChange) {
 
 function updateTweensWind01() {
     //Updates any tweened or changing objects. This is called every frame
-    windGauge.pointer.rotation = windGauge.tweens.r;
-    windGauge.pointerAvg.rotation = windGauge.tweens.aR;
+    windGauge.pointer.rotation = windGauge.tweens.r.r;
+    windGauge.pointerAvg.rotation = windGauge.tweens.aR.aR;
 }
 
 function updateTopWind01() {
