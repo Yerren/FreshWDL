@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
-## 1.1.7 Alpha
+## 1.1.7 Alpha - In Progress
 
 #### Changes
 - Windchill guage can now be set to heat index mode
