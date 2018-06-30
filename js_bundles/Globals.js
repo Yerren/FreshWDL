@@ -345,9 +345,6 @@ var dict = {
     forecastTitle: {
         en: "Forecast",
         nl: "Voorspelling"
-    },
-    heatIndexTitle: {
-        en: "Heat Index"
     }
 };
 
@@ -823,7 +820,7 @@ var widgetList = {
     apparent: {enabled: true},
     temperature: {enabled: true},
     barometer: {enabled: true},
-    windChill: {enabled: true, mode: "windchill"},
+    windChill: {enabled: true},
     forecastHandler: {enabled: true},
     graphHandler: {enabled: true},
     graphHandlerBarometer: {enabled: true},
@@ -926,7 +923,7 @@ function initialiseLayout() {
 	resizeContainer();
     
     //Set version number:
-    document.getElementById("Version").innerHTML = "FreshWDL - Version: 1.1.7 Alpha. yerren@renerica.com";
+    document.getElementById("Version").innerHTML = "FreshWDL - Version: 1.1.6 Alpha. yerren@renerica.com";
 }
 
 //Set global Graph options

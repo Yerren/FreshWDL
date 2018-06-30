@@ -4,12 +4,6 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
-## 1.1.7 Alpha
-
-#### Changes
-- Windchill guage can now be set to heat index mode
-- Sprites now hosted with rest of repository
-
 ## 1.1.6 Alpha 2018-06-28
 
 #### Added
