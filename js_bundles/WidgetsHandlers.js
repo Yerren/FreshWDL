@@ -850,7 +850,7 @@ function initializeBarometerB01() {
     checkOffLoaded();
 }
 
-//WINDCHILL BAR (or HEATINDEX)
+//WINDCHILL BAR
 //Global Variables. These are set up in a hierarchical structure so that they can be easily accessed
 var windchill01 = {
 	stage: null,
@@ -1245,7 +1245,7 @@ function setUpWC01() {
 	windchill01.stage.addChild(windchill01.textDisplay);
 	
     //Set up title
-	windchill01.textTitle = new createjs.Text(useDict((widgetList.windChill.mode === "windchill") ? "windchillTitle" : "heatIndexTitle"), "0px Arial", "black");
+	windchill01.textTitle = new createjs.Text(useDict("windchillTitle"), "0px Arial", "black");
 	windchill01.textTitle.textBaseline = "middle";
 	windchill01.textTitle.textAlign = "center";
 	windchill01.stage.addChild(windchill01.textTitle);
@@ -1292,9 +1292,7 @@ function initializeWC01() {
         updateTweensWC01();
     });
     window.addEventListener("clientRawDataUpdate", function () {
-        drawWindchillBarWC01((widgetList.windChill.mode === "windchill") ? arrayClientraw[44] : arrayClientraw[112],
-                             (widgetList.windChill.mode === "windchill") ? arrayClientraw[77] : arrayClientraw[110], 
-                             (widgetList.windChill.mode === "windchill") ? arrayClientraw[78] : arrayClientraw[111]);
+        drawWindchillBarWC01(arrayClientraw[44], arrayClientraw[77], arrayClientraw[78]);
     });
     
     //Creates information tooltip
@@ -6226,9 +6224,7 @@ function updateUnits(unitType) {
         configureGraphRainBar01("rainfallBar", "dailyMonth");
     } else if (unitType == "temp") {
         drawTemperatureBarTemp01(arrayClientraw[4], arrayClientraw[46], arrayClientraw[47], true);
-        drawWindchillBarWC01((widgetList.windChill.mode === "windchill") ? arrayClientraw[44] : arrayClientraw[112],
-                             (widgetList.windChill.mode === "windchill") ? arrayClientraw[77] : arrayClientraw[110], 
-                             (widgetList.windChill.mode === "windchill") ? arrayClientraw[78] : arrayClientraw[111], true);
+        drawWindchillBarWC01(arrayClientraw[44], arrayClientraw[77], arrayClientraw[78], true);
         drawApparentA01(arrayClientraw[130], true);
         configureGraphTempLine01("temp", "hourlyDay");
     }    
