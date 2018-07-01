@@ -1296,7 +1296,7 @@ function initializeWC01() {
     });
     
     //Creates information tooltip
-    new Opentip(windchill01.canvas, useDict("windchillDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    new Opentip(windchill01.canvas, (widgetList.windChill.mode === "windchill") ? useDict("windchillDescription") : useDict("heatIndexDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpWC01();

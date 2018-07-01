@@ -345,6 +345,12 @@ var dict = {
     forecastTitle: {
         en: "Forecast",
         nl: "Voorspelling"
+    },
+    heatIndexTitle: {
+        en: "Heat Index"
+    },
+    heatIndexDescription: {
+        en: "How hot it really feels when relative humidity is factored with the actual air temperature."
     }
 };
 
