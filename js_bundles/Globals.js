@@ -826,7 +826,7 @@ var widgetList = {
     apparent: {enabled: true},
     temperature: {enabled: true},
     barometer: {enabled: true},
-    windChill: {enabled: true},
+    windChill: {enabled: true, mode: "windchill"},
     forecastHandler: {enabled: true},
     graphHandler: {enabled: true},
     graphHandlerBarometer: {enabled: true},
