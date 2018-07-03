@@ -12,345 +12,434 @@ moment.locale(lang);
 var dict = {
     apparentTitle: {
         en: "Apparent",
-        nl: "Gevoel"
+        nl: "Gevoel",
+        da: "Føles som"
     },
     apparentDescription: {
         en: "Perceived temperature based on temperature, humidity, sun, and wind.",
-        nl: "Waargenomen temperatuur gebaseerd op de temperatuur, vochtigheid, zon en wind."
+        nl: "Waargenomen temperatuur gebaseerd op de temperatuur, vochtigheid, zon en wind.",
+        da: "Opfattet temperatur baseret på temperatur, fugtighed, sol og vind"
     },
     temperatureTitle: {
         en: "Temperature",
-        nl: "Temperatuur"
+        nl: "Temperatuur",
+        da: "Temperatur"
     },
     temperatureDescription: {
         en: "Current air temperature.\nBlue: Low daily temperature.\nRed: High daily temperature.",
-        nl: "Huidige luchttemperatuur. \nBlauw: Minimum dagelijkse temperatuur. \nRood: Maximum dagelijkse temperatuur."
+        nl: "Huidige luchttemperatuur. \nBlauw: Minimum dagelijkse temperatuur. \nRood: Maximum dagelijkse temperatuur.",
+        da: "Aktuel lufttemperatur. \nBlå: Laveste daglige temperatur.\nRød: Højeste daglige temperatur."
     },
     barometerSteady: {
         en: "Steady",
-        nl: "Bestendig"
+        nl: "Bestendig",
+        da: "Stabil"
     },
     barometerRate: {
         en: "Rate",
-        nl: "Snelheid"
+        nl: "Snelheid",
+        da: "Hastighed"
     },
     barometerTitle: {
         en: "Barometer",
-        nl: "Barometer"
+        nl: "Barometer",
+        da: "Barometer"
     },
     barometerDescription: {
         en: "The weight of the air, adjusted for the station's altitude.",
-        nl: "Het gewicht van de lucht, aangepast naar de hoogte van het weerstation."
+        nl: "Het gewicht van de lucht, aangepast naar de hoogte van het weerstation.",
+        da: "Luftens vægt, justeret efter vejrstationens højde"
     },
     windchillTitle: {
         en: "Windchill",
-        nl: "Gevoelstemperatuur"
+        nl: "Gevoelstemperatuur",
+        da: "Kuldeindeks"
     },
     windchillDescription: {
         en: "How cold it actually feels. Calculated by combining heat and wind speed.",
-        nl: "Hoe koud het daadwerkelijk aanvoelt. Wordt berekend door een combinatie van temperatuur en windsnelheid."
+        nl: "Hoe koud het daadwerkelijk aanvoelt. Wordt berekend door een combinatie van temperatuur en windsnelheid.",
+        da: "Hvor koldt det føles. Beregnet ved at kombinere temperatur og vindhastighed."
     },
     humidityTitle: {
         en: "Humidity",
-        nl: "Vochtigheid"
+        nl: "Vochtigheid",
+        da: "Luftfugtighed"
     },
     humidityDescription: {
         en: "The amount of water vapour in the air as a percentage of the amount the air is capable of holding.",
-        nl: "De hoeveelheid verdampt water in de lucht als een percentage van de hoeveelheid lucht dat in staat is om vocht vast te houden."
+        nl: "De hoeveelheid verdampt water in de lucht als een percentage van de hoeveelheid lucht dat in staat is om vocht vast te houden.",
+        da: "Mængden af vanddamp i luften som en procent af den mængde luften er i stand til at indeholde"
     },
     moonSunRise: {
         en: "Rise",
-        nl: "Opkomst"
+        nl: "Opkomst",
+        da: "Opgang"
     },
     moonSunSet: {
         en: "Set",
-        nl: "Ondergang"
+        nl: "Ondergang",
+        da: "Nedgang"
     },
     moonSunPhase: {
         en: "Phase",
-        nl: "Fase"
+        nl: "Fase",
+        da: "Fase"
     },
     moonSunAge: {
         en: "Age",
-        nl: "Leeftijd"
+        nl: "Leeftijd",
+        da: "Alder"
     },
     moonSunTitleSun: {
         en: "Sun",
-        nl: "Zon"
+        nl: "Zon",
+        da: "Sol"
     },
     moonSunTitleMoon: {
         en: "Moon",
-        nl: "Maan"
+        nl: "Maan",
+        da: "Måne"
     },
     solarTitle: {
         en: "Solar",
-        nl: "Zonkracht"
+        nl: "Zonkracht",
+        da: "Solindstråling"
     },
     solarSunHours: {
         en: "Sun Hours",
-        nl: "Zonuren"
+        nl: "Zonuren",
+        da: "Solskinstimer"
     },
     solarDescription: {
         en: "The intensity of the sun's radiation.",
-        nl: "De intensiteit van de straling van de zon."
+        nl: "De intensiteit van de straling van de zon.",
+        da: "Intensiteten af solens stråler"
     },
     statusNoDataSince: {
         en: "No data since",
-        nl: "Geen data sinds"
+        nl: "Geen data sinds",
+        da: "Ingen data siden"
     },
     statusDataAt: {
         en: "Latest data received at",
-        nl: "Laatste data ontvangen op"
+        nl: "Laatste data ontvangen op",
+        da: "Sidste opdatering kl."
     },
     statusDescription: {
         en: "Green: New data collected from server.\nGrey: Data on server hasn't changed.\nYellow: Some error during data collection from server.\nRed: No data able to be collected from server.",
-        nl: "Groen: Nieuwe data ontvangen van server. \nGrijs: Data op server is niet veranderd. \nGeel: Een foutmelding tijdens de ontvangst van de data van de server. \nRood: Geen data beschikbaar om te ontvangen van de server."
+        nl: "Groen: Nieuwe data ontvangen van server. \nGrijs: Data op server is niet veranderd. \nGeel: Een foutmelding tijdens de ontvangst van de data van de server. \nRood: Geen data beschikbaar om te ontvangen van de server.",
+        da: "Grøn: Friske data fra serveren.\nGrå: Data på serveren har ikke ændret sig.\nGul: Fejl under hentning af data fra serveren.\nRød: Ingen data fra serveren."
     },
     rainfallTitle: {
         en: "Rainfall",
-        nl: "Regen"
+        nl: "Regen",
+        da: "Regn"
     },
     rainfallDailyTitle: {
         en: "Daily",
-        nl: "Dagelijks"
+        nl: "Dagelijks",
+        da: "Daglig"
     },
     rainfallMonthlyTitle: {
         en: "Monthly",
-        nl: "Maandelijks"
+        nl: "Maandelijks",
+        da: "Månedlig"
     },
     rainfallAnnualTitle: {
         en: "Annual",
-        nl: "Jaarlijks"
+        nl: "Jaarlijks",
+        da: "Årlig"
     },
     uvTitle: {
         en: "UV",
-        nl: "UV"
+        nl: "UV",
+        da: "UV"
     },
     uvDescription: {
         en:  "The intensity of UV radiation - 0-2 is minimal risk of skin damage whilst 8+ is very high.",
-        nl: "De intensiteit van de UV straling - 0-2 is een minimaal risico op huidschade terwijl 8+ een hoog risico vormt."
+        nl: "De intensiteit van de UV straling - 0-2 is een minimaal risico op huidschade terwijl 8+ een hoog risico vormt.",
+        da: "Intensiteten af UV stråling - 0-2 angiver minimal risiko for hudskader mens 8+ angiver meget høj risiko."
     },
     windDirectionLabelN: {
         en: "N",
-        nl: "N"
+        nl: "N",
+        da: "N"
     },
     windDirectionLabelNE: {
         en: "NE",
-        nl: "NO"
+        nl: "NO",
+        da: "NØ"
     },
     windDirectionLabelE: {
         en: "E",
-        nl: "O"
+        nl: "O",
+        da: "Ø"
     },
     windDirectionLabelSE: {
         en: "SE",
-        nl: "ZO"
+        nl: "ZO",
+        da: "SØ"
     },
     windDirectionLabelS: {
         en: "S",
-        nl: "Z"
+        nl: "Z",
+        da: "S"
     },
     windDirectionLabelSW: {
         en: "SW",
-        nl: "ZW"
+        nl: "ZW",
+        da: "SV"
     },
     windDirectionLabelW: {
         en: "W",
-        nl: "W"
+        nl: "W",
+        da: "V"
     },
     windDirectionLabelNW: {
         en: "NW",
-        nl: "NW"
+        nl: "NW",
+        da: "NV"
     },
     windDirectionDescription: {
         en: "The wind direction. Green arrow indicates average wind direction.",
-        nl: "De windrichting. De groene pijl geeft de gemiddelde windrichting aan."
+        nl: "De windrichting. De groene pijl geeft de gemiddelde windrichting aan.",
+        da: "Vindretning. Grøn pil angiver den gennemsnitlige vindretning."
     },
     windSpeedMax: {
         en: "max",
-        nl: "Max"
+        nl: "Max",
+        da: "max"
     },
     windSpeedTitle: {
         en: "Wind Speed",
-        nl: "Windsnelheid"
+        nl: "Windsnelheid",
+        da: "Vindhastighed"
     },
     windSpeedWind: {
         en: "Wind",
-        nl: "Wind"
+        nl: "Wind",
+        da: "Vind"
     },
     windSpeedGust: {
         en: "Gust",
-        nl: "Vlaag"
+        nl: "Vlaag",
+        da: "Stød"
     },
     windSpeedAverage: {
         en: "Average",
-        nl: "Gemiddeld"
+        nl: "Gemiddeld",
+        da: "Gennemsnit"
     },
     windSpeedDescription: {
         en: "Green bar indicates average wind speed.\nPurple bar indicates gust speed.",
-        nl: "Groene balk geeft de gemiddelde windsnelheid aan. \nPaarse balk geeft de windsnelheid in vlagen aan."
+        nl: "Groene balk geeft de gemiddelde windsnelheid aan. \nPaarse balk geeft de windsnelheid in vlagen aan.",
+        da: "Grøn bjælke angiver middelvind.\nLilla bjælke angiver vindstød."
     },
     recordsHighTemp: {
         en: "Highest temperature",
-        nl: "Hoogste temperatuur"
+        nl: "Hoogste temperatuur",
+        da: "Højeste temperatur"
     },
     recordsLowTemp: {
         en: "Lowest temperature",
-        nl: "Laagste temperatuur"
+        nl: "Laagste temperatuur",
+        da: "Laveste temperatur"
     },
     recordsHighGust: {
         en: "Highest gust",
-        nl: "Sterkste vlaag"
+        nl: "Sterkste vlaag",
+        da: "Kraftigste vindstød"
     },
     recordsHighRainRate: {
         en: "Highest rain rate",
-        nl: "Hoogste hoeveelheid regen"
+        nl: "Hoogste hoeveelheid regen",
+        da: "Højeste regnrate"
     },
     recordsLowBaro: {
         en: "Lowest barometer",
-        nl: "Laagste stand barometer"
+        nl: "Laagste stand barometer",
+        da: "Laveste lufttryk"
     },
     recordsHighBaro: {
         en: "Highest barometer",
-        nl: "Hoogste stand barometer"
+        nl: "Hoogste stand barometer",
+        da: "Højeste lufttryk"
     },
     recordsHighRainRateDaily: {
         en: "Highest daily rainfall",
-        nl: "Hoogste dagelijkse hoeveelheid regen"
+        nl: "Hoogste dagelijkse hoeveelheid regen",
+        da: "Højeste daglige regnmængde"
     },
     recordsHighRainRateHourly: {
         en: "Highest hourly rainfall",
-        nl: "Hoogste hoeveelheid regen per uur"
+        nl: "Hoogste hoeveelheid regen per uur",
+        da: "Højeste regnmængde pr. time"
     },
     recordsHighAverageWind: {
         en: "Highest average wind speed",
-        nl: "Hoogste gemiddelde windsnelheid"
+        nl: "Hoogste gemiddelde windsnelheid",
+        da: "Kraftigste middelvind"
     },
     recordsLowWindChill: {
         en: "Lowest wind chill",
-        nl: "Laagste gevoelstemperatuur"
+        nl: "Laagste gevoelstemperatuur",
+        da: "Laveste kuldeindeks"
     },
     recordsWarmestDay: {
         en: "Warmest day",
-        nl: "Warmste dag"
+        nl: "Warmste dag",
+        da: "Varmeste dag"
     },
     recordsColdestNight: {
         en: "Coldest night",
-        nl: "Koudste nacht"
+        nl: "Koudste nacht",
+        da: "Koldeste nat"
     },
     recordsColdestDay: {
         en: "Coldest day",
-        nl: "Koudste dag"
+        nl: "Koudste dag",
+        da: "Koldeste dag"
     },
     recordsWarmestNight: {
         en: "Warmest night",
-        nl: "Warmste nacht"
+        nl: "Warmste nacht",
+        da: "Varmeste nat"
     },
     recordsHighHeatIndex: {
         en: "Highest heat index",
-        nl: "Hoogste warmte index"
+        nl: "Hoogste warmte index",
+        da: "Højeste varmeindeks"
     },
     recordsHighSolar: {
         en: "Highest solar",
-        nl: "Hoogste zonkracht"
+        nl: "Hoogste zonkracht",
+        da: "Højeste solindstråling"
     },
     recordsHighUV: {
         en: "Highest uv index",
-        nl: "Hoogste uv index"
+        nl: "Hoogste uv index",
+        da: "Højeste uv indeks"
     },
     recordsHighDewPoint: {
         en: "Highest dew point",
-        nl: "Hoogste dauwpunt"
+        nl: "Hoogste dauwpunt",
+        da: "Højeste dugpunkt"
     },
     recordsLowDewPoint: {
         en: "Lowest dew point",
-        nl: "Laagste dauwpunt"
+        nl: "Laagste dauwpunt",
+        da: "Laveste dugpunkt"
     },
     forcastShowMore: {
         en: "Show More",
-        nl: "Toon meer"
+        nl: "Toon meer",
+        da: "Vis mere"
     },
     graphMax: {
         en: "Max",
-        nl: "Max"
+        nl: "Max",
+        da: "Max"
     },
     graphMin: {
         en: "Min",
         nl: "Min",
+        da: "Min"
     },
     graphLast: {        //NOTE: these are used as in: Last XX days, or Last XX Hours, etc.
         en: "Last",
-        nl: "Laatste"
+        nl: "Laatste",
+        da: "Sidste"
     },
     graphDays: {
         en: "Days",
-        nl: "Dagen"
+        nl: "Dagen",
+        da: "Dage"
     },
     graphHours: {
         en: "Hours",
-        nl: "Uur"
+        nl: "Uur",
+        da: "Timer"
     },
     graphHour: {
         en: "Hour",
-        nl: "Uur"
+        nl: "Uur",
+        da: "Time"
     },
     graphMonths: {
         en: "Months",
-        nl: "Maanden"
+        nl: "Maanden",
+        da: "Måned"
     },
     graphBaroLabel: {
         en: "Pressure",
-        nl: "Luchtdruk"
+        nl: "Luchtdruk",
+        da: "Lufttryk"
     },
     graphHumidityLabel: {
         en: "Percent",
-        nl: "Procent"
+        nl: "Procent",
+        da: "Procent"
     },
     graphSolarLabel: {
         en: "Irradiance",
-        nl: "Instraling"
+        nl: "Instraling",
+        da: "Indstråling"
     },
     graphLabelUV: {
         en: "Index",
-        nl: "Index"
+        nl: "Index",
+        da: "Indeks"
     },
     graphLabelWindDirection: {
         en: "Wind Direction",
-        nl: "Windrichting"
+        nl: "Windrichting",
+        da: "Vindretning"
     },
     buttonLabelGraphs: {
         en: "Graphs",
-        nl: "Grafieken"
+        nl: "Grafieken",
+        da: "Grafer"
     },
     buttonLabelRecords: {
         en: "Records",
-        nl: "Records"
+        nl: "Records",
+        da: "Rekorder"
     },
     buttonLabelAltitude: {
         en: "Altitude",
-        nl: "Hoogte"
+        nl: "Hoogte",
+        da: "Højde"
     },
     recordsForMonth: {
         en: "Records for this month",
-        nl: "Records voor deze maand"
+        nl: "Records voor deze maand",
+        da: "Rekorder for denne måned"
     },
     recordsForYear: {
         en: "Records for this year",
-        nl: "Records voor dit jaar"
+        nl: "Records voor dit jaar",
+        da: "Rekorder for dette år"
     },
     recordsAllTime: {
         en: "All time records",
-        nl: "Records aller tijden"
+        nl: "Records aller tijden",
+        da: "Rekorder siden start"
     },
     forecastTitle: {
         en: "Forecast",
-        nl: "Voorspelling"
+        nl: "Voorspelling",
+        da: "Vejrudsigt"
     },
     heatIndexTitle: {
-        en: "Heat Index"
+        en: "Heat Index",
+        da: "Varmeindeks"
     },
     heatIndexDescription: {
-        en: "How hot it really feels when relative humidity is factored with the actual air temperature."
+        en: "How hot it really feels when relative humidity is factored with the actual air temperature.",
+        da: "Hvor varmt det føles når luftfugtigheden kombineres med luftens temperatur."
+    },
+    beaufortScaleTitle: {
+        en: "Beaufort Scale"
     }
 };
 
@@ -364,7 +453,7 @@ function useDict(wordIn) {
     
     //If the word doesn't exist in dictionary file for a given langauge, return it in the default langauge (English)
     if(typeof dict[wordIn][lang] === "undefined") {
-        console.log("WORD NOT FOUND IN LANGUAGE. DEFAULTING TO ENGLISH");
+        console.log("WORD NOT FOUND IN LANGUAGE. DEFAULTING TO ENGLISH:\n" + wordIn);
         return dict[wordIn]["en"];
     }
     return dict[wordIn][lang];
@@ -826,7 +915,7 @@ var widgetList = {
     apparent: {enabled: true},
     temperature: {enabled: true},
     barometer: {enabled: true},
-    windChill: {enabled: true, mode: "windchill"},
+    windChill: {enabled: true, mode: "windchill", autoSwitch: true},
     forecastHandler: {enabled: true},
     graphHandler: {enabled: true},
     graphHandlerBarometer: {enabled: true},
@@ -964,7 +1053,8 @@ var units = {
             kmh: [1.852, "km/h", 1],
             mph: [1.15078, "mph", 1],
             kts: [1, "kts", 1],
-            ms: [0.514444, "m/s", 1]
+            ms: [0.514444, "m/s", 1],
+            B: [1, "BFT", 1]
         },
         windDirection: {
             deg: [1, "\xB0", 0]
@@ -989,6 +1079,11 @@ var units = {
     };
 
 //Globally used helper funtions
+function calculateBeaufort(v) {
+    //v must be in knots
+    return Math.min(Math.round(Math.pow((v*0.514444/0.836), (2/3))), 12);
+}
+
 function betterRound(value, decimals) {
     //Better number rounding, credit to: http://www.jacklmoore.com/notes/rounding-in-javascript/
     return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
@@ -1005,6 +1100,8 @@ function formatDataToUnit(dataIn, unitsIn) {
         } else {
             return dataIn;
         }
+    } else if (currentUnits[unitsIn.toString()] == "B") {
+        return calculateBeaufort(dataIn);
     } else if (parseFloat(dataIn) == 0) {
         return betterRound((dataIn * units[unitsIn.toString()][currentUnits[unitsIn.toString()]][0].toString()), roundTo);
     } else {

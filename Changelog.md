@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 - Windchill guage can now be set to heat index mode
 - Sprites now hosted with rest of repository
 
+#### Added
+- Dutch Language
+- English Language
+
 ## 1.1.6 Alpha 2018-06-28
 
 #### Added

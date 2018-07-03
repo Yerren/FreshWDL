@@ -4685,6 +4685,7 @@ var windSpeed = {
 	textTitleWind: null,
 	textTitleGust: null,
     textDisplayGust: null,
+    textDisplayBeaufort: null,
 	windHighDisplay: null,
 	gustHighDisplay: null,
 	largeDashTotal: 5,
@@ -4705,6 +4706,7 @@ var windSpeed = {
         posBar: {},
         posFillBar: {},
 		posLabels: {},
+        posTextBeaufort: {},
         cutOffLength: null
 	},
 	constants: {
@@ -4730,6 +4732,7 @@ var windSpeed = {
 	values: {
 		speedIn: 0,
 		speedOut: 0,
+        speedOrigional: 0,
         gustIn: 0,
         gustOut: 0,
 		windHighSpeedIn: 0,
@@ -4778,6 +4781,7 @@ function drawSpeedBarWS01(speedIn, gustIn, windHighSpeedIn, gustHighSpeedIn, uni
     if (speedIn != windSpeed.valuesOld.speedIn || gustIn != windSpeed.valuesOld.gustIn || windHighSpeedIn != windSpeed.valuesOld.windHighSpeedIn || gustHighSpeedIn != windSpeed.valuesOld.gustHighSpeedIn || unitChange === true) {
         //Sets inputs to new data
         windSpeed.values.speedIn = speedIn;
+        windSpeed.values.speedOrigional = speedIn;
         windSpeed.values.gustIn = gustIn;
         windSpeed.values.windHighSpeedIn = windHighSpeedIn;
         windSpeed.values.gustHighSpeedIn = gustHighSpeedIn;
@@ -4833,6 +4837,26 @@ function updateTweensWS01() {
     
     //Text Display Gust
 	windSpeed.textDisplayGust.text = windSpeed.values.gustIn.toString() + "\n" + units[windSpeed.values.unitsIn.toString()][currentUnits[windSpeed.values.unitsIn.toString()]][1].toString();
+    
+    //Text Display Beaufort
+    var beaufortSpeed = calculateBeaufort(windSpeed.values.speedOrigional);
+    windSpeed.textDisplayBeaufort.text = useDict("beaufortScaleTitle") + ": " + beaufortSpeed.toString();
+    
+    var colour = makeColorGradient(.42,.42,.42,0,2,4,10 + beaufortSpeed);
+    windSpeed.textDisplayBeaufort.color = "rgb(" + colour[0] + "," + colour[1] + "," + colour[2] + ")";
+    
+}
+
+function makeColorGradient(frequency1, frequency2, frequency3,
+                             phase1, phase2, phase3, i) {
+    var center = 128,
+        width = 127;
+
+    var red = Math.sin(frequency1*i + phase1) * width + center;
+    var grn = Math.sin(frequency2*i + phase2) * width + center;
+    var blu = Math.sin(frequency3*i + phase3) * width + center;
+    
+    return [red, grn, blu];
 }
 
 function updateTopWS01() {
@@ -4843,11 +4867,12 @@ function updateTopWS01() {
     windSpeed.setupVars.dashGap = windSpeed.canvas.height * 0.025;
     windSpeed.setupVars.barWidth = windSpeed.canvas.height * 0.15;
     windSpeed.setupVars.barFillWidth = windSpeed.setupVars.barWidth * 0.6;
-    windSpeed.setupVars.barHeight = windSpeed.canvas.height * 0.8;
+    windSpeed.setupVars.barHeight = windSpeed.canvas.height * 0.64;
     windSpeed.setupVars.barFillHeight = windSpeed.setupVars.barHeight;
     windSpeed.setupVars.strokeSize = windSpeed.setupVars.barWidth / 40;
     windSpeed.setupVars.textSize = windSpeed.canvas.height / 17;
     windSpeed.setupVars.textDisplaySize = windSpeed.canvas.height / 20;
+    windSpeed.setupVars.beaufortSize = windSpeed.canvas.height / 18;
     windSpeed.setupVars.posBarLeft = {
         x: ((windSpeed.canvas.height / 2) - (windSpeed.setupVars.barWidth / 2)),
         y: ((windSpeed.canvas.height / 2) - (windSpeed.setupVars.barHeight / 2))
@@ -4858,7 +4883,7 @@ function updateTopWS01() {
     };
     windSpeed.setupVars.posTextLabelLeft = {
         x: windSpeed.setupVars.posBarLeft.x + windSpeed.setupVars.barWidth / 2,
-        y: windSpeed.setupVars.barHeight * (125 / 119)
+        y: windSpeed.setupVars.barHeight + (windSpeed.canvas.height - windSpeed.setupVars.barHeight) / 2 - windSpeed.canvas.height * 0.06
     };
     windSpeed.setupVars.posTextLabelRight = {
         x: windSpeed.setupVars.posBarRight.x + windSpeed.setupVars.barWidth / 2,
@@ -4873,12 +4898,12 @@ function updateTopWS01() {
         y: (windSpeed.canvas.height - windSpeed.setupVars.barHeight) / 2
     };
 	windSpeed.setupVars.posLabelWind = {
-		x: windSpeed.setupVars.posBarLeft.x + windSpeed.setupVars.barWidth / 2,
-        y: windSpeed.setupVars.barHeight * (112 / 100)
+		x: sharpenValue(windSpeed.setupVars.posBarLeft.x + windSpeed.setupVars.barWidth / 2),
+        y: sharpenValue(windSpeed.setupVars.barHeight + (windSpeed.canvas.height - windSpeed.setupVars.barHeight) / 2)
 	};
     windSpeed.setupVars.posLabelGust = {
 		x: sharpenValue(windSpeed.setupVars.posBarRight.x + windSpeed.setupVars.barWidth / 2),
-        y: sharpenValue(windSpeed.setupVars.posLabelWind.y)
+        y: windSpeed.setupVars.posLabelWind.y //not 'sharpened' to ensure allignment with LabelWind.
 	};
     windSpeed.setupVars.posTextTitleWind = {
         x: windSpeed.setupVars.posBarLeft.x + windSpeed.setupVars.barWidth / 2,
@@ -4888,6 +4913,10 @@ function updateTopWS01() {
         x: windSpeed.setupVars.posBarRight.x + windSpeed.setupVars.barWidth / 2,
         y: windSpeed.setupVars.posTextTitleWind.y
     };
+    windSpeed.setupVars.posTextBeaufort = {
+        x: windSpeed.setupVars.posBarRight.x,
+        y: windSpeed.canvas.height * (37/40)
+    }
 
 	//Update the visual elements
     
@@ -4905,7 +4934,7 @@ function updateTopWS01() {
 	windSpeed.rectRightCommand.h = windSpeed.setupVars.barHeight;
     
 	//Dashes
-    var gap = (windSpeed.setupVars.barHeight - windSpeed.setupVars.posDash.y) / ((windSpeed.largeDashTotal - 1) * 2 - 1);
+    var gap = (windSpeed.setupVars.barHeight) / ((windSpeed.largeDashTotal - 1) * 2);
     //I literally have no idea why to use " -1 * 2 - 1" but it works.
 	for (i = 0; i < (windSpeed.largeDashTotal * 2 - 1); i++) {
         var dashY = sharpenValue(gap * i + windSpeed.setupVars.posDash.y);
@@ -4982,6 +5011,11 @@ function updateTopWS01() {
 	windSpeed.textDisplayGust.x = windSpeed.setupVars.posTextLabelRight.x;
 	windSpeed.textDisplayGust.y = windSpeed.setupVars.posTextLabelRight.y;
 	windSpeed.textDisplayGust.font = "bold " + windSpeed.setupVars.textDisplaySize + "px arial";
+    
+    //Beaufort Scale 
+	windSpeed.textDisplayBeaufort.x = windSpeed.setupVars.posTextBeaufort.x;
+	windSpeed.textDisplayBeaufort.y = windSpeed.setupVars.posTextBeaufort.y;
+	windSpeed.textDisplayBeaufort.font = "bold " + windSpeed.setupVars.beaufortSize + "px arial";
     
     //Gives the call to update the animated sections of the widgets
     updateTweensWS01();
@@ -5102,7 +5136,12 @@ function setUpWS01() {
 	windSpeed.textDisplayGust.textAlign = "center";
 	windSpeed.stage.addChild(windSpeed.textDisplayGust);
 
-	
+    //Setup beaufort text display
+	windSpeed.textDisplayBeaufort = new createjs.Text("", "0px Arial", "black");
+	windSpeed.textDisplayBeaufort.textBaseline = "top";
+	windSpeed.textDisplayBeaufort.textAlign = "center";
+	windSpeed.stage.addChild(windSpeed.textDisplayBeaufort);
+    
 	//Set up windHigh speed label
 	windSpeed.windHighDisplay = new createjs.Text("0", "0px Arial", "black");
 	windSpeed.windHighDisplay.textBaseline = "top";
