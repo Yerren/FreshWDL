@@ -1281,6 +1281,15 @@ function setUpWC01() {
 	windchill01.stage.addChild(windchill01.lowDisplay);
 }
 
+function windChillSwitchWC01(realTemp, realMin, realMax, chillMin, chillMax, heatMin, heatMax) {
+//    //Check if need to switch between windchill and heat index
+//    if (realTemp <= 10) widgetList.windChill.mode = "windchill";
+//    else if (realTemp >= 18) widgetList.windChill.mode = "heatIndex";
+//    else ((realMin != chillMin || realMax != chillMax) && (realMin != chillMin || realMax != chillMax)) {
+//        
+//    } TODO - finish
+}
+
 function initializeWC01() {
 	//The first function that is called
     
@@ -1292,6 +1301,7 @@ function initializeWC01() {
         updateTweensWC01();
     });
     window.addEventListener("clientRawDataUpdate", function () {
+        if (widgetList.windChill.autoSwitch) windChillSwitchWC01(); //See if need to switch between windchill and heatIndex
         drawWindchillBarWC01((widgetList.windChill.mode==="windchill")?arrayClientraw[44]:arrayClientraw[112],
                              (widgetList.windChill.mode==="windchill")?arrayClientraw[77]:arrayClientraw[110],
                              (widgetList.windChill.mode==="windchill")?arrayClientraw[78]:arrayClientraw[111])

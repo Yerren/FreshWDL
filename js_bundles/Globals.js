@@ -1035,7 +1035,7 @@ Chart.defaults.global.maintainAspectRatio = false;
 Chart.defaults.global.legend.display = false;
 Chart.defaults.global.defaultFontFamily = globalFontFamily;
 
-//Set units. In the format of: "multiplier, "Display", number of decimal places to round to]
+//Set units. In the format of: ["multiplier, "Display", number of decimal places to round to]
 var units = {
         pressure: {
             hPa: [1, "hPa", 1],
@@ -1093,14 +1093,14 @@ function formatDataToUnit(dataIn, unitsIn) {
     //Format to the correct unit
     var roundTo = units[unitsIn.toString()][currentUnits[unitsIn.toString()]][2];
     
-    if (unitsIn.toString() == "temp") {
+    if (unitsIn.toString() == "temp") { //Manage C/F non standard conversion
         if (currentUnits[unitsIn.toString()] == "fahrenheit") {
             var fahTemp = dataIn * (9 / 5) + 32;
             return betterRound(fahTemp, roundTo);
         } else {
             return dataIn;
         }
-    } else if (currentUnits[unitsIn.toString()] == "B") {
+    } else if (currentUnits[unitsIn.toString()] == "B") { //Manage Beaufort non linear conversion
         return calculateBeaufort(dataIn);
     } else if (parseFloat(dataIn) == 0) {
         return betterRound((dataIn * units[unitsIn.toString()][currentUnits[unitsIn.toString()]][0].toString()), roundTo);
