@@ -883,6 +883,7 @@ var windchill01 = {
 	dashEndCommand: [],
 	dash: [],
 	label: [],
+    defaultMode: null,
 	setupVars: {
         dashes: [],
         dashGap: null,
@@ -978,6 +979,9 @@ function drawWindchillBarWC01(tempIn, highTempIn, lowTempIn, unitChange) {
             .to({h: windchill01.values.highTempOut}, 2000, createjs.Ease.quartInOut);
         createjs.Tween.get(windchill01.tweens.lowTemp, {override:true})
             .to({h: windchill01.values.lowTempOut}, 2000, createjs.Ease.quartInOut);
+        
+        //Set title (incase of switch between heat Index and windchill)
+        windchill01.textTitle.text = (widgetList.windChill.mode === "windchill") ? useDict("windchillTitle") : useDict("heatIndexTitle");
         
         windchill01.valuesOld.TempIn = tempIn;
         windchill01.valuesOld.highTempIn = highTempIn;
@@ -1282,12 +1286,13 @@ function setUpWC01() {
 }
 
 function windChillSwitchWC01(realTemp, realMin, realMax, chillMin, chillMax, heatMin, heatMax) {
-//    //Check if need to switch between windchill and heat index
-//    if (realTemp <= 10) widgetList.windChill.mode = "windchill";
-//    else if (realTemp >= 18) widgetList.windChill.mode = "heatIndex";
-//    else ((realMin != chillMin || realMax != chillMax) && (realMin != chillMin || realMax != chillMax)) {
-//        
-//    } TODO - finish
+    //Check if need to switch between windchill and heat index
+    if (realTemp <= 10) widgetList.windChill.mode = "windchill";
+    else if (realTemp >= 18) widgetList.windChill.mode = "heatIndex";
+    else if ((realMin != chillMin || realMax != chillMax) && (realMin != heatMin || realMax != heatMax)) widgetList.windChill.mode = windchill01.defaultMode;
+    else if (realMin != chillMin || realMax != chillMax) widgetList.windChill.mode = "windchill";
+    else if (realMin != heatMin || realMax != heatMax) widgetList.windChill.mode = "heatIndex";
+    else widgetList.windChill.mode = windchill01.defaultMode;
 }
 
 function initializeWC01() {
@@ -1296,12 +1301,15 @@ function initializeWC01() {
 	//Define canvas and stage varaibles
 	windchill01.stage = new createjs.Stage(windchill01.canvas);
     
+    //Store default mode (windchill or heatInext)
+    windchill01.defaultMode = widgetList.windChill.mode;
+    
     window.addEventListener("frameUpdate", function () {
         windchill01.stage.update();
         updateTweensWC01();
     });
     window.addEventListener("clientRawDataUpdate", function () {
-        if (widgetList.windChill.autoSwitch) windChillSwitchWC01(); //See if need to switch between windchill and heatIndex
+        if (widgetList.windChill.autoSwitch) windChillSwitchWC01(arrayClientraw[4], arrayClientraw[47], arrayClientraw[46], arrayClientraw[78], arrayClientraw[77], arrayClientraw[111], arrayClientraw[110]);
         drawWindchillBarWC01((widgetList.windChill.mode==="windchill")?arrayClientraw[44]:arrayClientraw[112],
                              (widgetList.windChill.mode==="windchill")?arrayClientraw[77]:arrayClientraw[110],
                              (widgetList.windChill.mode==="windchill")?arrayClientraw[78]:arrayClientraw[111])
