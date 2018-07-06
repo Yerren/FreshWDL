@@ -8,7 +8,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 #### Added
 - Dutch Language
-- English Language
 - Danish Language
 - Beaufort Scale to wind gauge / wind units
 
