@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 #### Changes
 - Windchill gauge can now be set to heat index mode
-- Windchill gauge can now be setW to automatically swap between heat index and windchill mode
+- Windchill gauge can now be set to automatically swap between heat index and windchill mode
 - Sprites now hosted with rest of repository
 
 #### Fixed
