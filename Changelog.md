@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
-## 1.1.7 Alpha - In Progress
+## 1.1.7 Alpha 2018-07-06
 
 #### Added
 - Dutch Language
@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 #### Changes
 - Windchill gauge can now be set to heat index mode
-- Windchill gauge can now be set to automatically swap between heat index and windchill mode
+- Windchill gauge can now be setW to automatically swap between heat index and windchill mode
 - Sprites now hosted with rest of repository
 
 #### Fixed
