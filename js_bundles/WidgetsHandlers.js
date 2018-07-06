@@ -93,6 +93,7 @@ function updateTopA01() {
 	apparent01.textTitleApparent.x = apparent01.setupVars.posTitleApparent.x;
 	apparent01.textTitleApparent.y = apparent01.setupVars.posTitleApparent.y;
 	apparent01.textTitleApparent.font = "bold " + apparent01.setupVars.textTitleSize + "px arial";
+    setFontMaxWidth(apparent01.textTitleApparent, apparent01.canvas, apparent01.stage);
     
 	//Text Displays
 	apparent01.textDisplayT.x = apparent01.setupVars.posTextT.x;
@@ -460,6 +461,7 @@ function updateTopTemp01() {
 	tempBar.textTitle.x = tempBar.setupVars.posTextTitle.x;
 	tempBar.textTitle.y = tempBar.setupVars.posTextTitle.y;
 	tempBar.textTitle.font = "bold " + tempBar.setupVars.textDisplaySize + "px arial";
+    setFontMaxWidth(tempBar.textTitle, tempBar.canvas, tempBar.stage);
 	
 	//High Marker
 	tempBar.highMarkerStrokeCommand.width = tempBar.setupVars.strokeSize * 4;
@@ -750,6 +752,7 @@ function updateTopB01() {
 	barometer01.textTitleBarometer.x = barometer01.setupVars.posTitleBarometer.x;
 	barometer01.textTitleBarometer.y = barometer01.setupVars.posTitleBarometer.y;
 	barometer01.textTitleBarometer.font = "bold " + barometer01.setupVars.textTitleSize + "px arial";
+    setFontMaxWidth(barometer01.textTitleBarometer, barometer01.canvas, barometer01.stage);
     
 	//Text Displays
 	barometer01.textDisplayP.x = barometer01.setupVars.posTextP.x;
@@ -759,10 +762,12 @@ function updateTopB01() {
     barometer01.textDisplayRate.x = barometer01.setupVars.posTextRate.x;
 	barometer01.textDisplayRate.y = barometer01.setupVars.posTextRate.y;
 	barometer01.textDisplayRate.font = "bold " + barometer01.setupVars.textRateSize + "px arial";
+    setFontMaxWidth(barometer01.textDisplayRate, barometer01.canvas, barometer01.stage);
     
     barometer01.textDisplayT.x = barometer01.setupVars.posTextT.x;
 	barometer01.textDisplayT.y = barometer01.setupVars.posTextT.y;
 	barometer01.textDisplayT.font = "bold " + barometer01.setupVars.textDisplaySize + "px arial";
+    setMaxWidthGivenWidth(barometer01.textDisplayT, barometer01.setupVars.rectWidth);
 }
 
 function resizeCanvasB01() {
@@ -883,6 +888,7 @@ var windchill01 = {
 	dashEndCommand: [],
 	dash: [],
 	label: [],
+    defaultMode: null,
 	setupVars: {
         dashes: [],
         dashGap: null,
@@ -978,6 +984,9 @@ function drawWindchillBarWC01(tempIn, highTempIn, lowTempIn, unitChange) {
             .to({h: windchill01.values.highTempOut}, 2000, createjs.Ease.quartInOut);
         createjs.Tween.get(windchill01.tweens.lowTemp, {override:true})
             .to({h: windchill01.values.lowTempOut}, 2000, createjs.Ease.quartInOut);
+        
+        //Set title (incase of switch between heat Index and windchill)
+        windchill01.textTitle.text = (widgetList.windChill.mode === "windchill") ? useDict("windchillTitle") : useDict("heatIndexTitle");
         
         windchill01.valuesOld.TempIn = tempIn;
         windchill01.valuesOld.highTempIn = highTempIn;
@@ -1139,6 +1148,7 @@ function updateTopWC01() {
 	windchill01.textTitle.x = windchill01.setupVars.posTextTitle.x;
 	windchill01.textTitle.y = windchill01.setupVars.posTextTitle.y;
 	windchill01.textTitle.font = "bold " + windchill01.setupVars.textDisplaySize + "px arial";
+    setFontMaxWidth(windchill01.textTitle, windchill01.canvas, windchill01.stage);
 	
 	//High Marker
 	windchill01.highMarkerStrokeCommand.width = windchill01.setupVars.strokeSize * 4;
@@ -1281,17 +1291,31 @@ function setUpWC01() {
 	windchill01.stage.addChild(windchill01.lowDisplay);
 }
 
+function windChillSwitchWC01(realTemp, realMin, realMax, chillMin, chillMax, heatMin, heatMax) {
+    //Check if need to switch between windchill and heat index
+    if (realTemp <= 10) widgetList.windChill.mode = "windchill";
+    else if (realTemp >= 18) widgetList.windChill.mode = "heatIndex";
+    else if ((realMin != chillMin || realMax != chillMax) && (realMin != heatMin || realMax != heatMax)) widgetList.windChill.mode = windchill01.defaultMode;
+    else if (realMin != chillMin || realMax != chillMax) widgetList.windChill.mode = "windchill";
+    else if (realMin != heatMin || realMax != heatMax) widgetList.windChill.mode = "heatIndex";
+    else widgetList.windChill.mode = windchill01.defaultMode;
+}
+
 function initializeWC01() {
 	//The first function that is called
     
 	//Define canvas and stage varaibles
 	windchill01.stage = new createjs.Stage(windchill01.canvas);
     
+    //Store default mode (windchill or heatInext)
+    windchill01.defaultMode = widgetList.windChill.mode;
+    
     window.addEventListener("frameUpdate", function () {
         windchill01.stage.update();
         updateTweensWC01();
     });
     window.addEventListener("clientRawDataUpdate", function () {
+        if (widgetList.windChill.autoSwitch) windChillSwitchWC01(arrayClientraw[4], arrayClientraw[47], arrayClientraw[46], arrayClientraw[78], arrayClientraw[77], arrayClientraw[111], arrayClientraw[110]);
         drawWindchillBarWC01((widgetList.windChill.mode==="windchill")?arrayClientraw[44]:arrayClientraw[112],
                              (widgetList.windChill.mode==="windchill")?arrayClientraw[77]:arrayClientraw[110],
                              (widgetList.windChill.mode==="windchill")?arrayClientraw[78]:arrayClientraw[111])
@@ -2019,6 +2043,7 @@ function updateTopHum01() {
 	humidityGauge.textTitle.x = humidityGauge.setupVars.posTextTitle.x;
 	humidityGauge.textTitle.y = humidityGauge.setupVars.posTextTitle.y;
 	humidityGauge.textTitle.font = "bold " + humidityGauge.setupVars.textTitleSize + "px arial";
+    setFontMaxWidth(humidityGauge.textTitle, humidityGauge.canvas, humidityGauge.stage);
     
     //Pointer
     humidityGauge.pointerCommand.tip.x = humidityGauge.setupVars.posPointer.xT;
@@ -2345,35 +2370,43 @@ function updateTopMS01() {
 	moonSun01.textTitleSun.x = moonSun01.setupVars.posTitleSun.x;
 	moonSun01.textTitleSun.y = moonSun01.setupVars.posTitleSun.y;
 	moonSun01.textTitleSun.font = "bold " + moonSun01.setupVars.textTitleSize + "px arial";
+    setMaxWidthGivenWidth(moonSun01.textTitleSun, moonSun01.setupVars.rectWidth);
     
 	moonSun01.textTitleMoon.x = moonSun01.setupVars.posTitleMoon.x;
 	moonSun01.textTitleMoon.y = moonSun01.setupVars.posTitleMoon.y;
 	moonSun01.textTitleMoon.font = "bold " + moonSun01.setupVars.textTitleSize + "px arial";
+    setMaxWidthGivenWidth(moonSun01.textTitleMoon, moonSun01.setupVars.rectWidth);
     
 	//Text Displays
 	moonSun01.textDisplaySR.x = moonSun01.setupVars.posTextSR.x;
 	moonSun01.textDisplaySR.y = moonSun01.setupVars.posTextSR.y;
 	moonSun01.textDisplaySR.font = "bold " + moonSun01.setupVars.textDisplaySize + "px arial";
+    setMaxWidthGivenWidth(moonSun01.textDisplaySR, moonSun01.setupVars.rectWidth);
     
     moonSun01.textDisplaySS.x = moonSun01.setupVars.posTextSS.x;
 	moonSun01.textDisplaySS.y = moonSun01.setupVars.posTextSS.y;
 	moonSun01.textDisplaySS.font = "bold " + moonSun01.setupVars.textDisplaySize + "px arial";
+    setMaxWidthGivenWidth(moonSun01.textDisplaySS, moonSun01.setupVars.rectWidth);
     
     moonSun01.textDisplayMR.x = moonSun01.setupVars.posTextMR.x;
 	moonSun01.textDisplayMR.y = moonSun01.setupVars.posTextMR.y;
 	moonSun01.textDisplayMR.font = "bold " + moonSun01.setupVars.textDisplaySize + "px arial";
+    setMaxWidthGivenWidth(moonSun01.textDisplayMR, moonSun01.setupVars.rectWidth);
     
     moonSun01.textDisplayMS.x = moonSun01.setupVars.posTextMS.x;
 	moonSun01.textDisplayMS.y = moonSun01.setupVars.posTextMS.y;
 	moonSun01.textDisplayMS.font = "bold " + moonSun01.setupVars.textDisplaySize + "px arial";
+    setMaxWidthGivenWidth(moonSun01.textDisplayMS, moonSun01.setupVars.rectWidth);
     
     moonSun01.textDisplayMP.x = moonSun01.setupVars.posTextMP.x;
 	moonSun01.textDisplayMP.y = moonSun01.setupVars.posTextMP.y;
 	moonSun01.textDisplayMP.font = "bold " + moonSun01.setupVars.textDisplaySize + "px arial";
+    setMaxWidthGivenWidth(moonSun01.textDisplayMP, moonSun01.setupVars.rectWidth);
     
     moonSun01.textDisplayMA.x = moonSun01.setupVars.posTextMA.x;
 	moonSun01.textDisplayMA.y = moonSun01.setupVars.posTextMA.y;
 	moonSun01.textDisplayMA.font = "bold " + moonSun01.setupVars.textDisplaySize + "px arial";
+    setMaxWidthGivenWidth(moonSun01.textDisplayMA, moonSun01.setupVars.rectWidth);
 }
 
 function resizeCanvasMS01() {
@@ -2591,7 +2624,7 @@ function updateTopSol01() {
     solarBar01.setupVars.barFillHeight = solarBar01.setupVars.barHeight;
     solarBar01.setupVars.strokeSize = solarBar01.setupVars.barWidth / 40;
     solarBar01.setupVars.textDisplaySize = solarBar01.canvas.height / 20;
-    solarBar01.setupVars.textTitleSize = solarBar01.canvas.height / 23;
+    solarBar01.setupVars.textTitleSize = solarBar01.canvas.height / 17;
     solarBar01.setupVars.textMaxLabelSize = solarBar01.canvas.height / 19;
     solarBar01.setupVars.posBar = {
         x: ((solarBar01.canvas.height / 2) - (solarBar01.setupVars.barWidth / 2)),
@@ -2647,11 +2680,13 @@ function updateTopSol01() {
     solarBar01.textSunHours.x = solarBar01.setupVars.posTextSunHours.x;
 	solarBar01.textSunHours.y = solarBar01.setupVars.posTextSunHours.y;
 	solarBar01.textSunHours.font = solarBar01.setupVars.textDisplaySize * 0.9 + "px arial";
+    setFontMaxWidth(solarBar01.textSunHours, solarBar01.canvas, solarBar01.stage);
     
     //Text Title
 	solarBar01.textTitle.x = solarBar01.setupVars.posTextTitle.x;
 	solarBar01.textTitle.y = solarBar01.setupVars.posTextTitle.y;
 	solarBar01.textTitle.font = "bold " + solarBar01.setupVars.textTitleSize + "px arial";
+    setFontMaxWidth(solarBar01.textTitle, solarBar01.canvas, solarBar01.stage, true);
     
     //Text Max Label
 	solarBar01.textMaxLabel.x = solarBar01.setupVars.posTextMaxLabel.x;
@@ -2861,6 +2896,8 @@ function drawStatusS01(statusIn, stationTimeIn, stationDateIn) {
     status01.textDisplayS.text = status01.values.status;
     status01.textDisplayD.text = status01.values.dataStatus;
     
+    updateTopS01(); //To ensure text does not overflow
+    
 }
 
 function updateTweensS01() {
@@ -2908,10 +2945,12 @@ function updateTopS01() {
 	status01.textDisplayS.x = status01.setupVars.posTextS.x;
 	status01.textDisplayS.y = status01.setupVars.posTextS.y;
 	status01.textDisplayS.font = status01.setupVars.textDisplaySize + "px arial";
+    setFontMaxWidthLeft(status01.textDisplayS, status01.canvas, status01.stage);
     
     status01.textDisplayD.x = status01.setupVars.posTextD.x;
 	status01.textDisplayD.y = status01.setupVars.posTextD.y;
 	status01.textDisplayD.font = status01.setupVars.textDisplaySize + "px arial";
+    setFontMaxWidthLeft(status01.textDisplayD, status01.canvas, status01.stage);
 }
 
 function resizeCanvasS01() {
@@ -3025,6 +3064,7 @@ function updateTopTR01() {
 	titleRainfall01.textTitleRainfall.x = titleRainfall01.setupVars.posTitleRainfall.x;
 	titleRainfall01.textTitleRainfall.y = titleRainfall01.setupVars.posTitleRainfall.y;
 	titleRainfall01.textTitleRainfall.font = "bold " + titleRainfall01.setupVars.textTitleSize + "px arial";
+    setFontMaxWidth(titleRainfall01.textTitleRainfall, titleRainfall01.canvas, titleRainfall01.stage);
 }
 
 function resizeCanvasTR01() {
@@ -3289,6 +3329,7 @@ function updateTopUni01() {
 	uniBar01.textTitle.x = uniBar01.setupVars.posTextTitle.x;
 	uniBar01.textTitle.y = uniBar01.setupVars.posTextTitle.y;
 	uniBar01.textTitle.font = "bold " + uniBar01.setupVars.textTitleSize + "px arial";
+    setFontMaxWidth(uniBar01.textTitle, uniBar01.canvas, uniBar01.stage);
     
     //Gives the call to update the animated sections of the widgets
     updateTweensUni01();
@@ -3601,6 +3642,7 @@ function updateTopUni02() {
 	uniBar02.textTitle.x = uniBar02.setupVars.posTextTitle.x;
 	uniBar02.textTitle.y = uniBar02.setupVars.posTextTitle.y;
 	uniBar02.textTitle.font = "bold " + uniBar02.setupVars.textTitleSize + "px arial";
+    setFontMaxWidth(uniBar02.textTitle, uniBar02.canvas, uniBar02.stage);
     
     //Gives the call to update the animated sections of the widgets
     updateTweensUni02();
@@ -3913,6 +3955,7 @@ function updateTopUni03() {
 	uniBar03.textTitle.x = uniBar03.setupVars.posTextTitle.x;
 	uniBar03.textTitle.y = uniBar03.setupVars.posTextTitle.y;
 	uniBar03.textTitle.font = "bold " + uniBar03.setupVars.textTitleSize + "px arial";
+    setFontMaxWidth(uniBar03.textTitle, uniBar03.canvas, uniBar03.stage);
     
     //Gives the call to update the animated sections of the widgets
     updateTweensUni03();
@@ -4108,7 +4151,7 @@ function updateTopUV01() {
     uvBar01.setupVars.barFillHeight = uvBar01.setupVars.barHeight;
     uvBar01.setupVars.strokeSize = uvBar01.setupVars.barWidth / 40;
     uvBar01.setupVars.textDisplaySize = uvBar01.canvas.height / 19;
-    uvBar01.setupVars.textTitleSize = uvBar01.canvas.height / 23;
+    uvBar01.setupVars.textTitleSize = uvBar01.canvas.height / 17;
     uvBar01.setupVars.textMaxLabelSize = uvBar01.canvas.height / 19;
     uvBar01.setupVars.posBar = {
         x: ((uvBar01.canvas.height / 2) - (uvBar01.setupVars.barWidth / 2)),
@@ -4153,6 +4196,7 @@ function updateTopUV01() {
 	uvBar01.textTitle.x = uvBar01.setupVars.posTextTitle.x;
 	uvBar01.textTitle.y = uvBar01.setupVars.posTextTitle.y;
 	uvBar01.textTitle.font = "bold " + uvBar01.setupVars.textTitleSize + "px arial";
+    setFontMaxWidth(uvBar01.textTitle, uvBar01.canvas, uvBar01.stage);
     
     //Text Max Label
 	uvBar01.textMaxLabel.x = uvBar01.setupVars.posTextMaxLabel.x;
@@ -4685,6 +4729,7 @@ var windSpeed = {
 	textTitleWind: null,
 	textTitleGust: null,
     textDisplayGust: null,
+    textDisplayBeaufort: null,
 	windHighDisplay: null,
 	gustHighDisplay: null,
 	largeDashTotal: 5,
@@ -4705,6 +4750,7 @@ var windSpeed = {
         posBar: {},
         posFillBar: {},
 		posLabels: {},
+        posTextBeaufort: {},
         cutOffLength: null
 	},
 	constants: {
@@ -4730,6 +4776,7 @@ var windSpeed = {
 	values: {
 		speedIn: 0,
 		speedOut: 0,
+        speedOrigional: 0,
         gustIn: 0,
         gustOut: 0,
 		windHighSpeedIn: 0,
@@ -4778,6 +4825,7 @@ function drawSpeedBarWS01(speedIn, gustIn, windHighSpeedIn, gustHighSpeedIn, uni
     if (speedIn != windSpeed.valuesOld.speedIn || gustIn != windSpeed.valuesOld.gustIn || windHighSpeedIn != windSpeed.valuesOld.windHighSpeedIn || gustHighSpeedIn != windSpeed.valuesOld.gustHighSpeedIn || unitChange === true) {
         //Sets inputs to new data
         windSpeed.values.speedIn = speedIn;
+        windSpeed.values.speedOrigional = speedIn;
         windSpeed.values.gustIn = gustIn;
         windSpeed.values.windHighSpeedIn = windHighSpeedIn;
         windSpeed.values.gustHighSpeedIn = gustHighSpeedIn;
@@ -4817,12 +4865,14 @@ function updateTweensWS01() {
 	//High Gust Marker
 	windSpeed.gustHighMarkerEndCommand.y = windSpeed.gustHighMarkerStartCommand.y = windSpeed.tweens.gustHighSpeed.h * windSpeed.rectRightCommand.h + windSpeed.rectRightCommand.y;
 	
-	//High Display
+	//Wind High Display
 	windSpeed.windHighDisplay.text = useDict("windSpeedMax") + ":\n" + windSpeed.values.windHighSpeedIn.toString();
-	
-	//Low Display
+	setMaxWidthGivenWidth(windSpeed.gustHighDisplay, windSpeed.setupVars.barWidth);
+    
+	//Gust High Display
 	windSpeed.gustHighDisplay.text = useDict("windSpeedMax") + ":\n" + windSpeed.values.gustHighSpeedIn.toString();
-	
+	setFontMaxWidth(windSpeed.textTitle, windSpeed.canvas, windSpeed.stage);
+    
 	//Labels
 	for (i = 0; i < windSpeed.largeDashTotal; i++) {
 		windSpeed.label[i].text = windSpeed.constants.maxSpeed - ((windSpeed.constants.maxSpeed - windSpeed.constants.minSpeed) / (windSpeed.largeDashTotal - 1)) * i;
@@ -4833,6 +4883,26 @@ function updateTweensWS01() {
     
     //Text Display Gust
 	windSpeed.textDisplayGust.text = windSpeed.values.gustIn.toString() + "\n" + units[windSpeed.values.unitsIn.toString()][currentUnits[windSpeed.values.unitsIn.toString()]][1].toString();
+    
+    //Text Display Beaufort
+    var beaufortSpeed = calculateBeaufort(windSpeed.values.speedOrigional);
+    windSpeed.textDisplayBeaufort.text = useDict("beaufortScaleTitle") + ": " + beaufortSpeed.toString();
+    
+    var colour = makeColorGradient(.42,.42,.42,0,2,4,10 + beaufortSpeed);
+    windSpeed.textDisplayBeaufort.color = "rgb(" + colour[0] + "," + colour[1] + "," + colour[2] + ")";
+    
+}
+
+function makeColorGradient(frequency1, frequency2, frequency3,
+                             phase1, phase2, phase3, i) {
+    var center = 128,
+        width = 127;
+
+    var red = Math.sin(frequency1*i + phase1) * width + center;
+    var grn = Math.sin(frequency2*i + phase2) * width + center;
+    var blu = Math.sin(frequency3*i + phase3) * width + center;
+    
+    return [red, grn, blu];
 }
 
 function updateTopWS01() {
@@ -4843,11 +4913,12 @@ function updateTopWS01() {
     windSpeed.setupVars.dashGap = windSpeed.canvas.height * 0.025;
     windSpeed.setupVars.barWidth = windSpeed.canvas.height * 0.15;
     windSpeed.setupVars.barFillWidth = windSpeed.setupVars.barWidth * 0.6;
-    windSpeed.setupVars.barHeight = windSpeed.canvas.height * 0.8;
+    windSpeed.setupVars.barHeight = windSpeed.canvas.height * 0.64;
     windSpeed.setupVars.barFillHeight = windSpeed.setupVars.barHeight;
     windSpeed.setupVars.strokeSize = windSpeed.setupVars.barWidth / 40;
     windSpeed.setupVars.textSize = windSpeed.canvas.height / 17;
     windSpeed.setupVars.textDisplaySize = windSpeed.canvas.height / 20;
+    windSpeed.setupVars.beaufortSize = windSpeed.canvas.height / 18;
     windSpeed.setupVars.posBarLeft = {
         x: ((windSpeed.canvas.height / 2) - (windSpeed.setupVars.barWidth / 2)),
         y: ((windSpeed.canvas.height / 2) - (windSpeed.setupVars.barHeight / 2))
@@ -4858,7 +4929,7 @@ function updateTopWS01() {
     };
     windSpeed.setupVars.posTextLabelLeft = {
         x: windSpeed.setupVars.posBarLeft.x + windSpeed.setupVars.barWidth / 2,
-        y: windSpeed.setupVars.barHeight * (125 / 119)
+        y: windSpeed.setupVars.barHeight + (windSpeed.canvas.height - windSpeed.setupVars.barHeight) / 2 - windSpeed.canvas.height * 0.06
     };
     windSpeed.setupVars.posTextLabelRight = {
         x: windSpeed.setupVars.posBarRight.x + windSpeed.setupVars.barWidth / 2,
@@ -4873,12 +4944,12 @@ function updateTopWS01() {
         y: (windSpeed.canvas.height - windSpeed.setupVars.barHeight) / 2
     };
 	windSpeed.setupVars.posLabelWind = {
-		x: windSpeed.setupVars.posBarLeft.x + windSpeed.setupVars.barWidth / 2,
-        y: windSpeed.setupVars.barHeight * (112 / 100)
+		x: sharpenValue(windSpeed.setupVars.posBarLeft.x + windSpeed.setupVars.barWidth / 2),
+        y: sharpenValue(windSpeed.setupVars.barHeight + (windSpeed.canvas.height - windSpeed.setupVars.barHeight) / 2)
 	};
     windSpeed.setupVars.posLabelGust = {
 		x: sharpenValue(windSpeed.setupVars.posBarRight.x + windSpeed.setupVars.barWidth / 2),
-        y: sharpenValue(windSpeed.setupVars.posLabelWind.y)
+        y: windSpeed.setupVars.posLabelWind.y //not 'sharpened' to ensure allignment with LabelWind.
 	};
     windSpeed.setupVars.posTextTitleWind = {
         x: windSpeed.setupVars.posBarLeft.x + windSpeed.setupVars.barWidth / 2,
@@ -4888,6 +4959,10 @@ function updateTopWS01() {
         x: windSpeed.setupVars.posBarRight.x + windSpeed.setupVars.barWidth / 2,
         y: windSpeed.setupVars.posTextTitleWind.y
     };
+    windSpeed.setupVars.posTextBeaufort = {
+        x: windSpeed.setupVars.posBarRight.x,
+        y: windSpeed.canvas.height * (37/40)
+    }
 
 	//Update the visual elements
     
@@ -4905,7 +4980,7 @@ function updateTopWS01() {
 	windSpeed.rectRightCommand.h = windSpeed.setupVars.barHeight;
     
 	//Dashes
-    var gap = (windSpeed.setupVars.barHeight - windSpeed.setupVars.posDash.y) / ((windSpeed.largeDashTotal - 1) * 2 - 1);
+    var gap = (windSpeed.setupVars.barHeight) / ((windSpeed.largeDashTotal - 1) * 2);
     //I literally have no idea why to use " -1 * 2 - 1" but it works.
 	for (i = 0; i < (windSpeed.largeDashTotal * 2 - 1); i++) {
         var dashY = sharpenValue(gap * i + windSpeed.setupVars.posDash.y);
@@ -4954,24 +5029,29 @@ function updateTopWS01() {
 	windSpeed.windHighDisplay.x = windSpeed.setupVars.posLabelWind.x;
     windSpeed.windHighDisplay.y = windSpeed.setupVars.posLabelWind.y;
 	windSpeed.windHighDisplay.font = windSpeed.setupVars.textDisplaySize + "px arial";
+    setMaxWidthGivenWidth(windSpeed.windHighDisplay, windSpeed.setupVars.barWidth);
 	
 	//High Gust Display
 	windSpeed.gustHighDisplay.x = windSpeed.setupVars.posLabelGust.x;
     windSpeed.gustHighDisplay.y = windSpeed.setupVars.posLabelGust.y;
 	windSpeed.gustHighDisplay.font = windSpeed.setupVars.textDisplaySize + "px arial";
+    setMaxWidthGivenWidth(windSpeed.gustHighDisplay, windSpeed.setupVars.barWidth);
     
     windSpeed.textTitle.x = windSpeed.setupVars.posTextTitle.x;
 	windSpeed.textTitle.y = windSpeed.setupVars.posTextTitle.y;
 	windSpeed.textTitle.font = "bold " + (windSpeed.setupVars.textDisplaySize * 1.5) + "px arial";
+    setFontMaxWidth(windSpeed.textTitle, windSpeed.canvas, windSpeed.stage);
     
     //Text titles for wind and gust
 	windSpeed.textTitleWind.x = windSpeed.setupVars.posTextTitleWind.x;
 	windSpeed.textTitleWind.y = windSpeed.setupVars.posTextTitleWind.y;
 	windSpeed.textTitleWind.font = windSpeed.setupVars.textDisplaySize + "px arial";
+    setMaxWidthGivenWidth(windSpeed.textTitleWind, windSpeed.setupVars.barWidth);
     
 	windSpeed.textTitleGust.x = windSpeed.setupVars.posTextTitleGust.x;
 	windSpeed.textTitleGust.y = windSpeed.setupVars.posTextTitleGust.y;
 	windSpeed.textTitleGust.font = windSpeed.setupVars.textDisplaySize + "px arial";
+    setMaxWidthGivenWidth(windSpeed.textTitleGust, windSpeed.setupVars.barWidth);
     
 	//Text Display Wind
 	windSpeed.textDisplayWind.x = windSpeed.setupVars.posTextLabelLeft.x;
@@ -4982,6 +5062,12 @@ function updateTopWS01() {
 	windSpeed.textDisplayGust.x = windSpeed.setupVars.posTextLabelRight.x;
 	windSpeed.textDisplayGust.y = windSpeed.setupVars.posTextLabelRight.y;
 	windSpeed.textDisplayGust.font = "bold " + windSpeed.setupVars.textDisplaySize + "px arial";
+    
+    //Beaufort Scale 
+	windSpeed.textDisplayBeaufort.x = windSpeed.setupVars.posTextBeaufort.x;
+	windSpeed.textDisplayBeaufort.y = windSpeed.setupVars.posTextBeaufort.y;
+	windSpeed.textDisplayBeaufort.font = "bold " + windSpeed.setupVars.beaufortSize + "px arial";
+    setFontMaxWidth(windSpeed.textDisplayBeaufort, windSpeed.canvas, windSpeed.stage);
     
     //Gives the call to update the animated sections of the widgets
     updateTweensWS01();
@@ -5102,7 +5188,12 @@ function setUpWS01() {
 	windSpeed.textDisplayGust.textAlign = "center";
 	windSpeed.stage.addChild(windSpeed.textDisplayGust);
 
-	
+    //Setup beaufort text display
+	windSpeed.textDisplayBeaufort = new createjs.Text("", "0px Arial", "black");
+	windSpeed.textDisplayBeaufort.textBaseline = "top";
+	windSpeed.textDisplayBeaufort.textAlign = "center";
+	windSpeed.stage.addChild(windSpeed.textDisplayBeaufort);
+    
 	//Set up windHigh speed label
 	windSpeed.windHighDisplay = new createjs.Text("0", "0px Arial", "black");
 	windSpeed.windHighDisplay.textBaseline = "top";

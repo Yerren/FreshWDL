@@ -4,11 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
-## 1.1.7 Alpha - In Progress
+## 1.1.7 Alpha 2018-07-06
+
+#### Added
+- Dutch Language
+- English Language
+- Danish Language
+- Beaufort Scale to wind gauge / wind units
 
 #### Changes
-- Windchill guage can now be set to heat index mode
+- Windchill gauge can now be set to heat index mode
+- Windchill gauge can now be setW to automatically swap between heat index and windchill mode
 - Sprites now hosted with rest of repository
+
+#### Fixed
+- Text can no longer overflow and get cut off
 
 ## 1.1.6 Alpha 2018-06-28
 
