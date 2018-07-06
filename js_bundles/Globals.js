@@ -37,7 +37,7 @@ var dict = {
     },
     barometerRate: {
         en: "Rate",
-        nl: "Snelheid",
+        nl: "Trend",
         da: "Hastighed"
     },
     barometerTitle: {
@@ -137,17 +137,17 @@ var dict = {
     },
     rainfallDailyTitle: {
         en: "Daily",
-        nl: "Dagelijks",
+        nl: "Vandaag",
         da: "Daglig"
     },
     rainfallMonthlyTitle: {
         en: "Monthly",
-        nl: "Maandelijks",
+        nl: "Deze Maand",
         da: "Månedlig"
     },
     rainfallAnnualTitle: {
         en: "Annual",
-        nl: "Jaarlijks",
+        nl: "Jaar Totaal",
         da: "Årlig"
     },
     uvTitle: {
@@ -966,6 +966,31 @@ if (typeof gaugeSettings !== "undefined") {//Check to see if gauge setting list 
     window.CustomEvent = CustomEvent;
 })();
 
+function setFontMaxWidth(textIn, canvasIn, stageIn, doesReposition) {
+    //Use with centered text only
+    //Stretches/compresses text so that it does not get cut off by edge of canvas
+    doesReposition = doesReposition || false;
+    var maxTextWidth = Math.min(canvasIn.width - stageIn.x - textIn.x, textIn.x + stageIn.x);
+    textIn.maxWidth = maxTextWidth * 2 * 0.95; //Reduced by 5%
+    
+    //check if should be repositioned, AND if valid to be (A.K.A if textWidth without a maxWidth is different when there is a max width.)
+    if (doesReposition && textIn.getMeasuredWidth() > textIn.maxWidth) {
+        textIn.x = canvasIn.width/2 - stageIn.x; // move to center, if true
+        maxTextWidth = Math.min(canvasIn.width - stageIn.x - textIn.x, textIn.x + stageIn.x);
+        textIn.maxWidth = maxTextWidth * 2 * 0.95; //Reduced by 5%
+    }
+}
+
+function setFontMaxWidthLeft(textIn, canvasIn, stageIn) {
+    //Use with left aligned text only
+    //Stretches/compresses text so that it does not get cut off by edge of canvas
+    var maxTextWidth = Math.min(canvasIn.width - stageIn.x - textIn.x);
+    textIn.maxWidth = maxTextWidth * 0.95; //Reduced by 5%
+}
+
+function setMaxWidthGivenWidth(textIn, widthIn) {
+    textIn.maxWidth = widthIn * 0.97; 
+}
 
 //Responsivly resize container to window
 function resizeContainer() {

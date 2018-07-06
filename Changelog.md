@@ -6,13 +6,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 ## 1.1.7 Alpha - In Progress
 
-#### Changes
-- Windchill guage can now be set to heat index mode
-- Sprites now hosted with rest of repository
-
 #### Added
 - Dutch Language
 - English Language
+- Danish Language
+
+#### Changes
+- Windchill gauge can now be set to heat index mode
+- Windchill gauge can now be set to automatically swap between heat index and windchill mode
+- Sprites now hosted with rest of repository
+
+#### Fixed
+- Text can no longer overflow and get cut off
 
 ## 1.1.6 Alpha 2018-06-28
 
