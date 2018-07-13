@@ -12,431 +12,1122 @@ moment.locale(lang);
 var dict = {
     apparentTitle: {
         en: "Apparent",
-        nl: "Gevoel",
-        da: "Føles som"
+        nl: "Schijnbare",
+        dk: "Føles som",
+        ro: "Aparentă",
+        fr: "Apparent",
+        gr: "Εμφανής",
+        it: "Apparente",
+        es: "Aparente",
+        no: "Tilsynelatende",
+        bg: "Видима",
+        cz: "Zdánlivý"
+        
     },
     apparentDescription: {
         en: "Perceived temperature based on temperature, humidity, sun, and wind.",
         nl: "Waargenomen temperatuur gebaseerd op de temperatuur, vochtigheid, zon en wind.",
-        da: "Opfattet temperatur baseret på temperatur, fugtighed, sol og vind"
+        dk: "Opfattet temperatur baseret på temperatur, fugtighed, sol og vind",
+        ro: "Temperatura percepută în funcție de temperatură, umiditate, soare şi vânt.",
+        fr: "Température perçue en fonction de la température, de l'humidité, du soleil et du vent.",
+		gr: "Θεωρημένη θερμοκρασία με βάση τη θερμοκρασία, την υγρασία, τον ήλιο και τον άνεμο.",
+		it: "Temperatura percepita basata su temperatura, umidità, sole e vento.",
+		es: "Temperatura percibida en función de la temperatura, la humedad, el sol y el viento.",
+		no: "Oppfattet temperatur basert på temperatur, fuktighet, sol og vind.",
+		bg: "Възприемана температура, базирана на температура, влажност, слънце и вятър.",
+		cz: "Vnímaná teplota na základě teploty, vlhkosti, slunce a větru."
     },
     temperatureTitle: {
         en: "Temperature",
         nl: "Temperatuur",
-        da: "Temperatur"
+        dk: "Temperatur",
+        ro: "Temperatura",
+		fr: "Température",
+		gr: "Θερμοκρασία",
+		it: "Temperatura",
+		es: "Temperatura",
+		no: "Temperatur",
+		bg: "Температура",
+		cz: "Teplota"
     },
     temperatureDescription: {
         en: "Current air temperature.\nBlue: Low daily temperature.\nRed: High daily temperature.",
         nl: "Huidige luchttemperatuur. \nBlauw: Minimum dagelijkse temperatuur. \nRood: Maximum dagelijkse temperatuur.",
-        da: "Aktuel lufttemperatur. \nBlå: Laveste daglige temperatur.\nRød: Højeste daglige temperatur."
+        dk: "Aktuel lufttemperatur. \nBlå: Laveste daglige temperatur.\nRød: Højeste daglige temperatur.",
+        ro: "Temperatura aerului curent.\nAlbastru: temperatura zilnică minimă.\nRosu: Temperatura zilnică maximă.",
+		fr: "Température actuelle de l'air.\nBleu:Faible température journalière.\NRouge: Température élevée journalière.",
+		gr: "Τρέχουσα θερμοκρασία αέρα.\nΜπλε: Χαμηλή ημερήσια θερμοκρασία.\nκόκκινος: Υψηλή ημερήσια θερμοκρασία.",
+		it: "Temperatura dell'aria attuale.\nBlu: temperatura giornaliera bassa.\nRosso: temperatura giornaliera elevata.",
+		es: "Temperatura del aire actual.\nAzul: temperatura diaria minima.\nRojo: temperatura diaria máxima.",
+		no: "Nåværende lufttemperatur.\nBlå: Lav daglig temperatur.\nRød: Høy daglig temperatur.",
+		bg: "Текуща температура на въздуха.\nБлок: Ниска дневна температура.\nРед: Висока дневна температура.",
+		cz: "Aktuální teplota vzduchu.\nModrá: Nízká denní teplota.\nČervené: Vysoká denní teplota."
     },
     barometerSteady: {
         en: "Steady",
         nl: "Bestendig",
-        da: "Stabil"
+        dk: "Stabil",
+        ro: "Constantă",
+		fr: "Stable",
+		gr: "Σταθερά",
+		it: "Costante",
+		es: "Estable",
+		no: "Stabil",
+		bg: "Спокойно",
+		cz: "Stabilní"
     },
     barometerRate: {
         en: "Rate",
         nl: "Trend",
-        da: "Hastighed"
+        dk: "Hastighed",
+        ro: "Rata",
+		fr: "Vitesse",
+		gr: "Τιμή",
+		it: "Vota",
+		es: "Velocidad",
+		no: "Intensitet",
+		bg: "Норма",
+		cz: "Hodnotit"
     },
     barometerTitle: {
         en: "Barometer",
         nl: "Barometer",
-        da: "Barometer"
+        dk: "Barometer",
+        ro: "Barometrul",
+		fr: "Baromètre",
+		gr: "Βαρόμετρο",
+		it: "Barometro",
+		es: "Barometro",
+		no: "Barometer",
+		bg: "Барометър",
+		cz: "Barometr"
     },
     barometerDescription: {
         en: "The weight of the air, adjusted for the station's altitude.",
         nl: "Het gewicht van de lucht, aangepast naar de hoogte van het weerstation.",
-        da: "Luftens vægt, justeret efter vejrstationens højde"
+        dk: "Luftens vægt, justeret efter vejrstationens højde",
+        ro: "Greutatea aerului, ajustată la altitudinea stației.",
+		fr: "Le poids de l'air, ajusté pour l'altitude de la station.",
+		gr: "Το βάρος του αέρα, προσαρμοσμένο στο υψόμετρο του σταθμού.",
+		it: "Il peso dell'aria, regolato per l'altitudine della stazione.",
+		es: "El peso del aire, ajustado para la altitud de la estación.",
+		no: "Vekten av luften, justert for stasjonens høyde.",
+		bg: "Тежестта на въздуха, коригирана спрямо височината на станцията.",
+		cz: "Hmotnost vzduchu, přizpůsobená výšce stanice."
     },
     windchillTitle: {
         en: "Windchill",
         nl: "Gevoelstemperatuur",
-        da: "Kuldeindeks"
+        dk: "Kuldeindeks",
+        ro: "Vânt tăios",
+		fr: "Windchill",
+		gr: "Δείκτης Ψύχρας",
+		it: "Percepita",
+		es: "Escalofríos",
+		no: "Vind faktor",
+		bg: "Cилен вятър",
+		cz: "Chlad vítr"
     },
     windchillDescription: {
         en: "How cold it actually feels. Calculated by combining heat and wind speed.",
         nl: "Hoe koud het daadwerkelijk aanvoelt. Wordt berekend door een combinatie van temperatuur en windsnelheid.",
-        da: "Hvor koldt det føles. Beregnet ved at kombinere temperatur og vindhastighed."
+        dk: "Hvor koldt det føles. Beregnet ved at kombinere temperatur og vindhastighed.",
+        ro: "Cât de frig se simte de fapt. Se calculează prin combinarea temperaturii și a vitezei vântului.",
+		fr: "Comme il fait froid, c'est calculé en combinant la température et la vitesse du vent.",
+		gr: "Πόσο κρύο αισθάνεται πραγματικά. Υπολογίζεται συνδυάζοντας τη θερμότητα και την ταχύτητα του ανέμου.",
+		it: "Come fa veramente freddo, calcolato combinando il calore e la velocità del vento.",
+		es: "Qué frío se siente realmente. Calculado combinando el calor y la velocidad del viento.",
+		no: "Hvor kaldt det faktisk føles. Beregnet ved å kombinere varme og vindhastighet.",
+		bg: "Колко студено се чувства, изчислено чрез комбиниране на топлина и скорост на вятъра.",
+		cz: "Jak studené se skutečně cítí. Vypočítá se kombinací tepla a rychlosti větru."
     },
     humidityTitle: {
         en: "Humidity",
         nl: "Vochtigheid",
-        da: "Luftfugtighed"
+        dk: "Luftfugtighed",
+        ro: "Umiditatea",
+		fr: "Humidité",
+		gr: "Υγρασία",
+		it: "Umidità",
+		es: "Humedad",
+		no: "Fuktighet",
+		bg: "Влажност",
+		cz: "Vlhkost"
     },
     humidityDescription: {
         en: "The amount of water vapour in the air as a percentage of the amount the air is capable of holding.",
         nl: "De hoeveelheid verdampt water in de lucht als een percentage van de hoeveelheid lucht dat in staat is om vocht vast te houden.",
-        da: "Mængden af vanddamp i luften som en procent af den mængde luften er i stand til at indeholde"
+        dk: "Mængden af vanddamp i luften som en procent af den mængde luften er i stand til at indeholde",
+        ro: "Cantitatea de vapori de apă din aer ca procent din cantitatea de aer care poate fi menținută.",
+		fr: "La quantité de vapeur d'eau dans l'air en pourcentage de la quantité que l'air est capable de contenir.",
+		gr: "Η ποσότητα υδρατμών στον αέρα ως ποσοστό της ποσότητας που μπορεί να συγκρατήσει ο αέρας.",
+		it: "La quantità di vapore acqueo nell'aria in percentuale della quantità di aria che è in grado di trattenere.",
+		es: "La cantidad de vapor de agua en el aire como un porcentaje de la cantidad que el aire es capaz de contener.",
+		no: "Mengden vanndamp i luften som en prosentandel av mengden luften er i stand til å holde.",
+		bg: "Количеството водни пари във въздуха като процент от количеството, което въздухът може да държи.",
+		cz: "Množství vodní páry ve vzduchu jako procento množství, které může vzduch držet."
     },
     moonSunRise: {
         en: "Rise",
         nl: "Opkomst",
-        da: "Opgang"
+        dk: "Opgang",
+        ro: "Răsărit de lună",
+		fr: "Lever",
+		gr: "Ανατολή Ηλίου",
+		it: "Alba",
+		es: "Amanecer",
+		no: "Sol Opgang",
+		bg: "Изгрев слънце",
+		cz: "Svítání"
     },
     moonSunSet: {
         en: "Set",
         nl: "Ondergang",
-        da: "Nedgang"
+        dk: "Nedgang",
+        ro: "Apus",
+		fr: "Coucher",
+		gr: "Δύση Ηλίου",
+		it: "Tramonto",
+		es: "Puesta de sol",
+		no: "Sol Nedgang",
+		bg: "Сън комплект",
+		cz: "Západ slunce"
     },
     moonSunPhase: {
         en: "Phase",
         nl: "Fase",
-        da: "Fase"
+        dk: "Fase",
+        ro: "Faza",
+		fr: "Phase",
+		gr: "Φάση",
+		it: "Fase",
+		es: "Fase",
+		no: "Fase",
+		bg: "Фаза",
+		cz: "Fáze"
     },
     moonSunAge: {
         en: "Age",
         nl: "Leeftijd",
-        da: "Alder"
+        dk: "Alder",
+        ro: "Vârsta",
+		fr: "Âge",
+		gr: "ηλικία",
+		it: "Età",
+		es: "Edad",
+		no: "Age",
+		bg: "Възраст",
+		cz: "Doba"
     },
     moonSunTitleSun: {
         en: "Sun",
         nl: "Zon",
-        da: "Sol"
+        dk: "Sol",
+        ro: "Soarele",
+		fr: "Soleil",
+		gr: "Ήλιος",
+		it: "Sole",
+		es: "Sol",
+		no: "Sol",
+		bg: "Cлънце",
+		cz: "Slunce"
     },
     moonSunTitleMoon: {
         en: "Moon",
         nl: "Maan",
-        da: "Måne"
+        dk: "Måne",
+        ro: "Luna",
+		fr: "Lune",
+		gr: "Σελήνη",
+		it: "Luna",
+		es: "Luna",
+		no: "Måne",
+		bg: "Луна",
+		cz: "Měsíc"
     },
     solarTitle: {
         en: "Solar",
         nl: "Zonkracht",
-        da: "Solindstråling"
+        dk: "Solindstråling",
+        ro: "Solar",
+		fr: "Solaire",
+		gr: "Ηλιακός",
+		it: "Solare",
+		es: "Solar",
+		no: "Solar",
+		bg: "Cлънцето",
+		cz: "Sluneční"
     },
     solarSunHours: {
         en: "Sun Hours",
         nl: "Zonuren",
-        da: "Solskinstimer"
+        dk: "Solskinstimer",
+        ro: "Ore însorite",
+		fr: "Heures du soleil",
+		gr: "Ώρες Κυρ",
+		it: "Ore di sole",
+		es: "Horas de sol",
+		no: "Søn timer",
+		bg: "Часове на слънцето",
+		cz: "Hodiny slunce"
     },
     solarDescription: {
         en: "The intensity of the sun's radiation.",
         nl: "De intensiteit van de straling van de zon.",
-        da: "Intensiteten af solens stråler"
+        dk: "Intensiteten af solens stråler",
+        ro: "Intensitatea radiației solare.",
+		fr: "L'intensité du rayonnement du soleil.",
+		gr: "Η ένταση της ακτινοβολίας του ήλιου.",
+		it: "L'intensità della radiazione solare.",
+		es: "La intensidad de la radiación del sol.",
+		no: "Intensiteten av solens stråling.",
+		bg: "Интензивността на слънчевото излъчване.",
+		cz: "Intenzita slunečního záření."
     },
     statusNoDataSince: {
         en: "No data since",
         nl: "Geen data sinds",
-        da: "Ingen data siden"
+        dk: "Ingen data siden",
+        ro: "Nu există date încă",
+		fr: "Aucune donnée depuis",
+		gr: "Δεν υπάρχουν δεδομένα από τότε",
+		it: "Nessun dato da",
+		es: "Sin datos desde",
+		no: "Ingen data siden",
+		bg: "Няма данни оттогава",
+		cz: "Žádné údaje od té doby"
     },
     statusDataAt: {
         en: "Latest data received at",
         nl: "Laatste data ontvangen op",
-        da: "Sidste opdatering kl."
+        dk: "Sidste opdatering kl.",
+        ro: "Ultimele date primite la",
+		fr: "Dernières données reçues à",
+		gr: "Τα τελευταία δεδομένα που ελήφθησαν στο",
+		it: "Ultimi dati ricevuti a",
+		es: "Últimos datos recibidos en",
+		no: "Siste data mottatt på",
+		bg: "Последни данни, получени от",
+		cz: "Nejnovější údaje obdržené na adrese"
     },
     statusDescription: {
         en: "Green: New data collected from server.\nGrey: Data on server hasn't changed.\nYellow: Some error during data collection from server.\nRed: No data able to be collected from server.",
         nl: "Groen: Nieuwe data ontvangen van server. \nGrijs: Data op server is niet veranderd. \nGeel: Een foutmelding tijdens de ontvangst van de data van de server. \nRood: Geen data beschikbaar om te ontvangen van de server.",
-        da: "Grøn: Friske data fra serveren.\nGrå: Data på serveren har ikke ændret sig.\nGul: Fejl under hentning af data fra serveren.\nRød: Ingen data fra serveren."
+        dk: "Grøn: Friske data fra serveren.\nGrå: Data på serveren har ikke ændret sig.\nGul: Fejl under hentning af data fra serveren.\nRød: Ingen data fra serveren.",
+        ro: "Verde: date noi colectate de pe server.\nVerde: datele de pe server nu s-au schimbat. \nGalben: Unele erori în timpul colectării de date de pe server.\nRosu: Nu există date care să poată fi colectate de pe server.",
+		fr: "Vert: Nouvelles données collectées sur le serveur.\nGris: Les données sur le serveur n'ont pas changé.\nJaune: Erreur lors de la collecte des données du serveur. \ nRouge: Aucune donnée ne peut être collectée depuis le serveur.",
+		gr: "Πράσινο: Νέα δεδομένα που έχουν συλλεχθεί από το διακομιστή.\nγκρί: Τα δεδομένα στο διακομιστή δεν έχουν αλλάξει.\nκίτρινος: Ορισμένα σφάλματα κατά τη συλλογή δεδομένων από το διακομιστή.\nκόκκινος: Δεν υπάρχουν δεδομένα που μπορούν να συλλεχθούν από το διακομιστή.",
+		it: "Verde: nuovi dati raccolti dal server.\nGrigio: i dati sul server non sono cambiati.\nGlialo: alcuni errori durante la raccolta dei dati dal server.\nRosso: nessun dato può essere raccolto dal server.",
+		es: "Verde: datos nuevos recopilados del servidor.\nGris: los datos en el servidor no han cambiado.\nAmarillo: algunos errores durante la recopilación de datos del servidor.\nRojo: no se pueden recopilar datos del servidor.",
+		no: "Grønn: Ny data innsamlet fra serveren.\nGrå: Data på serveren har ikke blitt endret.\nGul: Noen feil under datainnsamling fra serveren.\nRød: Ingen data som kan hentes fra serveren.",
+		bg: "Зелена: Нови данни, събрани от сървъра.\nЧаст: Данните на сървъра не са се променили.\nНапред: Някои грешки при събирането на данни от сървъра.\nчервен: Няма данни, които да се събират от сървъра.",
+		cz: "Zelená: nová data shromážděná ze serveru.\nŠedá: Údaje na serveru se nezměnily.\nŽlutá: Některé chyby při sběru dat ze serveru.\nČervená: Žádné údaje nemohou být shromážděny ze serveru."
+        
     },
     rainfallTitle: {
         en: "Rainfall",
         nl: "Regen",
-        da: "Regn"
+        dk: "Regn",
+        ro: "Precipitaţii",
+		fr: "La pluie",
+		gr: "Βροχή",
+		it: "Precipitazioni",
+		es: "Lluvia",
+		no: "Nedbør",
+		bg: "Валежите",
+		cz: "Srážky"
     },
     rainfallDailyTitle: {
         en: "Daily",
         nl: "Vandaag",
-        da: "Daglig"
+        dk: "Daglig",
+        ro: "Ziua",
+		fr: "Jurnellement",
+		gr: "Καθημερινά",
+		it: "Quotidiano",
+		es: "Diario",
+		no: "Daglig",
+		bg: "Eжедневно",
+		cz: "Denně"
     },
     rainfallMonthlyTitle: {
         en: "Monthly",
         nl: "Deze Maand",
-        da: "Månedlig"
+        dk: "Månedlig",
+        ro: "Lunar",
+		fr: "Au mois",
+		gr: "Μηνιαίος",
+		it: "Mensile",
+		es: "Mensual",
+        no: "Månedlig",
+		bg: "Месечно",
+		cz: "Měsíční"
     },
     rainfallAnnualTitle: {
         en: "Annual",
         nl: "Jaar Totaal",
-        da: "Årlig"
+        dk: "Årlig",
+        ro: "Anual",
+		fr: "Annuel",
+		gr: "Ετήσιος",
+		it: "Annuale",
+		es: "Anual",
+		no: "Årlig",
+		bg: "Годишен",
+		cz: "Roční"
     },
     uvTitle: {
         en: "UV",
         nl: "UV",
-        da: "UV"
+        dk: "UV",
+        ro: "UV",
+		fr: "UV",
+		gr: "UV",
+		it: "UV",
+		es: "UV",
+		no: "UV",
+		bg: "UV",
+		cz: "UV"
     },
     uvDescription: {
         en:  "The intensity of UV radiation - 0-2 is minimal risk of skin damage whilst 8+ is very high.",
         nl: "De intensiteit van de UV straling - 0-2 is een minimaal risico op huidschade terwijl 8+ een hoog risico vormt.",
-        da: "Intensiteten af UV stråling - 0-2 angiver minimal risiko for hudskader mens 8+ angiver meget høj risiko."
+        dk: "Intensiteten af UV stråling - 0-2 angiver minimal risiko for hudskader mens 8+ angiver meget høj risiko.",
+        ro: "Intensitatea radiației UV - 0-2 reprezintă un risc minim de afectare a pielii, în timp ce 8+ este foarte mare.",
+		fr: "L'intensité du rayonnement UV - 0-2 est un risque minime de lésions cutanées tandis que 8+ est très élevé.",
+		gr: "Η ένταση της ακτινοβολίας UV - 0-2 είναι ο ελάχιστος κίνδυνος βλάβης του δέρματος ενώ το 8+ είναι πολύ υψηλό.",
+		it: "L'intensità della radiazione UV - 0-2 è il minimo rischio di danni alla pelle mentre 8+ è molto alta.",
+		es: "La intensidad de la radiación UV - 0-2 es un riesgo mínimo de daño a la piel, mientras que 8+ es muy alta.",
+		no: "Intensiteten til UV-stråling - 0-2 er minimal risiko for hudskade mens 8+ er veldig høy.",
+		bg: "Интензитетът на UV радиация - 0-2 е минимален риск от увреждане на кожата, докато 8+ е много висока.",
+		cz: "Intenzita UV záření - 0-2 představuje minimální riziko poškození kůže, zatímco 8+ je velmi vysoké."
     },
     windDirectionLabelN: {
         en: "N",
         nl: "N",
-        da: "N"
+        dk: "N",
+        ro: "N",
+		fr: "N",
+		gr: "B",
+		it: "N",
+		es: "N",
+		no: "N",
+		bg: "C",
+		cz: "S"
     },
     windDirectionLabelNE: {
         en: "NE",
         nl: "NO",
-        da: "NØ"
+        dk: "NØ",
+        ro: "NE",
+		fr: "NE",
+		gr: "BA",
+		it: "NE",
+		es: "NE",
+		no: "NØ",
+		bg: "CИ",
+		cz: "SV"
     },
     windDirectionLabelE: {
         en: "E",
         nl: "O",
-        da: "Ø"
+        dk: "Ø",
+        ro: "E",
+		fr: "E",
+		gr: "A",
+		it: "E",
+		es: "E",
+		no: "Ø",
+		bg: "И",
+		cz: "V"
     },
     windDirectionLabelSE: {
         en: "SE",
         nl: "ZO",
-        da: "SØ"
+        dk: "SØ",
+        ro: "SE",
+		fr: "SE",
+		gr: "NA",
+		it: "SE",
+		es: "SE",
+		no: "SØ",
+		bg: "ЮИ",
+		cz: "JV"
     },
     windDirectionLabelS: {
         en: "S",
         nl: "Z",
-        da: "S"
+        dk: "S",
+        ro: "S",
+		fr: "S",
+		gr: "N",
+		it: "S",
+		es: "S",
+		no: "S",
+		bg: "Ю",
+		cz: "J"
     },
     windDirectionLabelSW: {
         en: "SW",
         nl: "ZW",
-        da: "SV"
+        dk: "SV",
+        ro: "SV",
+		fr: "SO",
+		gr: "NΔ",
+		it: "SO",
+		es: "SO",
+		no: "SV",
+		bg: "Юз",
+		cz: "JZ"
     },
     windDirectionLabelW: {
         en: "W",
         nl: "W",
-        da: "V"
+        dk: "V",
+        ro: "V",
+		fr: "O",
+		gr: "Δ",
+		it: "O",
+		es: "O",
+		no: "V",
+		bg: "з",
+		cz: "Z"
     },
     windDirectionLabelNW: {
         en: "NW",
         nl: "NW",
-        da: "NV"
+        dk: "NV",
+        ro: "NV",
+		fr: "NO",
+		gr: "BΔ",
+		it: "NO",
+		es: "NO",
+		no: "NV",
+		bg: "cз",
+		cz: "SZ"
     },
     windDirectionDescription: {
         en: "The wind direction. Green arrow indicates average wind direction.",
         nl: "De windrichting. De groene pijl geeft de gemiddelde windrichting aan.",
-        da: "Vindretning. Grøn pil angiver den gennemsnitlige vindretning."
+        dk: "Vindretning. Grøn pil angiver den gennemsnitlige vindretning.",
+        ro: "Direcția vântului. Săgeata verde indică direcția medie a vântului.",
+		fr: "La direction du vent La flèche verte indique la direction moyenne du vent.",
+		gr: "Η διεύθυνση του ανέμου. Το πράσινο βέλος δείχνει τη μέση κατεύθυνση του ανέμου.",
+		it: "La direzione del vento: la freccia verde indica la direzione media del vento.",
+		es: "La dirección del viento. La flecha verde indica la dirección promedio del viento.",
+		no: "Vindretningen. Grønn pil indikerer gjennomsnittlig vindretning.",
+		bg: "Посоката на вятъра. Зелената стрелка показва средната посока на вятъра.",
+		cz: "The wind direction. Green arrow indicates average wind direction."
     },
     windSpeedMax: {
         en: "max",
         nl: "Max",
-        da: "max"
+        dk: "max",
+        ro: "max",
+		fr: "max",
+		gr: "mέγ",
+		it: "max",
+		es: "máx",
+		no: "max",
+		bg: "mакс",
+		cz: "max"
     },
     windSpeedTitle: {
         en: "Wind Speed",
         nl: "Windsnelheid",
-        da: "Vindhastighed"
+        dk: "Vindhastighed",
+        ro: "Viteza vântului",
+		fr: "Vitesse du vent",
+		gr: "Ταχύτητα Ανέμου",
+		it: "Velocità del vento",
+		es: "Velocidad del viento",
+		no: "Vindfart",
+		bg: "Скоростта на вятъра",
+        cz: "Rychlost větru"
     },
     windSpeedWind: {
         en: "Wind",
         nl: "Wind",
-        da: "Vind"
+        dk: "Vind",
+        ro: "Vântul",
+		fr: "Vent",
+		gr: "Ταχύτητα",
+		it: "Vento",
+		es: "Viento",
+		no: "Vind",
+		bg: "Вятър",
+		cz: "Vítr"
     },
     windSpeedGust: {
         en: "Gust",
         nl: "Vlaag",
-        da: "Stød"
+        dk: "Stød",
+        ro: "Rafale",
+		fr: "Rafale",
+		gr: "φύσημα",
+		it: "Raffica",
+		es: "Ráfaga",
+		no: "Vindkast",
+		bg: "Рафал",
+		cz: "Poryv"
     },
     windSpeedAverage: {
         en: "Average",
         nl: "Gemiddeld",
-        da: "Gennemsnit"
+        dk: "Gennemsnit",
+        ro: "Media",
+		fr: "Moyen",
+		gr: "Μέση",
+		it: "Media",
+		es: "Media",
+		no: "Gjennomsnitt",
+		bg: "Средна",
+		cz: "Průměrný"
     },
     windSpeedDescription: {
         en: "Green bar indicates average wind speed.\nPurple bar indicates gust speed.",
         nl: "Groene balk geeft de gemiddelde windsnelheid aan. \nPaarse balk geeft de windsnelheid in vlagen aan.",
-        da: "Grøn bjælke angiver middelvind.\nLilla bjælke angiver vindstød."
+        dk: "Grøn bjælke angiver middelvind.\nLilla bjælke angiver vindstød.",
+        ro: "Bara verde indică viteza medie a vântului.\nVioleta scurtă indică viteza de rafală.",
+		fr: "La barre verte indique la vitesse moyenne du vent.\nViolet barre verticale indique la vitesse du vent.",
+		gr: "Η πράσινη ράβδος δείχνει τη μέση ταχύτητα του ανέμου.\nμωβ ράβδος σκουριάς δείχνει την ταχύτητα της ριπής.",
+		it: "La barra verde indica la velocità media del vento.\nPurple barra indica la velocità della raffica.",
+		es: "La barra verde indica la velocidad promedio del viento.\npúrpura color indica la velocidad de ráfaga.",
+		no: "Grønn bar indikerer gjennomsnittlig vindhastighet.\nPurple bar indikerer vindhastighet.",
+		bg: "Зелената лента показва средната.\nпурпурен скорост на вятъра.",
+		cz: "Zelená čára označuje průměrnou rychlost větru.\nKurzní lišta označuje rychlost poryvu."
     },
     recordsHighTemp: {
         en: "Highest temperature",
         nl: "Hoogste temperatuur",
-        da: "Højeste temperatur"
+        dk: "Højeste temperatur",
+        ro: "Recordul de temperatură mare",
+		fr: "La plus haute température",
+		gr: "Υψηλότερη θερμοκρασία",
+		it: "Temperatura massima",
+		es: "Temperatura más alta",
+		no: "Høyeste temperatur",
+		bg: "Най-висока температура",
+		cz: "Nejvyšší teplota"
     },
     recordsLowTemp: {
         en: "Lowest temperature",
         nl: "Laagste temperatuur",
-        da: "Laveste temperatur"
+        dk: "Laveste temperatur",
+        ro: "Recordul de temperatură mică",
+		fr: "Température la plus basse",
+		gr: "Χαμηλότερη θερμοκρασία",
+		it: "Temperatura più bassa",
+		es: "Temperatura más baja",
+		no: "Laveste temperatur",
+		bg: "Най-ниска температура",
+		cz: "Nejnižší teplota"
     },
     recordsHighGust: {
         en: "Highest gust",
         nl: "Sterkste vlaag",
-        da: "Kraftigste vindstød"
+        dk: "Kraftigste vindstød",
+        ro: "Recordul rafalelor",
+		fr: "La plus haute rafale",
+		gr: "Υψηλότερη φύσημα",
+		it: "Il più alto gusto",
+		es: "Mayor ráfaga",
+		no: "Høyeste vindkast",
+		bg: "Най-висок вкус",
+		cz: "Nejvyšší poryv"
     },
     recordsHighRainRate: {
         en: "Highest rain rate",
         nl: "Hoogste hoeveelheid regen",
-        da: "Højeste regnrate"
+        dk: "Højeste regnrate",
+        ro: "Recordul ratei ploii",
+		fr: "Le plus haut taux de pluie",
+		gr: "Υψηλότερη βροχόπτωση",
+		it: "Tasso di pioggia più alto",
+		es: "Tasa de lluvia más alta",
+		no: "Høyeste regnfrekvens",
+		bg: "Най-висока дъждовна скорост",
+		cz: "Nejvyšší déšť"
     },
     recordsLowBaro: {
         en: "Lowest barometer",
         nl: "Laagste stand barometer",
-        da: "Laveste lufttryk"
+        dk: "Laveste lufttryk",
+        ro: "Recordul presiunii scăzute",
+		fr: "Le plus bas baromètre",
+		gr: "Χαμηλότερο βαρόμετρο",
+		it: "Barometro più basso",
+		es: "Barómetro más bajo",
+		no: "Laveste barometer",
+		bg: "Най-нисък барометър",
+		cz: "Nejnižší barometr"
     },
     recordsHighBaro: {
         en: "Highest barometer",
         nl: "Hoogste stand barometer",
-        da: "Højeste lufttryk"
+        dk: "Højeste lufttryk",
+        ro: "Recordul presiunii mari",
+		fr: "Le plus haut baromètre",
+		gr: "Υψηλότερο βαρόμετρο",
+	    it:	"Barometro più alto",
+		es: "Barómetro más alto",
+		no: "Høyeste barometer",
+		bg: "Най-висок барометър",
+		cz: "Nejvyšší barometr"
     },
     recordsHighRainRateDaily: {
         en: "Highest daily rainfall",
         nl: "Hoogste dagelijkse hoeveelheid regen",
-        da: "Højeste daglige regnmængde"
+        dk: "Højeste daglige regnmængde",
+        ro: "Recordul pentru cele mai mari precipitații zilnice",
+		fr: "La plus grande pluviométrie quotidienne",
+		gr: "Υψηλότερη ημερήσια βροχόπτωση",
+		it: "Pioggia giornaliera massima",
+		es: "La mayor cantidad de lluvia diaria",
+		no: "Høyeste daglige nedbør",
+		bg: "Най-високи дневни валежи",
+		cz: "Nejvyšší denní srážky"
     },
     recordsHighRainRateHourly: {
         en: "Highest hourly rainfall",
         nl: "Hoogste hoeveelheid regen per uur",
-        da: "Højeste regnmængde pr. time"
+        dk: "Højeste regnmængde pr. time",
+        ro: "Cea mai mare ploaie orară",
+		fr: "Les plus hautes précipitations horaires",
+		gr: "Υψηλότερη ωριαία βροχόπτωση",
+		it: "Pioggia orario più alta",
+		es: "Mayor precipitación por hora",
+		no: "Høyeste timers nedbør",
+		bg: "Най-високи часови валежи",
+		cz: "Nejvyšší hodinové srážky"
     },
     recordsHighAverageWind: {
         en: "Highest average wind speed",
         nl: "Hoogste gemiddelde windsnelheid",
-        da: "Kraftigste middelvind"
+        dk: "Kraftigste middelvind",
+        ro: "Cea mai mare viteză medie a vântului",
+		fr: "Vitesse moyenne du vent la plus élevée",
+		gr: "Μέγιστη μέση ταχύτητα ανέμου",
+		it: "Velocità del vento media più alta",
+		es: "Velocidad promedia del viento más alta",
+		no: "Høyeste gjennomsnittlige vindhastighet",
+		bg: "Най-висока средна скорост на вятъра",
+		cz: "Nejvyšší průměrná rychlost větru"
     },
     recordsLowWindChill: {
         en: "Lowest wind chill",
         nl: "Laagste gevoelstemperatuur",
-        da: "Laveste kuldeindeks"
+        dk: "Laveste kuldeindeks",
+        ro: "Cel mai scăzut vânt tăios",
+		fr: "Le plus froid du vent",
+		gr: "Ο ψυχρότερος άνεμος",
+		it: "Vento più freddo",
+		es: "Frío del viento más bajo",
+		no: "Laveste vind faktor",
+		bg: "Най-слаб вятър",
+		cz: "Nejnižší chlad vítr"
     },
     recordsWarmestDay: {
         en: "Warmest day",
         nl: "Warmste dag",
-        da: "Varmeste dag"
+        dk: "Varmeste dag",
+        ro: "Ziua cea mai caldă",
+		fr: "Le jour le plus chaud",
+		gr: "Ζεστή ημέρα",
+		it: "Giorno più caldo",
+		es: "El día más cálido",
+		no: "Varmeste dag",
+		bg: "Най-топъл ден",
+		cz: "Nejteplejší den"
     },
     recordsColdestNight: {
         en: "Coldest night",
         nl: "Koudste nacht",
-        da: "Koldeste nat"
+        dk: "Koldeste nat",
+        ro: "Noaptea cea mai rece",
+		fr: "Nuit la plus froide",
+		gr: "Η πιο ψυχρή νύχτα",
+		it: "Notte più fredda",
+		es: "La noche más fría",
+		no: "Kaldeste natt",
+		bg: "Най-студена нощ",
+		cz: "Nejchladnější noc"
     },
     recordsColdestDay: {
         en: "Coldest day",
         nl: "Koudste dag",
-        da: "Koldeste dag"
+        dk: "Koldeste dag",
+		ro: "Ziua cea mai rece",
+		fr: "Le jour le plus froid",
+		it: "Giorno più freddo",
+		es: "Día más frío",
+		no: "Kaldeste dag",
+		bg: "Най-студен ден",
+		cz: "Nejchladnější den"
     },
     recordsWarmestNight: {
         en: "Warmest night",
         nl: "Warmste nacht",
-        da: "Varmeste nat"
+        dk: "Varmeste nat",
+        ro: "Cea mai caldă noapte",
+		fr: "La nuit la plus chaude",
+		gr: "Ζεστή νύχτα",
+		it: "Notte più calda",
+		es: "La noche más cálida",
+		no: "Varmeste natt",
+		bg: "Най-топлата нощ",
+		cz: "Teplá noc"
     },
     recordsHighHeatIndex: {
         en: "Highest heat index",
         nl: "Hoogste warmte index",
-        da: "Højeste varmeindeks"
+        dk: "Højeste varmeindeks",
+        ro: "Recordul indicelui de căldură",
+		fr: "Indice de chaleur le plus élevé",
+		gr: "Υψηλότερος δείκτης θερμότητας",
+		it: "Indice di calore più alto",
+		es: "Índice de calor más alto",
+		no: "Høyeste varmeindeks",
+		bg: "Най-висок топлинен индекс",
+		cz: "Highest heat index"
     },
     recordsHighSolar: {
         en: "Highest solar",
         nl: "Hoogste zonkracht",
-        da: "Højeste solindstråling"
+        dk: "Højeste solindstråling",
+        ro: "Cel mai înalt nivel solar",
+		fr: "Plus haut solaire",
+		gr: "Υψηλότερο ηλιακό",
+		it: "Il più alto solare",
+		es: "Más alto solar",
+		no: "Høyeste sol",
+		bg: "Най-високото слънчево",
+		cz: "Nejvyšší sluneční"
     },
     recordsHighUV: {
         en: "Highest uv index",
         nl: "Hoogste uv index",
-        da: "Højeste uv indeks"
+        dk: "Højeste uv indeks",
+        ro: "Cel mai înalt nivel UV",
+		fr: "Plus haut indice UV",
+		gr: "Υψηλότερο ευρετήριο UV",
+		it: "Indice UV più alto",
+		es: "Índice UV más alto",
+		no: "Høyeste UV-indeks",
+		bg: "Най-висок UV индекс",
+		cz: "Nejvyšší index UV"
     },
     recordsHighDewPoint: {
         en: "Highest dew point",
         nl: "Hoogste dauwpunt",
-        da: "Højeste dugpunkt"
+        dk: "Højeste dugpunkt",
+        ro: "Record de punct de rouă ridicat",
+		fr: "Plus haut point de rosée",
+		gr: "Υψηλότερο σημείο δρόσου",
+		it: "Punto di rugiada più alto",
+		es: "Punto de rocío más alto",
+		no: "Høyeste duggpunkt",
+		bg: "Най-висока точка на роса",
+		cz: "Nejvyšší rosný bod"
     },
     recordsLowDewPoint: {
         en: "Lowest dew point",
         nl: "Laagste dauwpunt",
-        da: "Laveste dugpunkt"
+        dk: "Laveste dugpunkt",
+        ro: "Record de punct rouă scazut",
+		fr: "Point de rosée le plus bas",
+		gr: "Χαμηλότερο σημείο δρόσου",
+		it: "Punto di rugiada più basso",
+		es: "Punto de rocío más bajo",
+		no: "Laveste duggpunkt",
+		bg: "Най-ниска точка на оросяване",
+		cz: "Nejnižší rosný bod"
     },
     forcastShowMore: {
         en: "Show More",
         nl: "Toon meer",
-        da: "Vis mere"
+        dk: "Vis mere",
+        ro: "Afișați mai multe",
+		fr: "Montre plus",
+		gr: "Δείτε περισσότερα",
+        it: "Mostra di più",
+		es: "Mostrar más",
+        no: "Vis mer",
+		bg: "Покажи повече",
+		cz: "Zobrazit více"
     },
     graphMax: {
         en: "Max",
         nl: "Max",
-        da: "Max"
+        dk: "Max",
+        ro: "Max",
+		fr: "Max",
+		gr: "Μέγ",
+		it: "Max",
+		es: "Máx",
+		no: "Max",
+		bg: "Mакс",
+		cz: "Max"
     },
     graphMin: {
         en: "Min",
         nl: "Min",
-        da: "Min"
+        dk: "Min",
+        ro: "Min",
+		fr: "Min",
+		gr: "Ελά",
+		it: "Min",
+		es: "Mín",
+		no: "Mín",
+		bg: "Мин",
+		cz: "Min"
     },
     graphLast: {        //NOTE: these are used as in: Last XX days, or Last XX Hours, etc.
         en: "Last",
         nl: "Laatste",
-        da: "Sidste"
+        dk: "Sidste",
+        ro: "Ultimele",
+		fr: "Dernier",
+		gr: "τελευταίος",
+		it: "Ultimo",
+		es: "Último",
+        no: "Siste",
+		bg: "Миналата",
+		cz: "Poslední"
     },
     graphDays: {
         en: "Days",
         nl: "Dagen",
-        da: "Dage"
+        dk: "Dage",
+        ro: "Zile",
+		fr: "Journées",
+		gr: "Ημέρες",
+		it: "Giorni",
+		es: "Dias",
+		no: "Dager",
+		bg: "дни",
+		cz: "Dny"
     },
     graphHours: {
         en: "Hours",
         nl: "Uur",
-        da: "Timer"
+        dk: "Timer",
+        ro: "Ore",
+		fr: "Heures",
+		gr: "Ωρες",
+		it: "Ore",
+		es: "Horas",
+        no: "Timer",
+		bg: "Часа",
+		cz: "Hodiny"
     },
     graphHour: {
         en: "Hour",
         nl: "Uur",
-        da: "Time"
+        dk: "Time",
+        ro: "Ora",
+		fr: "Heure",
+		gr: "Ωρα",
+		it: "Ora",
+		es: "Hora",
+		no: "Time",
+		bg: "Час",
+		cz: "Hodina"
+        
     },
     graphMonths: {
         en: "Months",
         nl: "Maanden",
-        da: "Måned"
+        dk: "Måned",
+        ro: "Luna",
+		fr: "Mois",
+		gr: "Μήνες",
+		it: "Mesi",
+		es: "Meses",
+        no: "Måneder",
+		bg: "Месеци",
+		cz: "Měsíce"
     },
     graphBaroLabel: {
         en: "Pressure",
         nl: "Luchtdruk",
-        da: "Lufttryk"
+        dk: "Lufttryk",
+        ro: "Presiunea",
+		fr: "Pression",
+		gr: "Πίεση",
+		it: "Pressione",
+		es: "Presión",
+		no: "Press",
+		bg: "Налягане",
+		cz: "Tlak"
     },
     graphHumidityLabel: {
         en: "Percent",
         nl: "Procent",
-        da: "Procent"
+        dk: "Procent",
+        ro: "Procentul",
+		fr: "Pour cent",
+		gr: "Τοις εκατό",
+		it: "Percentuale",
+		es: "Porcentaje",
+		no: "Prosent",
+		bg: "Процент",
+		cz: "Procent"
     },
     graphSolarLabel: {
         en: "Irradiance",
         nl: "Instraling",
-        da: "Indstråling"
+        dk: "Indstråling",
+        ro: "Radiația",
+		fr: "Irradiance",
+		gr: "Ακτινοβολία",
+		it: "Irradiazione",
+		es: "Radiación",
+		no: "Irradians",
+		bg: "Irradiance",
+		cz: "Ozáření"
     },
     graphLabelUV: {
         en: "Index",
         nl: "Index",
-        da: "Indeks"
+        dk: "Indeks",
+        ro: "Index",
+		fr: "Indice",
+		gr: "Δείκτης",
+		it: "Indice",
+		es: "Índice",
+		no: "Index",
+		bg: "Индекс",
+		cz: "Index"
     },
     graphLabelWindDirection: {
         en: "Wind Direction",
         nl: "Windrichting",
-        da: "Vindretning"
+        dk: "Vindretning",
+        ro: "Direcția vântului",
+		fr: "Direction du vent",
+		gr: "Κατεύθυνση ανέμου",
+		it: "La direzione del vento",
+		es: "Dirección del viento",
+        no: "Vindretning",
+		bg: "Посока на вятъра",
+		cz: "Směr větru"
     },
     buttonLabelGraphs: {
         en: "Graphs",
         nl: "Grafieken",
-        da: "Grafer"
+        dk: "Grafer",
+        ro: "Grafice",
+		fr: "Graphique",
+		gr: "διάγραμμα",
+		it: "Grafici",
+		es: "Gráficos",
+		no: "Grafer",
+		bg: "Графики",
+		cz: "Grafy"
     },
     buttonLabelRecords: {
         en: "Records",
         nl: "Records",
-        da: "Rekorder"
+        dk: "Rekorder",
+        ro: "Recorduri",
+		fr: "Records",
+		gr: "Εγγραφές",
+		it: "Records",
+		es: "Archivos",
+		no: "Records",
+		bg: "Pекорд",
+		cz: "Evidence"
     },
     buttonLabelAltitude: {
         en: "Altitude",
         nl: "Hoogte",
-        da: "Højde"
+        dk: "Højde",
+        ro: "Altitudinea",
+		fr: "Altitude",
+		gr: "Υψόμετρο",
+		it: "Altitudine",
+		es: "Altitud",
+		no: "Høyde",
+		bg: "Bисочина",
+		cz: "Nadmořská výška"
     },
     recordsForMonth: {
         en: "Records for this month",
         nl: "Records voor deze maand",
-        da: "Rekorder for denne måned"
+        dk: "Rekorder for denne måned",
+        ro: "Recordul pentru aceasta lună",
+		fr: "Records pour ce mois",
+		gr: "Εγγραφές για αυτόν τον μήνα",
+		it: "Record per questo mese",
+		es: "Registros para este mes",
+		no: "Records for denne måneden",
+		bg: "Записи за този месец",
+		cz: "Záznamy za tento měsíc"
     },
     recordsForYear: {
         en: "Records for this year",
         nl: "Records voor dit jaar",
-        da: "Rekorder for dette år"
+        dk: "Rekorder for dette år",
+        ro: "Recordul pentru acest an",
+		fr: "Records pour cette année",
+		gr: "Εγγραφές για το τρέχον έτος",
+		it: "Record per quest'anno",
+		es: "Registros para este año",
+		no: "Records for this year",
+		bg: "Рекорди за тази година",
+		cz: "Záznamy pro tento rok"
     },
     recordsAllTime: {
         en: "All time records",
         nl: "Records aller tijden",
-        da: "Rekorder siden start"
+        dk: "Rekorder siden start",
+        ro: "Recordul pentru toți anii",
+		fr: "Tous les records de temps",
+		gr: "Όλες οι εγγραφές χρόνου",
+		it: "Record di tutti i tempi",
+		es: "Registros de todos los tiempos",
+		no: "All time records",
+		bg: "Всички времеви записи",
+		cz: "Všechny záznamy času"
     },
     forecastTitle: {
         en: "Forecast",
         nl: "Voorspelling",
-        da: "Vejrudsigt"
+        dk: "Vejrudsigt",
+        ro: "Prognoza",
+		fr: "Prévision",
+		gr: "Πρόβλεψη",
+		it: "Prevedere",
+		es: "Pronóstico",
+		no: "Prognose",
+		cz: "Předpověď",
     },
     heatIndexTitle: {
         en: "Heat Index",
-        da: "Varmeindeks"
+        nl: "Hitte Index",
+        dk: "Varmeindeks",
+        ro: "Indicele de caldură",
+		fr: "Indice de chaleur",
+		gr: "Δείκτης θερμότητας",
+		it: "Indice di calore",
+		es: "Índice de calor",
+		no: "Varme index",
+		bg: "Индекс на топлина",
+		cz: "Teplo index"
     },
     heatIndexDescription: {
         en: "How hot it really feels when relative humidity is factored with the actual air temperature.",
-        da: "Hvor varmt det føles når luftfugtigheden kombineres med luftens temperatur."
+        nl: "De warmte-index is een getal dat aangeeft hoe een mens gemiddeld een temperatuur in combinatie met een bepaalde vochtigheidsgraad beleeft, hoe hij of zij dit aanvoelt.",
+        dk: "Hvor varmt det føles når luftfugtigheden kombineres med luftens temperatur.",
+        ro: "Cât de cald se simte cu adevărat atunci când umiditatea relativă este luată în considerare cu temperatura reală a aerului.",
+		fr: "Comme il fait chaud quand l'humidité relative est prise en compte avec la température de l'air.",
+		gr: "Πόσο ζεστό αισθάνεται πραγματικά όταν η σχετική υγρασία υπολογίζεται με την πραγματική θερμοκρασία του αέρα.",
+		it: "Quanto fa veramente caldo quando l'umidità relativa viene calcolata con la temperatura dell'aria effettiva.",
+		es: "Qué calor realmente se siente cuando la humedad relativa se tiene en cuenta con la temperatura real del aire.",
+		no: "Hvor varmt føles det virkelig når relativ luftfuktighet er fakturert med den faktiske lufttemperaturen.",
+		bg: "Колко горещо наистина се чувства, когато относителната влажност се отчита с действителната температура на въздуха.",
+		cz: "Jak horko to opravdu cítí, když je relativní vlhkost zohledněna skutečnou teplotou vzduchu."
     },
     beaufortScaleTitle: {
         en: "Beaufort Scale"
