@@ -1,14 +1,3 @@
-/*jslint plusplus: true, sloppy: true, indent: 4 */
-
-//Check to see if a langauge was set in the config file, if it isn't, set to default (English).
-if (typeof lang === "undefined") {
-    lang = "en";
-}
-
-//Set Moment.js Langauge
-moment.locale(lang);
-
-//Dictionary
 var dict = {
     apparentTitle: {
         en: "Apparent",
@@ -19,7 +8,7 @@ var dict = {
         gr: "Εμφανής",
         it: "Apparente",
         es: "Aparente",
-        nb: "Tilsynelatende",
+        no: "Tilsynelatende",
         bg: "Видима",
         cs: "Zdánlivý"
         
@@ -33,7 +22,7 @@ var dict = {
 		gr: "Θεωρημένη θερμοκρασία με βάση τη θερμοκρασία, την υγρασία, τον ήλιο και τον άνεμο.",
 		it: "Temperatura percepita basata su temperatura, umidità, sole e vento.",
 		es: "Temperatura percibida en función de la temperatura, la humedad, el sol y el viento.",
-		nb: "Oppfattet temperatur basert på temperatur, fuktighet, sol og vind.",
+		no: "Oppfattet temperatur basert på temperatur, fuktighet, sol og vind.",
 		bg: "Възприемана температура, базирана на температура, влажност, слънце и вятър.",
 		cs: "Vnímaná teplota na základě teploty, vlhkosti, slunce a větru."
     },
@@ -46,7 +35,7 @@ var dict = {
 		gr: "Θερμοκρασία",
 		it: "Temperatura",
 		es: "Temperatura",
-		nb: "Temperatur",
+		no: "Temperatur",
 		bg: "Температура",
 		cs: "Teplota"
     },
@@ -59,7 +48,7 @@ var dict = {
 		gr: "Τρέχουσα θερμοκρασία αέρα.\nΜπλε: Χαμηλή ημερήσια θερμοκρασία.\nκόκκινος: Υψηλή ημερήσια θερμοκρασία.",
 		it: "Temperatura dell'aria attuale.\nBlu: temperatura giornaliera bassa.\nRosso: temperatura giornaliera elevata.",
 		es: "Temperatura del aire actual.\nAzul: temperatura diaria minima.\nRojo: temperatura diaria máxima.",
-		nb: "Gjeldene temperatur.\nBlå: Lavest måling i dag.\nRød: Høyest måling i dag.",
+		no: "Nåværende lufttemperatur.\nBlå: Lav daglig temperatur.\nRød: Høy daglig temperatur.",
 		bg: "Текуща температура на въздуха.\nБлок: Ниска дневна температура.\nРед: Висока дневна температура.",
 		cs: "Aktuální teplota vzduchu.\nModrá: Nízká denní teplota.\nČervené: Vysoká denní teplota."
     },
@@ -72,7 +61,7 @@ var dict = {
 		gr: "Σταθερά",
 		it: "Costante",
 		es: "Estable",
-		nb: "Stabil",
+		no: "Stabil",
 		bg: "Спокойно",
 		cs: "Stabilní"
     },
@@ -85,7 +74,7 @@ var dict = {
 		gr: "Τιμή",
 		it: "Vota",
 		es: "Velocidad",
-		nb: "Endring",
+		no: "Intensitet",
 		bg: "Норма",
 		cs: "Hodnotit"
     },
@@ -98,7 +87,7 @@ var dict = {
 		gr: "Βαρόμετρο",
 		it: "Barometro",
 		es: "Barometro",
-		nb: "Barometer",
+		no: "Barometer",
 		bg: "Барометър",
 		cs: "Barometr"
     },
@@ -111,7 +100,7 @@ var dict = {
 		gr: "Το βάρος του αέρα, προσαρμοσμένο στο υψόμετρο του σταθμού.",
 		it: "Il peso dell'aria, regolato per l'altitudine della stazione.",
 		es: "El peso del aire, ajustado para la altitud de la estación.",
-		nb: "Vekten av luften, justert for stasjonens høyde.",
+		no: "Vekten av luften, justert for stasjonens høyde.",
 		bg: "Тежестта на въздуха, коригирана спрямо височината на станцията.",
 		cs: "Hmotnost vzduchu, přizpůsobená výšce stanice."
     },
@@ -124,7 +113,7 @@ var dict = {
 		gr: "Δείκτης Ψύχρας",
 		it: "Percepita",
 		es: "Escalofríos",
-		nb: "Vind faktor",
+		no: "Vind faktor",
 		bg: "Cилен вятър",
 		cs: "Chlad vítr"
     },
@@ -137,7 +126,7 @@ var dict = {
 		gr: "Πόσο κρύο αισθάνεται πραγματικά. Υπολογίζεται συνδυάζοντας τη θερμότητα και την ταχύτητα του ανέμου.",
 		it: "Come fa veramente freddo, calcolato combinando il calore e la velocità del vento.",
 		es: "Qué frío se siente realmente. Calculado combinando el calor y la velocidad del viento.",
-		nb: "Hvor kaldt det føles. Beregnet ut fra temperatur og vindhastighet.",
+		no: "Hvor kaldt det faktisk føles. Beregnet ved å kombinere varme og vindhastighet.",
 		bg: "Колко студено се чувства, изчислено чрез комбиниране на топлина и скорост на вятъра.",
 		cs: "Jak studené se skutečně cítí. Vypočítá se kombinací tepla a rychlosti větru."
     },
@@ -150,7 +139,7 @@ var dict = {
 		gr: "Υγρασία",
 		it: "Umidità",
 		es: "Humedad",
-		nb: "Fuktighet",
+		no: "Fuktighet",
 		bg: "Влажност",
 		cs: "Vlhkost"
     },
@@ -163,7 +152,7 @@ var dict = {
 		gr: "Η ποσότητα υδρατμών στον αέρα ως ποσοστό της ποσότητας που μπορεί να συγκρατήσει ο αέρας.",
 		it: "La quantità di vapore acqueo nell'aria in percentuale della quantità di aria che è in grado di trattenere.",
 		es: "La cantidad de vapor de agua en el aire como un porcentaje de la cantidad que el aire es capaz de contener.",
-		nb: "En prosentandel av mengden vanndamp luften kan holde.",
+		no: "Mengden vanndamp i luften som en prosentandel av mengden luften er i stand til å holde.",
 		bg: "Количеството водни пари във въздуха като процент от количеството, което въздухът може да държи.",
 		cs: "Množství vodní páry ve vzduchu jako procento množství, které může vzduch držet."
     },
@@ -176,7 +165,7 @@ var dict = {
 		gr: "Ανατολή Ηλίου",
 		it: "Alba",
 		es: "Amanecer",
-		nb: "Opp",
+		no: "Sol Opgang",
 		bg: "Изгрев слънце",
 		cs: "Svítání"
     },
@@ -189,7 +178,7 @@ var dict = {
 		gr: "Δύση Ηλίου",
 		it: "Tramonto",
 		es: "Puesta de sol",
-		nb: "Ned",
+		no: "Sol Nedgang",
 		bg: "Сън комплект",
 		cs: "Západ slunce"
     },
@@ -202,7 +191,7 @@ var dict = {
 		gr: "Φάση",
 		it: "Fase",
 		es: "Fase",
-		nb: "Fase",
+		no: "Fase",
 		bg: "Фаза",
 		cs: "Fáze"
     },
@@ -215,7 +204,7 @@ var dict = {
 		gr: "ηλικία",
 		it: "Età",
 		es: "Edad",
-		nb: "Alder",
+		no: "Age",
 		bg: "Възраст",
 		cs: "Doba"
     },
@@ -228,7 +217,7 @@ var dict = {
 		gr: "Ήλιος",
 		it: "Sole",
 		es: "Sol",
-		nb: "Sol",
+		no: "Sol",
 		bg: "Cлънце",
 		cs: "Slunce"
     },
@@ -241,7 +230,7 @@ var dict = {
 		gr: "Σελήνη",
 		it: "Luna",
 		es: "Luna",
-		nb: "Måne",
+		no: "Måne",
 		bg: "Луна",
 		cs: "Měsíc"
     },
@@ -254,7 +243,7 @@ var dict = {
 		gr: "Ηλιακός",
 		it: "Solare",
 		es: "Solar",
-		nb: "Solstråling",
+		no: "Solar",
 		bg: "Cлънцето",
 		cs: "Sluneční"
     },
@@ -267,7 +256,7 @@ var dict = {
 		gr: "Ώρες Κυρ",
 		it: "Ore di sole",
 		es: "Horas de sol",
-		nb: "Sol timer",
+		no: "Søn timer",
 		bg: "Часове на слънцето",
 		cs: "Hodiny slunce"
     },
@@ -280,7 +269,7 @@ var dict = {
 		gr: "Η ένταση της ακτινοβολίας του ήλιου.",
 		it: "L'intensità della radiazione solare.",
 		es: "La intensidad de la radiación del sol.",
-		nb: "Intensiteten av solens stråling.",
+		no: "Intensiteten av solens stråling.",
 		bg: "Интензивността на слънчевото излъчване.",
 		cs: "Intenzita slunečního záření."
     },
@@ -293,7 +282,7 @@ var dict = {
 		gr: "Δεν υπάρχουν δεδομένα από τότε",
 		it: "Nessun dato da",
 		es: "Sin datos desde",
-		nb: "Ingen data siden",
+		no: "Ingen data siden",
 		bg: "Няма данни оттогава",
 		cs: "Žádné údaje od té doby"
     },
@@ -306,7 +295,7 @@ var dict = {
 		gr: "Τα τελευταία δεδομένα που ελήφθησαν στο",
 		it: "Ultimi dati ricevuti a",
 		es: "Últimos datos recibidos en",
-		nb: "Sist oppdatert",
+		no: "Siste data mottatt på",
 		bg: "Последни данни, получени от",
 		cs: "Nejnovější údaje obdržené na adrese"
     },
@@ -319,7 +308,7 @@ var dict = {
 		gr: "Πράσινο: Νέα δεδομένα που έχουν συλλεχθεί από το διακομιστή.\nγκρί: Τα δεδομένα στο διακομιστή δεν έχουν αλλάξει.\nκίτρινος: Ορισμένα σφάλματα κατά τη συλλογή δεδομένων από το διακομιστή.\nκόκκινος: Δεν υπάρχουν δεδομένα που μπορούν να συλλεχθούν από το διακομιστή.",
 		it: "Verde: nuovi dati raccolti dal server.\nGrigio: i dati sul server non sono cambiati.\nGlialo: alcuni errori durante la raccolta dei dati dal server.\nRosso: nessun dato può essere raccolto dal server.",
 		es: "Verde: datos nuevos recopilados del servidor.\nGris: los datos en el servidor no han cambiado.\nAmarillo: algunos errores durante la recopilación de datos del servidor.\nRojo: no se pueden recopilar datos del servidor.",
-		nb: "Grønn: Ny infomasjon er hentet fra værstasjon.\nGrå: Ingen forandringer.\nGul: Noen feil under datainnsamling fra værstasjon.\nRød: Ikke mulig å samle inn ny data fra værstasjon.",
+		no: "Grønn: Ny data innsamlet fra serveren.\nGrå: Data på serveren har ikke blitt endret.\nGul: Noen feil under datainnsamling fra serveren.\nRød: Ingen data som kan hentes fra serveren.",
 		bg: "Зелена: Нови данни, събрани от сървъра.\nЧаст: Данните на сървъра не са се променили.\nНапред: Някои грешки при събирането на данни от сървъра.\nчервен: Няма данни, които да се събират от сървъра.",
 		cs: "Zelená: nová data shromážděná ze serveru.\nŠedá: Údaje na serveru se nezměnily.\nŽlutá: Některé chyby při sběru dat ze serveru.\nČervená: Žádné údaje nemohou být shromážděny ze serveru."
         
@@ -333,7 +322,7 @@ var dict = {
 		gr: "Βροχή",
 		it: "Precipitazioni",
 		es: "Lluvia",
-		nb: "Nedbør",
+		no: "Nedbør",
 		bg: "Валежите",
 		cs: "Srážky"
     },
@@ -346,7 +335,7 @@ var dict = {
 		gr: "Καθημερινά",
 		it: "Quotidiano",
 		es: "Diario",
-		nb: "Dag",
+		no: "Daglig",
 		bg: "Eжедневно",
 		cs: "Denně"
     },
@@ -359,7 +348,7 @@ var dict = {
 		gr: "Μηνιαίος",
 		it: "Mensile",
 		es: "Mensual",
-        nb: "Måned",
+        no: "Månedlig",
 		bg: "Месечно",
 		cs: "Měsíční"
     },
@@ -372,7 +361,7 @@ var dict = {
 		gr: "Ετήσιος",
 		it: "Annuale",
 		es: "Anual",
-		nb: "År",
+		no: "Årlig",
 		bg: "Годишен",
 		cs: "Roční"
     },
@@ -385,7 +374,7 @@ var dict = {
 		gr: "UV",
 		it: "UV",
 		es: "UV",
-		nb: "UV",
+		no: "UV",
 		bg: "UV",
 		cs: "UV"
     },
@@ -398,7 +387,7 @@ var dict = {
 		gr: "Η ένταση της ακτινοβολίας UV - 0-2 είναι ο ελάχιστος κίνδυνος βλάβης του δέρματος ενώ το 8+ είναι πολύ υψηλό.",
 		it: "L'intensità della radiazione UV - 0-2 è il minimo rischio di danni alla pelle mentre 8+ è molto alta.",
 		es: "La intensidad de la radiación UV - 0-2 es un riesgo mínimo de daño a la piel, mientras que 8+ es muy alta.",
-		nb: "Intensiteten til UV-stråling - 0-2 er minimal risiko for hudskade, mens 8+ er veldig høy.",
+		no: "Intensiteten til UV-stråling - 0-2 er minimal risiko for hudskade mens 8+ er veldig høy.",
 		bg: "Интензитетът на UV радиация - 0-2 е минимален риск от увреждане на кожата, докато 8+ е много висока.",
 		cs: "Intenzita UV záření - 0-2 představuje minimální riziko poškození kůže, zatímco 8+ je velmi vysoké."
     },
@@ -411,7 +400,7 @@ var dict = {
 		gr: "B",
 		it: "N",
 		es: "N",
-		nb: "N",
+		no: "N",
 		bg: "C",
 		cs: "S"
     },
@@ -424,7 +413,7 @@ var dict = {
 		gr: "BA",
 		it: "NE",
 		es: "NE",
-		nb: "NØ",
+		no: "NØ",
 		bg: "CИ",
 		cs: "SV"
     },
@@ -437,7 +426,7 @@ var dict = {
 		gr: "A",
 		it: "E",
 		es: "E",
-		nb: "Ø",
+		no: "Ø",
 		bg: "И",
 		cs: "V"
     },
@@ -450,7 +439,7 @@ var dict = {
 		gr: "NA",
 		it: "SE",
 		es: "SE",
-		nb: "SØ",
+		no: "SØ",
 		bg: "ЮИ",
 		cs: "JV"
     },
@@ -463,7 +452,7 @@ var dict = {
 		gr: "N",
 		it: "S",
 		es: "S",
-		nb: "S",
+		no: "S",
 		bg: "Ю",
 		cs: "J"
     },
@@ -476,7 +465,7 @@ var dict = {
 		gr: "NΔ",
 		it: "SO",
 		es: "SO",
-		nb: "SV",
+		no: "SV",
 		bg: "Юз",
 		cs: "JZ"
     },
@@ -489,7 +478,7 @@ var dict = {
 		gr: "Δ",
 		it: "O",
 		es: "O",
-		nb: "V",
+		no: "V",
 		bg: "з",
 		cs: "Z"
     },
@@ -502,7 +491,7 @@ var dict = {
 		gr: "BΔ",
 		it: "NO",
 		es: "NO",
-		nb: "NV",
+		no: "NV",
 		bg: "cз",
 		cs: "SZ"
     },
@@ -515,7 +504,7 @@ var dict = {
 		gr: "Η διεύθυνση του ανέμου. Το πράσινο βέλος δείχνει τη μέση κατεύθυνση του ανέμου.",
 		it: "La direzione del vento: la freccia verde indica la direzione media del vento.",
 		es: "La dirección del viento. La flecha verde indica la dirección promedio del viento.",
-		nb: "Vindretningen. Grønn pil indikerer gjennomsnittlig vindretning.",
+		no: "Vindretningen. Grønn pil indikerer gjennomsnittlig vindretning.",
 		bg: "Посоката на вятъра. Зелената стрелка показва средната посока на вятъра.",
 		cs: "The wind direction. Green arrow indicates average wind direction."
     },
@@ -528,7 +517,7 @@ var dict = {
 		gr: "mέγ",
 		it: "max",
 		es: "máx",
-		nb: "max",
+		no: "max",
 		bg: "mакс",
 		cs: "max"
     },
@@ -541,7 +530,7 @@ var dict = {
 		gr: "Ταχύτητα Ανέμου",
 		it: "Velocità del vento",
 		es: "Velocidad del viento",
-		nb: "Vindstyrke",
+		no: "Vindfart",
 		bg: "Скоростта на вятъра",
         cs: "Rychlost větru"
     },
@@ -554,7 +543,7 @@ var dict = {
 		gr: "Ταχύτητα",
 		it: "Vento",
 		es: "Viento",
-		nb: "Vind",
+		no: "Vind",
 		bg: "Вятър",
 		cs: "Vítr"
     },
@@ -567,7 +556,7 @@ var dict = {
 		gr: "φύσημα",
 		it: "Raffica",
 		es: "Ráfaga",
-		nb: "Vindkast",
+		no: "Vindkast",
 		bg: "Рафал",
 		cs: "Poryv"
     },
@@ -580,7 +569,7 @@ var dict = {
 		gr: "Μέση",
 		it: "Media",
 		es: "Media",
-		nb: "Gjennomsnitt",
+		no: "Gjennomsnitt",
 		bg: "Средна",
 		cs: "Průměrný"
     },
@@ -593,7 +582,7 @@ var dict = {
 		gr: "Η πράσινη ράβδος δείχνει τη μέση ταχύτητα του ανέμου.\nμωβ ράβδος σκουριάς δείχνει την ταχύτητα της ριπής.",
 		it: "La barra verde indica la velocità media del vento.\nPurple barra indica la velocità della raffica.",
 		es: "La barra verde indica la velocidad promedio del viento.\npúrpura color indica la velocidad de ráfaga.",
-		nb: "Grønn: Indikerer gjennomsnittlig vindhastighet.\nLilla: indikerer vindhastighet akuratt nå (vindkast).",
+		no: "Grønn bar indikerer gjennomsnittlig vindhastighet.\nPurple bar indikerer vindhastighet.",
 		bg: "Зелената лента показва средната.\nпурпурен скорост на вятъра.",
 		cs: "Zelená čára označuje průměrnou rychlost větru.\nKurzní lišta označuje rychlost poryvu."
     },
@@ -606,7 +595,7 @@ var dict = {
 		gr: "Υψηλότερη θερμοκρασία",
 		it: "Temperatura massima",
 		es: "Temperatura más alta",
-		nb: "Høyeste temperatur",
+		no: "Høyeste temperatur",
 		bg: "Най-висока температура",
 		cs: "Nejvyšší teplota"
     },
@@ -619,7 +608,7 @@ var dict = {
 		gr: "Χαμηλότερη θερμοκρασία",
 		it: "Temperatura più bassa",
 		es: "Temperatura más baja",
-		nb: "Laveste temperatur",
+		no: "Laveste temperatur",
 		bg: "Най-ниска температура",
 		cs: "Nejnižší teplota"
     },
@@ -632,7 +621,7 @@ var dict = {
 		gr: "Υψηλότερη φύσημα",
 		it: "Il più alto gusto",
 		es: "Mayor ráfaga",
-		nb: "Kraftigste vindkast",
+		no: "Høyeste vindkast",
 		bg: "Най-висок вкус",
 		cs: "Nejvyšší poryv"
     },
@@ -645,7 +634,7 @@ var dict = {
 		gr: "Υψηλότερη βροχόπτωση",
 		it: "Tasso di pioggia più alto",
 		es: "Tasa de lluvia más alta",
-		nb: "Høyeste endring i nedbør",
+		no: "Høyeste regnfrekvens",
 		bg: "Най-висока дъждовна скорост",
 		cs: "Nejvyšší déšť"
     },
@@ -658,7 +647,7 @@ var dict = {
 		gr: "Χαμηλότερο βαρόμετρο",
 		it: "Barometro più basso",
 		es: "Barómetro más bajo",
-		nb: "Lavest barometertrykk",
+		no: "Laveste barometer",
 		bg: "Най-нисък барометър",
 		cs: "Nejnižší barometr"
     },
@@ -671,7 +660,7 @@ var dict = {
 		gr: "Υψηλότερο βαρόμετρο",
 	    it:	"Barometro più alto",
 		es: "Barómetro más alto",
-		nb: "Høyest barometertrykk",
+		no: "Høyeste barometer",
 		bg: "Най-висок барометър",
 		cs: "Nejvyšší barometr"
     },
@@ -684,7 +673,7 @@ var dict = {
 		gr: "Υψηλότερη ημερήσια βροχόπτωση",
 		it: "Pioggia giornaliera massima",
 		es: "La mayor cantidad de lluvia diaria",
-		nb: "Høyeste daglige nedbør",
+		no: "Høyeste daglige nedbør",
 		bg: "Най-високи дневни валежи",
 		cs: "Nejvyšší denní srážky"
     },
@@ -697,7 +686,7 @@ var dict = {
 		gr: "Υψηλότερη ωριαία βροχόπτωση",
 		it: "Pioggia orario più alta",
 		es: "Mayor precipitación por hora",
-		nb: "Høyest nedbør pr.timen",
+		no: "Høyeste timers nedbør",
 		bg: "Най-високи часови валежи",
 		cs: "Nejvyšší hodinové srážky"
     },
@@ -710,7 +699,7 @@ var dict = {
 		gr: "Μέγιστη μέση ταχύτητα ανέμου",
 		it: "Velocità del vento media più alta",
 		es: "Velocidad promedia del viento más alta",
-		nb: "Kraftigste Gj.snitt vindstyrke",
+		no: "Høyeste gjennomsnittlige vindhastighet",
 		bg: "Най-висока средна скорост на вятъра",
 		cs: "Nejvyšší průměrná rychlost větru"
     },
@@ -723,7 +712,7 @@ var dict = {
 		gr: "Ο ψυχρότερος άνεμος",
 		it: "Vento più freddo",
 		es: "Frío del viento más bajo",
-		nb: "Laveste følt tempratur",
+		no: "Laveste vind faktor",
 		bg: "Най-слаб вятър",
 		cs: "Nejnižší chlad vítr"
     },
@@ -736,7 +725,7 @@ var dict = {
 		gr: "Ζεστή ημέρα",
 		it: "Giorno più caldo",
 		es: "El día más cálido",
-		nb: "Varmest dag (Snitt 6-18)",
+		no: "Varmeste dag",
 		bg: "Най-топъл ден",
 		cs: "Nejteplejší den"
     },
@@ -749,7 +738,7 @@ var dict = {
 		gr: "Η πιο ψυχρή νύχτα",
 		it: "Notte più fredda",
 		es: "La noche más fría",
-		nb: "Kaldest natt (Snitt 18-6)",
+		no: "Kaldeste natt",
 		bg: "Най-студена нощ",
 		cs: "Nejchladnější noc"
     },
@@ -762,7 +751,7 @@ var dict = {
 		gr: "Η πιό ψυχρή ημέρα",
 		it: "Giorno più freddo",
 		es: "Día más frío",
-		nb: "Kaldest dag (Snitt 6-18)",
+		no: "Kaldeste dag",
 		bg: "Най-студен ден",
 		cs: "Nejchladnější den"
     },
@@ -775,7 +764,7 @@ var dict = {
 		gr: "Ζεστή νύχτα",
 		it: "Notte più calda",
 		es: "La noche más cálida",
-		nb: "Varmest natt (Snitt 18-6)",
+		no: "Varmeste natt",
 		bg: "Най-топлата нощ",
 		cs: "Teplá noc"
     },
@@ -788,7 +777,7 @@ var dict = {
 		gr: "Υψηλότερος δείκτης θερμότητας",
 		it: "Indice di calore più alto",
 		es: "Índice de calor más alto",
-		nb: "Høyeste følt varme",
+		no: "Høyeste varmeindeks",
 		bg: "Най-висок топлинен индекс",
 		cs: "Highest heat index"
     },
@@ -801,7 +790,7 @@ var dict = {
 		gr: "Υψηλότερο ηλιακό",
 		it: "Il più alto solare",
 		es: "Más alto solar",
-		nb: "Høyeste solenergi",
+		no: "Høyeste sol",
 		bg: "Най-високото слънчево",
 		cs: "Nejvyšší sluneční"
     },
@@ -814,7 +803,7 @@ var dict = {
 		gr: "Υψηλότερο ευρετήριο UV",
 		it: "Indice UV più alto",
 		es: "Índice UV más alto",
-		nb: "Høyeste UV-indeks",
+		no: "Høyeste UV-indeks",
 		bg: "Най-висок UV индекс",
 		cs: "Nejvyšší index UV"
     },
@@ -827,7 +816,7 @@ var dict = {
 		gr: "Υψηλότερο σημείο δρόσου",
 		it: "Punto di rugiada più alto",
 		es: "Punto de rocío más alto",
-		nb: "Høyeste duggpunkt",
+		no: "Høyeste duggpunkt",
 		bg: "Най-висока точка на роса",
 		cs: "Nejvyšší rosný bod"
     },
@@ -840,7 +829,7 @@ var dict = {
 		gr: "Χαμηλότερο σημείο δρόσου",
 		it: "Punto di rugiada più basso",
 		es: "Punto de rocío más bajo",
-		nb: "Laveste duggpunkt",
+		no: "Laveste duggpunkt",
 		bg: "Най-ниска точка на оросяване",
 		cs: "Nejnižší rosný bod"
     },
@@ -853,7 +842,7 @@ var dict = {
 		gr: "Δείτε περισσότερα",
         it: "Mostra di più",
 		es: "Mostrar más",
-        nb: "Vis mer",
+        no: "Vis mer",
 		bg: "Покажи повече",
 		cs: "Zobrazit více"
     },
@@ -866,7 +855,7 @@ var dict = {
 		gr: "Μέγ",
 		it: "Max",
 		es: "Máx",
-		nb: "Max",
+		no: "Max",
 		bg: "Mакс",
 		cs: "Max"
     },
@@ -879,7 +868,7 @@ var dict = {
 		gr: "Ελά",
 		it: "Min",
 		es: "Mín",
-		nb: "Mín",
+		no: "Mín",
 		bg: "Мин",
 		cs: "Min"
     },
@@ -892,7 +881,7 @@ var dict = {
 		gr: "τελευταίος",
 		it: "Ultimo",
 		es: "Último",
-        nb: "Siste",
+        no: "Siste",
 		bg: "Миналата",
 		cs: "Poslední"
     },
@@ -905,7 +894,7 @@ var dict = {
 		gr: "Ημέρες",
 		it: "Giorni",
 		es: "Dias",
-		nb: "Dager",
+		no: "Dager",
 		bg: "дни",
 		cs: "Dny"
     },
@@ -918,7 +907,7 @@ var dict = {
 		gr: "Ωρες",
 		it: "Ore",
 		es: "Horas",
-        nb: "Timer",
+        no: "Timer",
 		bg: "Часа",
 		cs: "Hodiny"
     },
@@ -931,7 +920,7 @@ var dict = {
 		gr: "Ωρα",
 		it: "Ora",
 		es: "Hora",
-		nb: "Time",
+		no: "Time",
 		bg: "Час",
 		cs: "Hodina"
         
@@ -945,7 +934,7 @@ var dict = {
 		gr: "Μήνες",
 		it: "Mesi",
 		es: "Meses",
-        nb: "Måned",
+        no: "Måneder",
 		bg: "Месеци",
 		cs: "Měsíce"
     },
@@ -958,7 +947,7 @@ var dict = {
 		gr: "Πίεση",
 		it: "Pressione",
 		es: "Presión",
-		nb: "Lufttrykk",
+		no: "Press",
 		bg: "Налягане",
 		cs: "Tlak"
     },
@@ -971,7 +960,7 @@ var dict = {
 		gr: "Τοις εκατό",
 		it: "Percentuale",
 		es: "Porcentaje",
-		nb: "Prosent",
+		no: "Prosent",
 		bg: "Процент",
 		cs: "Procent"
     },
@@ -984,7 +973,7 @@ var dict = {
 		gr: "Ακτινοβολία",
 		it: "Irradiazione",
 		es: "Radiación",
-		nb: "",
+		no: "Irradians",
 		bg: "Irradiance",
 		cs: "Ozáření"
     },
@@ -997,7 +986,7 @@ var dict = {
 		gr: "Δείκτης",
 		it: "Indice",
 		es: "Índice",
-		nb: "Index",
+		no: "Index",
 		bg: "Индекс",
 		cs: "Index"
     },
@@ -1010,7 +999,7 @@ var dict = {
 		gr: "Κατεύθυνση ανέμου",
 		it: "La direzione del vento",
 		es: "Dirección del viento",
-        nb: "Vindretning",
+        no: "Vindretning",
 		bg: "Посока на вятъра",
 		cs: "Směr větru"
     },
@@ -1023,7 +1012,7 @@ var dict = {
 		gr: "διάγραμμα",
 		it: "Grafici",
 		es: "Gráficos",
-		nb: "Grafer",
+		no: "Grafer",
 		bg: "Графики",
 		cs: "Grafy"
     },
@@ -1036,7 +1025,7 @@ var dict = {
 		gr: "Εγγραφές",
 		it: "Records",
 		es: "Archivos",
-		nb: "Rekorder",
+		no: "Records",
 		bg: "Pекорд",
 		cs: "Evidence"
     },
@@ -1049,7 +1038,7 @@ var dict = {
 		gr: "Υψόμετρο",
 		it: "Altitudine",
 		es: "Altitud",
-		nb: "Høyde",
+		no: "Høyde",
 		bg: "Bисочина",
 		cs: "Nadmořská výška"
     },
@@ -1062,7 +1051,7 @@ var dict = {
 		gr: "Εγγραφές για αυτόν τον μήνα",
 		it: "Record per questo mese",
 		es: "Registros para este mes",
-		nb: "Rekorder denne måneden",
+		no: "Records for denne måneden",
 		bg: "Записи за този месец",
 		cs: "Záznamy za tento měsíc"
     },
@@ -1075,7 +1064,7 @@ var dict = {
 		gr: "Εγγραφές για το τρέχον έτος",
 		it: "Record per quest'anno",
 		es: "Registros para este año",
-		nb: "Rekorder i år",
+		no: "Records for this year",
 		bg: "Рекорди за тази година",
 		cs: "Záznamy pro tento rok"
     },
@@ -1088,7 +1077,7 @@ var dict = {
 		gr: "Όλες οι εγγραφές χρόνου",
 		it: "Record di tutti i tempi",
 		es: "Registros de todos los tiempos",
-		nb: "Rekorder totalt",
+		no: "All time records",
 		bg: "Всички времеви записи",
 		cs: "Všechny záznamy času"
     },
@@ -1101,7 +1090,7 @@ var dict = {
 		gr: "Πρόβλεψη",
 		it: "Prevedere",
 		es: "Pronóstico",
-		nb: "Værvarsel",
+		no: "Prognose",
 		bg: "Прогноза",
 		cs: "Předpověď"
     },
@@ -1114,7 +1103,7 @@ var dict = {
 		gr: "Δείκτης θερμότητας",
 		it: "Indice di calore",
 		es: "Índice de calor",
-		nb: "Følt varme",
+		no: "Varme index",
 		bg: "Индекс на топлина",
 		cs: "Teplo index"
     },
@@ -1127,764 +1116,11 @@ var dict = {
 		gr: "Πόσο ζεστό αισθάνεται πραγματικά όταν η σχετική υγρασία υπολογίζεται με την πραγματική θερμοκρασία του αέρα.",
 		it: "Quanto fa veramente caldo quando l'umidità relativa viene calcolata con la temperatura dell'aria effettiva.",
 		es: "Qué calor realmente se siente cuando la humedad relativa se tiene en cuenta con la temperatura real del aire.",
-		nb: "Hvor varmt det virkelig føles når den relative luftfuktigheten er tatt med i selve lufttemperaturen..",
+		no: "Hvor varmt føles det virkelig når relativ luftfuktighet er fakturert med den faktiske lufttemperaturen.",
 		bg: "Колко горещо наистина се чувства, когато относителната влажност се отчита с действителната температура на въздуха.",
 		cs: "Jak horko to opravdu cítí, když je relativní vlhkost zohledněna skutečnou teplotou vzduchu."
     },
     beaufortScaleTitle: {
-        en: "Beaufort Scale",
-        nb: "Beaufort Skala"
+        en: "Beaufort Scale"
     }
 };
-
-//Fetch string from dictionary
-function useDict(wordIn) {
-    //If the word doesn't exist (incorrect wordIn), return an error
-    if(typeof dict[wordIn] === "undefined") {
-        console.error("WORD NOT FOUND IN DICTIONARY");
-        return " ";
-    }
-    
-    //If the word doesn't exist in dictionary file for a given langauge, return it in the default langauge (English)
-    if(typeof dict[wordIn][lang] === "undefined") {
-        console.log("WORD NOT FOUND IN LANGUAGE. DEFAULTING TO ENGLISH:\n" + wordIn);
-        return dict[wordIn]["en"];
-    }
-    return dict[wordIn][lang];
-}
-
-//Sets GLOBAL variables
-//Customizables
-var globalFontFamily = "Arial", //The font used throughout the page
-    colour = {
-        barometer: "40, 104, 206",
-        rainfall: "0, 71, 183",
-        wind: "23, 145, 27",
-        windGust: "188, 0, 255",
-        humidity: "16, 217, 244",
-        solar: "245, 193, 18",
-        temp: "209, 32, 32",
-        tempLow: "0, 50, 200",
-        uv: "234, 242, 45"
-    },
-    graphStyles = { //The Styles for each graph
-        barometer: {
-            label: null,
-            data: {x: 0, y: null},
-            fill: false,
-            backgroundColor: "rgba(" + colour.barometer + ", 0.4)",
-            borderColor: "rgba(" + colour.barometer + ", 0.8)",
-            pointBorderColor: "rgba(" + colour.barometer + ", 0.6)",
-            pointBackgroundColor: "rgba(" + colour.barometer + ", 0.6)",
-            pointHoverBackgroundColor: "rgba(" + colour.barometer + ", 0.6)",
-            pointHoverBorderColor: "rgba(" + colour.barometer + ", 0.6)"
-        },
-        rainfallLine: {
-            label: null,
-            data: {x: 0, y: null},
-            fill: false,
-            backgroundColor: "rgba(" + colour.rainfall + ", 0.4)",
-            borderColor: "rgba(" + colour.rainfall + ", 0.8)",
-            pointBorderColor: "rgba(" + colour.rainfall + ", 0.6)",
-            pointBackgroundColor: "rgba(" + colour.rainfall + ", 0.6)",
-            pointHoverBackgroundColor: "rgba(" + colour.rainfall + ", 0.6)",
-            pointHoverBorderColor: "rgba(" + colour.rainfall + ", 0.6)"
-        },
-        rainfallBar: {
-            label: null,
-            data: null,
-            backgroundColor: "rgba(" + colour.rainfall + ", 0.4)",
-            borderColor: "rgba(" + colour.rainfall + ", 0.8)",
-            borderWidth: 2
-        },
-        wind: {
-            label: null,
-            data: {x: 0, y: null},
-            fill: false,
-            backgroundColor: "rgba(" + colour.wind + ", 0.4)",
-            borderColor: "rgba(" + colour.wind + ", 0.8)",
-            pointBorderColor: "rgba(" + colour.wind + ", 0.6)",
-            pointBackgroundColor: "rgba(" + colour.wind + ", 0.6)",
-            pointHoverBackgroundColor: "rgba(" + colour.wind + ", 0.6)",
-            pointHoverBorderColor: "rgba(" + colour.wind + ", 0.6)"
-        },
-        windGust: {
-            label: null,
-            data: {x: 0, y: null},
-            fill: false,
-            backgroundColor: "rgba(" + colour.windGust + ", 0.4)",
-            borderColor: "rgba(" + colour.windGust + ", 0.8)",
-            pointBorderColor: "rgba(" + colour.windGust + ", 0.6)",
-            pointBackgroundColor: "rgba(" + colour.windGust + ", 0.6)",
-            pointHoverBackgroundColor: "rgba(" + colour.windGust + ", 0.6)",
-            pointHoverBorderColor: "rgba(" + colour.windGust + ", 0.6)"
-        },
-        humidity: {
-            label: null,
-            data: {x: 0, y: null},
-            fill: false,
-            backgroundColor: "rgba(" + colour.humidity + ", 0.4)",
-            borderColor: "rgba(" + colour.humidity + ", 0.8)",
-            pointBorderColor: "rgba(" + colour.humidity + ", 0.6)",
-            pointBackgroundColor: "rgba(" + colour.humidity + ", 0.6)",
-            pointHoverBackgroundColor: "rgba(" + colour.humidity + ", 0.6)",
-            pointHoverBorderColor: "rgba(" + colour.humidity + ", 0.6)"
-        },
-        solar: {
-            label: null,
-            data: {x: 0, y: null},
-            fill: true,
-            backgroundColor: "rgba(" + colour.solar + ", 0.4)",
-            borderColor: "rgba(" + colour.solar + ", 0.8)",
-            pointBorderColor: "rgba(" + colour.solar + ", 0.6)",
-            pointBackgroundColor: "rgba(" + colour.solar + ", 0.6)",
-            pointHoverBackgroundColor: "rgba(" + colour.solar + ", 0.6)",
-            pointHoverBorderColor: "rgba(" + colour.solar + ", 0.6)"
-        },
-        tempHigh: {
-            label: null,
-            data: {x: 0, y: null},
-            fill: false,
-            backgroundColor: "rgba(" + colour.temp + ", 0.4)",
-            borderColor: "rgba(" + colour.temp + ", 0.8)",
-            pointBorderColor: "rgba(" + colour.temp + ", 0.6)",
-            pointBackgroundColor: "rgba(" + colour.temp + ", 0.6)",
-            pointHoverBackgroundColor: "rgba(" + colour.temp + ", 0.6)",
-            pointHoverBorderColor: "rgba(" + colour.temp + ", 0.6)"
-        },
-        tempLow: {
-            label: null,
-            data: {x: 0, y: null},
-            fill: false,
-            backgroundColor: "rgba(" + colour.tempLow + ", 0.4)",
-            borderColor: "rgba(" + colour.tempLow + ", 0.8)",
-            pointBorderColor: "rgba(" + colour.tempLow + ", 0.6)",
-            pointBackgroundColor: "rgba(" + colour.tempLow + ", 0.6)",
-            pointHoverBackgroundColor: "rgba(" + colour.tempLow + ", 0.6)",
-            pointHoverBorderColor: "rgba(" + colour.tempLow + ", 0.6)"
-        },
-        uv: {
-            label: null,
-            data: {x: 0, y: null},
-            fill: true,
-            backgroundColor: "rgba(" + colour.uv + ", 0.4)",
-            borderColor: "rgba(" + colour.uv + ", 0.8)",
-            pointBorderColor: "rgba(" + colour.uv + ", 0.6)",
-            pointBackgroundColor: "rgba(" + colour.uv + ", 0.6)",
-            pointHoverBackgroundColor: "rgba(" + colour.uv + ", 0.6)",
-            pointHoverBorderColor: "rgba(" + colour.uv + ", 0.6)"
-        }
-    },
-    graphDict = {};
-
-//All graphs (to be included in drop down modal menu) and their properties
-var globalGraphs = {
-    barometer: {
-        label: useDict("graphBaroLabel"),
-        unit: "pressure",
-        style: "barometer",
-        graphType: "line",
-        tickOptions: {
-            beginAtZero: false
-        },
-        graphs: {
-            dailyMonth: {
-                title: useDict("barometerTitle") + " " + useDict("graphLast") + " " + "31" +  " " + useDict("graphDays"),
-                timestamp: "timestampDay",
-                data: ["baroDays31"],
-                timeDisplay: "day",
-                legendOptions: {}
-            },
-            hourlyDay: {
-                title: useDict("barometerTitle") + " " + useDict("graphLast") + " " + "24" + " " + useDict("graphHours"),
-                timestamp: "timestampHour",
-                data: ["baroHours24"],
-                timeDisplay: "hour",
-                legendOptions: {}
-            },
-            quarterDailyWeek: {
-                title: useDict("barometerTitle") + " " + useDict("graphLast") + " " + "7" + " " + useDict("graphDays"),
-                timestamp: "timestampQuarterDay",
-                data: ["baroQuarterDays28"],
-                timeDisplay: "day",
-                legendOptions: {}
-            },
-            minutlyHour: {
-                title: useDict("barometerTitle") + " " + useDict("graphLast") + " " + useDict("graphHour"),
-                timestamp: "timestampMinute",
-                data: ["baroMinutes60"],
-                timeDisplay: "minute",
-                legendOptions: {}
-            }
-        }
-    },
-    humidity: {
-        label: useDict("graphHumidityLabel"),
-        unit: "humidity",
-        style: "humidity",
-        graphType: "line",
-        tickOptions: {
-            beginAtZero: true,
-            min: 0,
-            max: 100
-        },
-        graphs: {
-            dailyMonth: {
-                title: useDict("humidityTitle") + " " + useDict("graphLast") + " " + "31" +  " " + useDict("graphDays"),
-                timestamp: "timestampDay",
-                data: ["humidityDays31"],
-                timeDisplay: "day",
-                legendOptions: {}
-            },
-            hourlyDay: {
-                title: useDict("humidityTitle") + " " + useDict("graphLast") + " " + "24" + " " + useDict("graphHours"),
-                timestamp: "timestampHour",
-                data: ["humidityHours24"],
-                timeDisplay: "hour",
-                legendOptions: {}
-            },
-            quarterDailyWeek: {
-                title: useDict("humidityTitle") + " " + useDict("graphLast") + " " + "7" + " " + useDict("graphDays"),
-                timestamp: "timestampQuarterDay",
-                data: ["humidityQuarterDays28"],
-                timeDisplay: "day",
-                legendOptions: {}
-            },
-            minutlyHour: {
-                title: useDict("humidityTitle") + " " + useDict("graphLast") + " " + useDict("graphHour"),
-                timestamp: "timestampMinute",
-                data: ["humidityMinutes60"],
-                timeDisplay: "minute",
-                legendOptions: {}
-            }
-        }
-    },
-    solar: {
-        label: useDict("graphSolarLabel"),
-        unit: "solar",
-        style: "solar",
-        graphType: "line",
-        tickOptions: {
-            beginAtZero: true
-        },
-        graphs: {
-            hourlyDay: {
-                title: useDict("solarTitle") + " " + useDict("graphLast") + " " + "24" + " " + useDict("graphHours"),
-                timestamp: "timestampHour",
-                data: ["solarHours24"],
-                timeDisplay: "hour",
-                legendOptions: {}
-            },
-            quarterDailyWeek: {
-                title: useDict("solarTitle") + " " + useDict("graphLast") + " " + "7" + " " + useDict("graphDays"),
-                timestamp: "timestampQuarterDay",
-                data: ["solarQuarterDays28"],
-                timeDisplay: "day",
-                legendOptions: {}
-            },
-            minutlyHour: {
-                title: useDict("solarTitle") + " " + useDict("graphLast") + " " + useDict("graphHour"),
-                timestamp: "timestampMinute",
-                data: ["solarMinutes60"],
-                timeDisplay: "minute",
-                legendOptions: {}
-            }
-        }
-    },
-    temp: {
-        label: useDict("temperatureTitle"),
-        unit: "temp",
-        style: "tempHigh",
-        graphType: "line",
-        tickOptions: {
-            beginAtZero: false
-        },
-        graphs: {
-            dailyMonth: {
-                title: useDict("temperatureTitle") + " " + useDict("graphLast") + " " + "31" +  " " + useDict("graphDays"),
-                timestamp: "timestampDay",
-                data: ["tempHighDays31", "tempLowDays31"],
-                timeDisplay: "day",
-                additionalStyles: ["tempLow"],
-                legendLabels: [useDict("graphMax"), useDict("graphMin")],
-                legendOptions: {
-                    display: true
-                }
-            },
-            hourlyDay: {
-                title: useDict("temperatureTitle") + " " + useDict("graphLast") + " " + "24" + " " + useDict("graphHours"),
-                timestamp: "timestampHour",
-                data: ["tempHours24"],
-                timeDisplay: "hour",
-                legendOptions: {}
-            },
-            quarterDailyWeek: {
-                title: useDict("temperatureTitle") + " " + useDict("graphLast") + " " + "7" + " " + useDict("graphDays"),
-                timestamp: "timestampQuarterDay",
-                data: ["tempQuarterDays28"],
-                timeDisplay: "day",
-                legendOptions: {}
-            },
-            minutlyHour: {
-                title: useDict("temperatureTitle") + " " + useDict("graphLast") + " " + useDict("graphHour"),
-                timestamp: "timestampMinute",
-                data: ["tempMinutes60"],
-                timeDisplay: "minute",
-                legendOptions: {}
-            }
-        }
-    },
-    uv: {
-        label: useDict("graphLabelUV"),
-        unit: "uv",
-        style: "uv",
-        graphType: "line",
-        tickOptions: {
-            beginAtZero: true
-        },
-        graphs: {
-            hourlyDay: {
-                title: useDict("uvTitle") + " " + useDict("graphLast") + " " + "24" + " " + useDict("graphHours"),
-                timestamp: "timestampHour",
-                data: ["uvHours24"],
-                timeDisplay: "hour",
-                legendOptions: {}
-            },
-            quarterDailyWeek: {
-                title: useDict("uvTitle") + " " + useDict("graphLast") + " " + "7" + " " + useDict("graphDays"),
-                timestamp: "timestampQuarterDay",
-                data: ["uvQuarterDays28"],
-                timeDisplay: "day",
-                legendOptions: {}
-            }
-        }
-    },
-    windDir: {
-        label: useDict("graphLabelWindDirection"),
-        unit: "windDirection",
-        style: "wind",
-        graphType: "line",
-        tickOptions: {
-            beginAtZero: true,
-            min: 0,
-            max: 360,
-            stepSize: 90
-        },
-        graphs: {
-            dailyMonth: {
-                title: useDict("graphLabelWindDirection") + " " + useDict("graphLast") + " " + "31" +  " " + useDict("graphDays"),
-                timestamp: "timestampDay",
-                data: ["windDirDays31"],
-                timeDisplay: "day",
-                legendOptions: {}
-                
-            },
-            hourlyDay: {
-                title: useDict("graphLabelWindDirection") + " " + useDict("graphLast") + " " + "24" + " " + useDict("graphHours"),
-                timestamp: "timestampHour",
-                data: ["windDirHours24"],
-                timeDisplay: "hour",
-                legendOptions: {}
-            },
-            quarterDailyWeek: {
-                title: useDict("graphLabelWindDirection") + " " + useDict("graphLast") + " " + "7" + " " + useDict("graphDays"),
-                timestamp: "timestampQuarterDay",
-                data: ["windDirQuarterDays28"],
-                timeDisplay: "day",
-                legendOptions: {}
-            },
-            minutlyHour: {
-                title: useDict("graphLabelWindDirection") + " " + useDict("graphLast") + " " + useDict("graphHour"),
-                timestamp: "timestampMinute",
-                data: ["windDirMinutes60"],
-                timeDisplay: "minute",
-                legendOptions: {}
-            }
-        }
-    },
-    windSpeed: {
-        label: useDict("windSpeedTitle"),
-        unit: "wind",
-        style: "wind",
-        graphType: "line",
-        tickOptions: {
-            beginAtZero: true
-        },
-        graphs: {
-            dailyMonth: {
-                title: useDict("windSpeedTitle") + " " + useDict("graphLast") + " " + "31" +  " " + useDict("graphDays"),
-                timestamp: "timestampDay",
-                data: ["windSpeedDays31"],
-                timeDisplay: "day",
-                legendOptions: {}
-            },
-            hourlyDay: {
-                title: useDict("windSpeedTitle") + " " + useDict("graphLast") + " " + "24" + " " + useDict("graphHours"),
-                timestamp: "timestampHour",
-                data: ["windSpeedHours24"],
-                timeDisplay: "hour",
-                legendOptions: {}
-            },
-            quarterDailyWeek: {
-                title: useDict("windSpeedTitle") + " " + useDict("graphLast") + " " + "7" + " " + useDict("graphDays"),
-                timestamp: "timestampQuarterDay",
-                data: ["windSpeedQuarterDays28"],
-                timeDisplay: "day",
-                legendOptions: {}
-            },
-            minutlyHour: {
-                title: useDict("graphLabelWindDirection") + " " + useDict("graphLast") + " " + useDict("graphHour"),
-                timestamp: "timestampMinute",
-                data: ["windSpeedMinutes60", "windGustMinutes60"],
-                timeDisplay: "minute",
-                additionalStyles: ["windGust"],
-                legendLabels: [useDict("windSpeedAverage"), useDict("windSpeedGust")],
-                legendOptions: {
-                    display: true
-                }
-            }
-        }
-    },
-    rainfallLine: {
-        label: useDict("rainfallTitle"),
-        unit: "rainfall",
-        style: "rainfallLine",
-        graphType: "line",
-        tickOptions: {
-            beginAtZero: false
-        },
-        graphs: {
-            hourlyDay: {
-                title: useDict("rainfallTitle") + " " + useDict("graphLast") + " " + "24" + " " + useDict("graphHours"),
-                timestamp: "timestampHour",
-                data: ["rainHours24"],
-                timeDisplay: "hour",
-                legendOptions: {}
-            },
-            minutlyHour: {
-                title: useDict("rainfallTitle") + " " + useDict("graphLast") + " " + useDict("graphHour"),
-                timestamp: "timestampMinute",
-                data: ["rainMinutes60"],
-                timeDisplay: "minute",
-                legendOptions: {}
-            }
-        }
-    },
-    rainfallBar: {
-        label: useDict("rainfallTitle"),
-        unit: "rainfall",
-        style: "rainfallBar",
-        graphType: "bar",
-        tickOptions: {
-            beginAtZero: true
-        },
-        graphs: {
-            dailyMonth: {
-                title: useDict("rainfallTitle") + " " + useDict("graphLast") + " " + "31" +  " " + useDict("graphDays"),
-                timestamp: "timestampDay",
-                data: "rainDays31",
-                timeDisplay: "MMM D",
-                legendOptions: {}
-            },
-            monthlyYear: {
-                title: useDict("rainfallTitle") + " " + useDict("graphLast") + " " + "12" +  " " + useDict("graphMonths"),
-                timestamp: "timestampMonth",
-                data: "rainMonths12",
-                timeDisplay: "MMM YYYY",
-                legendOptions: {}
-            },
-            quarterDailyWeek: {
-                title: useDict("rainfallTitle") + " " + useDict("graphLast") + " " + "7" + " " + useDict("graphDays"),
-                timestamp: "timestampWeekDay",
-                data: "rainDays7",
-                timeDisplay: "ddd",
-                legendOptions: {}
-            }
-        }
-    }
-};
-
-//Widget Config / Settings
-var widgetList = {
-    apparent: {enabled: true},
-    temperature: {enabled: true},
-    barometer: {enabled: true},
-    windChill: {enabled: true, mode: "windchill", autoSwitch: true},
-    forecastHandler: {enabled: true},
-    graphHandler: {enabled: true},
-    graphHandlerBarometer: {enabled: true},
-    graphHandlerRainfall: {enabled: true},
-    graphHandlerTemperature: {enabled: true},
-    graphHandlerWindSpeed: {enabled: true},
-    humidity: {enabled: true},
-    modalHandler: {enabled: true},
-    moonSun: {enabled: true},
-    recordHandler: {enabled: true},
-    solar: {enabled: true},
-    status: {enabled: true},
-    rainfallTitle: {enabled: true},
-    rainfallDay: {enabled: true},
-    rainfallMonth: {enabled: true},
-    rainfallYear: {enabled: true},
-    UV: {enabled: true},
-    windDirection: {enabled: true},
-    windSpeed: {enabled: true}
-};
-//Alter widgetList settings to match any changes made in the config file
-if (typeof gaugeSettings !== "undefined") {//Check to see if gauge setting list exists.
-    gaugeSettingsWidgets = Object.keys(gaugeSettings);
-    for (i = 0; i < gaugeSettingsWidgets.length; i++) {
-        if (typeof widgetList[gaugeSettingsWidgets[i]] !== "undefined") {
-            var gaugeWidgetKeys = Object.keys(gaugeSettings[gaugeSettingsWidgets[i]]);
-            for (p = 0; p < gaugeWidgetKeys.length; p++) {
-                widgetList[gaugeSettingsWidgets[i].toString()][gaugeWidgetKeys[p]] = gaugeSettings[gaugeSettingsWidgets[i].toString()][gaugeWidgetKeys[p]];
-            }
-        }
-    }
-}
-
-//Functions globally used
-//IE compadibility fix
-(function () {
-    if ( typeof window.CustomEvent === "function" ) return false; //If not IE
-
-    function CustomEvent ( event, params ) {
-        params = params || { bubbles: false, cancelable: false, detail: undefined };
-        var evt = document.createEvent( 'CustomEvent' );
-        evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
-        return evt;
-    }
-
-    CustomEvent.prototype = window.Event.prototype;
-
-    window.CustomEvent = CustomEvent;
-})();
-
-function setFontMaxWidth(textIn, canvasIn, stageIn, doesReposition) {
-    //Use with centered text only
-    //Stretches/compresses text so that it does not get cut off by edge of canvas
-    doesReposition = doesReposition || false;
-    var maxTextWidth = Math.min(canvasIn.width - stageIn.x - textIn.x, textIn.x + stageIn.x);
-    textIn.maxWidth = maxTextWidth * 2 * 0.95; //Reduced by 5%
-    
-    //check if should be repositioned, AND if valid to be (A.K.A if textWidth without a maxWidth is different when there is a max width.)
-    if (doesReposition && textIn.getMeasuredWidth() > textIn.maxWidth) {
-        textIn.x = canvasIn.width/2 - stageIn.x; // move to center, if true
-        maxTextWidth = Math.min(canvasIn.width - stageIn.x - textIn.x, textIn.x + stageIn.x);
-        textIn.maxWidth = maxTextWidth * 2 * 0.95; //Reduced by 5%
-    }
-}
-
-function setFontMaxWidthLeft(textIn, canvasIn, stageIn) {
-    //Use with left aligned text only
-    //Stretches/compresses text so that it does not get cut off by edge of canvas
-    var maxTextWidth = Math.min(canvasIn.width - stageIn.x - textIn.x);
-    textIn.maxWidth = maxTextWidth * 0.95; //Reduced by 5%
-}
-
-function setMaxWidthGivenWidth(textIn, widthIn) {
-    textIn.maxWidth = widthIn * 0.97; 
-}
-
-//Responsivly resize container to window
-function resizeContainer() {
-    var container = document.getElementById('FWDLcontainer'),
-        ratio = 0.5625, //9:16 ratio
-        size = 1.7,
-        width = 0,
-        height = 0,
-        styleString = null;
-
-	//Adjusts div to match resized window. Always adjust to the smallest dimention
-	if ((document.documentElement.clientHeight / ratio) <= document.documentElement.clientWidth) {
-		width = document.documentElement.clientHeight * size;
-		height = document.documentElement.clientHeight * size * ratio;
-	} else {
-		width = document.documentElement.clientWidth * ratio * size;
-		height = document.documentElement.clientWidth * ratio * size * ratio;
-	}
-    
-    width = width.toString() + "px";
-    height = height.toString() + "px";
-    stlyeString = "width:" + width.toString() + ";height:" + height.toString();
-    
-    container.setAttribute("style", stlyeString.toString());
-    //For browser compadibility
-    container.style.width = width.toString();
-    container.style.height = height.toString();
-}
-
-//Check if browsing on mobile
-var onMobile = false;
-(function (a) {if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) onMobile = true })(navigator.userAgent || navigator.vendor || window.opera);
-
-//Initialise the layout container settings
-function initialiseLayout() {
-    //If on desktop, dynamically resize the canvas, but don't on mobile. This is because mobile users need to be able to zoom in and move around if they wish, and dynamic rezising does not allow this.
-	if (onMobile === false) {
-		window.addEventListener('resize', function () {
-			resizeContainer();
-		}, false);
-	} else {
-        //only resize when rotated on mobile
-        var mql = window.matchMedia("(orientation: portrait)");
-        mql.addListener(function(m) {
-            resizeContainer();
-        });
-    }
-	
-    //Set the canvas size intially.
-	resizeContainer();
-    
-    //Set version number:
-    document.getElementById("Version").innerHTML = "FreshWDL - Version: 1.1.7.1 Alpha. yerren@renerica.com";
-}
-
-//Set global Graph options
-Chart.defaults.global.elements.line.tension = .1;
-Chart.defaults.global.elements.line.borderWidth = 4;
-Chart.defaults.global.elements.line.borderCapStyle = "round";
-Chart.defaults.global.elements.point.radius = 2;
-Chart.defaults.global.elements.point.hitRadius = 10;
-Chart.defaults.global.elements.point.pointBorder = 10;
-Chart.defaults.global.elements.point.hoverRadius = 5;
-Chart.defaults.global.animation.duration = 0;
-Chart.defaults.global.responsive = false;
-Chart.defaults.global.maintainAspectRatio = false;
-Chart.defaults.global.legend.display = false;
-Chart.defaults.global.defaultFontFamily = globalFontFamily;
-
-//Set units. In the format of: ["multiplier, "Display", number of decimal places to round to]
-var units = {
-        pressure: {
-            hPa: [1, "hPa", 1],
-            mmHG: [0.750061561303, "mmHG", 1],
-            kPa: [0.1, "kPa", 2],
-            inHg: [0.0295299830714, "inHg", 2],
-            mb: [1, "mb", 1]
-        },
-        altitude: {
-            m: [0.3048, "m", 0],
-            yds: [0.333333, "yds", 0],
-            ft: [1, "ft", 0]
-        },
-        wind: {
-            kmh: [1.852, "km/h", 1],
-            mph: [1.15078, "mph", 1],
-            kts: [1, "kts", 1],
-            ms: [0.514444, "m/s", 1],
-            B: [1, "BFT", 1]
-        },
-        windDirection: {
-            deg: [1, "\xB0", 0]
-        },
-        rainfall: {
-            mm: [1, "mm", 1],
-            inch: [0.0393701, "in", 2]
-        },
-        humidity: {
-            percent: [1, "%", 0]
-        },
-        solar: {
-            Wm: [1, "W/m\xB2", 1]
-        },
-        uv: {
-            noUnit: [1, " ", 1]
-        },
-        temp: {
-            celsius: [1, String.fromCharCode(176) + "C", 1],
-            fahrenheit: [1, String.fromCharCode(176) + "F", 1]
-        }
-    };
-
-//Globally used helper funtions
-function calculateBeaufort(v) {
-    //v must be in knots
-    return Math.min(Math.round(Math.pow((v*0.514444/0.836), (2/3))), 12);
-}
-
-function betterRound(value, decimals) {
-    //Better number rounding, credit to: http://www.jacklmoore.com/notes/rounding-in-javascript/
-    return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
-}
-
-function formatDataToUnit(dataIn, unitsIn) {
-    //Format to the correct unit
-    var roundTo = units[unitsIn.toString()][currentUnits[unitsIn.toString()]][2];
-    
-    if (unitsIn.toString() == "temp") { //Manage C/F non standard conversion
-        if (currentUnits[unitsIn.toString()] == "fahrenheit") {
-            var fahTemp = dataIn * (9 / 5) + 32;
-            return betterRound(fahTemp, roundTo);
-        } else {
-            return dataIn;
-        }
-    } else if (currentUnits[unitsIn.toString()] == "B") { //Manage Beaufort non linear conversion
-        return calculateBeaufort(dataIn);
-    } else if (parseFloat(dataIn) == 0) {
-        return betterRound((dataIn * units[unitsIn.toString()][currentUnits[unitsIn.toString()]][0].toString()), roundTo);
-    } else {
-        var decPlaces = roundTo,
-            result = 0,
-            max = 5;
-        while (result == 0 && decPlaces <= max) {
-            result = betterRound((dataIn * units[unitsIn.toString()][currentUnits[unitsIn.toString()]][0].toString()), decPlaces);
-            if (isNaN(result) === true) {result = 0; }
-            decPlaces += 1;
-        }
-        return result;
-    }
-}
-
-function sharpenValue(valueIn) {
-    //Return the coordinate value that will result in sharp lines being drawn
-    return betterRound(valueIn, 0) + 0.5;
-}
-
-Chart.pluginService.register({
-    beforeDraw: function (chart, easing) {
-        if (chart.config.options.chartArea && chart.config.options.chartArea.backgroundColor) {
-            var helpers = Chart.helpers;
-            var ctx = chart.chart.ctx;
-            var chartArea = chart.chartArea;
-
-            ctx.save();
-            ctx.fillStyle = chart.config.options.chartArea.backgroundColor;
-            ctx.fillRect(0, 0, 1000, 1000);
-            ctx.restore();
-        }
-    }
-});
-
-function checkOverflow(el) {
-    //Checks if an element has overflowing text, creit to: Shog9, http://stackoverflow.com/questions/143815/determine-if-an-html-elements-content-overflows
-    var curOverflow = el.style.overflow;
-
-    if ( !curOverflow || curOverflow === "visible" ) {
-        el.style.overflow = "hidden";
-    }
-
-    var isOverflowing = el.clientWidth < el.scrollWidth
-        || el.clientHeight < el.scrollHeight;
-
-    el.style.overflow = curOverflow;
-
-    return isOverflowing;
-}
-
-var numLoaded = 0,
-    numWidgets = 0,
-    widgetListKeys = Object.keys(widgetList);
-
-for (i = 0; i < widgetListKeys.length; i++) {
-    if (widgetList[widgetListKeys[i]].enabled === true) {numWidgets++; }
-}
-
-function checkOffLoaded() {
-    //checks off when every widget finishes loading, and then sends the call to update. Only used as page loads.
-    numLoaded += 1;
-    if (numLoaded >= numWidgets) {
-        loaded = true;
-        tryUpdateWidgets();
-    }
-}
