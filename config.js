@@ -5,12 +5,12 @@ var clientRawName = "clientraw.txt", //The names of your clientraw files
     clientRawExtraName = "clientrawextra.txt",
     clientRawHourName = "clientrawhour.txt",
     clientRawDailyName = "clientrawdaily.txt",
-    lang = "en", //Set Language. To see what lanuages are currently supported, see the readme file at: https://github.com/Yerren/FreshWDL/blob/master/README.md
-    customBaseURL = false, // OPTIONAL: Set the path to where your clientraw files are uploaded e.g., "http://www.goldenbaynzweather.info/wdl/" (note: final backslash and quotation marks must be included).                             Otherwise leave as: false
+    customBaseURL = false, // OPTIONAL: Set the path to where your clientraw files are uploaded e.g., "http://www.goldenbaynzweather.info/wdl/" (note: final backslash and quotation marks must be included). Otherwise leave as: false
+    lang = "en",
     currentUnits = { //Default units (what the page will display when first loaded)
         pressure: "hPa",        //Options: "hPa" "mmHG" "kPa" "inHg" "mb"
         altitude: "m",          //Options: "m" "yds" "ft"
-        wind: "kmh",            //Options: "kmh" "mph" "kts" "ms" "mm" "inch"
+        wind: "kmh",            //Options: "kmh" "mph" "kts" "ms" "mm" "inch" "B" (Beaufort)
         rainfall: "mm",         //Options: "mm" "inch"
         windDirection: "deg",   //Options: "deg" (only one)
         humidity: "percent",    //Options: "percent" (only one)
@@ -24,5 +24,10 @@ var clientRawName = "clientraw.txt", //The names of your clientraw files
         },
         UV: {
             enabled: true
+        },
+        windChill: {
+            mode: "windchill", //The default mode, either "heatIndex" or "windchill" (note: lowercase c)
+            autoSwitch: true //If true, will switch between heat Index/wind chill depending on what is appropriate.
         }
     };
+    

@@ -567,7 +567,7 @@ var dict = {
 		gr: "φύσημα",
 		it: "Raffica",
 		es: "Ráfaga",
-		nb: "Vindkast",
+		nb: "Kast",
 		bg: "Рафал",
 		cs: "Poryv"
     },
@@ -891,7 +891,7 @@ var dict = {
 		fr: "Dernier",
 		gr: "τελευταίος",
 		it: "Ultimo",
-		es: "Último",
+		es: "Últimas",
         nb: "Siste",
 		bg: "Миналата",
 		cs: "Poslední"
@@ -1533,7 +1533,7 @@ var globalGraphs = {
                 legendOptions: {}
             },
             minutlyHour: {
-                title: useDict("graphLabelWindDirection") + " " + useDict("graphLast") + " " + useDict("graphHour"),
+                title: useDict("windSpeedTitle") + " " + useDict("graphLast") + " " + useDict("graphHour"),
                 timestamp: "timestampMinute",
                 data: ["windSpeedMinutes60", "windGustMinutes60"],
                 timeDisplay: "minute",
