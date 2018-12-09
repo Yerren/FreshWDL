@@ -6,7 +6,9 @@ document.write('\
             <div id="forecastText", style="overflow: hidden;"></div>\
         </div>\
         <div id="left" class="widgetContainer">\
-            <canvas id="TempBar01"></canvas>\
+            <div id="leftTop" class="widgetContainer">\
+                <canvas id="TempBar01"></canvas>\
+            </div>\
             <canvas id="HumidityGauge01"></canvas>\
         </div>\
         <div id="center" class="widgetContainer">\
