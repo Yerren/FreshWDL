@@ -1,0 +1,279 @@
+head, body {
+    font-family: "Arial"
+}
+
+#recordsTable {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+}
+
+#recordsTable > th, td {
+    border-bottom: 0.5vmin solid #ddd;
+    vertical-align: middle;
+}
+
+.buttons {
+    height: 100%;
+    width: 12%;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    font-size: 1.8vmin;
+    padding: 0;
+}
+/* Formating to ensure floating layout works */
+#FWDLcontainer {
+    display: block;
+    margin: auto;
+}
+
+.widgetContainer {
+    float: left;
+    padding: 0;
+    overflow: hidden;
+}
+
+.widgetContainer > canvas {
+    display: block;
+    float: left;
+}
+
+#top {
+    width: 100%;
+    height: 20%;
+}
+
+#MoonSun01 {
+    float: right;
+}
+
+#Status01 {
+    float: left;
+}
+
+#left {
+    width: 15%;
+    height: 75%;
+}
+
+#center {
+    width: 45%;
+    height: 75%;
+}
+
+#centerTop {
+    width: 100%;
+    height: 45%;
+}
+
+#centerBottom {
+    width: 100%;
+    height: 55%;
+}
+
+#leftCenterBottom {
+    width: 50%;
+    height: 100%;
+    float: right;
+}
+
+#leftCenterBottom > canvas {
+    float: right;
+}
+
+#rightCenterBottom {
+    width: 32%;
+    height: 100%;
+    float: right;
+}
+
+#right {
+    width: 40%;
+    height: 75%;
+}
+
+#rightLeft {
+    width: 50%;
+    height: 100%;
+}
+
+#rightRight {
+    width: 50%;
+    height: 100%;
+}
+
+#bottom {
+    width: 100%;
+    height: 5%;
+    padding-bottom: 10px;
+}
+
+
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	border: 0;
+	overflow: hidden; /*  Disable scrollbars */
+	display: block;  /* No floating content on sides */
+}
+
+.opentip {
+    white-space: pre-wrap; /* needed so that tooltip newlines function correctly */
+}
+
+/*formatting for forecast div, and forecast modal div*/
+#forecastText {
+    overflow: hidden;
+}
+
+#showMoreLink {
+    text-decoration: none;
+    color: blue;
+}
+
+#showMoreLink:hover {
+    color: lightblue;
+}
+
+#modalForecastDiv {
+    overflow: scroll;
+}
+
+
+/*Settings for graph(Modal) popups*/
+
+/* Modal Header */
+.modal-header {
+    padding: 2% 2%;
+    background-color: rgb(153, 195, 154);
+    color: white;
+}
+
+.header-text {
+    font-size: 4vmin;
+    margin: 0;
+}
+
+/* Modal Footer */
+.modal-footer {
+    padding: 2% 2%;
+    background-color: rgb(153, 195, 154);
+    color: white;
+}
+
+.footer-text {
+    font-size: 3vmin;
+    margin: 0;
+}
+
+/* The Modal (background) */
+.modal {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    text-align: center;
+    display: none;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 3% auto; /* 15% from the top and centered */
+    padding: 1.5%;
+    border: 1px solid #888;
+    display: inline-block;
+    text-align: left;
+    min-width: width: 10%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 4vmin;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Graph padding top */
+.OuterCanvasDiv {
+    padding-top: 5%
+}
+
+/* Drop Down Menu */
+.select-style {
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    width: 230px;
+    border-radius: 3px;
+    overflow: hidden;
+    background-color: #fff;
+    background: #fff url("https://gitcdn.xyz/cdn/Yerren/FreshWDL/master/sprites/arrow-down-small-24.png") no-repeat 90% 50%;
+}
+
+.select-style select {
+    padding: 5px 8px;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
+}
+
+.select-style select:focus {
+    outline: none;
+}
+
+#loadingScreen {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255, 147, 0);
+    font-size: 100%;
+    
+}
+
+#loadingText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+
+#titleText {
+    font-family: sans-serif;
+    font-size: 5vw;
+    color: white;
+    padding-bottom: 0%;
+    margin: 0;
+}
+
+#loadingMessage {
+    float: left;
+    font-family: sans-serif;
+    font-size: 1.5vw;
+    color: white;
+    margin: 0;
+    padding-left: 1%
+}

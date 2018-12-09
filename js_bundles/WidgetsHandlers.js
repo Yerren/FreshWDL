@@ -710,7 +710,7 @@ function updateTopB01() {
     
 	//Set variables - all relative to canvas size so that dynamic resizing is possible.
     barometer01.setupVars.rectWidth = barometer01.canvas.width * 0.9;
-    barometer01.setupVars.rectHeight = barometer01.canvas.height * 0.70;
+    barometer01.setupVars.rectHeight = barometer01.canvas.height * 0.67;
     barometer01.setupVars.rectCornerRad = barometer01.canvas.height * 0.1;
     barometer01.setupVars.strokeSize = barometer01.canvas.width / 40;
     barometer01.setupVars.textDisplaySize = barometer01.canvas.width * 0.125;
@@ -724,7 +724,7 @@ function updateTopB01() {
     };
     barometer01.setupVars.posTitleBarometer = {
         x: sharpenValue(barometer01.canvas.width * (1 / 2)),
-        y: sharpenValue(barometer01.canvas.height * (13 / 100))
+        y: sharpenValue(barometer01.canvas.height * (11 / 100))
     };
     barometer01.setupVars.posTextP = {
         x: sharpenValue(barometer01.canvas.width * (1 / 2)),
