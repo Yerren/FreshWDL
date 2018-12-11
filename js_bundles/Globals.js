@@ -1781,8 +1781,8 @@ var globalGraphs = {
 var widgetList = {
     apparent: {enabled: true},
     temperature: {enabled: true, title: "default"},
-    temperature02: {enabled: false, title: "default"},
-    temperature03: {enabled: false, title: "default"},
+    temperature02: {enabled: false, title: "default", input: 1}, //input: extra sensor 1
+    temperature03: {enabled: false, title: "default", input: 2}, //input: extra sensor 1
     barometer: {enabled: true},
     windChill: {enabled: true, mode: "windchill", autoSwitch: true},
     forecastHandler: {enabled: true},
