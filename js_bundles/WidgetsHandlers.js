@@ -173,6 +173,24 @@ function initializeApparentA01() {
     checkOffLoaded();
 }
 
+
+//TEMPERATURE HELPER
+function getExtraInput(inputNum) {
+    var retVal = [-1, -1, -1];
+    if(inputNum <= 6 && inputNum > 0) {
+        retVal[0] = inputNum + 19;
+        retVal[1] = 2 * inputNum + 592;
+        retVal[2] = 2 * inputNum + 593;
+    } else if (inputNum <= 8) {
+        retVal[0] = inputNum + 113;
+        retVal[1] = 2 * inputNum + 592;
+        retVal[2] = 2 * inputNum + 593;
+    } else {
+        console.log("Error in extra temperature sensor input location.");
+    }
+    return retVal;
+}
+
 //TEMPERATURE BAR 01
 //Global Variables. These are set up in a hierarchical structure so that they can be easily accessed
 var tempBar01 = {
@@ -1085,11 +1103,13 @@ function initializeTemp02() {
         updateTweensTemp02();
     });
     window.addEventListener("clientRawDataUpdate", function () {
-        drawTemperatureBarTemp02(arrayClientraw[20], arrayClientrawExtra[594], arrayClientrawExtra[595]);
+        drawTemperatureBarTemp02(
+            arrayClientraw[getExtraInput(widgetList.temperature02.input)[0]], arrayClientrawExtra[getExtraInput(widgetList.temperature02.input)[1]], arrayClientrawExtra[getExtraInput(widgetList.temperature02.input)[2]]);
     });
     
     window.addEventListener("clientRawExtraDataUpdate", function () {
-        drawTemperatureBarTemp02(arrayClientraw[20], arrayClientrawExtra[594], arrayClientrawExtra[595]);
+        drawTemperatureBarTemp02(
+            arrayClientraw[getExtraInput(widgetList.temperature02.input)[0]], arrayClientrawExtra[getExtraInput(widgetList.temperature02.input)[1]], arrayClientrawExtra[getExtraInput(widgetList.temperature02.input)[2]]);
     });
     
     //Creates information tooltip
@@ -1559,10 +1579,12 @@ function initializeTemp03() {
         updateTweensTemp03();
     });
     window.addEventListener("clientRawDataUpdate", function () {
-        drawTemperatureBarTemp03(arrayClientraw[21], arrayClientrawExtra[596], arrayClientrawExtra[597]);
+        drawTemperatureBarTemp03(
+            arrayClientraw[getExtraInput(widgetList.temperature03.input)[0]], arrayClientrawExtra[getExtraInput(widgetList.temperature03.input)[1]], arrayClientrawExtra[getExtraInput(widgetList.temperature03.input)[2]]);
     });
     window.addEventListener("clientRawExtraDataUpdate", function () {
-        drawTemperatureBarTemp03(arrayClientraw[21], arrayClientrawExtra[596], arrayClientrawExtra[597]);
+        drawTemperatureBarTemp03(
+            arrayClientraw[getExtraInput(widgetList.temperature03.input)[0]], arrayClientrawExtra[getExtraInput(widgetList.temperature03.input)[1]], arrayClientrawExtra[getExtraInput(widgetList.temperature03.input)[2]]);
     });
     
     //Creates information tooltip
@@ -7265,8 +7287,10 @@ function updateUnits(unitType) {
         configureGraphRainBar01("rainfallBar", "dailyMonth");
     } else if (unitType == "temp") {
         drawTemperatureBarTemp01(arrayClientraw[4], arrayClientraw[46], arrayClientraw[47], true);
-        drawTemperatureBarTemp02(arrayClientraw[20], arrayClientrawExtra[594], arrayClientrawExtra[595], true);
-        drawTemperatureBarTemp03(arrayClientraw[21], arrayClientrawExtra[596], arrayClientrawExtra[597], true);
+        drawTemperatureBarTemp02(
+            arrayClientraw[getExtraInput(widgetList.temperature02.input)[0]], arrayClientrawExtra[getExtraInput(widgetList.temperature02.input)[1]], arrayClientrawExtra[getExtraInput(widgetList.temperature02.input)[2]], true);
+        drawTemperatureBarTemp03(
+            arrayClientraw[getExtraInput(widgetList.temperature03.input)[0]], arrayClientrawExtra[getExtraInput(widgetList.temperature03.input)[1]], arrayClientrawExtra[getExtraInput(widgetList.temperature03.input)[2]], true);
         drawWindchillBarWC01((widgetList.windChill.mode==="windchill")?arrayClientraw[44]:arrayClientraw[112],
                              (widgetList.windChill.mode==="windchill")?arrayClientraw[77]:arrayClientraw[110],
                              (widgetList.windChill.mode==="windchill")?arrayClientraw[78]:arrayClientraw[111], true);
