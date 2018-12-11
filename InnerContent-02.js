@@ -6,11 +6,21 @@ document.write('\
             <div id="forecastText", style="overflow: hidden;"></div>\
         </div>\
         <div id="left" class="widgetContainer">\
-            <canvas id="TempBar01"></canvas>\
+            <div id="leftTopLeft" class="widgetContainer">\
+                <canvas id="TempBar01"></canvas>\
+            </div>\
+            <div id="leftTopRight" class="widgetContainer">\
+                <canvas id="Windchill01"></canvas>\
+            </div>\
+            <div id="leftBottomLeft" class="widgetContainer">\
+                <canvas id="TempBar02"></canvas>\
+            </div>\
+            <div id="leftBottomRight" class="widgetContainer">\
+                <canvas id="TempBar03"></canvas>\
+            </div>\
         </div>\
         <div id="center" class="widgetContainer">\
             <div id="centerTop" class="widgetContainer">\
-                <canvas id="Windchill01"></canvas>\
                 <canvas id="WindGauge01"></canvas>\
                 <canvas id="WindSpeed01"></canvas>\
             </div>\
@@ -36,8 +46,10 @@ document.write('\
                 <div id="windGraphCanvas01CanvasDiv" class="OuterCanvasDiv">\
                     <canvas id="windGraphCanvas01"></canvas>\
                 </div>\
-                <canvas id="SolarBar01"></canvas>\
-                <canvas id="UVBar01"></canvas>\
+                <div id="rightLeftBottom" class="widgetContainer">\
+                    <canvas id="SolarBar01"></canvas>\
+                    <canvas id="UVBar01"></canvas>\
+                </div>\
             </div>\
             <div id="rightRight" class="widgetContainer">\
                 <div id="tempGraphCanvas01CanvasDiv" class="OuterCanvasDiv">\

@@ -1780,7 +1780,9 @@ var globalGraphs = {
 //Widget Config / Settings
 var widgetList = {
     apparent: {enabled: true},
-    temperature: {enabled: true},
+    temperature: {enabled: true, title: "default"},
+    temperature02: {enabled: false, title: "default"},
+    temperature03: {enabled: false, title: "default"},
     barometer: {enabled: true},
     windChill: {enabled: true, mode: "windchill", autoSwitch: true},
     forecastHandler: {enabled: true},
@@ -1910,7 +1912,7 @@ function initialiseLayout() {
 	resizeContainer();
     
     //Set version number:
-    document.getElementById("Version").innerHTML = "FreshWDL - Version: 1.1.7.2 Alpha. yerren@renerica.com";
+    document.getElementById("Version").innerHTML = "FreshWDL - Version: 1.1.7.3 Alpha. yerren@renerica.com";
 }
 
 //Set global Graph options
