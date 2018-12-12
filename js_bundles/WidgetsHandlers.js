@@ -175,16 +175,19 @@ function initializeApparentA01() {
 
 
 //TEMPERATURE HELPER
-function getExtraInput(inputNum) {
+function getExtraInput(inputVal) {
     var retVal = [-1, -1, -1];
-    if(inputNum <= 6 && inputNum > 0) {
-        retVal[0] = inputNum + 19;
-        retVal[1] = 2 * inputNum + 592;
-        retVal[2] = 2 * inputNum + 593;
-    } else if (inputNum <= 8) {
-        retVal[0] = inputNum + 113;
-        retVal[1] = 2 * inputNum + 592;
-        retVal[2] = 2 * inputNum + 593;
+    
+    if(inputVal == "indoor") {
+        retVal = [12, 12, 12]; //No high/low, just make sure that the bar scales properly still.
+    } else if(inputVal <= 6 && inputVal > 0) {
+        retVal[0] = inputVal + 19;
+        retVal[1] = 2 * inputVal + 592;
+        retVal[2] = 2 * inputVal + 593;
+    } else if (inputVal <= 8) {
+        retVal[0] = inputVal + 113;
+        retVal[1] = 2 * inputVal + 592;
+        retVal[2] = 2 * inputVal + 593;
     } else {
         console.log("Error in extra temperature sensor input location.");
     }
@@ -598,7 +601,6 @@ function setUpTemp01() {
 	tempBar01.highMarkerStrokeCommand = tempBar01.highMarker.graphics.setStrokeStyle(0).command;
 	tempBar01.highMarkerStartCommand = tempBar01.highMarker.graphics.moveTo(0, 0).command;
 	tempBar01.highMarkerEndCommand = tempBar01.highMarker.graphics.lineTo(0, 0).command;
-	tempBar01.stage.addChild(tempBar01.highMarker);
 	
 	//Set up low temp marker
 	tempBar01.lowMarker = new createjs.Shape();
@@ -607,19 +609,23 @@ function setUpTemp01() {
 	tempBar01.lowMarkerStrokeCommand = tempBar01.lowMarker.graphics.setStrokeStyle(0).command;
 	tempBar01.lowMarkerStartCommand = tempBar01.lowMarker.graphics.moveTo(0, 0).command;
 	tempBar01.lowMarkerEndCommand = tempBar01.lowMarker.graphics.lineTo(0, 0).command;
-	tempBar01.stage.addChild(tempBar01.lowMarker);
 	
 	//Set up high temp label
 	tempBar01.highDisplay = new createjs.Text("", "0px Arial", "rgb(" + colour.temp + ")");
 	tempBar01.highDisplay.textBaseline = "middle";
 	tempBar01.highDisplay.textAlign = "left";
-	tempBar01.stage.addChild(tempBar01.highDisplay);
 	
 	//Set up low temp label
 	tempBar01.lowDisplay = new createjs.Text("", "0px Arial", "rgb(" + colour.tempLow + ")");
 	tempBar01.lowDisplay.textBaseline = "middle";
 	tempBar01.lowDisplay.textAlign = "left";
-	tempBar01.stage.addChild(tempBar01.lowDisplay);
+    
+    if(widgetList.temperature.highLowEnabled) {
+        tempBar01.stage.addChild(tempBar01.highMarker);
+        tempBar01.stage.addChild(tempBar01.lowMarker);
+        tempBar01.stage.addChild(tempBar01.highDisplay);
+        tempBar01.stage.addChild(tempBar01.lowDisplay);
+    }
 }
 
 function initializeTemp01() {
@@ -1068,7 +1074,6 @@ function setUpTemp02() {
 	tempBar02.highMarkerStrokeCommand = tempBar02.highMarker.graphics.setStrokeStyle(0).command;
 	tempBar02.highMarkerStartCommand = tempBar02.highMarker.graphics.moveTo(0, 0).command;
 	tempBar02.highMarkerEndCommand = tempBar02.highMarker.graphics.lineTo(0, 0).command;
-	tempBar02.stage.addChild(tempBar02.highMarker);
 	
 	//Set up low temp marker
 	tempBar02.lowMarker = new createjs.Shape();
@@ -1077,19 +1082,23 @@ function setUpTemp02() {
 	tempBar02.lowMarkerStrokeCommand = tempBar02.lowMarker.graphics.setStrokeStyle(0).command;
 	tempBar02.lowMarkerStartCommand = tempBar02.lowMarker.graphics.moveTo(0, 0).command;
 	tempBar02.lowMarkerEndCommand = tempBar02.lowMarker.graphics.lineTo(0, 0).command;
-	tempBar02.stage.addChild(tempBar02.lowMarker);
-	
+        
 	//Set up high temp label
 	tempBar02.highDisplay = new createjs.Text("", "0px Arial", "rgb(" + colour.temp + ")");
 	tempBar02.highDisplay.textBaseline = "middle";
 	tempBar02.highDisplay.textAlign = "left";
-	tempBar02.stage.addChild(tempBar02.highDisplay);
 	
 	//Set up low temp label
 	tempBar02.lowDisplay = new createjs.Text("", "0px Arial", "rgb(" + colour.tempLow + ")");
 	tempBar02.lowDisplay.textBaseline = "middle";
 	tempBar02.lowDisplay.textAlign = "left";
-	tempBar02.stage.addChild(tempBar02.lowDisplay);
+    
+    if(widgetList.temperature02.highLowEnabled) {
+        tempBar02.stage.addChild(tempBar02.highMarker);
+        tempBar02.stage.addChild(tempBar02.lowMarker);
+        tempBar02.stage.addChild(tempBar02.highDisplay);
+        tempBar02.stage.addChild(tempBar02.lowDisplay);
+    }
 }
 
 function initializeTemp02() {
@@ -1544,7 +1553,6 @@ function setUpTemp03() {
 	tempBar03.highMarkerStrokeCommand = tempBar03.highMarker.graphics.setStrokeStyle(0).command;
 	tempBar03.highMarkerStartCommand = tempBar03.highMarker.graphics.moveTo(0, 0).command;
 	tempBar03.highMarkerEndCommand = tempBar03.highMarker.graphics.lineTo(0, 0).command;
-	tempBar03.stage.addChild(tempBar03.highMarker);
 	
 	//Set up low temp marker
 	tempBar03.lowMarker = new createjs.Shape();
@@ -1553,19 +1561,23 @@ function setUpTemp03() {
 	tempBar03.lowMarkerStrokeCommand = tempBar03.lowMarker.graphics.setStrokeStyle(0).command;
 	tempBar03.lowMarkerStartCommand = tempBar03.lowMarker.graphics.moveTo(0, 0).command;
 	tempBar03.lowMarkerEndCommand = tempBar03.lowMarker.graphics.lineTo(0, 0).command;
-	tempBar03.stage.addChild(tempBar03.lowMarker);
 	
 	//Set up high temp label
 	tempBar03.highDisplay = new createjs.Text("", "0px Arial", "rgb(" + colour.temp + ")");
 	tempBar03.highDisplay.textBaseline = "middle";
 	tempBar03.highDisplay.textAlign = "left";
-	tempBar03.stage.addChild(tempBar03.highDisplay);
 	
 	//Set up low temp label
 	tempBar03.lowDisplay = new createjs.Text("", "0px Arial", "rgb(" + colour.tempLow + ")");
 	tempBar03.lowDisplay.textBaseline = "middle";
 	tempBar03.lowDisplay.textAlign = "left";
-	tempBar03.stage.addChild(tempBar03.lowDisplay);
+    
+    if(widgetList.temperature03.highLowEnabled) {
+        tempBar03.stage.addChild(tempBar03.highMarker);
+        tempBar03.stage.addChild(tempBar03.lowMarker);
+        tempBar03.stage.addChild(tempBar03.highDisplay);
+        tempBar03.stage.addChild(tempBar03.lowDisplay);
+    }
 }
 
 function initializeTemp03() {
