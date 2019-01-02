@@ -12,6 +12,7 @@ moment.locale(lang);
 var dict = {
     apparentTitle: {
         en: "Apparent",
+		de: "Gefühlt",
         nl: "Schijnbare",
         da: "Føles som",
         ro: "Aparentă",
@@ -27,6 +28,7 @@ var dict = {
     },
     apparentDescription: {
         en: "Perceived temperature based on temperature, humidity, sun, and wind.",
+		de: "Wahrgenommene Temperatur basierend auf Temperatur, Luftfeuchtigkeit, Sonne und Wind.",
         nl: "Waargenomen temperatuur gebaseerd op de temperatuur, vochtigheid, zon en wind.",
         da: "Opfattet temperatur baseret på temperatur, fugtighed, sol og vind",
         ro: "Temperatura percepută în funcție de temperatură, umiditate, soare şi vânt.",
@@ -42,6 +44,7 @@ var dict = {
     },
     temperatureTitle: {
         en: "Temperature",
+		de: "Temperatur",
         nl: "Temperatuur",
         da: "Temperatur",
         ro: "Temperatura",
@@ -57,6 +60,7 @@ var dict = {
     },
     temperatureDescription: {
         en: "Current air temperature.\nBlue: Low daily temperature.\nRed: High daily temperature.",
+		de: "Aktuelle Lufttemperatur. \ NBlau: Min. Tagestemperatur. \ NRot: Max. Tagestemperatur.",
         nl: "Huidige luchttemperatuur. \nBlauw: Minimum dagelijkse temperatuur. \nRood: Maximum dagelijkse temperatuur.",
         da: "Aktuel lufttemperatur. \nBlå: Laveste daglige temperatur.\nRød: Højeste daglige temperatur.",
         ro: "Temperatura aerului curent.\nAlbastru: temperatura zilnică minimă.\nRosu: Temperatura zilnică maximă.",
@@ -72,6 +76,7 @@ var dict = {
     },
     barometerSteady: {
         en: "Steady",
+		de: "gleichbleibend",
         nl: "Bestendig",
         da: "Stabil",
         ro: "Constantă",
@@ -87,6 +92,7 @@ var dict = {
     },
     barometerRate: {
         en: "Rate",
+		de: "Rate",
         nl: "Trend",
         da: "Hastighed",
         ro: "Rata",
@@ -102,6 +108,7 @@ var dict = {
     },
     barometerTitle: {
         en: "Barometer",
+		de: "Barometer",
         nl: "Barometer",
         da: "Barometer",
         ro: "Barometrul",
@@ -117,6 +124,7 @@ var dict = {
     },
     barometerDescription: {
         en: "The weight of the air, adjusted for the station's altitude.",
+		de: "Der Luftdruck,angepasst an die Höhe der Station.",
         nl: "Het gewicht van de lucht, aangepast naar de hoogte van het weerstation.",
         da: "Luftens vægt, justeret efter vejrstationens højde",
         ro: "Greutatea aerului, ajustată la altitudinea stației.",
@@ -132,6 +140,7 @@ var dict = {
     },
     windchillTitle: {
         en: "Windchill",
+		de: "Windchill",
         nl: "Gevoelstemperatuur",
         da: "Kuldeindeks",
         ro: "Vânt tăios",
@@ -147,6 +156,7 @@ var dict = {
     },
     windchillDescription: {
         en: "How cold it actually feels. Calculated by combining heat and wind speed.",
+		de: "Gefühlte Kälte. Berechnet durch Kombination von Wärme und Windgeschwindigkeit.",
         nl: "Hoe koud het daadwerkelijk aanvoelt. Wordt berekend door een combinatie van temperatuur en windsnelheid.",
         da: "Hvor koldt det føles. Beregnet ved at kombinere temperatur og vindhastighed.",
         ro: "Cât de frig se simte de fapt. Se calculează prin combinarea temperaturii și a vitezei vântului.",
@@ -162,6 +172,7 @@ var dict = {
     },
     humidityTitle: {
         en: "Humidity",
+		de: "Luftfeuchtigkeit",
         nl: "Vochtigheid",
         da: "Luftfugtighed",
         ro: "Umiditatea",
@@ -177,6 +188,7 @@ var dict = {
     },
     humidityDescription: {
         en: "The amount of water vapour in the air as a percentage of the amount the air is capable of holding.",
+		de: "Die Menge an Wasserdampf in der Luft als Prozentsatz der Menge, die die Luft aufnehmen kann.",
         nl: "De hoeveelheid verdampt water in de lucht als een percentage van de hoeveelheid lucht dat in staat is om vocht vast te houden.",
         da: "Mængden af vanddamp i luften som en procent af den mængde luften er i stand til at indeholde",
         ro: "Cantitatea de vapori de apă din aer ca procent din cantitatea de aer care poate fi menținută.",
@@ -192,6 +204,7 @@ var dict = {
     },
     moonSunRise: {
         en: "Rise",
+		de: "Aufgang",
         nl: "Opkomst",
         da: "Opgang",
         ro: "Răsărit de soare",
@@ -207,6 +220,7 @@ var dict = {
     },
     moonSunSet: {
         en: "Set",
+		de: "Untergang",
         nl: "Ondergang",
         da: "Nedgang",
         ro: "Apus",
@@ -222,6 +236,7 @@ var dict = {
     },
     moonSunPhase: {
         en: "Phase",
+		de: "Phase",
         nl: "Fase",
         da: "Fase",
         ro: "Faza",
@@ -237,6 +252,7 @@ var dict = {
     },
     moonSunAge: {
         en: "Age",
+		de: "Alter",
         nl: "Leeftijd",
         da: "Alder",
         ro: "Vârsta",
@@ -252,6 +268,7 @@ var dict = {
     },
     moonSunTitleSun: {
         en: "Sun",
+		de: "Sonne",
         nl: "Zon",
         da: "Sol",
         ro: "Soarele",
@@ -267,6 +284,7 @@ var dict = {
     },
     moonSunTitleMoon: {
         en: "Moon",
+		de: "Mond",
         nl: "Maan",
         da: "Måne",
         ro: "Luna",
@@ -282,6 +300,7 @@ var dict = {
     },
     solarTitle: {
         en: "Solar",
+		de: "Solar",
         nl: "Zonkracht",
         da: "Solindstråling",
         ro: "Solar",
@@ -297,6 +316,7 @@ var dict = {
     },
     solarSunHours: {
         en: "Sun Hours",
+		de: "Sonnenstunden",
         nl: "Zonuren",
         da: "Solskinstimer",
         ro: "Ore însorite",
@@ -312,6 +332,7 @@ var dict = {
     },
     solarDescription: {
         en: "The intensity of the sun's radiation.",
+		de: "Die Intensität der Sonnenstrahlung.",
         nl: "De intensiteit van de straling van de zon.",
         da: "Intensiteten af solens stråler",
         ro: "Intensitatea radiației solare.",
@@ -327,6 +348,7 @@ var dict = {
     },
     statusNoDataSince: {
         en: "No data since",
+		de: "keine Daten seit",
         nl: "Geen data sinds",
         da: "Ingen data siden",
         ro: "Nu există date încă",
@@ -342,6 +364,7 @@ var dict = {
     },
     statusDataAt: {
         en: "Latest data received at",
+		de: "Letzte Daten empfangen am",
         nl: "Laatste data ontvangen op",
         da: "Sidste opdatering kl.",
         ro: "Ultimele date primite la",
@@ -357,6 +380,7 @@ var dict = {
     },
     statusDescription: {
         en: "Green: New data collected from server.\nGrey: Data on server hasn't changed.\nYellow: Some error during data collection from server.\nRed: No data able to be collected from server.",
+		de: "Grün: Neue Daten vom Server.\ NGrau: Die Daten auf dem Server haben sich nicht geändert. \ NGelb: Einige Fehler bei der Datenerfassung vom Server. \ NRed: Es können keine Daten vom Server erfasst werden.",
         nl: "Groen: Nieuwe data ontvangen van server. \nGrijs: Data op server is niet veranderd. \nGeel: Een foutmelding tijdens de ontvangst van de data van de server. \nRood: Geen data beschikbaar om te ontvangen van de server.",
         da: "Grøn: Friske data fra serveren.\nGrå: Data på serveren har ikke ændret sig.\nGul: Fejl under hentning af data fra serveren.\nRød: Ingen data fra serveren.",
         ro: "Verde: date noi colectate de pe server.\nVerde: datele de pe server nu s-au schimbat. \nGalben: Unele erori în timpul colectării de date de pe server.\nRosu: Nu există date care să poată fi colectate de pe server.",
@@ -373,6 +397,7 @@ var dict = {
     },
     rainfallTitle: {
         en: "Rainfall",
+		de: "Regen",
         nl: "Regen",
         da: "Regn",
         ro: "Precipitaţii",
@@ -388,6 +413,7 @@ var dict = {
     },
     rainfallDailyTitle: {
         en: "Daily",
+		de: "Täglicher",
         nl: "Vandaag",
         da: "Daglig",
         ro: "Ziua",
@@ -403,6 +429,7 @@ var dict = {
     },
     rainfallMonthlyTitle: {
         en: "Monthly",
+		de: "Monatlicher",
         nl: "Deze Maand",
         da: "Månedlig",
         ro: "Lunar",
@@ -418,6 +445,7 @@ var dict = {
     },
     rainfallAnnualTitle: {
         en: "Annual",
+		de: "Jährlicher",
         nl: "Jaar Totaal",
         da: "Årlig",
         ro: "Anual",
@@ -433,6 +461,7 @@ var dict = {
     },
     uvTitle: {
         en: "UV",
+        de: "UV",
         nl: "UV",
         da: "UV",
         ro: "UV",
@@ -448,6 +477,7 @@ var dict = {
     },
     uvDescription: {
         en:  "The intensity of UV radiation - 0-2 is minimal risk of skin damage whilst 8+ is very high.",
+		de:  "Die Intensität der UV-Strahlung - 0-2 ist ein minimales Risiko für Hautschäden, während 8+ sehr hoch ist.",
         nl: "De intensiteit van de UV straling - 0-2 is een minimaal risico op huidschade terwijl 8+ een hoog risico vormt.",
         da: "Intensiteten af UV stråling - 0-2 angiver minimal risiko for hudskader mens 8+ angiver meget høj risiko.",
         ro: "Intensitatea radiației UV - 0-2 reprezintă un risc minim de afectare a pielii, în timp ce 8+ este foarte mare.",
@@ -463,6 +493,7 @@ var dict = {
     },
     windDirectionLabelN: {
         en: "N",
+		de: "N",
         nl: "N",
         da: "N",
         ro: "N",
@@ -478,6 +509,7 @@ var dict = {
     },
     windDirectionLabelNE: {
         en: "NE",
+		de: "NO",
         nl: "NO",
         da: "NØ",
         ro: "NE",
@@ -493,6 +525,7 @@ var dict = {
     },
     windDirectionLabelE: {
         en: "E",
+		de: "O",
         nl: "O",
         da: "Ø",
         ro: "E",
@@ -508,6 +541,7 @@ var dict = {
     },
     windDirectionLabelSE: {
         en: "SE",
+		de: "SO",
         nl: "ZO",
         da: "SØ",
         ro: "SE",
@@ -523,6 +557,7 @@ var dict = {
     },
     windDirectionLabelS: {
         en: "S",
+		de: "S",
         nl: "Z",
         da: "S",
         ro: "S",
@@ -538,6 +573,7 @@ var dict = {
     },
     windDirectionLabelSW: {
         en: "SW",
+		de: "SW",
         nl: "ZW",
         da: "SV",
         ro: "SV",
@@ -553,6 +589,7 @@ var dict = {
     },
     windDirectionLabelW: {
         en: "W",
+		de: "W",
         nl: "W",
         da: "V",
         ro: "V",
@@ -568,6 +605,7 @@ var dict = {
     },
     windDirectionLabelNW: {
         en: "NW",
+		de: "NW",
         nl: "NW",
         da: "NV",
         ro: "NV",
@@ -583,6 +621,7 @@ var dict = {
     },
     windDirectionDescription: {
         en: "The wind direction. Green arrow indicates average wind direction.",
+		de: "Die Windrichtung. Der grüne Pfeil zeigt die durchschnittliche Windrichtung an.",
         nl: "De windrichting. De groene pijl geeft de gemiddelde windrichting aan.",
         da: "Vindretning. Grøn pil angiver den gennemsnitlige vindretning.",
         ro: "Direcția vântului. Săgeata verde indică direcția medie a vântului.",
@@ -598,6 +637,7 @@ var dict = {
     },
     windSpeedMax: {
         en: "max",
+		de: "max",
         nl: "Max",
         da: "max",
         ro: "max",
@@ -613,6 +653,7 @@ var dict = {
     },
     windSpeedTitle: {
         en: "Wind Speed",
+		de: "Windgeschwindigkeit",
         nl: "Windsnelheid",
         da: "Vindhastighed",
         ro: "Viteza vântului",
@@ -628,6 +669,7 @@ var dict = {
     },
     windSpeedWind: {
         en: "Wind",
+		de: "Wind",
         nl: "Wind",
         da: "Vind",
         ro: "Vântul",
@@ -643,6 +685,7 @@ var dict = {
     },
     windSpeedGust: {
         en: "Gust",
+		de: "Böen",
         nl: "Vlaag",
         da: "Stød",
         ro: "Rafale",
@@ -658,6 +701,7 @@ var dict = {
     },
     windSpeedAverage: {
         en: "Average",
+		de: "Durchschnitt",
         nl: "Gemiddeld",
         da: "Gennemsnit",
         ro: "Media",
@@ -673,6 +717,7 @@ var dict = {
     },
     windSpeedDescription: {
         en: "Green bar indicates average wind speed.\nPurple bar indicates gust speed.",
+		de: "Grüner Balken zeigt die durchschnittliche Windgeschwindigkeit an. \ Npinker Balken zeigt die Böengeschwindigkeit an.",
         nl: "Groene balk geeft de gemiddelde windsnelheid aan. \nPaarse balk geeft de windsnelheid in vlagen aan.",
         da: "Grøn bjælke angiver middelvind.\nLilla bjælke angiver vindstød.",
         ro: "Bara verde indică viteza medie a vântului.\nVioleta scurtă indică viteza de rafală.",
@@ -688,6 +733,7 @@ var dict = {
     },
     recordsHighTemp: {
         en: "Highest temperature",
+		de: "Höchste Temperatur",
         nl: "Hoogste temperatuur",
         da: "Højeste temperatur",
         ro: "Recordul de temperatură mare",
@@ -703,6 +749,7 @@ var dict = {
     },
     recordsLowTemp: {
         en: "Lowest temperature",
+		de: "Niedrigste Temperatur",
         nl: "Laagste temperatuur",
         da: "Laveste temperatur",
         ro: "Recordul de temperatură mică",
@@ -718,6 +765,7 @@ var dict = {
     },
     recordsHighGust: {
         en: "Highest gust",
+		de: "höchste Böe",
         nl: "Sterkste vlaag",
         da: "Kraftigste vindstød",
         ro: "Recordul rafalelor",
@@ -733,6 +781,7 @@ var dict = {
     },
     recordsHighRainRate: {
         en: "Highest rain rate",
+		de: "höchste Regenrate",
         nl: "Hoogste hoeveelheid regen",
         da: "Højeste regnrate",
         ro: "Recordul ratei ploii",
@@ -748,6 +797,7 @@ var dict = {
     },
     recordsLowBaro: {
         en: "Lowest barometer",
+		de: "min. Luftdruck",
         nl: "Laagste stand barometer",
         da: "Laveste lufttryk",
         ro: "Recordul presiunii scăzute",
@@ -763,6 +813,7 @@ var dict = {
     },
     recordsHighBaro: {
         en: "Highest barometer",
+		de: "max. Luftdruck",
         nl: "Hoogste stand barometer",
         da: "Højeste lufttryk",
         ro: "Recordul presiunii mari",
@@ -778,6 +829,7 @@ var dict = {
     },
     recordsHighRainRateDaily: {
         en: "Highest daily rainfall",
+		de: "Höchster Tagesniederschlag",
         nl: "Hoogste dagelijkse hoeveelheid regen",
         da: "Højeste daglige regnmængde",
         ro: "Recordul pentru cele mai mari precipitații zilnice",
@@ -793,6 +845,7 @@ var dict = {
     },
     recordsHighRainRateHourly: {
         en: "Highest hourly rainfall",
+		de: "Höchster stündlicher Niederschlag",
         nl: "Hoogste hoeveelheid regen per uur",
         da: "Højeste regnmængde pr. time",
         ro: "Cea mai mare ploaie orară",
@@ -808,6 +861,7 @@ var dict = {
     },
     recordsHighAverageWind: {
         en: "Highest average wind speed",
+		de: "Höchste durchschnittliche Windgeschwindigkeit",
         nl: "Hoogste gemiddelde windsnelheid",
         da: "Kraftigste middelvind",
         ro: "Cea mai mare viteză medie a vântului",
@@ -823,6 +877,7 @@ var dict = {
     },
     recordsLowWindChill: {
         en: "Lowest wind chill",
+		de: "min.gefühlte Tmperatur",
         nl: "Laagste gevoelstemperatuur",
         da: "Laveste kuldeindeks",
         ro: "Cel mai scăzut vânt tăios",
@@ -838,6 +893,7 @@ var dict = {
     },
     recordsWarmestDay: {
         en: "Warmest day",
+		de: "Wärmster Tag",
         nl: "Warmste dag",
         da: "Varmeste dag",
         ro: "Ziua cea mai caldă",
@@ -853,6 +909,7 @@ var dict = {
     },
     recordsColdestNight: {
         en: "Coldest night",
+		de: "kälteste Nacht",
         nl: "Koudste nacht",
         da: "Koldeste nat",
         ro: "Noaptea cea mai rece",
@@ -868,6 +925,7 @@ var dict = {
     },
     recordsColdestDay: {
         en: "Coldest day",
+		de: "kältester Tag",
         nl: "Koudste dag",
         da: "Koldeste dag",
 		ro: "Ziua cea mai rece",
@@ -883,6 +941,7 @@ var dict = {
     },
     recordsWarmestNight: {
         en: "Warmest night",
+		de: "wärmste Nacht",
         nl: "Warmste nacht",
         da: "Varmeste nat",
         ro: "Cea mai caldă noapte",
@@ -898,6 +957,7 @@ var dict = {
     },
     recordsHighHeatIndex: {
         en: "Highest heat index",
+		de: "höchster Hitzeindex",
         nl: "Hoogste warmte index",
         da: "Højeste varmeindeks",
         ro: "Recordul indicelui de căldură",
@@ -913,6 +973,7 @@ var dict = {
     },
     recordsHighSolar: {
         en: "Highest solar",
+		de: "max.Solar",
         nl: "Hoogste zonkracht",
         da: "Højeste solindstråling",
         ro: "Cel mai înalt nivel solar",
@@ -928,6 +989,7 @@ var dict = {
     },
     recordsHighUV: {
         en: "Highest uv index",
+		de: "max.UV Index",
         nl: "Hoogste uv index",
         da: "Højeste uv indeks",
         ro: "Cel mai înalt nivel UV",
@@ -943,6 +1005,7 @@ var dict = {
     },
     recordsHighDewPoint: {
         en: "Highest dew point",
+		de: "max.Taupunkt",
         nl: "Hoogste dauwpunt",
         da: "Højeste dugpunkt",
         ro: "Record de punct de rouă ridicat",
@@ -958,6 +1021,7 @@ var dict = {
     },
     recordsLowDewPoint: {
         en: "Lowest dew point",
+		de: "min.Taupunkt",
         nl: "Laagste dauwpunt",
         da: "Laveste dugpunkt",
         ro: "Record de punct rouă scazut",
@@ -973,6 +1037,7 @@ var dict = {
     },
     forcastShowMore: {
         en: "Show More",
+		de: "zeige mehr",
         nl: "Toon meer",
         da: "Vis mere",
         ro: "Afișați mai multe",
@@ -988,6 +1053,7 @@ var dict = {
     },
     graphMax: {
         en: "Max",
+		de: "Max",
         nl: "Max",
         da: "Max",
         ro: "Max",
@@ -1003,6 +1069,7 @@ var dict = {
     },
     graphMin: {
         en: "Min",
+		de: "Min",
         nl: "Min",
         da: "Min",
         ro: "Min",
@@ -1018,6 +1085,7 @@ var dict = {
     },
     graphLast: {        //NOTE: these are used as in: Last XX days, or Last XX Hours, etc.
         en: "Last",
+		de: "Letzte",
         nl: "Laatste",
         da: "Sidste",
         ro: "Ultimele",
@@ -1033,6 +1101,7 @@ var dict = {
     },
     graphDays: {
         en: "Days",
+		de: "Tage",
         nl: "Dagen",
         da: "Dage",
         ro: "Zile",
@@ -1048,6 +1117,7 @@ var dict = {
     },
     graphHours: {
         en: "Hours",
+		de: "Stunden",
         nl: "Uur",
         da: "Timer",
         ro: "Ore",
@@ -1063,6 +1133,7 @@ var dict = {
     },
     graphHour: {
         en: "Hour",
+		de: "Stunde",
         nl: "Uur",
         da: "Time",
         ro: "Ora",
@@ -1080,6 +1151,7 @@ var dict = {
     },
     graphMonths: {
         en: "Months",
+		de: "Monate",
         nl: "Maanden",
         da: "Måned",
         ro: "Luna",
@@ -1095,6 +1167,7 @@ var dict = {
     },
     graphBaroLabel: {
         en: "Pressure",
+		de: "Luftdruck",
         nl: "Luchtdruk",
         da: "Lufttryk",
         ro: "Presiunea",
@@ -1110,6 +1183,7 @@ var dict = {
     },
     graphHumidityLabel: {
         en: "Percent",
+		de: "Prozent",
         nl: "Procent",
         da: "Procent",
         ro: "Procentul",
@@ -1125,6 +1199,7 @@ var dict = {
     },
     graphSolarLabel: {
         en: "Irradiance",
+		de: "Solarstrahlung",
         nl: "Instraling",
         da: "Indstråling",
         ro: "Radiația",
@@ -1140,6 +1215,7 @@ var dict = {
     },
     graphLabelUV: {
         en: "Index",
+		de: "Index",
         nl: "Index",
         da: "Indeks",
         ro: "Index",
@@ -1155,6 +1231,7 @@ var dict = {
     },
     graphLabelWindDirection: {
         en: "Wind Direction",
+		de: "Windrichtung",
         nl: "Windrichting",
         da: "Vindretning",
         ro: "Direcția vântului",
@@ -1170,6 +1247,7 @@ var dict = {
     },
     buttonLabelGraphs: {
         en: "Graphs",
+		de: "Grafik",
         nl: "Grafieken",
         da: "Grafer",
         ro: "Grafice",
@@ -1185,6 +1263,7 @@ var dict = {
     },
     buttonLabelRecords: {
         en: "Records",
+		de: "Rekorde",
         nl: "Records",
         da: "Rekorder",
         ro: "Recorduri",
@@ -1200,6 +1279,7 @@ var dict = {
     },
     buttonLabelAltitude: {
         en: "Altitude",
+		de: "Höhe",
         nl: "Hoogte",
         da: "Højde",
         ro: "Altitudinea",
@@ -1215,6 +1295,7 @@ var dict = {
     },
     recordsForMonth: {
         en: "Records for this month",
+		de: "Monatsrekorde",
         nl: "Records voor deze maand",
         da: "Rekorder for denne måned",
         ro: "Recordul pentru aceasta lună",
@@ -1230,6 +1311,7 @@ var dict = {
     },
     recordsForYear: {
         en: "Records for this year",
+		de: "Rekorde dieses Jahr",
         nl: "Records voor dit jaar",
         da: "Rekorder for dette år",
         ro: "Recordul pentru acest an",
@@ -1245,6 +1327,7 @@ var dict = {
     },
     recordsAllTime: {
         en: "All time records",
+		de: "Allzeitrekorde",
         nl: "Records aller tijden",
         da: "Rekorder siden start",
         ro: "Recordul pentru toți anii",
@@ -1260,6 +1343,7 @@ var dict = {
     },
     forecastTitle: {
         en: "Forecast",
+		de: "Vorhersage",
         nl: "Voorspelling",
         da: "Vejrudsigt",
         ro: "Prognoza",
@@ -1275,6 +1359,7 @@ var dict = {
     },
     heatIndexTitle: {
         en: "Heat Index",
+		de: "Hitzeindex",
         nl: "Hitte Index",
         da: "Varmeindeks",
         ro: "Indicele de caldură",
@@ -1290,6 +1375,7 @@ var dict = {
     },
     heatIndexDescription: {
         en: "How hot it really feels when relative humidity is factored with the actual air temperature.",
+		de: "Wie es sich wirklich anfühlt, wenn die relative Luftfeuchtigkeit in Relation zur relativen Luftfeuchtigkeit steht.",
         nl: "De warmte-index is een getal dat aangeeft hoe een mens gemiddeld een temperatuur in combinatie met een bepaalde vochtigheidsgraad beleeft, hoe hij of zij dit aanvoelt.",
         da: "Hvor varmt det føles når luftfugtigheden kombineres med luftens temperatur.",
         ro: "Cât de cald se simte cu adevărat atunci când umiditatea relativă este luată în considerare cu temperatura reală a aerului.",
@@ -1305,6 +1391,7 @@ var dict = {
     },
     beaufortScaleTitle: {
         en: "Beaufort Scale",
+		de: "Beaufort Skala",
         nb: "Beaufort Skala",
         si: "Boforjeva lestvica"	
     }
