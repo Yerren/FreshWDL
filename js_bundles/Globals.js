@@ -188,7 +188,7 @@ var dict = {
 		si: "Kako hladno se dejansko počuti. Izračunano s kombinacijo toplote in hitrosti vetra.",
 		fi: "Kuinka kylmältä se todella tuntuu lasketaan yhdistämällä lämmön ja tuulen nopeus.",
 		se: "Upplevd temperatur. Baserad på en kombination av temperatur och vindhastighet.",
-		pt: "Frio percetível. Calculado combinando a temperatura e a velocidade do vento."
+		pt: "Temperatura percetível. Calculado combinando a temperatura e a velocidade do vento."
 	},
 	humidityTitle: {
 		en: "Humidity",
@@ -242,7 +242,7 @@ var dict = {
 		si: "Vzhod",
 		fi: "Nousu",
 		se: "Uppgång",
-		pt: "Amanhecer"
+		pt: "Nascer"
 	},
 	moonSunSet: {
 		en: "Set",
@@ -260,7 +260,7 @@ var dict = {
 		si: "Zahod",
 		fi: "Lasku",
 		se: "Nedgång",
-		pt: "Pôr do sol"
+		pt: "Pôr"
 	},
 	moonSunPhase: {
 		en: "Phase",
@@ -532,8 +532,8 @@ var dict = {
 		pt: "UV"
 	},
 	uvDescription: {
-		en:"The intensity of UV radiation - 0-2 is minimal risk of skin damage whilst 8+ is very high.",
-		de:"Die Intensität der UV-Strahlung - 0-2 ist ein minimales Risiko für Hautschäden, während 8+ sehr hoch ist.",
+		en: "The intensity of UV radiation - 0-2 is minimal risk of skin damage whilst 8+ is very high.",
+		de: "Die Intensität der UV-Strahlung - 0-2 ist ein minimales Risiko für Hautschäden, während 8+ sehr hoch ist.",
 		nl: "De intensiteit van de UV straling - 0-2 is een minimaal risico op huidschade terwijl 8+ een hoog risico vormt.",
 		da: "Intensiteten af UV stråling - 0-2 angiver minimal risiko for hudskader mens 8+ angiver meget høj risiko.",
 		ro: "Intensitatea radiației UV - 0-2 reprezintă un risc minim de afectare a pielii, în timp ce 8+ este foarte mare.",
@@ -582,7 +582,7 @@ var dict = {
 		cs: "SV",
 		si: "SV",
 		fi: "Koillinen",
-		se: "NÖ",
+		se: "NO",
 		pt: "NE"
 	},
 	windDirectionLabelE: {
@@ -618,7 +618,7 @@ var dict = {
 		cs: "JV",
 		si: "JV",
 		fi: "Kaakko",
-		se: "SÖ",
+		se: "SO",
 		pt: "SE"
 	},
 	windDirectionLabelS: {
@@ -745,7 +745,7 @@ var dict = {
 		si: "Hitrost vetra",
 		fi: "Tuulen nopeus",
 		se: "Vindhastighet",
-		pt: "Velocidade do Vento"
+		pt: "Velocidade Vento"
 	},
 	windSpeedWind: {
 		en: "Wind",
@@ -917,7 +917,7 @@ var dict = {
 		ro: "Recordul presiunii mari",
 		fr: "Pression la plus haute",
 		gr: "Υψηλότερο βαρόμετρο",
-		it:"Barometro più alto",
+		it: "Barometro più alto",
 		es: "Barómetro más alto",
 		nb: "Høyest barometertrykk",
 		bg: "Най-висок барометър",
@@ -1228,10 +1228,10 @@ var dict = {
 		nb: "Siste",
 		bg: "Миналата",
 		cs: "Poslední",
-		si:" Zadnjih",
+		si: "Zadnjih",
 		fi: "Viimeisin",
 		se: "Sista",
-		pt: "Últimas"
+		pt: "Últimos(as)"
 	},
 	graphDays: {
 		en: "Days",
@@ -1248,7 +1248,7 @@ var dict = {
 		cs: "Dny",
 		si: "Dni",
 		fi: "Päivät",
-		se: "Dagar",
+		se: "Dagarna",
 		pt: "Dias"
 	},
 	graphHours: {
@@ -1266,7 +1266,7 @@ var dict = {
 		cs: "Hodiny",
 		si: "Ure",
 		fi: "Tunnit",
-		se: "Timmar",
+		se: "Timmarna",
 		pt: "Horas"
 	},
 	graphHour: {
@@ -1320,7 +1320,7 @@ var dict = {
 		cs: "Tlak",
 		si: "Pritisk",
 		fi: "Paine",
-		se:"Lufttryck",
+		se: "Lufttryck",
 		pt: "Pressão"
 	},
 	graphHumidityLabel: {
@@ -1555,7 +1555,7 @@ var dict = {
 		si: "Občutek vročine, ko je relativna vlažnost upoštevana z dejansko temperaturo zraka.",
 		fi: "Kuinka kuumalta se todella tuntuu kun suhteellinen kosteus otetaan huomioon todellisen ilman lämpötilan suhteen.",
 		se: "Hur varmt det känns när relativa fuktigheten kombineras med aktuell temperatur.",
-		pt: "Calor percetível. Calculado combinando a temperatura e humidade relativa."
+		pt: "Temperatura percetível. Calculado combinando a temperatura e humidade relativa."
 	},
 	beaufortScaleTitle: {
 		en: "Beaufort Scale",
@@ -1564,7 +1564,7 @@ var dict = {
 		si: "Boforjeva lestvica",
 		se: "Beaufort skalan",
 		pt: "Escala de Beaufort"
-	},
+	}
 };
 
 //Fetch string from dictionary
