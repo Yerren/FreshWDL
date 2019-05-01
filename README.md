@@ -18,7 +18,7 @@ See it in action at: http://www.goldenbaynzweather.info/wdl/freshwdl.html
 You should now be good to go! Simply navigate to the html page in any web browser to see your new FreshWDL page up and running!
 
 ## Language
-- **To set the language:** set the **lang** field in your config file to one of: en (English), nl (Dutch), da (Danish), ro (Romanian), fr (French), gr (Greek), it (Italian), es (Spanish), nb (Norwegian), bg (Bulgarian), cs (Czech), fi (Finnish), si (Slovenian), de (German), pt (Portuguese), or se (Swedish)
+- **To set the language:** set the **lang** field in your config file to one of: en (English), nl (Dutch), da (Danish), ro (Romanian), fr (French), gr (Greek), it (Italian), es (Spanish), nb (Norwegian), bg (Bulgarian), cs (Czech), fi (Finnish), si (Slovenian), de (German), pt (Portuguese), or sv (Swedish)
 - If you want to help translate the system into your language, please don't hesitate to get in touch. (It takes less than an hour to fully translate into a new language!)
 
 ## Troubleshooting
