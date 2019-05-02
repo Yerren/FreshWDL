@@ -1217,6 +1217,7 @@ var dict = {
 	},
 	graphLast: {
 		//NOTE: these are used as in: Last XX days, or Last XX Hours, etc.en: "Last",
+        en: "Last",
 		de: "Letzte",
 		nl: "Laatste",
 		da: "Sidste",
