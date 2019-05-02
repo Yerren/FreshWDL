@@ -179,15 +179,17 @@ function getExtraInput(inputVal) {
     var retVal = [-1, -1, -1];
     
     if(inputVal == "indoor") {
-        retVal = [12, 12, 12]; //No high/low, just make sure that the bar scales properly still.
+        retVal[0] = arrayClientraw[12];
+        retVal[1] = arrayClientraw[128];
+        retVal[2] = arrayClientraw[129];        
     } else if(inputVal <= 6 && inputVal > 0) {
-        retVal[0] = inputVal + 19;
-        retVal[1] = 2 * inputVal + 592;
-        retVal[2] = 2 * inputVal + 593;
+        retVal[0] = arrayClientraw[inputVal + 19];
+        retVal[1] = arrayClientrawExtra[2 * inputVal + 592];
+        retVal[2] = arrayClientrawExtra[2 * inputVal + 593];
     } else if (inputVal <= 8) {
-        retVal[0] = inputVal + 113;
-        retVal[1] = 2 * inputVal + 592;
-        retVal[2] = 2 * inputVal + 593;
+        retVal[0] = arrayClientraw[inputVal + 113];
+        retVal[1] = arrayClientrawExtra[2 * inputVal + 592];
+        retVal[2] = arrayClientrawExtra[2 * inputVal + 593];
     } else {
         console.log("Error in extra temperature sensor input location.");
     }
@@ -1113,12 +1115,12 @@ function initializeTemp02() {
     });
     window.addEventListener("clientRawDataUpdate", function () {
         drawTemperatureBarTemp02(
-            arrayClientraw[getExtraInput(widgetList.temperature02.input)[0]], arrayClientrawExtra[getExtraInput(widgetList.temperature02.input)[1]], arrayClientrawExtra[getExtraInput(widgetList.temperature02.input)[2]]);
+            getExtraInput(widgetList.temperature02.input)[0], getExtraInput(widgetList.temperature02.input)[1], getExtraInput(widgetList.temperature02.input)[2]);
     });
     
     window.addEventListener("clientRawExtraDataUpdate", function () {
         drawTemperatureBarTemp02(
-            arrayClientraw[getExtraInput(widgetList.temperature02.input)[0]], arrayClientrawExtra[getExtraInput(widgetList.temperature02.input)[1]], arrayClientrawExtra[getExtraInput(widgetList.temperature02.input)[2]]);
+            getExtraInput(widgetList.temperature02.input)[0], getExtraInput(widgetList.temperature02.input)[1], getExtraInput(widgetList.temperature02.input)[2]);
     });
     
     //Creates information tooltip
@@ -1592,11 +1594,11 @@ function initializeTemp03() {
     });
     window.addEventListener("clientRawDataUpdate", function () {
         drawTemperatureBarTemp03(
-            arrayClientraw[getExtraInput(widgetList.temperature03.input)[0]], arrayClientrawExtra[getExtraInput(widgetList.temperature03.input)[1]], arrayClientrawExtra[getExtraInput(widgetList.temperature03.input)[2]]);
+            getExtraInput(widgetList.temperature03.input)[0], getExtraInput(widgetList.temperature03.input)[1], getExtraInput(widgetList.temperature03.input)[2]);
     });
     window.addEventListener("clientRawExtraDataUpdate", function () {
         drawTemperatureBarTemp03(
-            arrayClientraw[getExtraInput(widgetList.temperature03.input)[0]], arrayClientrawExtra[getExtraInput(widgetList.temperature03.input)[1]], arrayClientrawExtra[getExtraInput(widgetList.temperature03.input)[2]]);
+            getExtraInput(widgetList.temperature03.input)[0], getExtraInput(widgetList.temperature03.input)[1], getExtraInput(widgetList.temperature03.input)[2]);
     });
     
     //Creates information tooltip
@@ -7300,9 +7302,9 @@ function updateUnits(unitType) {
     } else if (unitType == "temp") {
         drawTemperatureBarTemp01(arrayClientraw[4], arrayClientraw[46], arrayClientraw[47], true);
         drawTemperatureBarTemp02(
-            arrayClientraw[getExtraInput(widgetList.temperature02.input)[0]], arrayClientrawExtra[getExtraInput(widgetList.temperature02.input)[1]], arrayClientrawExtra[getExtraInput(widgetList.temperature02.input)[2]], true);
+            getExtraInput(widgetList.temperature02.input)[0], getExtraInput(widgetList.temperature02.input)[1], getExtraInput(widgetList.temperature02.input)[2], true);
         drawTemperatureBarTemp03(
-            arrayClientraw[getExtraInput(widgetList.temperature03.input)[0]], arrayClientrawExtra[getExtraInput(widgetList.temperature03.input)[1]], arrayClientrawExtra[getExtraInput(widgetList.temperature03.input)[2]], true);
+            getExtraInput(widgetList.temperature03.input)[0], getExtraInput(widgetList.temperature03.input)[1], getExtraInput(widgetList.temperature03.input)[2], true);
         drawWindchillBarWC01((widgetList.windChill.mode==="windchill")?arrayClientraw[44]:arrayClientraw[112],
                              (widgetList.windChill.mode==="windchill")?arrayClientraw[77]:arrayClientraw[110],
                              (widgetList.windChill.mode==="windchill")?arrayClientraw[78]:arrayClientraw[111], true);
