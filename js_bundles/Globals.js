@@ -507,7 +507,7 @@ var dict = {
 		cs: "SZ"
     },
     windDirectionDescription: {
-        en: "The wind direction. Green arrow indicates average wind direction.",
+        en: "The wind direction. Blue arrow indicates average wind direction.",
         nl: "De windrichting. De groene pijl geeft de gemiddelde windrichting aan.",
         da: "Vindretning. Grøn pil angiver den gennemsnitlige vindretning.",
         ro: "Direcția vântului. Săgeata verde indică direcția medie a vântului.",
@@ -517,7 +517,7 @@ var dict = {
 		es: "La dirección del viento. La flecha verde indica la dirección promedio del viento.",
 		nb: "Vindretningen. Grønn pil indikerer gjennomsnittlig vindretning.",
 		bg: "Посоката на вятъра. Зелената стрелка показва средната посока на вятъра.",
-		cs: "The wind direction. Green arrow indicates average wind direction."
+		cs: "The wind direction. Blue arrow indicates average wind direction."
     },
     windSpeedMax: {
         en: "max",
@@ -585,7 +585,7 @@ var dict = {
 		cs: "Průměrný"
     },
     windSpeedDescription: {
-        en: "Green bar indicates average wind speed.\nPurple bar indicates gust speed.",
+        en: "Blue bar indicates average wind speed.\nPurple bar indicates gust speed.",
         nl: "Groene balk geeft de gemiddelde windsnelheid aan. \nPaarse balk geeft de windsnelheid in vlagen aan.",
         da: "Grøn bjælke angiver middelvind.\nLilla bjælke angiver vindstød.",
         ro: "Bara verde indică viteza medie a vântului.\nVioleta scurtă indică viteza de rafală.",

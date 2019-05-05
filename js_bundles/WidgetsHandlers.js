@@ -540,7 +540,7 @@ function setUpTemp01() {
     //Set up fill circle
     tempBar.roundBotFill = new createjs.Shape();
 	tempBar.roundBotFill.snapToPixel = true;
-	tempBar.roundBotFill.graphics.beginFill("rgb(255, 221, 37)");
+	tempBar.roundBotFill.graphics.beginFill("rgb(255, 37, 37)");
     tempBar.roundBotFill.graphics.setStrokeStyle(0);
 	tempBar.circFillCommand = tempBar.roundBotFill.graphics.drawCircle(0, 0, 0).command;
 	tempBar.stage.addChild(tempBar.roundBotFill);
@@ -548,7 +548,7 @@ function setUpTemp01() {
     //Set up fill rectange
     tempBar.roundRectFillTop = new createjs.Shape();
 	tempBar.roundRectFillTop.snapToPixel = true;
-	tempBar.roundRectFillTop.graphics.beginFill("rgb(255, 221, 37)");
+	tempBar.roundRectFillTop.graphics.beginFill("rgb(255, 37, 37)");
     tempBar.roundRectFillTop.graphics.setStrokeStyle(0);
 	tempBar.rectFillCommand = tempBar.roundRectFillTop.graphics.drawRoundRect(0, 0, 0, 0, 0).command;
 	tempBar.stage.addChild(tempBar.roundRectFillTop);
@@ -1227,7 +1227,7 @@ function setUpWC01() {
     //Set up fill circle
     windchill01.roundBotFill = new createjs.Shape();
 	windchill01.roundBotFill.snapToPixel = true;
-	windchill01.roundBotFill.graphics.beginFill("rgb(255, 221, 37)");
+	windchill01.roundBotFill.graphics.beginFill("rgb(255, 37, 37)");
     windchill01.roundBotFill.graphics.setStrokeStyle(0);
 	windchill01.circFillCommand = windchill01.roundBotFill.graphics.drawCircle(0, 0, 0).command;
 	windchill01.stage.addChild(windchill01.roundBotFill);
@@ -1235,7 +1235,7 @@ function setUpWC01() {
     //Set up fill rectange
     windchill01.roundRectFillTop = new createjs.Shape();
 	windchill01.roundRectFillTop.snapToPixel = true;
-	windchill01.roundRectFillTop.graphics.beginFill("rgb(255, 221, 37)");
+	windchill01.roundRectFillTop.graphics.beginFill("rgb(255, 37, 37)");
     windchill01.roundRectFillTop.graphics.setStrokeStyle(0);
 	windchill01.rectFillCommand = windchill01.roundRectFillTop.graphics.drawRoundRect(0, 0, 0, 0, 0).command;
 	windchill01.stage.addChild(windchill01.roundRectFillTop);
@@ -5531,15 +5531,15 @@ function tryUpdateWidgets() {
                 noDataChanged = true;
                 
                 drawStatusS01(arrayClientraw[49], arrayClientraw[32], arrayClientraw[74]); //Status widget must always be updated
+		window.dispatchEvent(loadEvents.clientRaw);
             } else {
                 noDataChanged = false;
                 
                 drawStatusS01(arrayClientraw[49], arrayClientraw[32], arrayClientraw[74]); //Status widget must always be updated
                 
-                if (arrayClientraw.equals(arrayClientrawOld) === false) {
-                    arrayClientrawOld = arrayClientraw;
-                    window.dispatchEvent(loadEvents.clientRaw);
-                }
+                arrayClientrawOld = arrayClientraw;
+                window.dispatchEvent(loadEvents.clientRaw);
+
                 if (arrayClientrawExtra.equals(arrayClientrawExtraOld) === false) {
                     arrayClientrawExtraOld = arrayClientrawExtra;
                     //Meteohub compadibility changes
@@ -5588,7 +5588,7 @@ function loadArray(url) {
 	}
 	
 	xhttpVar.open("GET", url, true);
-    xhttpVar.setRequestHeader("Cache-Control", "no-cache");
+    xhttpVar.setRequestHeader("Cache-Control", "no-store");
     xhttpVar.send();
 	
 	return xhttpVar;
