@@ -173,32 +173,9 @@ function initializeApparentA01() {
     checkOffLoaded();
 }
 
-
-//TEMPERATURE HELPER
-function getExtraInput(inputVal) {
-    var retVal = [-1, -1, -1];
-    
-    if(inputVal == "indoor") {
-        retVal[0] = arrayClientraw[12];
-        retVal[1] = arrayClientraw[128];
-        retVal[2] = arrayClientraw[129];        
-    } else if(inputVal <= 6 && inputVal > 0) {
-        retVal[0] = arrayClientraw[inputVal + 19];
-        retVal[1] = arrayClientrawExtra[2 * inputVal + 592];
-        retVal[2] = arrayClientrawExtra[2 * inputVal + 593];
-    } else if (inputVal <= 8) {
-        retVal[0] = arrayClientraw[inputVal + 113];
-        retVal[1] = arrayClientrawExtra[2 * inputVal + 592];
-        retVal[2] = arrayClientrawExtra[2 * inputVal + 593];
-    } else {
-        console.log("Error in extra temperature sensor input location.");
-    }
-    return retVal;
-}
-
-//TEMPERATURE BAR 01
+//TEMPERATURE BAR
 //Global Variables. These are set up in a hierarchical structure so that they can be easily accessed
-var tempBar01 = {
+var tempBar = {
 	stage: null,
 	canvas: null,
 	roundRectTop: null,
@@ -287,22 +264,22 @@ function formatInputTemp01() {
 	//Formats the temperature to be displayed correctly
 	
     //Adjust to units
-    tempBar01.values.tempIn = formatDataToUnit(tempBar01.values.tempIn, tempBar01.values.unitsIn);
-    tempBar01.values.highTempIn = formatDataToUnit(tempBar01.values.highTempIn, tempBar01.values.unitsIn);
-    tempBar01.values.lowTempIn = formatDataToUnit(tempBar01.values.lowTempIn, tempBar01.values.unitsIn);
+    tempBar.values.tempIn = formatDataToUnit(tempBar.values.tempIn, tempBar.values.unitsIn);
+    tempBar.values.highTempIn = formatDataToUnit(tempBar.values.highTempIn, tempBar.values.unitsIn);
+    tempBar.values.lowTempIn = formatDataToUnit(tempBar.values.lowTempIn, tempBar.values.unitsIn);
     
 	//Adjust Range if needed: if any of the inputs (current, high, low), are less than the current minimum of the range, decrease the minimum. If any of the inputs (current, high, low), are bigger than the current maximum of the range, increase the maximum. 
-	while (tempBar01.values.tempIn < tempBar01.constants.minTemp || tempBar01.values.highTempIn < tempBar01.constants.minTemp || tempBar01.values.lowTempIn < tempBar01.constants.minTemp) {tempBar01.constants.minTemp -= tempBar01.largeDashTotal - 1; }
-	while (tempBar01.values.tempIn > tempBar01.constants.maxTemp || tempBar01.values.highTempIn > tempBar01.constants.maxTemp || tempBar01.values.lowTempIn > tempBar01.constants.maxTemp) {tempBar01.constants.maxTemp += tempBar01.largeDashTotal - 1; }
+	while (tempBar.values.tempIn < tempBar.constants.minTemp || tempBar.values.highTempIn < tempBar.constants.minTemp || tempBar.values.lowTempIn < tempBar.constants.minTemp) {tempBar.constants.minTemp -= tempBar.largeDashTotal - 1; }
+	while (tempBar.values.tempIn > tempBar.constants.maxTemp || tempBar.values.highTempIn > tempBar.constants.maxTemp || tempBar.values.lowTempIn > tempBar.constants.maxTemp) {tempBar.constants.maxTemp += tempBar.largeDashTotal - 1; }
 
     //Adjust Range if needed: if all of the inputs (current, high, low), are bigger than the current minimum of the range, increase the minimum. If all of the inputs (current, high, low), are less than the current maximum of the range, decrease the maximum. 
-	while ((tempBar01.values.tempIn >= tempBar01.constants.minTemp + (tempBar01.largeDashTotal - 1) && tempBar01.constants.minTemp < tempBar01.constants.minTempDEFAULT) && (tempBar01.values.highTempIn >= tempBar01.constants.minTemp + (tempBar01.largeDashTotal - 1) && tempBar01.constants.minTemp < tempBar01.constants.minTempDEFAULT) && (tempBar01.values.lowTempIn >= tempBar01.constants.minTemp + (tempBar01.largeDashTotal - 1) && tempBar01.constants.minTemp < tempBar01.constants.minTempDEFAULT)) {tempBar01.constants.minTemp += tempBar01.largeDashTotal - 1; }
-	while ((tempBar01.values.tempIn <= tempBar01.constants.maxTemp - (tempBar01.largeDashTotal - 1) && tempBar01.constants.maxTemp > tempBar01.constants.maxTempDEFAULT) && (tempBar01.values.highTempIn <= tempBar01.constants.maxTemp - (tempBar01.largeDashTotal - 1) && tempBar01.constants.maxTemp > tempBar01.constants.maxTempDEFAULT) && (tempBar01.values.lowTempIn <= tempBar01.constants.maxTemp - (tempBar01.largeDashTotal - 1) && tempBar01.constants.maxTemp > tempBar01.constants.maxTempDEFAULT)) {tempBar01.constants.maxTemp -= tempBar01.largeDashTotal - 1; }
+	while ((tempBar.values.tempIn >= tempBar.constants.minTemp + (tempBar.largeDashTotal - 1) && tempBar.constants.minTemp < tempBar.constants.minTempDEFAULT) && (tempBar.values.highTempIn >= tempBar.constants.minTemp + (tempBar.largeDashTotal - 1) && tempBar.constants.minTemp < tempBar.constants.minTempDEFAULT) && (tempBar.values.lowTempIn >= tempBar.constants.minTemp + (tempBar.largeDashTotal - 1) && tempBar.constants.minTemp < tempBar.constants.minTempDEFAULT)) {tempBar.constants.minTemp += tempBar.largeDashTotal - 1; }
+	while ((tempBar.values.tempIn <= tempBar.constants.maxTemp - (tempBar.largeDashTotal - 1) && tempBar.constants.maxTemp > tempBar.constants.maxTempDEFAULT) && (tempBar.values.highTempIn <= tempBar.constants.maxTemp - (tempBar.largeDashTotal - 1) && tempBar.constants.maxTemp > tempBar.constants.maxTempDEFAULT) && (tempBar.values.lowTempIn <= tempBar.constants.maxTemp - (tempBar.largeDashTotal - 1) && tempBar.constants.maxTemp > tempBar.constants.maxTempDEFAULT)) {tempBar.constants.maxTemp -= tempBar.largeDashTotal - 1; }
 	
     //Map the inputs to the current scale
-	tempBar01.values.tempOut = tempBar01.values.tempIn.map(tempBar01.constants.minTemp, tempBar01.constants.maxTemp, 0.1, 0.98);
-	tempBar01.values.highTempOut = tempBar01.values.highTempIn.map(tempBar01.constants.minTemp, tempBar01.constants.maxTemp, 1.04, 0.17);
-	tempBar01.values.lowTempOut = tempBar01.values.lowTempIn.map(tempBar01.constants.minTemp, tempBar01.constants.maxTemp, 1.04, 0.17);
+	tempBar.values.tempOut = tempBar.values.tempIn.map(tempBar.constants.minTemp, tempBar.constants.maxTemp, 0.1, 0.98);
+	tempBar.values.highTempOut = tempBar.values.highTempIn.map(tempBar.constants.minTemp, tempBar.constants.maxTemp, 1.04, 0.17);
+	tempBar.values.lowTempOut = tempBar.values.lowTempIn.map(tempBar.constants.minTemp, tempBar.constants.maxTemp, 1.04, 0.17);
 }
 
 function drawTemperatureBarTemp01(tempIn, highTempIn, lowTempIn, unitChange) {
@@ -310,24 +287,24 @@ function drawTemperatureBarTemp01(tempIn, highTempIn, lowTempIn, unitChange) {
     unitChange = unitChange || false;
     
     //check to see if any reason to update
-    if (tempBar01.valuesOld.TempIn != tempIn || tempBar01.valuesOld.highTempIn != highTempIn || tempBar01.valuesOld.lowTempIn != lowTempIn || unitChange === true) {
+    if (tempBar.valuesOld.TempIn != tempIn || tempBar.valuesOld.highTempIn != highTempIn || tempBar.valuesOld.lowTempIn != lowTempIn || unitChange === true) {
         //Sets inputs to new data
-        tempBar01.values.tempIn = Number(tempIn);
-        tempBar01.values.highTempIn = Number(highTempIn);
-        tempBar01.values.lowTempIn = Number(lowTempIn);
+        tempBar.values.tempIn = Number(tempIn);
+        tempBar.values.highTempIn = Number(highTempIn);
+        tempBar.values.lowTempIn = Number(lowTempIn);
 
         //Starts the tweens (animations) of the inputs
         formatInputTemp01();
-        createjs.Tween.get(tempBar01.tweens.barFill, {override:true})
-            .to({h: tempBar01.values.tempOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(tempBar01.tweens.highTemp, {override:true})
-            .to({h: tempBar01.values.highTempOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(tempBar01.tweens.lowTemp, {override:true})
-            .to({h: tempBar01.values.lowTempOut}, 2000, createjs.Ease.quartInOut);
+        createjs.Tween.get(tempBar.tweens.barFill, {override:true})
+            .to({h: tempBar.values.tempOut}, 2000, createjs.Ease.quartInOut);
+        createjs.Tween.get(tempBar.tweens.highTemp, {override:true})
+            .to({h: tempBar.values.highTempOut}, 2000, createjs.Ease.quartInOut);
+        createjs.Tween.get(tempBar.tweens.lowTemp, {override:true})
+            .to({h: tempBar.values.lowTempOut}, 2000, createjs.Ease.quartInOut);
         
-        tempBar01.valuesOld.TempIn = tempIn;
-        tempBar01.valuesOld.highTempIn = highTempIn;
-        tempBar01.valuesOld.lowTempIn = lowTempIn;
+        tempBar.valuesOld.TempIn = tempIn;
+        tempBar.valuesOld.highTempIn = highTempIn;
+        tempBar.valuesOld.lowTempIn = lowTempIn;
     }
 }
 
@@ -335,195 +312,195 @@ function updateTweensTemp01() {
     //Updates any tweened or changing objects. This is called every frame
 	
     //Temp Bar Fill
-    tempBar01.rectFillCommand.h = tempBar01.tweens.barFill.h * (tempBar01.rectCommand.h - tempBar01.rectCommand.y);
-	tempBar01.rectFillCommand.y = tempBar01.rectCommand.h - tempBar01.rectFillCommand.h;
+    tempBar.rectFillCommand.h = tempBar.tweens.barFill.h * (tempBar.rectCommand.h - tempBar.rectCommand.y);
+	tempBar.rectFillCommand.y = tempBar.rectCommand.h - tempBar.rectFillCommand.h;
 	
 	//High Marker
-	tempBar01.highMarkerEndCommand.y = tempBar01.highMarkerStartCommand.y = tempBar01.tweens.highTemp.h * (tempBar01.rectCommand.h - tempBar01.rectCommand.y);
+	tempBar.highMarkerEndCommand.y = tempBar.highMarkerStartCommand.y = tempBar.tweens.highTemp.h * (tempBar.rectCommand.h - tempBar.rectCommand.y);
 	
 	//Low Marker
-	tempBar01.lowMarkerEndCommand.y = tempBar01.lowMarkerStartCommand.y = tempBar01.tweens.lowTemp.h * (tempBar01.rectCommand.h - tempBar01.rectCommand.y);
+	tempBar.lowMarkerEndCommand.y = tempBar.lowMarkerStartCommand.y = tempBar.tweens.lowTemp.h * (tempBar.rectCommand.h - tempBar.rectCommand.y);
 	
     //Adjust y position of HL labels if they would otherwise overlap
-    var highLabelY = tempBar01.highMarkerEndCommand.y,
-        lowLabelY = tempBar01.lowMarkerEndCommand.y
-    while ((lowLabelY - highLabelY) / tempBar01.canvas.height < tempBar01.setupVars.minHLspace) {
+    var highLabelY = tempBar.highMarkerEndCommand.y,
+        lowLabelY = tempBar.lowMarkerEndCommand.y
+    while ((lowLabelY - highLabelY) / tempBar.canvas.height < tempBar.setupVars.minHLspace) {
         lowLabelY += 1;
         highLabelY -= 1;
     }
     
 	//High Display
-	tempBar01.highDisplay.y = highLabelY;
-	tempBar01.highDisplay.text = tempBar01.values.highTempIn.toString() + units[tempBar01.values.unitsIn.toString()][currentUnits[tempBar01.values.unitsIn.toString()]][1].toString();
+	tempBar.highDisplay.y = highLabelY;
+	tempBar.highDisplay.text = tempBar.values.highTempIn.toString() + units[tempBar.values.unitsIn.toString()][currentUnits[tempBar.values.unitsIn.toString()]][1].toString();
 	
 	//Low Display
-	tempBar01.lowDisplay.y = lowLabelY;
-	tempBar01.lowDisplay.text = tempBar01.values.lowTempIn.toString() + units[tempBar01.values.unitsIn.toString()][currentUnits[tempBar01.values.unitsIn.toString()]][1].toString();
+	tempBar.lowDisplay.y = lowLabelY;
+	tempBar.lowDisplay.text = tempBar.values.lowTempIn.toString() + units[tempBar.values.unitsIn.toString()][currentUnits[tempBar.values.unitsIn.toString()]][1].toString();
 	
 	//Labels
-	for (i = 0; i < tempBar01.largeDashTotal; i++) {
-		tempBar01.label[i].text = tempBar01.constants.maxTemp - ((tempBar01.constants.maxTemp - tempBar01.constants.minTemp) / (tempBar01.largeDashTotal - 1)) * i;
+	for (i = 0; i < tempBar.largeDashTotal; i++) {
+		tempBar.label[i].text = tempBar.constants.maxTemp - ((tempBar.constants.maxTemp - tempBar.constants.minTemp) / (tempBar.largeDashTotal - 1)) * i;
 	}
 	
 	//Text Display
-	tempBar01.textDisplay.text = tempBar01.values.tempIn.toString() + units[tempBar01.values.unitsIn.toString()][currentUnits[tempBar01.values.unitsIn.toString()]][1].toString();
+	tempBar.textDisplay.text = tempBar.values.tempIn.toString() + units[tempBar.values.unitsIn.toString()][currentUnits[tempBar.values.unitsIn.toString()]][1].toString();
 }
 
 function updateTopTemp01() {
 	//Updates the non-animated sections of the Widget. Gets called everytime the canvas is resized Uses the commands initialized in the setUp function to make changes to values.
     
 	//Set variables - all relative to canvas size so that dynamic resizing is possible.
-    tempBar01.setupVars.dashLength = tempBar01.canvas.height * 0.075;
-    tempBar01.setupVars.dashGap = tempBar01.canvas.height * 0.025;
-    tempBar01.setupVars.barWidth = tempBar01.canvas.height * 0.075;
-    tempBar01.setupVars.barFillWidth = tempBar01.setupVars.barWidth * 0.6;
-    tempBar01.setupVars.barHeight = tempBar01.canvas.height * 0.8;
-    tempBar01.setupVars.barFillHeight = tempBar01.setupVars.barHeight;
-    tempBar01.setupVars.circRad = tempBar01.canvas.height * 0.1;
-    tempBar01.setupVars.fillCircRad = tempBar01.setupVars.circRad * 0.85;
-    tempBar01.setupVars.cornerRad = tempBar01.setupVars.barWidth / 2;
-    tempBar01.setupVars.cornerFillRad = tempBar01.setupVars.barFillWidth / 2;
-    tempBar01.setupVars.strokeSize = tempBar01.setupVars.barWidth / 40;
-    tempBar01.setupVars.textSize = tempBar01.canvas.height / 17;
-    tempBar01.setupVars.textDisplaySize = tempBar01.canvas.height / 19;
-	tempBar01.setupVars.textHLSize = tempBar01.canvas.height / 21;
-    tempBar01.setupVars.minHLspace = 0.04;
-    tempBar01.setupVars.posBar = {
-        x: ((tempBar01.canvas.height / 2) - (tempBar01.setupVars.barWidth / 2)),
-        y: ((tempBar01.canvas.height / 2) - (tempBar01.setupVars.barHeight / 2))
+    tempBar.setupVars.dashLength = tempBar.canvas.height * 0.075;
+    tempBar.setupVars.dashGap = tempBar.canvas.height * 0.025;
+    tempBar.setupVars.barWidth = tempBar.canvas.height * 0.075;
+    tempBar.setupVars.barFillWidth = tempBar.setupVars.barWidth * 0.6;
+    tempBar.setupVars.barHeight = tempBar.canvas.height * 0.8;
+    tempBar.setupVars.barFillHeight = tempBar.setupVars.barHeight;
+    tempBar.setupVars.circRad = tempBar.canvas.height * 0.1;
+    tempBar.setupVars.fillCircRad = tempBar.setupVars.circRad * 0.85;
+    tempBar.setupVars.cornerRad = tempBar.setupVars.barWidth / 2;
+    tempBar.setupVars.cornerFillRad = tempBar.setupVars.barFillWidth / 2;
+    tempBar.setupVars.strokeSize = tempBar.setupVars.barWidth / 40;
+    tempBar.setupVars.textSize = tempBar.canvas.height / 17;
+    tempBar.setupVars.textDisplaySize = tempBar.canvas.height / 19;
+	tempBar.setupVars.textHLSize = tempBar.canvas.height / 21;
+    tempBar.setupVars.minHLspace = 0.04;
+    tempBar.setupVars.posBar = {
+        x: ((tempBar.canvas.height / 2) - (tempBar.setupVars.barWidth / 2)),
+        y: ((tempBar.canvas.height / 2) - (tempBar.setupVars.barHeight / 2))
     };
-    tempBar01.setupVars.posCirc = {
-        x: tempBar01.canvas.height / 2,
-        y: tempBar01.canvas.height * (3 / 4) + tempBar01.setupVars.circRad - tempBar01.setupVars.circRad / 10
+    tempBar.setupVars.posCirc = {
+        x: tempBar.canvas.height / 2,
+        y: tempBar.canvas.height * (3 / 4) + tempBar.setupVars.circRad - tempBar.setupVars.circRad / 10
     };
-    tempBar01.setupVars.posFillCirc = {
-        x: tempBar01.canvas.height / 2,
-        y: tempBar01.canvas.height * (3 / 4) + tempBar01.setupVars.circRad - tempBar01.setupVars.circRad / 10
+    tempBar.setupVars.posFillCirc = {
+        x: tempBar.canvas.height / 2,
+        y: tempBar.canvas.height * (3 / 4) + tempBar.setupVars.circRad - tempBar.setupVars.circRad / 10
     };
-    tempBar01.setupVars.posTextTitle = {
-        x: tempBar01.canvas.height / 2,
-        y: (tempBar01.canvas.height - tempBar01.setupVars.barHeight) / 2 - tempBar01.setupVars.cornerRad
+    tempBar.setupVars.posTextTitle = {
+        x: tempBar.canvas.height / 2,
+        y: (tempBar.canvas.height - tempBar.setupVars.barHeight) / 2 - tempBar.setupVars.cornerRad
     };
-    tempBar01.setupVars.posDash = {
-        x: (tempBar01.canvas.height / 2) - (tempBar01.setupVars.barWidth / 2) - tempBar01.setupVars.dashLength - tempBar01.setupVars.dashGap,
-        y: (tempBar01.canvas.height - tempBar01.setupVars.barHeight) / 2 + tempBar01.setupVars.cornerRad / 2
+    tempBar.setupVars.posDash = {
+        x: (tempBar.canvas.height / 2) - (tempBar.setupVars.barWidth / 2) - tempBar.setupVars.dashLength - tempBar.setupVars.dashGap,
+        y: (tempBar.canvas.height - tempBar.setupVars.barHeight) / 2 + tempBar.setupVars.cornerRad / 2
     };
-	tempBar01.setupVars.posHLLabel = {
-		x: (tempBar01.canvas.height / 2) + (tempBar01.setupVars.barWidth / 2) + tempBar01.setupVars.dashGap
+	tempBar.setupVars.posHLLabel = {
+		x: (tempBar.canvas.height / 2) + (tempBar.setupVars.barWidth / 2) + tempBar.setupVars.dashGap
 	};
-    tempBar01.setupVars.posFillBar = {
-        x: ((tempBar01.canvas.height / 2) - (tempBar01.setupVars.barFillWidth / 2)),
-        y: ((tempBar01.canvas.height / 2) - (tempBar01.setupVars.barFillHeight / 2))
+    tempBar.setupVars.posFillBar = {
+        x: ((tempBar.canvas.height / 2) - (tempBar.setupVars.barFillWidth / 2)),
+        y: ((tempBar.canvas.height / 2) - (tempBar.setupVars.barFillHeight / 2))
     };
-    tempBar01.setupVars.cutOffLength = tempBar01.canvas.height * (299 / 400);
+    tempBar.setupVars.cutOffLength = tempBar.canvas.height * (299 / 400);
 
 	//Update the visual elements
     
 	//Top
-	tempBar01.topStrokeCommand.width = tempBar01.setupVars.strokeSize;
-	tempBar01.rectCommand.x = tempBar01.setupVars.posBar.x;
-	tempBar01.rectCommand.y = tempBar01.setupVars.posBar.y;
-	tempBar01.rectCommand.w = tempBar01.setupVars.barWidth;
-	tempBar01.rectCommand.h = tempBar01.setupVars.barHeight;
-	tempBar01.rectCommand.radiusTR = tempBar01.rectCommand.radiusTL = tempBar01.rectCommand.radiusBR = tempBar01.rectCommand.radiusBL = tempBar01.setupVars.cornerRad;
+	tempBar.topStrokeCommand.width = tempBar.setupVars.strokeSize;
+	tempBar.rectCommand.x = tempBar.setupVars.posBar.x;
+	tempBar.rectCommand.y = tempBar.setupVars.posBar.y;
+	tempBar.rectCommand.w = tempBar.setupVars.barWidth;
+	tempBar.rectCommand.h = tempBar.setupVars.barHeight;
+	tempBar.rectCommand.radiusTR = tempBar.rectCommand.radiusTL = tempBar.rectCommand.radiusBR = tempBar.rectCommand.radiusBL = tempBar.setupVars.cornerRad;
     
 	//Bot
-	tempBar01.botStrokeCommand.width = tempBar01.setupVars.strokeSize;
-	tempBar01.circCommand.x = tempBar01.setupVars.posCirc.x;
-	tempBar01.circCommand.y = tempBar01.setupVars.posCirc.y;
-	tempBar01.circCommand.radius = tempBar01.setupVars.circRad;
+	tempBar.botStrokeCommand.width = tempBar.setupVars.strokeSize;
+	tempBar.circCommand.x = tempBar.setupVars.posCirc.x;
+	tempBar.circCommand.y = tempBar.setupVars.posCirc.y;
+	tempBar.circCommand.radius = tempBar.setupVars.circRad;
     
 	//Dashes
-	for (i = 0; i < (tempBar01.largeDashTotal * 10 - 9); i++) {
+	for (i = 0; i < (tempBar.largeDashTotal * 10 - 9); i++) {
 		//Large
-		var gap = sharpenValue(tempBar01.setupVars.posDash.y + (((tempBar01.setupVars.cutOffLength * (24 / 25) - tempBar01.setupVars.posDash.y) / (tempBar01.largeDashTotal - 1)) - (((tempBar01.setupVars.cutOffLength * (24 / 25) - tempBar01.setupVars.posDash.y) % ((tempBar01.largeDashTotal - 1))) / tempBar01.largeDashTotal - 1)) * (i / 10));
+		var gap = sharpenValue(tempBar.setupVars.posDash.y + (((tempBar.setupVars.cutOffLength * (24 / 25) - tempBar.setupVars.posDash.y) / (tempBar.largeDashTotal - 1)) - (((tempBar.setupVars.cutOffLength * (24 / 25) - tempBar.setupVars.posDash.y) % ((tempBar.largeDashTotal - 1))) / tempBar.largeDashTotal - 1)) * (i / 10));
 		if (i % 10 === 0) {
-			tempBar01.dashStrokeCommand[i].width = tempBar01.setupVars.strokeSize;
-			tempBar01.dashStartCommand[i].x = tempBar01.setupVars.posDash.x;
-			tempBar01.dashStartCommand[i].y = gap;
-			tempBar01.dashEndCommand[i].x = tempBar01.setupVars.posDash.x + tempBar01.setupVars.dashLength;
-			tempBar01.dashEndCommand[i].y = gap;
+			tempBar.dashStrokeCommand[i].width = tempBar.setupVars.strokeSize;
+			tempBar.dashStartCommand[i].x = tempBar.setupVars.posDash.x;
+			tempBar.dashStartCommand[i].y = gap;
+			tempBar.dashEndCommand[i].x = tempBar.setupVars.posDash.x + tempBar.setupVars.dashLength;
+			tempBar.dashEndCommand[i].y = gap;
             
 			//Text Label Positioning - located here as they line up with the large dashes
-			tempBar01.label[i / 10].y = gap;
-			tempBar01.label[i / 10].x = (tempBar01.setupVars.posDash.x - tempBar01.setupVars.dashLength) * (6 / 5);
-			tempBar01.label[i / 10].font = tempBar01.setupVars.textSize + "px arial";
+			tempBar.label[i / 10].y = gap;
+			tempBar.label[i / 10].x = (tempBar.setupVars.posDash.x - tempBar.setupVars.dashLength) * (6 / 5);
+			tempBar.label[i / 10].font = tempBar.setupVars.textSize + "px arial";
 		} else if (i % 5 === 0) {
 			//Med
-			tempBar01.dashStrokeCommand[i].width = tempBar01.setupVars.strokeSize;
-			tempBar01.dashStartCommand[i].x = tempBar01.setupVars.posDash.x + tempBar01.setupVars.dashLength - (tempBar01.setupVars.dashLength / 2);
-			tempBar01.dashStartCommand[i].y = gap;
-			tempBar01.dashEndCommand[i].x = (tempBar01.setupVars.posDash.x + tempBar01.setupVars.dashLength);
-			tempBar01.dashEndCommand[i].y = gap;
+			tempBar.dashStrokeCommand[i].width = tempBar.setupVars.strokeSize;
+			tempBar.dashStartCommand[i].x = tempBar.setupVars.posDash.x + tempBar.setupVars.dashLength - (tempBar.setupVars.dashLength / 2);
+			tempBar.dashStartCommand[i].y = gap;
+			tempBar.dashEndCommand[i].x = (tempBar.setupVars.posDash.x + tempBar.setupVars.dashLength);
+			tempBar.dashEndCommand[i].y = gap;
 		} else {
 			//Small
-			tempBar01.dashStrokeCommand[i].width = tempBar01.setupVars.strokeSize;
-			tempBar01.dashStartCommand[i].x = tempBar01.setupVars.posDash.x + tempBar01.setupVars.dashLength - (tempBar01.setupVars.dashLength / 3);
-			tempBar01.dashStartCommand[i].y = gap;
-			tempBar01.dashEndCommand[i].x = (tempBar01.setupVars.posDash.x + tempBar01.setupVars.dashLength);
-			tempBar01.dashEndCommand[i].y = gap;
+			tempBar.dashStrokeCommand[i].width = tempBar.setupVars.strokeSize;
+			tempBar.dashStartCommand[i].x = tempBar.setupVars.posDash.x + tempBar.setupVars.dashLength - (tempBar.setupVars.dashLength / 3);
+			tempBar.dashStartCommand[i].y = gap;
+			tempBar.dashEndCommand[i].x = (tempBar.setupVars.posDash.x + tempBar.setupVars.dashLength);
+			tempBar.dashEndCommand[i].y = gap;
 		}
 	}
 	
 	//Inner Circle fill
-	tempBar01.circFillCommand.x = tempBar01.setupVars.posFillCirc.x;
-	tempBar01.circFillCommand.y = tempBar01.setupVars.posFillCirc.y;
-	tempBar01.circFillCommand.radius = tempBar01.setupVars.fillCircRad;
+	tempBar.circFillCommand.x = tempBar.setupVars.posFillCirc.x;
+	tempBar.circFillCommand.y = tempBar.setupVars.posFillCirc.y;
+	tempBar.circFillCommand.radius = tempBar.setupVars.fillCircRad;
 	
 	//Bar Fill
-	tempBar01.rectFillCommand.x = tempBar01.setupVars.posFillBar.x;
-	tempBar01.rectFillCommand.w = tempBar01.setupVars.barFillWidth;
-	tempBar01.rectFillCommand.radiusTR = tempBar01.rectFillCommand.radiusTL = tempBar01.rectFillCommand.radiusBR = tempBar01.rectFillCommand.radiusBL = tempBar01.setupVars.cornerFillRad;
+	tempBar.rectFillCommand.x = tempBar.setupVars.posFillBar.x;
+	tempBar.rectFillCommand.w = tempBar.setupVars.barFillWidth;
+	tempBar.rectFillCommand.radiusTR = tempBar.rectFillCommand.radiusTL = tempBar.rectFillCommand.radiusBR = tempBar.rectFillCommand.radiusBL = tempBar.setupVars.cornerFillRad;
 	
 	//Text Display
-	tempBar01.textDisplay.x = tempBar01.setupVars.posFillCirc.x;
-	tempBar01.textDisplay.y = tempBar01.setupVars.posFillCirc.y;
-	tempBar01.textDisplay.font = "bold " + tempBar01.setupVars.textDisplaySize + "px arial";
+	tempBar.textDisplay.x = tempBar.setupVars.posFillCirc.x;
+	tempBar.textDisplay.y = tempBar.setupVars.posFillCirc.y;
+	tempBar.textDisplay.font = "bold " + tempBar.setupVars.textDisplaySize + "px arial";
     
     //Text Title
-	tempBar01.textTitle.x = tempBar01.setupVars.posTextTitle.x;
-	tempBar01.textTitle.y = tempBar01.setupVars.posTextTitle.y;
-	tempBar01.textTitle.font = "bold " + tempBar01.setupVars.textDisplaySize + "px arial";
-    setFontMaxWidth(tempBar01.textTitle, tempBar01.canvas, tempBar01.stage);
+	tempBar.textTitle.x = tempBar.setupVars.posTextTitle.x;
+	tempBar.textTitle.y = tempBar.setupVars.posTextTitle.y;
+	tempBar.textTitle.font = "bold " + tempBar.setupVars.textDisplaySize + "px arial";
+    setFontMaxWidth(tempBar.textTitle, tempBar.canvas, tempBar.stage);
 	
 	//High Marker
-	tempBar01.highMarkerStrokeCommand.width = tempBar01.setupVars.strokeSize * 4;
-	tempBar01.highMarkerStartCommand.x = (tempBar01.canvas.height + tempBar01.setupVars.barWidth) / 2;
-	tempBar01.highMarkerEndCommand.x = (tempBar01.canvas.height - tempBar01.setupVars.barWidth) / 2;
+	tempBar.highMarkerStrokeCommand.width = tempBar.setupVars.strokeSize * 4;
+	tempBar.highMarkerStartCommand.x = (tempBar.canvas.height + tempBar.setupVars.barWidth) / 2;
+	tempBar.highMarkerEndCommand.x = (tempBar.canvas.height - tempBar.setupVars.barWidth) / 2;
 	
 	//Low Marker
-	tempBar01.lowMarkerStrokeCommand.width = tempBar01.setupVars.strokeSize * 4;
-	tempBar01.lowMarkerStartCommand.x = (tempBar01.canvas.height + tempBar01.setupVars.barWidth) / 2;
-	tempBar01.lowMarkerEndCommand.x = (tempBar01.canvas.height - tempBar01.setupVars.barWidth) / 2;
+	tempBar.lowMarkerStrokeCommand.width = tempBar.setupVars.strokeSize * 4;
+	tempBar.lowMarkerStartCommand.x = (tempBar.canvas.height + tempBar.setupVars.barWidth) / 2;
+	tempBar.lowMarkerEndCommand.x = (tempBar.canvas.height - tempBar.setupVars.barWidth) / 2;
 	
 	//High Display
-	tempBar01.highDisplay.x = tempBar01.setupVars.posHLLabel.x;
-	tempBar01.highDisplay.font = "bold " + tempBar01.setupVars.textHLSize + "px arial";
+	tempBar.highDisplay.x = tempBar.setupVars.posHLLabel.x;
+	tempBar.highDisplay.font = "bold " + tempBar.setupVars.textHLSize + "px arial";
 	
 	//Low Display
-	tempBar01.lowDisplay.x = tempBar01.setupVars.posHLLabel.x;
-	tempBar01.lowDisplay.font = "bold " + tempBar01.setupVars.textHLSize + "px arial";
+	tempBar.lowDisplay.x = tempBar.setupVars.posHLLabel.x;
+	tempBar.lowDisplay.font = "bold " + tempBar.setupVars.textHLSize + "px arial";
     
     //Gives the call to update the animated sections of the widgets
     updateTweensTemp01();
     
 	//Set masks
-	tempBar01.roundRectTop.mask = new createjs.Shape(new createjs.Graphics().dr(0, 0, tempBar01.canvas.height, tempBar01.setupVars.cutOffLength));
-	tempBar01.roundRectFillTop.mask = new createjs.Shape(new createjs.Graphics().dr(0, 0, tempBar01.canvas.height, tempBar01.setupVars.cutOffLength * 1.1));
-	tempBar01.roundBot.mask = new createjs.Shape(new createjs.Graphics().dr(0, tempBar01.setupVars.cutOffLength, tempBar01.canvas.height, tempBar01.canvas.height));
+	tempBar.roundRectTop.mask = new createjs.Shape(new createjs.Graphics().dr(0, 0, tempBar.canvas.height, tempBar.setupVars.cutOffLength));
+	tempBar.roundRectFillTop.mask = new createjs.Shape(new createjs.Graphics().dr(0, 0, tempBar.canvas.height, tempBar.setupVars.cutOffLength * 1.1));
+	tempBar.roundBot.mask = new createjs.Shape(new createjs.Graphics().dr(0, tempBar.setupVars.cutOffLength, tempBar.canvas.height, tempBar.canvas.height));
 	
 }
 
 function resizeCanvasTemp01() {
 	//Dynamic Canvas Resizing for desktop
 	var ratio = 2,
-        parentDiv = tempBar01.canvas.parentElement;
+        parentDiv = tempBar.canvas.parentElement;
     
 	//Adjusts canvas to match resized window. Always adjust to the smallest dimention
-    tempBar01.canvas.width = parentDiv.clientHeight / ratio;
-    tempBar01.canvas.height = parentDiv.clientHeight;
+    tempBar.canvas.width = parentDiv.clientWidth;
+    tempBar.canvas.height = parentDiv.clientWidth * ratio;
 	
-    tempBar01.stage.x = -(tempBar01.canvas.height / 4.5);
+    tempBar.stage.x = -(tempBar.canvas.height / 4.5);
     
 	//Update shapes according to new dimentions
 	updateTopTemp01();
@@ -532,112 +509,109 @@ function resizeCanvasTemp01() {
 function setUpTemp01() {
 	//Sets up the shapes. Initializses all the varaibles and shapes, and stores the values which need to be adjusted in commands which can be accessed later
 	//Set up top
-	tempBar01.roundRectTop = new createjs.Shape();
-	tempBar01.roundRectTop.snapToPixel = true;
-	tempBar01.roundRectTop.graphics.beginStroke("black");
-	tempBar01.roundRectTop.graphics.beginFill("#F6F6F6");
-	tempBar01.topStrokeCommand = tempBar01.roundRectTop.graphics.setStrokeStyle(0).command;
-	tempBar01.rectCommand = tempBar01.roundRectTop.graphics.drawRoundRect(0, 0, 0, 0, 0).command;
-	tempBar01.stage.addChild(tempBar01.roundRectTop);
+	tempBar.roundRectTop = new createjs.Shape();
+	tempBar.roundRectTop.snapToPixel = true;
+	tempBar.roundRectTop.graphics.beginStroke("black");
+	tempBar.roundRectTop.graphics.beginFill("#F6F6F6");
+	tempBar.topStrokeCommand = tempBar.roundRectTop.graphics.setStrokeStyle(0).command;
+	tempBar.rectCommand = tempBar.roundRectTop.graphics.drawRoundRect(0, 0, 0, 0, 0).command;
+	tempBar.stage.addChild(tempBar.roundRectTop);
 	
 	//Set up bottom 
-	tempBar01.roundBot  = new createjs.Shape();
-	tempBar01.roundBot.snapToPixel = true;
-	tempBar01.roundBot.graphics.beginStroke("black");
-	tempBar01.roundBot.graphics.beginFill("#F6F6F6");
-	tempBar01.botStrokeCommand = tempBar01.roundBot.graphics.setStrokeStyle(0).command;
-	tempBar01.circCommand = tempBar01.roundBot.graphics.drawCircle(0, 0, 0).command;
-	tempBar01.stage.addChild(tempBar01.roundBot);
+	tempBar.roundBot  = new createjs.Shape();
+	tempBar.roundBot.snapToPixel = true;
+	tempBar.roundBot.graphics.beginStroke("black");
+	tempBar.roundBot.graphics.beginFill("#F6F6F6");
+	tempBar.botStrokeCommand = tempBar.roundBot.graphics.setStrokeStyle(0).command;
+	tempBar.circCommand = tempBar.roundBot.graphics.drawCircle(0, 0, 0).command;
+	tempBar.stage.addChild(tempBar.roundBot);
 	
 	//Set up Dashes
-	for (i = 0; i < tempBar01.largeDashTotal * 10; i++) {
-		tempBar01.dash[i] = new createjs.Shape();
-		tempBar01.dash[i].snapToPixel = true;
-		tempBar01.dash[i].graphics.beginStroke("black", 1);
-		tempBar01.dashStrokeCommand[i] = tempBar01.dash[i].graphics.setStrokeStyle(0).command;
-		tempBar01.dashStartCommand[i] = tempBar01.dash[i].graphics.moveTo(0, 0).command;
-		tempBar01.dashEndCommand[i] = tempBar01.dash[i].graphics.lineTo(0, 0).command;
-		tempBar01.stage.addChild(tempBar01.dash[i]);
+	for (i = 0; i < tempBar.largeDashTotal * 10; i++) {
+		tempBar.dash[i] = new createjs.Shape();
+		tempBar.dash[i].snapToPixel = true;
+		tempBar.dash[i].graphics.beginStroke("black", 1);
+		tempBar.dashStrokeCommand[i] = tempBar.dash[i].graphics.setStrokeStyle(0).command;
+		tempBar.dashStartCommand[i] = tempBar.dash[i].graphics.moveTo(0, 0).command;
+		tempBar.dashEndCommand[i] = tempBar.dash[i].graphics.lineTo(0, 0).command;
+		tempBar.stage.addChild(tempBar.dash[i]);
 	}
     
     //Set up fill circle
-    tempBar01.roundBotFill = new createjs.Shape();
-	tempBar01.roundBotFill.snapToPixel = true;
-	tempBar01.roundBotFill.graphics.beginFill("rgb(255, 221, 37)");
-    tempBar01.roundBotFill.graphics.setStrokeStyle(0);
-	tempBar01.circFillCommand = tempBar01.roundBotFill.graphics.drawCircle(0, 0, 0).command;
-	tempBar01.stage.addChild(tempBar01.roundBotFill);
+    tempBar.roundBotFill = new createjs.Shape();
+	tempBar.roundBotFill.snapToPixel = true;
+	tempBar.roundBotFill.graphics.beginFill("rgb(255, 37, 37)");
+    tempBar.roundBotFill.graphics.setStrokeStyle(0);
+	tempBar.circFillCommand = tempBar.roundBotFill.graphics.drawCircle(0, 0, 0).command;
+	tempBar.stage.addChild(tempBar.roundBotFill);
     
     //Set up fill rectange
-    tempBar01.roundRectFillTop = new createjs.Shape();
-	tempBar01.roundRectFillTop.snapToPixel = true;
-	tempBar01.roundRectFillTop.graphics.beginFill("rgb(255, 221, 37)");
-    tempBar01.roundRectFillTop.graphics.setStrokeStyle(0);
-	tempBar01.rectFillCommand = tempBar01.roundRectFillTop.graphics.drawRoundRect(0, 0, 0, 0, 0).command;
-	tempBar01.stage.addChild(tempBar01.roundRectFillTop);
+    tempBar.roundRectFillTop = new createjs.Shape();
+	tempBar.roundRectFillTop.snapToPixel = true;
+	tempBar.roundRectFillTop.graphics.beginFill("rgb(255, 37, 37)");
+    tempBar.roundRectFillTop.graphics.setStrokeStyle(0);
+	tempBar.rectFillCommand = tempBar.roundRectFillTop.graphics.drawRoundRect(0, 0, 0, 0, 0).command;
+	tempBar.stage.addChild(tempBar.roundRectFillTop);
 	
 	//Set up text labels
-	for (i = 0; i < tempBar01.largeDashTotal; i++) {
-		tempBar01.label[i] = new createjs.Text("0px Arial", "black");
-		tempBar01.label[i].textBaseline = "middle";
-		tempBar01.label[i].textAlign = "right";
-		tempBar01.stage.addChild(tempBar01.label[i]);
+	for (i = 0; i < tempBar.largeDashTotal; i++) {
+		tempBar.label[i] = new createjs.Text("0px Arial", "black");
+		tempBar.label[i].textBaseline = "middle";
+		tempBar.label[i].textAlign = "right";
+		tempBar.stage.addChild(tempBar.label[i]);
 	}
     
 	//Set up text display
-	tempBar01.textDisplay = new createjs.Text("0px Arial", "black");
-	tempBar01.textDisplay.textBaseline = "middle";
-	tempBar01.textDisplay.textAlign = "center";
-	tempBar01.stage.addChild(tempBar01.textDisplay);
+	tempBar.textDisplay = new createjs.Text("0px Arial", "black");
+	tempBar.textDisplay.textBaseline = "middle";
+	tempBar.textDisplay.textAlign = "center";
+	tempBar.stage.addChild(tempBar.textDisplay);
 	
     //Set up title
-	tempBar01.textTitle = new createjs.Text((widgetList.temperature.title == "default") ? (useDict("temperatureTitle")) : widgetList.temperature.title, "0px Arial", "black");
-	tempBar01.textTitle.textBaseline = "middle";
-	tempBar01.textTitle.textAlign = "center";
-	tempBar01.stage.addChild(tempBar01.textTitle);
+	tempBar.textTitle = new createjs.Text(useDict("temperatureTitle"), "0px Arial", "black");
+	tempBar.textTitle.textBaseline = "middle";
+	tempBar.textTitle.textAlign = "center";
+	tempBar.stage.addChild(tempBar.textTitle);
     
 	//Set up high temp marker
-	tempBar01.highMarker = new createjs.Shape();
-	tempBar01.highMarker.snapToPixel = true;
-	tempBar01.highMarker.graphics.beginStroke("rgb(" + colour.temp + ")", 1);
-	tempBar01.highMarkerStrokeCommand = tempBar01.highMarker.graphics.setStrokeStyle(0).command;
-	tempBar01.highMarkerStartCommand = tempBar01.highMarker.graphics.moveTo(0, 0).command;
-	tempBar01.highMarkerEndCommand = tempBar01.highMarker.graphics.lineTo(0, 0).command;
+	tempBar.highMarker = new createjs.Shape();
+	tempBar.highMarker.snapToPixel = true;
+	tempBar.highMarker.graphics.beginStroke("rgb(" + colour.temp + ")", 1);
+	tempBar.highMarkerStrokeCommand = tempBar.highMarker.graphics.setStrokeStyle(0).command;
+	tempBar.highMarkerStartCommand = tempBar.highMarker.graphics.moveTo(0, 0).command;
+	tempBar.highMarkerEndCommand = tempBar.highMarker.graphics.lineTo(0, 0).command;
+	tempBar.stage.addChild(tempBar.highMarker);
 	
 	//Set up low temp marker
-	tempBar01.lowMarker = new createjs.Shape();
-	tempBar01.lowMarker.snapToPixel = true;
-	tempBar01.lowMarker.graphics.beginStroke("rgb(" + colour.tempLow + ")", 1);
-	tempBar01.lowMarkerStrokeCommand = tempBar01.lowMarker.graphics.setStrokeStyle(0).command;
-	tempBar01.lowMarkerStartCommand = tempBar01.lowMarker.graphics.moveTo(0, 0).command;
-	tempBar01.lowMarkerEndCommand = tempBar01.lowMarker.graphics.lineTo(0, 0).command;
+	tempBar.lowMarker = new createjs.Shape();
+	tempBar.lowMarker.snapToPixel = true;
+	tempBar.lowMarker.graphics.beginStroke("rgb(" + colour.tempLow + ")", 1);
+	tempBar.lowMarkerStrokeCommand = tempBar.lowMarker.graphics.setStrokeStyle(0).command;
+	tempBar.lowMarkerStartCommand = tempBar.lowMarker.graphics.moveTo(0, 0).command;
+	tempBar.lowMarkerEndCommand = tempBar.lowMarker.graphics.lineTo(0, 0).command;
+	tempBar.stage.addChild(tempBar.lowMarker);
 	
 	//Set up high temp label
-	tempBar01.highDisplay = new createjs.Text("", "0px Arial", "rgb(" + colour.temp + ")");
-	tempBar01.highDisplay.textBaseline = "middle";
-	tempBar01.highDisplay.textAlign = "left";
+	tempBar.highDisplay = new createjs.Text("", "0px Arial", "rgb(" + colour.temp + ")");
+	tempBar.highDisplay.textBaseline = "middle";
+	tempBar.highDisplay.textAlign = "left";
+	tempBar.stage.addChild(tempBar.highDisplay);
 	
 	//Set up low temp label
-	tempBar01.lowDisplay = new createjs.Text("", "0px Arial", "rgb(" + colour.tempLow + ")");
-	tempBar01.lowDisplay.textBaseline = "middle";
-	tempBar01.lowDisplay.textAlign = "left";
-    
-    if(widgetList.temperature.highLowEnabled) {
-        tempBar01.stage.addChild(tempBar01.highMarker);
-        tempBar01.stage.addChild(tempBar01.lowMarker);
-        tempBar01.stage.addChild(tempBar01.highDisplay);
-        tempBar01.stage.addChild(tempBar01.lowDisplay);
-    }
+	tempBar.lowDisplay = new createjs.Text("", "0px Arial", "rgb(" + colour.tempLow + ")");
+	tempBar.lowDisplay.textBaseline = "middle";
+	tempBar.lowDisplay.textAlign = "left";
+	tempBar.stage.addChild(tempBar.lowDisplay);
 }
 
 function initializeTemp01() {
 	//The first function that is called
     
 	//Define canvas and stage varaibles
-	tempBar01.stage = new createjs.Stage(tempBar01.canvas);
+	tempBar.stage = new createjs.Stage(tempBar.canvas);
     
     window.addEventListener("frameUpdate", function () {
-        tempBar01.stage.update();
+        tempBar.stage.update();
         updateTweensTemp01();
     });
     window.addEventListener("clientRawDataUpdate", function () {
@@ -645,7 +619,7 @@ function initializeTemp01() {
     });
     
     //Creates information tooltip
-    new Opentip(tempBar01.canvas, useDict("temperatureDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    new Opentip(tempBar.canvas, useDict("temperatureDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpTemp01();
@@ -668,964 +642,6 @@ function initializeTemp01() {
     
     checkOffLoaded();
 }
-
-//TEMPERATURE BAR 02
-//Global Variables. These are set up in a hierarchical structure so that they can be easily accessed
-var tempBar02 = {
-	stage: null,
-	canvas: null,
-	roundRectTop: null,
-    roundRectFillTop: null,
-	roundBot: null,
-    roundBotFill: null,
-	rectCommand: null,
-	rectFillCommand: null,
-	circCommand: null,
-    circFillCommand: null,
-	topStrokeCommand: null,
-	botStrokeCommand: null,
-	highMarker: null,
-	highMarkerStrokeCommand: null,
-	highMarkerStartCommand: null,
-	highMarkerEndCommand: null,
-	lowMarker: null,
-	lowMarkerStrokeCommand: null,
-	lowMarkerStartCommand: null,
-	lowMarkerEndCommand: null,
-	textDisplay: null,
-	textTitle: null,
-	highDisplay: null,
-	lowDisplay: null,
-	largeDashTotal: 5,
-	dashStrokeCommand: [],
-	dashStartCommand: [],
-	dashEndCommand: [],
-	dash: [],
-	label: [],
-	setupVars: {
-        dashes: [],
-        dashGap: null,
-        barWidth: null,
-        barFillWidth: null,
-        barHeight: null,
-        barFillHeight: null,
-        circRad: null,
-        fillCircRad: null,
-        cornerRad: null,
-        cornerFillRad: null,
-        strokeSize: null,
-		textSize: null,
-        posBar: {},
-        posCirc: {},
-        posFillCirc: {},
-        posFillBar: {},
-		posHLLabel: {},
-        cutOffLength: null,
-        minHLspace: null
-	},
-	constants: {
-		minTemp: -10,
-		minTempDEFAULT: -10,
-		maxTemp: 30,
-		maxTempDEFAULT: 30
-	},
-    tweens: {
-        barFill: {
-            h: 0
-        },
-		highTemp: {
-			h: 1.04
-		},
-		lowTemp: {
-			h: 1.04
-		}
-    },
-	values: {
-		tempIn: 0,
-		tempOut: 0,
-		highTempIn: 0,
-		highTempOut: 0,
-		lowTempIn: 0,
-		lowTempOut: 0,
-        unitsIn: "temp"
-	},
-	valuesOld: {
-		tempIn: 0,
-		highTempIn: 0,
-		lowTempIn: 0
-	}
-};
-
-function formatInputTemp02() {
-	//Formats the temperature to be displayed correctly
-	
-    //Adjust to units
-    tempBar02.values.tempIn = formatDataToUnit(tempBar02.values.tempIn, tempBar02.values.unitsIn);
-    tempBar02.values.highTempIn = formatDataToUnit(tempBar02.values.highTempIn, tempBar02.values.unitsIn);
-    tempBar02.values.lowTempIn = formatDataToUnit(tempBar02.values.lowTempIn, tempBar02.values.unitsIn);
-    
-	//Adjust Range if needed: if any of the inputs (current, high, low), are less than the current minimum of the range, decrease the minimum. If any of the inputs (current, high, low), are bigger than the current maximum of the range, increase the maximum. 
-	while (tempBar02.values.tempIn < tempBar02.constants.minTemp || tempBar02.values.highTempIn < tempBar02.constants.minTemp || tempBar02.values.lowTempIn < tempBar02.constants.minTemp) {tempBar02.constants.minTemp -= tempBar02.largeDashTotal - 1; }
-	while (tempBar02.values.tempIn > tempBar02.constants.maxTemp || tempBar02.values.highTempIn > tempBar02.constants.maxTemp || tempBar02.values.lowTempIn > tempBar02.constants.maxTemp) {tempBar02.constants.maxTemp += tempBar02.largeDashTotal - 1; }
-
-    //Adjust Range if needed: if all of the inputs (current, high, low), are bigger than the current minimum of the range, increase the minimum. If all of the inputs (current, high, low), are less than the current maximum of the range, decrease the maximum. 
-	while ((tempBar02.values.tempIn >= tempBar02.constants.minTemp + (tempBar02.largeDashTotal - 1) && tempBar02.constants.minTemp < tempBar02.constants.minTempDEFAULT) && (tempBar02.values.highTempIn >= tempBar02.constants.minTemp + (tempBar02.largeDashTotal - 1) && tempBar02.constants.minTemp < tempBar02.constants.minTempDEFAULT) && (tempBar02.values.lowTempIn >= tempBar02.constants.minTemp + (tempBar02.largeDashTotal - 1) && tempBar02.constants.minTemp < tempBar02.constants.minTempDEFAULT)) {tempBar02.constants.minTemp += tempBar02.largeDashTotal - 1; }
-	while ((tempBar02.values.tempIn <= tempBar02.constants.maxTemp - (tempBar02.largeDashTotal - 1) && tempBar02.constants.maxTemp > tempBar02.constants.maxTempDEFAULT) && (tempBar02.values.highTempIn <= tempBar02.constants.maxTemp - (tempBar02.largeDashTotal - 1) && tempBar02.constants.maxTemp > tempBar02.constants.maxTempDEFAULT) && (tempBar02.values.lowTempIn <= tempBar02.constants.maxTemp - (tempBar02.largeDashTotal - 1) && tempBar02.constants.maxTemp > tempBar02.constants.maxTempDEFAULT)) {tempBar02.constants.maxTemp -= tempBar02.largeDashTotal - 1; }
-	
-    //Map the inputs to the current scale
-	tempBar02.values.tempOut = tempBar02.values.tempIn.map(tempBar02.constants.minTemp, tempBar02.constants.maxTemp, 0.1, 0.98);
-	tempBar02.values.highTempOut = tempBar02.values.highTempIn.map(tempBar02.constants.minTemp, tempBar02.constants.maxTemp, 1.04, 0.17);
-	tempBar02.values.lowTempOut = tempBar02.values.lowTempIn.map(tempBar02.constants.minTemp, tempBar02.constants.maxTemp, 1.04, 0.17);
-}
-
-function drawTemperatureBarTemp02(tempIn, highTempIn, lowTempIn, unitChange) {
-    //Is called when new data is sent.
-    unitChange = unitChange || false;
-    
-    //check to see if any reason to update
-    if (tempBar02.valuesOld.TempIn != tempIn || tempBar02.valuesOld.highTempIn != highTempIn || tempBar02.valuesOld.lowTempIn != lowTempIn || unitChange === true) {
-        //Sets inputs to new data
-        tempBar02.values.tempIn = Number(tempIn);
-        tempBar02.values.highTempIn = Number(highTempIn);
-        tempBar02.values.lowTempIn = Number(lowTempIn);
-
-        //Starts the tweens (animations) of the inputs
-        formatInputTemp02();
-        createjs.Tween.get(tempBar02.tweens.barFill, {override:true})
-            .to({h: tempBar02.values.tempOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(tempBar02.tweens.highTemp, {override:true})
-            .to({h: tempBar02.values.highTempOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(tempBar02.tweens.lowTemp, {override:true})
-            .to({h: tempBar02.values.lowTempOut}, 2000, createjs.Ease.quartInOut);
-        
-        tempBar02.valuesOld.TempIn = tempIn;
-        tempBar02.valuesOld.highTempIn = highTempIn;
-        tempBar02.valuesOld.lowTempIn = lowTempIn;
-    }
-}
-
-function updateTweensTemp02() {
-    //Updates any tweened or changing objects. This is called every frame
-	
-    //Temp Bar Fill
-    tempBar02.rectFillCommand.h = tempBar02.tweens.barFill.h * (tempBar02.rectCommand.h - tempBar02.rectCommand.y);
-	tempBar02.rectFillCommand.y = tempBar02.rectCommand.h - tempBar02.rectFillCommand.h;
-	
-	//High Marker
-	tempBar02.highMarkerEndCommand.y = tempBar02.highMarkerStartCommand.y = tempBar02.tweens.highTemp.h * (tempBar02.rectCommand.h - tempBar02.rectCommand.y);
-	
-	//Low Marker
-	tempBar02.lowMarkerEndCommand.y = tempBar02.lowMarkerStartCommand.y = tempBar02.tweens.lowTemp.h * (tempBar02.rectCommand.h - tempBar02.rectCommand.y);
-	
-    //Adjust y position of HL labels if they would otherwise overlap
-    var highLabelY = tempBar02.highMarkerEndCommand.y,
-        lowLabelY = tempBar02.lowMarkerEndCommand.y
-    while ((lowLabelY - highLabelY) / tempBar02.canvas.height < tempBar02.setupVars.minHLspace) {
-        lowLabelY += 1;
-        highLabelY -= 1;
-    }
-    
-	//High Display
-	tempBar02.highDisplay.y = highLabelY;
-	tempBar02.highDisplay.text = tempBar02.values.highTempIn.toString() + units[tempBar02.values.unitsIn.toString()][currentUnits[tempBar02.values.unitsIn.toString()]][1].toString();
-	
-	//Low Display
-	tempBar02.lowDisplay.y = lowLabelY;
-	tempBar02.lowDisplay.text = tempBar02.values.lowTempIn.toString() + units[tempBar02.values.unitsIn.toString()][currentUnits[tempBar02.values.unitsIn.toString()]][1].toString();
-	
-	//Labels
-	for (i = 0; i < tempBar02.largeDashTotal; i++) {
-		tempBar02.label[i].text = tempBar02.constants.maxTemp - ((tempBar02.constants.maxTemp - tempBar02.constants.minTemp) / (tempBar02.largeDashTotal - 1)) * i;
-	}
-	
-	//Text Display
-	tempBar02.textDisplay.text = tempBar02.values.tempIn.toString() + units[tempBar02.values.unitsIn.toString()][currentUnits[tempBar02.values.unitsIn.toString()]][1].toString();
-}
-
-function updateTopTemp02() {
-	//Updates the non-animated sections of the Widget. Gets called everytime the canvas is resized Uses the commands initialized in the setUp function to make changes to values.
-    
-	//Set variables - all relative to canvas size so that dynamic resizing is possible.
-    tempBar02.setupVars.dashLength = tempBar02.canvas.height * 0.075;
-    tempBar02.setupVars.dashGap = tempBar02.canvas.height * 0.025;
-    tempBar02.setupVars.barWidth = tempBar02.canvas.height * 0.075;
-    tempBar02.setupVars.barFillWidth = tempBar02.setupVars.barWidth * 0.6;
-    tempBar02.setupVars.barHeight = tempBar02.canvas.height * 0.8;
-    tempBar02.setupVars.barFillHeight = tempBar02.setupVars.barHeight;
-    tempBar02.setupVars.circRad = tempBar02.canvas.height * 0.1;
-    tempBar02.setupVars.fillCircRad = tempBar02.setupVars.circRad * 0.85;
-    tempBar02.setupVars.cornerRad = tempBar02.setupVars.barWidth / 2;
-    tempBar02.setupVars.cornerFillRad = tempBar02.setupVars.barFillWidth / 2;
-    tempBar02.setupVars.strokeSize = tempBar02.setupVars.barWidth / 40;
-    tempBar02.setupVars.textSize = tempBar02.canvas.height / 17;
-    tempBar02.setupVars.textDisplaySize = tempBar02.canvas.height / 19;
-	tempBar02.setupVars.textHLSize = tempBar02.canvas.height / 21;
-    tempBar02.setupVars.minHLspace = 0.04;
-    tempBar02.setupVars.posBar = {
-        x: ((tempBar02.canvas.height / 2) - (tempBar02.setupVars.barWidth / 2)),
-        y: ((tempBar02.canvas.height / 2) - (tempBar02.setupVars.barHeight / 2))
-    };
-    tempBar02.setupVars.posCirc = {
-        x: tempBar02.canvas.height / 2,
-        y: tempBar02.canvas.height * (3 / 4) + tempBar02.setupVars.circRad - tempBar02.setupVars.circRad / 10
-    };
-    tempBar02.setupVars.posFillCirc = {
-        x: tempBar02.canvas.height / 2,
-        y: tempBar02.canvas.height * (3 / 4) + tempBar02.setupVars.circRad - tempBar02.setupVars.circRad / 10
-    };
-    tempBar02.setupVars.posTextTitle = {
-        x: tempBar02.canvas.height / 2,
-        y: (tempBar02.canvas.height - tempBar02.setupVars.barHeight) / 2 - tempBar02.setupVars.cornerRad
-    };
-    tempBar02.setupVars.posDash = {
-        x: (tempBar02.canvas.height / 2) - (tempBar02.setupVars.barWidth / 2) - tempBar02.setupVars.dashLength - tempBar02.setupVars.dashGap,
-        y: (tempBar02.canvas.height - tempBar02.setupVars.barHeight) / 2 + tempBar02.setupVars.cornerRad / 2
-    };
-	tempBar02.setupVars.posHLLabel = {
-		x: (tempBar02.canvas.height / 2) + (tempBar02.setupVars.barWidth / 2) + tempBar02.setupVars.dashGap
-	};
-    tempBar02.setupVars.posFillBar = {
-        x: ((tempBar02.canvas.height / 2) - (tempBar02.setupVars.barFillWidth / 2)),
-        y: ((tempBar02.canvas.height / 2) - (tempBar02.setupVars.barFillHeight / 2))
-    };
-    tempBar02.setupVars.cutOffLength = tempBar02.canvas.height * (299 / 400);
-
-	//Update the visual elements
-    
-	//Top
-	tempBar02.topStrokeCommand.width = tempBar02.setupVars.strokeSize;
-	tempBar02.rectCommand.x = tempBar02.setupVars.posBar.x;
-	tempBar02.rectCommand.y = tempBar02.setupVars.posBar.y;
-	tempBar02.rectCommand.w = tempBar02.setupVars.barWidth;
-	tempBar02.rectCommand.h = tempBar02.setupVars.barHeight;
-	tempBar02.rectCommand.radiusTR = tempBar02.rectCommand.radiusTL = tempBar02.rectCommand.radiusBR = tempBar02.rectCommand.radiusBL = tempBar02.setupVars.cornerRad;
-    
-	//Bot
-	tempBar02.botStrokeCommand.width = tempBar02.setupVars.strokeSize;
-	tempBar02.circCommand.x = tempBar02.setupVars.posCirc.x;
-	tempBar02.circCommand.y = tempBar02.setupVars.posCirc.y;
-	tempBar02.circCommand.radius = tempBar02.setupVars.circRad;
-    
-	//Dashes
-	for (i = 0; i < (tempBar02.largeDashTotal * 10 - 9); i++) {
-		//Large
-		var gap = sharpenValue(tempBar02.setupVars.posDash.y + (((tempBar02.setupVars.cutOffLength * (24 / 25) - tempBar02.setupVars.posDash.y) / (tempBar02.largeDashTotal - 1)) - (((tempBar02.setupVars.cutOffLength * (24 / 25) - tempBar02.setupVars.posDash.y) % ((tempBar02.largeDashTotal - 1))) / tempBar02.largeDashTotal - 1)) * (i / 10));
-		if (i % 10 === 0) {
-			tempBar02.dashStrokeCommand[i].width = tempBar02.setupVars.strokeSize;
-			tempBar02.dashStartCommand[i].x = tempBar02.setupVars.posDash.x;
-			tempBar02.dashStartCommand[i].y = gap;
-			tempBar02.dashEndCommand[i].x = tempBar02.setupVars.posDash.x + tempBar02.setupVars.dashLength;
-			tempBar02.dashEndCommand[i].y = gap;
-            
-			//Text Label Positioning - located here as they line up with the large dashes
-			tempBar02.label[i / 10].y = gap;
-			tempBar02.label[i / 10].x = (tempBar02.setupVars.posDash.x - tempBar02.setupVars.dashLength) * (6 / 5);
-			tempBar02.label[i / 10].font = tempBar02.setupVars.textSize + "px arial";
-		} else if (i % 5 === 0) {
-			//Med
-			tempBar02.dashStrokeCommand[i].width = tempBar02.setupVars.strokeSize;
-			tempBar02.dashStartCommand[i].x = tempBar02.setupVars.posDash.x + tempBar02.setupVars.dashLength - (tempBar02.setupVars.dashLength / 2);
-			tempBar02.dashStartCommand[i].y = gap;
-			tempBar02.dashEndCommand[i].x = (tempBar02.setupVars.posDash.x + tempBar02.setupVars.dashLength);
-			tempBar02.dashEndCommand[i].y = gap;
-		} else {
-			//Small
-			tempBar02.dashStrokeCommand[i].width = tempBar02.setupVars.strokeSize;
-			tempBar02.dashStartCommand[i].x = tempBar02.setupVars.posDash.x + tempBar02.setupVars.dashLength - (tempBar02.setupVars.dashLength / 3);
-			tempBar02.dashStartCommand[i].y = gap;
-			tempBar02.dashEndCommand[i].x = (tempBar02.setupVars.posDash.x + tempBar02.setupVars.dashLength);
-			tempBar02.dashEndCommand[i].y = gap;
-		}
-	}
-	
-	//Inner Circle fill
-	tempBar02.circFillCommand.x = tempBar02.setupVars.posFillCirc.x;
-	tempBar02.circFillCommand.y = tempBar02.setupVars.posFillCirc.y;
-	tempBar02.circFillCommand.radius = tempBar02.setupVars.fillCircRad;
-	
-	//Bar Fill
-	tempBar02.rectFillCommand.x = tempBar02.setupVars.posFillBar.x;
-	tempBar02.rectFillCommand.w = tempBar02.setupVars.barFillWidth;
-	tempBar02.rectFillCommand.radiusTR = tempBar02.rectFillCommand.radiusTL = tempBar02.rectFillCommand.radiusBR = tempBar02.rectFillCommand.radiusBL = tempBar02.setupVars.cornerFillRad;
-	
-	//Text Display
-	tempBar02.textDisplay.x = tempBar02.setupVars.posFillCirc.x;
-	tempBar02.textDisplay.y = tempBar02.setupVars.posFillCirc.y;
-	tempBar02.textDisplay.font = "bold " + tempBar02.setupVars.textDisplaySize + "px arial";
-    
-    //Text Title
-	tempBar02.textTitle.x = tempBar02.setupVars.posTextTitle.x;
-	tempBar02.textTitle.y = tempBar02.setupVars.posTextTitle.y;
-	tempBar02.textTitle.font = "bold " + tempBar02.setupVars.textDisplaySize + "px arial";
-    setFontMaxWidth(tempBar02.textTitle, tempBar02.canvas, tempBar02.stage);
-	
-	//High Marker
-	tempBar02.highMarkerStrokeCommand.width = tempBar02.setupVars.strokeSize * 4;
-	tempBar02.highMarkerStartCommand.x = (tempBar02.canvas.height + tempBar02.setupVars.barWidth) / 2;
-	tempBar02.highMarkerEndCommand.x = (tempBar02.canvas.height - tempBar02.setupVars.barWidth) / 2;
-	
-	//Low Marker
-	tempBar02.lowMarkerStrokeCommand.width = tempBar02.setupVars.strokeSize * 4;
-	tempBar02.lowMarkerStartCommand.x = (tempBar02.canvas.height + tempBar02.setupVars.barWidth) / 2;
-	tempBar02.lowMarkerEndCommand.x = (tempBar02.canvas.height - tempBar02.setupVars.barWidth) / 2;
-	
-	//High Display
-	tempBar02.highDisplay.x = tempBar02.setupVars.posHLLabel.x;
-	tempBar02.highDisplay.font = "bold " + tempBar02.setupVars.textHLSize + "px arial";
-	
-	//Low Display
-	tempBar02.lowDisplay.x = tempBar02.setupVars.posHLLabel.x;
-	tempBar02.lowDisplay.font = "bold " + tempBar02.setupVars.textHLSize + "px arial";
-    
-    //Gives the call to update the animated sections of the widgets
-    updateTweensTemp02();
-    
-	//Set masks
-	tempBar02.roundRectTop.mask = new createjs.Shape(new createjs.Graphics().dr(0, 0, tempBar02.canvas.height, tempBar02.setupVars.cutOffLength));
-	tempBar02.roundRectFillTop.mask = new createjs.Shape(new createjs.Graphics().dr(0, 0, tempBar02.canvas.height, tempBar02.setupVars.cutOffLength * 1.1));
-	tempBar02.roundBot.mask = new createjs.Shape(new createjs.Graphics().dr(0, tempBar02.setupVars.cutOffLength, tempBar02.canvas.height, tempBar02.canvas.height));
-	
-}
-
-function resizeCanvasTemp02() {
-	//Dynamic Canvas Resizing for desktop
-	var ratio = 2,
-        parentDiv = tempBar02.canvas.parentElement;
-    
-	//Adjusts canvas to match resized window. Always adjust to the smallest dimention
-    tempBar02.canvas.width = parentDiv.clientHeight / ratio;
-    tempBar02.canvas.height = parentDiv.clientHeight;
-	
-    tempBar02.stage.x = -(tempBar02.canvas.height / 4.5);
-    
-	//Update shapes according to new dimentions
-	updateTopTemp02();
-}
-
-function setUpTemp02() {
-	//Sets up the shapes. Initializses all the varaibles and shapes, and stores the values which need to be adjusted in commands which can be accessed later
-	//Set up top
-	tempBar02.roundRectTop = new createjs.Shape();
-	tempBar02.roundRectTop.snapToPixel = true;
-	tempBar02.roundRectTop.graphics.beginStroke("black");
-	tempBar02.roundRectTop.graphics.beginFill("#F6F6F6");
-	tempBar02.topStrokeCommand = tempBar02.roundRectTop.graphics.setStrokeStyle(0).command;
-	tempBar02.rectCommand = tempBar02.roundRectTop.graphics.drawRoundRect(0, 0, 0, 0, 0).command;
-	tempBar02.stage.addChild(tempBar02.roundRectTop);
-	
-	//Set up bottom 
-	tempBar02.roundBot  = new createjs.Shape();
-	tempBar02.roundBot.snapToPixel = true;
-	tempBar02.roundBot.graphics.beginStroke("black");
-	tempBar02.roundBot.graphics.beginFill("#F6F6F6");
-	tempBar02.botStrokeCommand = tempBar02.roundBot.graphics.setStrokeStyle(0).command;
-	tempBar02.circCommand = tempBar02.roundBot.graphics.drawCircle(0, 0, 0).command;
-	tempBar02.stage.addChild(tempBar02.roundBot);
-	
-	//Set up Dashes
-	for (i = 0; i < tempBar02.largeDashTotal * 10; i++) {
-		tempBar02.dash[i] = new createjs.Shape();
-		tempBar02.dash[i].snapToPixel = true;
-		tempBar02.dash[i].graphics.beginStroke("black", 1);
-		tempBar02.dashStrokeCommand[i] = tempBar02.dash[i].graphics.setStrokeStyle(0).command;
-		tempBar02.dashStartCommand[i] = tempBar02.dash[i].graphics.moveTo(0, 0).command;
-		tempBar02.dashEndCommand[i] = tempBar02.dash[i].graphics.lineTo(0, 0).command;
-		tempBar02.stage.addChild(tempBar02.dash[i]);
-	}
-    
-    //Set up fill circle
-    tempBar02.roundBotFill = new createjs.Shape();
-	tempBar02.roundBotFill.snapToPixel = true;
-	tempBar02.roundBotFill.graphics.beginFill("rgb(255, 221, 37)");
-    tempBar02.roundBotFill.graphics.setStrokeStyle(0);
-	tempBar02.circFillCommand = tempBar02.roundBotFill.graphics.drawCircle(0, 0, 0).command;
-	tempBar02.stage.addChild(tempBar02.roundBotFill);
-    
-    //Set up fill rectange
-    tempBar02.roundRectFillTop = new createjs.Shape();
-	tempBar02.roundRectFillTop.snapToPixel = true;
-	tempBar02.roundRectFillTop.graphics.beginFill("rgb(255, 221, 37)");
-    tempBar02.roundRectFillTop.graphics.setStrokeStyle(0);
-	tempBar02.rectFillCommand = tempBar02.roundRectFillTop.graphics.drawRoundRect(0, 0, 0, 0, 0).command;
-	tempBar02.stage.addChild(tempBar02.roundRectFillTop);
-	
-	//Set up text labels
-	for (i = 0; i < tempBar02.largeDashTotal; i++) {
-		tempBar02.label[i] = new createjs.Text("0px Arial", "black");
-		tempBar02.label[i].textBaseline = "middle";
-		tempBar02.label[i].textAlign = "right";
-		tempBar02.stage.addChild(tempBar02.label[i]);
-	}
-    
-	//Set up text display
-	tempBar02.textDisplay = new createjs.Text("0px Arial", "black");
-	tempBar02.textDisplay.textBaseline = "middle";
-	tempBar02.textDisplay.textAlign = "center";
-	tempBar02.stage.addChild(tempBar02.textDisplay);
-	
-    //Set up title
-	tempBar02.textTitle = new createjs.Text((widgetList.temperature02.title == "default") ? (useDict("temperatureTitle") + " 2") : widgetList.temperature02.title, "0px Arial", "black");
-	tempBar02.textTitle.textBaseline = "middle";
-	tempBar02.textTitle.textAlign = "center";
-	tempBar02.stage.addChild(tempBar02.textTitle);
-    
-	//Set up high temp marker
-	tempBar02.highMarker = new createjs.Shape();
-	tempBar02.highMarker.snapToPixel = true;
-	tempBar02.highMarker.graphics.beginStroke("rgb(" + colour.temp + ")", 1);
-	tempBar02.highMarkerStrokeCommand = tempBar02.highMarker.graphics.setStrokeStyle(0).command;
-	tempBar02.highMarkerStartCommand = tempBar02.highMarker.graphics.moveTo(0, 0).command;
-	tempBar02.highMarkerEndCommand = tempBar02.highMarker.graphics.lineTo(0, 0).command;
-	
-	//Set up low temp marker
-	tempBar02.lowMarker = new createjs.Shape();
-	tempBar02.lowMarker.snapToPixel = true;
-	tempBar02.lowMarker.graphics.beginStroke("rgb(" + colour.tempLow + ")", 1);
-	tempBar02.lowMarkerStrokeCommand = tempBar02.lowMarker.graphics.setStrokeStyle(0).command;
-	tempBar02.lowMarkerStartCommand = tempBar02.lowMarker.graphics.moveTo(0, 0).command;
-	tempBar02.lowMarkerEndCommand = tempBar02.lowMarker.graphics.lineTo(0, 0).command;
-        
-	//Set up high temp label
-	tempBar02.highDisplay = new createjs.Text("", "0px Arial", "rgb(" + colour.temp + ")");
-	tempBar02.highDisplay.textBaseline = "middle";
-	tempBar02.highDisplay.textAlign = "left";
-	
-	//Set up low temp label
-	tempBar02.lowDisplay = new createjs.Text("", "0px Arial", "rgb(" + colour.tempLow + ")");
-	tempBar02.lowDisplay.textBaseline = "middle";
-	tempBar02.lowDisplay.textAlign = "left";
-    
-    if(widgetList.temperature02.highLowEnabled) {
-        tempBar02.stage.addChild(tempBar02.highMarker);
-        tempBar02.stage.addChild(tempBar02.lowMarker);
-        tempBar02.stage.addChild(tempBar02.highDisplay);
-        tempBar02.stage.addChild(tempBar02.lowDisplay);
-    }
-}
-
-function initializeTemp02() {
-	//The first function that is called
-    
-	//Define canvas and stage varaibles
-	tempBar02.stage = new createjs.Stage(tempBar02.canvas);
-    
-    window.addEventListener("frameUpdate", function () {
-        tempBar02.stage.update();
-        updateTweensTemp02();
-    });
-    window.addEventListener("clientRawDataUpdate", function () {
-        drawTemperatureBarTemp02(
-            getExtraInput(widgetList.temperature02.input)[0], getExtraInput(widgetList.temperature02.input)[1], getExtraInput(widgetList.temperature02.input)[2]);
-    });
-    
-    window.addEventListener("clientRawExtraDataUpdate", function () {
-        drawTemperatureBarTemp02(
-            getExtraInput(widgetList.temperature02.input)[0], getExtraInput(widgetList.temperature02.input)[1], getExtraInput(widgetList.temperature02.input)[2]);
-    });
-    
-    //Creates information tooltip
-    new Opentip(tempBar02.canvas, useDict("temperatureDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
-    
-	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
-	setUpTemp02();
-	
-	//If on desktop, dynamically resize the canvas, but don't on mobile. This is because mobile users need to be able to zoom in and move around if they wish, and dynamic rezising does not allow this.
-	if (onMobile === false) {
-		window.addEventListener('resize', function () {
-			resizeCanvasTemp02();
-		}, false);
-	} else {
-        //only resize when rotated on mobile
-        var mql = window.matchMedia("(orientation: portrait)");
-        mql.addListener(function(m) {
-            resizeCanvasTemp02();
-        });
-    }
-	
-    //Set the canvas size intially.
-	resizeCanvasTemp02();
-    
-    checkOffLoaded();
-}
-
-//TEMPERATURE BAR 03
-//Global Variables. These are set up in a hierarchical structure so that they can be easily accessed
-var tempBar03 = {
-	stage: null,
-	canvas: null,
-	roundRectTop: null,
-    roundRectFillTop: null,
-	roundBot: null,
-    roundBotFill: null,
-	rectCommand: null,
-	rectFillCommand: null,
-	circCommand: null,
-    circFillCommand: null,
-	topStrokeCommand: null,
-	botStrokeCommand: null,
-	highMarker: null,
-	highMarkerStrokeCommand: null,
-	highMarkerStartCommand: null,
-	highMarkerEndCommand: null,
-	lowMarker: null,
-	lowMarkerStrokeCommand: null,
-	lowMarkerStartCommand: null,
-	lowMarkerEndCommand: null,
-	textDisplay: null,
-	textTitle: null,
-	highDisplay: null,
-	lowDisplay: null,
-	largeDashTotal: 5,
-	dashStrokeCommand: [],
-	dashStartCommand: [],
-	dashEndCommand: [],
-	dash: [],
-	label: [],
-	setupVars: {
-        dashes: [],
-        dashGap: null,
-        barWidth: null,
-        barFillWidth: null,
-        barHeight: null,
-        barFillHeight: null,
-        circRad: null,
-        fillCircRad: null,
-        cornerRad: null,
-        cornerFillRad: null,
-        strokeSize: null,
-		textSize: null,
-        posBar: {},
-        posCirc: {},
-        posFillCirc: {},
-        posFillBar: {},
-		posHLLabel: {},
-        cutOffLength: null,
-        minHLspace: null
-	},
-	constants: {
-		minTemp: -10,
-		minTempDEFAULT: -10,
-		maxTemp: 30,
-		maxTempDEFAULT: 30
-	},
-    tweens: {
-        barFill: {
-            h: 0
-        },
-		highTemp: {
-			h: 1.04
-		},
-		lowTemp: {
-			h: 1.04
-		}
-    },
-	values: {
-		tempIn: 0,
-		tempOut: 0,
-		highTempIn: 0,
-		highTempOut: 0,
-		lowTempIn: 0,
-		lowTempOut: 0,
-        unitsIn: "temp"
-	},
-	valuesOld: {
-		tempIn: 0,
-		highTempIn: 0,
-		lowTempIn: 0
-	}
-};
-
-function formatInputTemp03() {
-	//Formats the temperature to be displayed correctly
-	
-    //Adjust to units
-    tempBar03.values.tempIn = formatDataToUnit(tempBar03.values.tempIn, tempBar03.values.unitsIn);
-    tempBar03.values.highTempIn = formatDataToUnit(tempBar03.values.highTempIn, tempBar03.values.unitsIn);
-    tempBar03.values.lowTempIn = formatDataToUnit(tempBar03.values.lowTempIn, tempBar03.values.unitsIn);
-    
-	//Adjust Range if needed: if any of the inputs (current, high, low), are less than the current minimum of the range, decrease the minimum. If any of the inputs (current, high, low), are bigger than the current maximum of the range, increase the maximum. 
-	while (tempBar03.values.tempIn < tempBar03.constants.minTemp || tempBar03.values.highTempIn < tempBar03.constants.minTemp || tempBar03.values.lowTempIn < tempBar03.constants.minTemp) {tempBar03.constants.minTemp -= tempBar03.largeDashTotal - 1; }
-	while (tempBar03.values.tempIn > tempBar03.constants.maxTemp || tempBar03.values.highTempIn > tempBar03.constants.maxTemp || tempBar03.values.lowTempIn > tempBar03.constants.maxTemp) {tempBar03.constants.maxTemp += tempBar03.largeDashTotal - 1; }
-
-    //Adjust Range if needed: if all of the inputs (current, high, low), are bigger than the current minimum of the range, increase the minimum. If all of the inputs (current, high, low), are less than the current maximum of the range, decrease the maximum. 
-	while ((tempBar03.values.tempIn >= tempBar03.constants.minTemp + (tempBar03.largeDashTotal - 1) && tempBar03.constants.minTemp < tempBar03.constants.minTempDEFAULT) && (tempBar03.values.highTempIn >= tempBar03.constants.minTemp + (tempBar03.largeDashTotal - 1) && tempBar03.constants.minTemp < tempBar03.constants.minTempDEFAULT) && (tempBar03.values.lowTempIn >= tempBar03.constants.minTemp + (tempBar03.largeDashTotal - 1) && tempBar03.constants.minTemp < tempBar03.constants.minTempDEFAULT)) {tempBar03.constants.minTemp += tempBar03.largeDashTotal - 1; }
-	while ((tempBar03.values.tempIn <= tempBar03.constants.maxTemp - (tempBar03.largeDashTotal - 1) && tempBar03.constants.maxTemp > tempBar03.constants.maxTempDEFAULT) && (tempBar03.values.highTempIn <= tempBar03.constants.maxTemp - (tempBar03.largeDashTotal - 1) && tempBar03.constants.maxTemp > tempBar03.constants.maxTempDEFAULT) && (tempBar03.values.lowTempIn <= tempBar03.constants.maxTemp - (tempBar03.largeDashTotal - 1) && tempBar03.constants.maxTemp > tempBar03.constants.maxTempDEFAULT)) {tempBar03.constants.maxTemp -= tempBar03.largeDashTotal - 1; }
-	
-    //Map the inputs to the current scale
-	tempBar03.values.tempOut = tempBar03.values.tempIn.map(tempBar03.constants.minTemp, tempBar03.constants.maxTemp, 0.1, 0.98);
-	tempBar03.values.highTempOut = tempBar03.values.highTempIn.map(tempBar03.constants.minTemp, tempBar03.constants.maxTemp, 1.04, 0.17);
-	tempBar03.values.lowTempOut = tempBar03.values.lowTempIn.map(tempBar03.constants.minTemp, tempBar03.constants.maxTemp, 1.04, 0.17);
-}
-
-function drawTemperatureBarTemp03(tempIn, highTempIn, lowTempIn, unitChange) {
-    //Is called when new data is sent.
-    unitChange = unitChange || false;
-    
-    //check to see if any reason to update
-    if (tempBar03.valuesOld.TempIn != tempIn || tempBar03.valuesOld.highTempIn != highTempIn || tempBar03.valuesOld.lowTempIn != lowTempIn || unitChange === true) {
-        //Sets inputs to new data
-        tempBar03.values.tempIn = Number(tempIn);
-        tempBar03.values.highTempIn = Number(highTempIn);
-        tempBar03.values.lowTempIn = Number(lowTempIn);
-
-        //Starts the tweens (animations) of the inputs
-        formatInputTemp03();
-        createjs.Tween.get(tempBar03.tweens.barFill, {override:true})
-            .to({h: tempBar03.values.tempOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(tempBar03.tweens.highTemp, {override:true})
-            .to({h: tempBar03.values.highTempOut}, 2000, createjs.Ease.quartInOut);
-        createjs.Tween.get(tempBar03.tweens.lowTemp, {override:true})
-            .to({h: tempBar03.values.lowTempOut}, 2000, createjs.Ease.quartInOut);
-        
-        tempBar03.valuesOld.TempIn = tempIn;
-        tempBar03.valuesOld.highTempIn = highTempIn;
-        tempBar03.valuesOld.lowTempIn = lowTempIn;
-    }
-}
-
-function updateTweensTemp03() {
-    //Updates any tweened or changing objects. This is called every frame
-	
-    //Temp Bar Fill
-    tempBar03.rectFillCommand.h = tempBar03.tweens.barFill.h * (tempBar03.rectCommand.h - tempBar03.rectCommand.y);
-	tempBar03.rectFillCommand.y = tempBar03.rectCommand.h - tempBar03.rectFillCommand.h;
-	
-	//High Marker
-	tempBar03.highMarkerEndCommand.y = tempBar03.highMarkerStartCommand.y = tempBar03.tweens.highTemp.h * (tempBar03.rectCommand.h - tempBar03.rectCommand.y);
-	
-	//Low Marker
-	tempBar03.lowMarkerEndCommand.y = tempBar03.lowMarkerStartCommand.y = tempBar03.tweens.lowTemp.h * (tempBar03.rectCommand.h - tempBar03.rectCommand.y);
-	
-    //Adjust y position of HL labels if they would otherwise overlap
-    var highLabelY = tempBar03.highMarkerEndCommand.y,
-        lowLabelY = tempBar03.lowMarkerEndCommand.y
-    while ((lowLabelY - highLabelY) / tempBar03.canvas.height < tempBar03.setupVars.minHLspace) {
-        lowLabelY += 1;
-        highLabelY -= 1;
-    }
-    
-	//High Display
-	tempBar03.highDisplay.y = highLabelY;
-	tempBar03.highDisplay.text = tempBar03.values.highTempIn.toString() + units[tempBar03.values.unitsIn.toString()][currentUnits[tempBar03.values.unitsIn.toString()]][1].toString();
-	
-	//Low Display
-	tempBar03.lowDisplay.y = lowLabelY;
-	tempBar03.lowDisplay.text = tempBar03.values.lowTempIn.toString() + units[tempBar03.values.unitsIn.toString()][currentUnits[tempBar03.values.unitsIn.toString()]][1].toString();
-	
-	//Labels
-	for (i = 0; i < tempBar03.largeDashTotal; i++) {
-		tempBar03.label[i].text = tempBar03.constants.maxTemp - ((tempBar03.constants.maxTemp - tempBar03.constants.minTemp) / (tempBar03.largeDashTotal - 1)) * i;
-	}
-	
-	//Text Display
-	tempBar03.textDisplay.text = tempBar03.values.tempIn.toString() + units[tempBar03.values.unitsIn.toString()][currentUnits[tempBar03.values.unitsIn.toString()]][1].toString();
-}
-
-function updateTopTemp03() {
-	//Updates the non-animated sections of the Widget. Gets called everytime the canvas is resized Uses the commands initialized in the setUp function to make changes to values.
-    
-	//Set variables - all relative to canvas size so that dynamic resizing is possible.
-    tempBar03.setupVars.dashLength = tempBar03.canvas.height * 0.075;
-    tempBar03.setupVars.dashGap = tempBar03.canvas.height * 0.025;
-    tempBar03.setupVars.barWidth = tempBar03.canvas.height * 0.075;
-    tempBar03.setupVars.barFillWidth = tempBar03.setupVars.barWidth * 0.6;
-    tempBar03.setupVars.barHeight = tempBar03.canvas.height * 0.8;
-    tempBar03.setupVars.barFillHeight = tempBar03.setupVars.barHeight;
-    tempBar03.setupVars.circRad = tempBar03.canvas.height * 0.1;
-    tempBar03.setupVars.fillCircRad = tempBar03.setupVars.circRad * 0.85;
-    tempBar03.setupVars.cornerRad = tempBar03.setupVars.barWidth / 2;
-    tempBar03.setupVars.cornerFillRad = tempBar03.setupVars.barFillWidth / 2;
-    tempBar03.setupVars.strokeSize = tempBar03.setupVars.barWidth / 40;
-    tempBar03.setupVars.textSize = tempBar03.canvas.height / 17;
-    tempBar03.setupVars.textDisplaySize = tempBar03.canvas.height / 19;
-	tempBar03.setupVars.textHLSize = tempBar03.canvas.height / 21;
-    tempBar03.setupVars.minHLspace = 0.04;
-    tempBar03.setupVars.posBar = {
-        x: ((tempBar03.canvas.height / 2) - (tempBar03.setupVars.barWidth / 2)),
-        y: ((tempBar03.canvas.height / 2) - (tempBar03.setupVars.barHeight / 2))
-    };
-    tempBar03.setupVars.posCirc = {
-        x: tempBar03.canvas.height / 2,
-        y: tempBar03.canvas.height * (3 / 4) + tempBar03.setupVars.circRad - tempBar03.setupVars.circRad / 10
-    };
-    tempBar03.setupVars.posFillCirc = {
-        x: tempBar03.canvas.height / 2,
-        y: tempBar03.canvas.height * (3 / 4) + tempBar03.setupVars.circRad - tempBar03.setupVars.circRad / 10
-    };
-    tempBar03.setupVars.posTextTitle = {
-        x: tempBar03.canvas.height / 2,
-        y: (tempBar03.canvas.height - tempBar03.setupVars.barHeight) / 2 - tempBar03.setupVars.cornerRad
-    };
-    tempBar03.setupVars.posDash = {
-        x: (tempBar03.canvas.height / 2) - (tempBar03.setupVars.barWidth / 2) - tempBar03.setupVars.dashLength - tempBar03.setupVars.dashGap,
-        y: (tempBar03.canvas.height - tempBar03.setupVars.barHeight) / 2 + tempBar03.setupVars.cornerRad / 2
-    };
-	tempBar03.setupVars.posHLLabel = {
-		x: (tempBar03.canvas.height / 2) + (tempBar03.setupVars.barWidth / 2) + tempBar03.setupVars.dashGap
-	};
-    tempBar03.setupVars.posFillBar = {
-        x: ((tempBar03.canvas.height / 2) - (tempBar03.setupVars.barFillWidth / 2)),
-        y: ((tempBar03.canvas.height / 2) - (tempBar03.setupVars.barFillHeight / 2))
-    };
-    tempBar03.setupVars.cutOffLength = tempBar03.canvas.height * (299 / 400);
-
-	//Update the visual elements
-    
-	//Top
-	tempBar03.topStrokeCommand.width = tempBar03.setupVars.strokeSize;
-	tempBar03.rectCommand.x = tempBar03.setupVars.posBar.x;
-	tempBar03.rectCommand.y = tempBar03.setupVars.posBar.y;
-	tempBar03.rectCommand.w = tempBar03.setupVars.barWidth;
-	tempBar03.rectCommand.h = tempBar03.setupVars.barHeight;
-	tempBar03.rectCommand.radiusTR = tempBar03.rectCommand.radiusTL = tempBar03.rectCommand.radiusBR = tempBar03.rectCommand.radiusBL = tempBar03.setupVars.cornerRad;
-    
-	//Bot
-	tempBar03.botStrokeCommand.width = tempBar03.setupVars.strokeSize;
-	tempBar03.circCommand.x = tempBar03.setupVars.posCirc.x;
-	tempBar03.circCommand.y = tempBar03.setupVars.posCirc.y;
-	tempBar03.circCommand.radius = tempBar03.setupVars.circRad;
-    
-	//Dashes
-	for (i = 0; i < (tempBar03.largeDashTotal * 10 - 9); i++) {
-		//Large
-		var gap = sharpenValue(tempBar03.setupVars.posDash.y + (((tempBar03.setupVars.cutOffLength * (24 / 25) - tempBar03.setupVars.posDash.y) / (tempBar03.largeDashTotal - 1)) - (((tempBar03.setupVars.cutOffLength * (24 / 25) - tempBar03.setupVars.posDash.y) % ((tempBar03.largeDashTotal - 1))) / tempBar03.largeDashTotal - 1)) * (i / 10));
-		if (i % 10 === 0) {
-			tempBar03.dashStrokeCommand[i].width = tempBar03.setupVars.strokeSize;
-			tempBar03.dashStartCommand[i].x = tempBar03.setupVars.posDash.x;
-			tempBar03.dashStartCommand[i].y = gap;
-			tempBar03.dashEndCommand[i].x = tempBar03.setupVars.posDash.x + tempBar03.setupVars.dashLength;
-			tempBar03.dashEndCommand[i].y = gap;
-            
-			//Text Label Positioning - located here as they line up with the large dashes
-			tempBar03.label[i / 10].y = gap;
-			tempBar03.label[i / 10].x = (tempBar03.setupVars.posDash.x - tempBar03.setupVars.dashLength) * (6 / 5);
-			tempBar03.label[i / 10].font = tempBar03.setupVars.textSize + "px arial";
-		} else if (i % 5 === 0) {
-			//Med
-			tempBar03.dashStrokeCommand[i].width = tempBar03.setupVars.strokeSize;
-			tempBar03.dashStartCommand[i].x = tempBar03.setupVars.posDash.x + tempBar03.setupVars.dashLength - (tempBar03.setupVars.dashLength / 2);
-			tempBar03.dashStartCommand[i].y = gap;
-			tempBar03.dashEndCommand[i].x = (tempBar03.setupVars.posDash.x + tempBar03.setupVars.dashLength);
-			tempBar03.dashEndCommand[i].y = gap;
-		} else {
-			//Small
-			tempBar03.dashStrokeCommand[i].width = tempBar03.setupVars.strokeSize;
-			tempBar03.dashStartCommand[i].x = tempBar03.setupVars.posDash.x + tempBar03.setupVars.dashLength - (tempBar03.setupVars.dashLength / 3);
-			tempBar03.dashStartCommand[i].y = gap;
-			tempBar03.dashEndCommand[i].x = (tempBar03.setupVars.posDash.x + tempBar03.setupVars.dashLength);
-			tempBar03.dashEndCommand[i].y = gap;
-		}
-	}
-	
-	//Inner Circle fill
-	tempBar03.circFillCommand.x = tempBar03.setupVars.posFillCirc.x;
-	tempBar03.circFillCommand.y = tempBar03.setupVars.posFillCirc.y;
-	tempBar03.circFillCommand.radius = tempBar03.setupVars.fillCircRad;
-	
-	//Bar Fill
-	tempBar03.rectFillCommand.x = tempBar03.setupVars.posFillBar.x;
-	tempBar03.rectFillCommand.w = tempBar03.setupVars.barFillWidth;
-	tempBar03.rectFillCommand.radiusTR = tempBar03.rectFillCommand.radiusTL = tempBar03.rectFillCommand.radiusBR = tempBar03.rectFillCommand.radiusBL = tempBar03.setupVars.cornerFillRad;
-	
-	//Text Display
-	tempBar03.textDisplay.x = tempBar03.setupVars.posFillCirc.x;
-	tempBar03.textDisplay.y = tempBar03.setupVars.posFillCirc.y;
-	tempBar03.textDisplay.font = "bold " + tempBar03.setupVars.textDisplaySize + "px arial";
-    
-    //Text Title
-	tempBar03.textTitle.x = tempBar03.setupVars.posTextTitle.x;
-	tempBar03.textTitle.y = tempBar03.setupVars.posTextTitle.y;
-	tempBar03.textTitle.font = "bold " + tempBar03.setupVars.textDisplaySize + "px arial";
-    setFontMaxWidth(tempBar03.textTitle, tempBar03.canvas, tempBar03.stage);
-	
-	//High Marker
-	tempBar03.highMarkerStrokeCommand.width = tempBar03.setupVars.strokeSize * 4;
-	tempBar03.highMarkerStartCommand.x = (tempBar03.canvas.height + tempBar03.setupVars.barWidth) / 2;
-	tempBar03.highMarkerEndCommand.x = (tempBar03.canvas.height - tempBar03.setupVars.barWidth) / 2;
-	
-	//Low Marker
-	tempBar03.lowMarkerStrokeCommand.width = tempBar03.setupVars.strokeSize * 4;
-	tempBar03.lowMarkerStartCommand.x = (tempBar03.canvas.height + tempBar03.setupVars.barWidth) / 2;
-	tempBar03.lowMarkerEndCommand.x = (tempBar03.canvas.height - tempBar03.setupVars.barWidth) / 2;
-	
-	//High Display
-	tempBar03.highDisplay.x = tempBar03.setupVars.posHLLabel.x;
-	tempBar03.highDisplay.font = "bold " + tempBar03.setupVars.textHLSize + "px arial";
-	
-	//Low Display
-	tempBar03.lowDisplay.x = tempBar03.setupVars.posHLLabel.x;
-	tempBar03.lowDisplay.font = "bold " + tempBar03.setupVars.textHLSize + "px arial";
-    
-    //Gives the call to update the animated sections of the widgets
-    updateTweensTemp03();
-    
-	//Set masks
-	tempBar03.roundRectTop.mask = new createjs.Shape(new createjs.Graphics().dr(0, 0, tempBar03.canvas.height, tempBar03.setupVars.cutOffLength));
-	tempBar03.roundRectFillTop.mask = new createjs.Shape(new createjs.Graphics().dr(0, 0, tempBar03.canvas.height, tempBar03.setupVars.cutOffLength * 1.1));
-	tempBar03.roundBot.mask = new createjs.Shape(new createjs.Graphics().dr(0, tempBar03.setupVars.cutOffLength, tempBar03.canvas.height, tempBar03.canvas.height));
-	
-}
-
-function resizeCanvasTemp03() {
-	//Dynamic Canvas Resizing for desktop
-	var ratio = 2,
-        parentDiv = tempBar03.canvas.parentElement;
-    
-	//Adjusts canvas to match resized window. Always adjust to the smallest dimention
-    tempBar03.canvas.width = parentDiv.clientHeight / ratio;
-    tempBar03.canvas.height = parentDiv.clientHeight;
-	
-    tempBar03.stage.x = -(tempBar03.canvas.height / 4.5);
-    
-	//Update shapes according to new dimentions
-	updateTopTemp03();
-}
-
-function setUpTemp03() {
-	//Sets up the shapes. Initializses all the varaibles and shapes, and stores the values which need to be adjusted in commands which can be accessed later
-	//Set up top
-	tempBar03.roundRectTop = new createjs.Shape();
-	tempBar03.roundRectTop.snapToPixel = true;
-	tempBar03.roundRectTop.graphics.beginStroke("black");
-	tempBar03.roundRectTop.graphics.beginFill("#F6F6F6");
-	tempBar03.topStrokeCommand = tempBar03.roundRectTop.graphics.setStrokeStyle(0).command;
-	tempBar03.rectCommand = tempBar03.roundRectTop.graphics.drawRoundRect(0, 0, 0, 0, 0).command;
-	tempBar03.stage.addChild(tempBar03.roundRectTop);
-	
-	//Set up bottom 
-	tempBar03.roundBot  = new createjs.Shape();
-	tempBar03.roundBot.snapToPixel = true;
-	tempBar03.roundBot.graphics.beginStroke("black");
-	tempBar03.roundBot.graphics.beginFill("#F6F6F6");
-	tempBar03.botStrokeCommand = tempBar03.roundBot.graphics.setStrokeStyle(0).command;
-	tempBar03.circCommand = tempBar03.roundBot.graphics.drawCircle(0, 0, 0).command;
-	tempBar03.stage.addChild(tempBar03.roundBot);
-	
-	//Set up Dashes
-	for (i = 0; i < tempBar03.largeDashTotal * 10; i++) {
-		tempBar03.dash[i] = new createjs.Shape();
-		tempBar03.dash[i].snapToPixel = true;
-		tempBar03.dash[i].graphics.beginStroke("black", 1);
-		tempBar03.dashStrokeCommand[i] = tempBar03.dash[i].graphics.setStrokeStyle(0).command;
-		tempBar03.dashStartCommand[i] = tempBar03.dash[i].graphics.moveTo(0, 0).command;
-		tempBar03.dashEndCommand[i] = tempBar03.dash[i].graphics.lineTo(0, 0).command;
-		tempBar03.stage.addChild(tempBar03.dash[i]);
-	}
-    
-    //Set up fill circle
-    tempBar03.roundBotFill = new createjs.Shape();
-	tempBar03.roundBotFill.snapToPixel = true;
-	tempBar03.roundBotFill.graphics.beginFill("rgb(255, 221, 37)");
-    tempBar03.roundBotFill.graphics.setStrokeStyle(0);
-	tempBar03.circFillCommand = tempBar03.roundBotFill.graphics.drawCircle(0, 0, 0).command;
-	tempBar03.stage.addChild(tempBar03.roundBotFill);
-    
-    //Set up fill rectange
-    tempBar03.roundRectFillTop = new createjs.Shape();
-	tempBar03.roundRectFillTop.snapToPixel = true;
-	tempBar03.roundRectFillTop.graphics.beginFill("rgb(255, 221, 37)");
-    tempBar03.roundRectFillTop.graphics.setStrokeStyle(0);
-	tempBar03.rectFillCommand = tempBar03.roundRectFillTop.graphics.drawRoundRect(0, 0, 0, 0, 0).command;
-	tempBar03.stage.addChild(tempBar03.roundRectFillTop);
-	
-	//Set up text labels
-	for (i = 0; i < tempBar03.largeDashTotal; i++) {
-		tempBar03.label[i] = new createjs.Text("0px Arial", "black");
-		tempBar03.label[i].textBaseline = "middle";
-		tempBar03.label[i].textAlign = "right";
-		tempBar03.stage.addChild(tempBar03.label[i]);
-	}
-    
-	//Set up text display
-	tempBar03.textDisplay = new createjs.Text("0px Arial", "black");
-	tempBar03.textDisplay.textBaseline = "middle";
-	tempBar03.textDisplay.textAlign = "center";
-	tempBar03.stage.addChild(tempBar03.textDisplay);
-	
-    //Set up title
-	tempBar03.textTitle = new createjs.Text((widgetList.temperature03.title == "default") ? (useDict("temperatureTitle") + " 3") : widgetList.temperature03.title, "0px Arial", "black");
-	tempBar03.textTitle.textBaseline = "middle";
-	tempBar03.textTitle.textAlign = "center";
-	tempBar03.stage.addChild(tempBar03.textTitle);
-    
-	//Set up high temp marker
-	tempBar03.highMarker = new createjs.Shape();
-	tempBar03.highMarker.snapToPixel = true;
-	tempBar03.highMarker.graphics.beginStroke("rgb(" + colour.temp + ")", 1);
-	tempBar03.highMarkerStrokeCommand = tempBar03.highMarker.graphics.setStrokeStyle(0).command;
-	tempBar03.highMarkerStartCommand = tempBar03.highMarker.graphics.moveTo(0, 0).command;
-	tempBar03.highMarkerEndCommand = tempBar03.highMarker.graphics.lineTo(0, 0).command;
-	
-	//Set up low temp marker
-	tempBar03.lowMarker = new createjs.Shape();
-	tempBar03.lowMarker.snapToPixel = true;
-	tempBar03.lowMarker.graphics.beginStroke("rgb(" + colour.tempLow + ")", 1);
-	tempBar03.lowMarkerStrokeCommand = tempBar03.lowMarker.graphics.setStrokeStyle(0).command;
-	tempBar03.lowMarkerStartCommand = tempBar03.lowMarker.graphics.moveTo(0, 0).command;
-	tempBar03.lowMarkerEndCommand = tempBar03.lowMarker.graphics.lineTo(0, 0).command;
-	
-	//Set up high temp label
-	tempBar03.highDisplay = new createjs.Text("", "0px Arial", "rgb(" + colour.temp + ")");
-	tempBar03.highDisplay.textBaseline = "middle";
-	tempBar03.highDisplay.textAlign = "left";
-	
-	//Set up low temp label
-	tempBar03.lowDisplay = new createjs.Text("", "0px Arial", "rgb(" + colour.tempLow + ")");
-	tempBar03.lowDisplay.textBaseline = "middle";
-	tempBar03.lowDisplay.textAlign = "left";
-    
-    if(widgetList.temperature03.highLowEnabled) {
-        tempBar03.stage.addChild(tempBar03.highMarker);
-        tempBar03.stage.addChild(tempBar03.lowMarker);
-        tempBar03.stage.addChild(tempBar03.highDisplay);
-        tempBar03.stage.addChild(tempBar03.lowDisplay);
-    }
-}
-
-function initializeTemp03() {
-	//The first function that is called
-    
-	//Define canvas and stage varaibles
-	tempBar03.stage = new createjs.Stage(tempBar03.canvas);
-    
-    window.addEventListener("frameUpdate", function () {
-        tempBar03.stage.update();
-        updateTweensTemp03();
-    });
-    window.addEventListener("clientRawDataUpdate", function () {
-        drawTemperatureBarTemp03(
-            getExtraInput(widgetList.temperature03.input)[0], getExtraInput(widgetList.temperature03.input)[1], getExtraInput(widgetList.temperature03.input)[2]);
-    });
-    window.addEventListener("clientRawExtraDataUpdate", function () {
-        drawTemperatureBarTemp03(
-            getExtraInput(widgetList.temperature03.input)[0], getExtraInput(widgetList.temperature03.input)[1], getExtraInput(widgetList.temperature03.input)[2]);
-    });
-    
-    //Creates information tooltip
-    new Opentip(tempBar03.canvas, useDict("temperatureDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
-    
-	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
-	setUpTemp03();
-	
-	//If on desktop, dynamically resize the canvas, but don't on mobile. This is because mobile users need to be able to zoom in and move around if they wish, and dynamic rezising does not allow this.
-	if (onMobile === false) {
-		window.addEventListener('resize', function () {
-			resizeCanvasTemp03();
-		}, false);
-	} else {
-        //only resize when rotated on mobile
-        var mql = window.matchMedia("(orientation: portrait)");
-        mql.addListener(function(m) {
-            resizeCanvasTemp03();
-        });
-    }
-	
-    //Set the canvas size intially.
-	resizeCanvasTemp03();
-    
-    checkOffLoaded();
-}
-
 //BAROMETER
 //Global Variables. These are set up in a hierarchical structure so that they can be easily accessed
 var barometer01 = {
@@ -1694,7 +710,7 @@ function updateTopB01() {
     
 	//Set variables - all relative to canvas size so that dynamic resizing is possible.
     barometer01.setupVars.rectWidth = barometer01.canvas.width * 0.9;
-    barometer01.setupVars.rectHeight = barometer01.canvas.height * 0.67;
+    barometer01.setupVars.rectHeight = barometer01.canvas.height * 0.70;
     barometer01.setupVars.rectCornerRad = barometer01.canvas.height * 0.1;
     barometer01.setupVars.strokeSize = barometer01.canvas.width / 40;
     barometer01.setupVars.textDisplaySize = barometer01.canvas.width * 0.125;
@@ -1708,7 +724,7 @@ function updateTopB01() {
     };
     barometer01.setupVars.posTitleBarometer = {
         x: sharpenValue(barometer01.canvas.width * (1 / 2)),
-        y: sharpenValue(barometer01.canvas.height * (11 / 100))
+        y: sharpenValue(barometer01.canvas.height * (13 / 100))
     };
     barometer01.setupVars.posTextP = {
         x: sharpenValue(barometer01.canvas.width * (1 / 2)),
@@ -2033,7 +1049,7 @@ function updateTopWC01() {
     windchill01.setupVars.cornerFillRad = windchill01.setupVars.barFillWidth / 2;
     windchill01.setupVars.strokeSize = windchill01.setupVars.barWidth / 40;
     windchill01.setupVars.textSize = windchill01.canvas.height / 17;
-    windchill01.setupVars.textDisplaySize = windchill01.canvas.height / 19;
+    windchill01.setupVars.textDisplaySize = windchill01.canvas.height / 22;
 	windchill01.setupVars.textHLSize = windchill01.canvas.height / 21;
 	windchill01.setupVars.minHLspace = 0.04;
     windchill01.setupVars.posBar = {
@@ -2211,7 +1227,7 @@ function setUpWC01() {
     //Set up fill circle
     windchill01.roundBotFill = new createjs.Shape();
 	windchill01.roundBotFill.snapToPixel = true;
-	windchill01.roundBotFill.graphics.beginFill("rgb(255, 221, 37)");
+	windchill01.roundBotFill.graphics.beginFill("rgb(255, 37, 37)");
     windchill01.roundBotFill.graphics.setStrokeStyle(0);
 	windchill01.circFillCommand = windchill01.roundBotFill.graphics.drawCircle(0, 0, 0).command;
 	windchill01.stage.addChild(windchill01.roundBotFill);
@@ -2219,7 +1235,7 @@ function setUpWC01() {
     //Set up fill rectange
     windchill01.roundRectFillTop = new createjs.Shape();
 	windchill01.roundRectFillTop.snapToPixel = true;
-	windchill01.roundRectFillTop.graphics.beginFill("rgb(255, 221, 37)");
+	windchill01.roundRectFillTop.graphics.beginFill("rgb(255, 37, 37)");
     windchill01.roundRectFillTop.graphics.setStrokeStyle(0);
 	windchill01.rectFillCommand = windchill01.roundRectFillTop.graphics.drawRoundRect(0, 0, 0, 0, 0).command;
 	windchill01.stage.addChild(windchill01.roundRectFillTop);
@@ -5872,7 +4888,7 @@ function updateTweensWS01() {
     var beaufortSpeed = calculateBeaufort(windSpeed.values.speedOrigional);
     windSpeed.textDisplayBeaufort.text = useDict("beaufortScaleTitle") + ": " + beaufortSpeed.toString();
     
-    var colour = makeColorGradient(.42,.42,.42,0,2,4,10 + beaufortSpeed);
+    var colour = makeColorGradient(.42,.42,.42,1,0,4,10 + beaufortSpeed);
     windSpeed.textDisplayBeaufort.color = "rgb(" + colour[0] + "," + colour[1] + "," + colour[2] + ")";
     
 }
@@ -6515,15 +5531,15 @@ function tryUpdateWidgets() {
                 noDataChanged = true;
                 
                 drawStatusS01(arrayClientraw[49], arrayClientraw[32], arrayClientraw[74]); //Status widget must always be updated
+		window.dispatchEvent(loadEvents.clientRaw);
             } else {
                 noDataChanged = false;
                 
                 drawStatusS01(arrayClientraw[49], arrayClientraw[32], arrayClientraw[74]); //Status widget must always be updated
                 
-                if (arrayClientraw.equals(arrayClientrawOld) === false) {
-                    arrayClientrawOld = arrayClientraw;
-                    window.dispatchEvent(loadEvents.clientRaw);
-                }
+                arrayClientrawOld = arrayClientraw;
+                window.dispatchEvent(loadEvents.clientRaw);
+
                 if (arrayClientrawExtra.equals(arrayClientrawExtraOld) === false) {
                     arrayClientrawExtraOld = arrayClientrawExtra;
                     //Meteohub compadibility changes
@@ -6572,7 +5588,7 @@ function loadArray(url) {
 	}
 	
 	xhttpVar.open("GET", url, true);
-    xhttpVar.setRequestHeader("Cache-Control", "no-cache");
+    xhttpVar.setRequestHeader("Cache-Control", "no-store");
     xhttpVar.send();
 	
 	return xhttpVar;
@@ -6753,7 +5769,7 @@ function resizeDivFor01() {
     
     width = width.toString() + "px";
     height = height.toString() + "px";
-    stlyeString = "width:" + width.toString() + ";height:" + height.toString();
+    stlyeString = "background: #F6F6F6;text-align: center;width:" + width.toString() + ";height:" + height.toString();
     
     forecast.displayDiv.setAttribute("style", stlyeString.toString());
     //For browser compadibility
@@ -7301,10 +6317,6 @@ function updateUnits(unitType) {
         configureGraphRainBar01("rainfallBar", "dailyMonth");
     } else if (unitType == "temp") {
         drawTemperatureBarTemp01(arrayClientraw[4], arrayClientraw[46], arrayClientraw[47], true);
-        drawTemperatureBarTemp02(
-            getExtraInput(widgetList.temperature02.input)[0], getExtraInput(widgetList.temperature02.input)[1], getExtraInput(widgetList.temperature02.input)[2], true);
-        drawTemperatureBarTemp03(
-            getExtraInput(widgetList.temperature03.input)[0], getExtraInput(widgetList.temperature03.input)[1], getExtraInput(widgetList.temperature03.input)[2], true);
         drawWindchillBarWC01((widgetList.windChill.mode==="windchill")?arrayClientraw[44]:arrayClientraw[112],
                              (widgetList.windChill.mode==="windchill")?arrayClientraw[77]:arrayClientraw[110],
                              (widgetList.windChill.mode==="windchill")?arrayClientraw[78]:arrayClientraw[111], true);
@@ -7478,9 +6490,7 @@ function initAll() {
     apparent01.canvas = document.getElementById(apparent01.config.canvasID.toString());
     solarBar01.canvas = document.getElementById(solarBar01.config.canvasID.toString());
     uvBar01.canvas = document.getElementById(uvBar01.config.canvasID.toString());
-    tempBar01.canvas = document.getElementById('TempBar01');
-    tempBar02.canvas = document.getElementById('TempBar02');
-    tempBar03.canvas = document.getElementById('TempBar03');
+    tempBar.canvas = document.getElementById('TempBar01');
     barometer01.canvas = document.getElementById(barometer01.config.canvasID.toString());
     windchill01.canvas = document.getElementById('Windchill01');
     baroGraph.canvas = document.getElementById('baroGraphCanvas01').getContext("2d", {alpha: false});
@@ -7497,31 +6507,29 @@ function initAll() {
     windGauge.canvas = document.getElementById('WindGauge01');
     windSpeed.canvas = document.getElementById('WindSpeed01');
     initialiseLayout();
-    if (widgetList["apparent"].enabled === true) {initializeApparentA01();} else if (apparent01.canvas !== null) {apparent01.canvas.style.display = "none";}
-    if (widgetList["temperature"].enabled === true) {initializeTemp01();} else if (tempBar01.canvas !== null) {tempBar01.canvas.style.display = "none";}
-    if (widgetList["temperature02"].enabled === true) {initializeTemp02();} else if (tempBar02.canvas !== null) {tempBar02.canvas.style.display = "none";}
-    if (widgetList["temperature03"].enabled === true) {initializeTemp03();} else if (tempBar03.canvas !== null) {tempBar03.canvas.style.display = "none";}
-    if (widgetList["barometer"].enabled === true) {initializeBarometerB01();} else if (barometer01.canvas !== null) {barometer01.canvas.style.display = "none";}
-    if (widgetList["windChill"].enabled === true) {initializeWC01();} else if (windchill01.canvas !== null) {windchill01.canvas.style.display = "none";}
+    if (widgetList["apparent"].enabled === true) {initializeApparentA01();} else {apparent01.canvas.style.display = "none";}
+    if (widgetList["temperature"].enabled === true) {initializeTemp01();} else {tempBar.canvas.style.display = "none";}
+    if (widgetList["barometer"].enabled === true) {initializeBarometerB01();} else {barometer01.canvas.style.display = "none";}
+    if (widgetList["windChill"].enabled === true) {initializeWC01();} else {windchill01.canvas.style.display = "none";}
     if (widgetList["forecastHandler"].enabled === true) {forecastInitFor01();}
     if (widgetList["graphHandler"].enabled === true) {initializeModalGraph01();}
-    if (widgetList["graphHandlerBarometer"].enabled === true) {initializeBaroGraph01();} else if (baroGraph.canvas !== null) {baroGraph.canvas.style.display = "none";}
-    if (widgetList["graphHandlerRainfall"].enabled === true) {initializeRainGraph01();} else if (rainGraph.canvas !== null) {rainGraph.canvas.style.display = "none";}
-    if (widgetList["graphHandlerTemperature"].enabled === true) {initializeTempGraph01();} else if (tempGraph.canvas !== null) {tempGraph.canvas.style.display = "none";}
-    if (widgetList["graphHandlerWindSpeed"].enabled === true) {initializeWindGraph01();} else if (windGraph.canvas !== null) {windGraph.canvas.style.display = "none";}
-    if (widgetList["humidity"].enabled === true) {initializeHum01();} else if (humidityGauge.canvas !== null) {humidityGauge.canvas.style.display = "none";}
+    if (widgetList["graphHandlerBarometer"].enabled === true) {initializeBaroGraph01();} else {baroGraph.canvas.style.display = "none";}
+    if (widgetList["graphHandlerRainfall"].enabled === true) {initializeRainGraph01();} else {rainGraph.canvas.style.display = "none";}
+    if (widgetList["graphHandlerTemperature"].enabled === true) {initializeTempGraph01();} else {tempGraph.canvas.style.display = "none";}
+    if (widgetList["graphHandlerWindSpeed"].enabled === true) {initializeWindGraph01();} else {windGraph.canvas.style.display = "none";}
+    if (widgetList["humidity"].enabled === true) {initializeHum01();} else {humidityGauge.canvas.style.display = "none";}
     if (widgetList["modalHandler"].enabled === true) {initModalHandler();}
-    if (widgetList["moonSun"].enabled === true) {initializeMoonSunMS01();} else if (moonSun01.canvas !== null) {moonSun01.canvas.style.display = "none";}
+    if (widgetList["moonSun"].enabled === true) {initializeMoonSunMS01();} else {moonSun01.canvas.style.display = "none";}
     if (widgetList["recordHandler"].enabled === true) {recordsInitRe01();}
-    if (widgetList["solar"].enabled === true) {initializeSolarBarSol01();} else if (solarBar01.canvas !== null) {solarBar01.canvas.style.display = "none";}
-    if (widgetList["status"].enabled === true) {initializeStatusS01();} else if (status01.canvas !== null) {status01.canvas.style.display = "none";}
-    if (widgetList["rainfallTitle"].enabled === true) {initializeTitleRainfallTR01();} else if (titleRainfall01.canvas !== null) {titleRainfall01.canvas.style.display = "none";}
-    if (widgetList["rainfallDay"].enabled === true) {initializeUniBarUni01();} else if (uniBar01.canvas !== null) {uniBar01.canvas.style.display = "none";}
-    if (widgetList["rainfallMonth"].enabled === true) {initializeUniBarUni02();} else if (uniBar02.canvas !== null) {uniBar02.canvas.style.display = "none";}
-    if (widgetList["rainfallYear"].enabled === true) {initializeUniBarUni03();} else if (uniBar03.canvas !== null) {uniBar03.canvas.style.display = "none";}
-    if (widgetList["UV"].enabled === true) {initializeUVBarUV01();} else if (uvBar01.canvas !== null) {uvBar01.canvas.style.display = "none";}
-    if (widgetList["windDirection"].enabled === true) {initializeWind01();} else if (windGauge.canvas !== null) {windGauge.canvas.style.display = "none";}
-    if (widgetList["windSpeed"].enabled === true) {initializeWS01();} else if (windSpeed.canvas !== null) {windSpeed.canvas.style.display = "none";}
+    if (widgetList["solar"].enabled === true) {initializeSolarBarSol01();} else {solarBar01.canvas.style.display = "none";}
+    if (widgetList["status"].enabled === true) {initializeStatusS01();} else {status01.canvas.style.display = "none";}
+    if (widgetList["rainfallTitle"].enabled === true) {initializeTitleRainfallTR01();} else {titleRainfall01.canvas.style.display = "none";}
+    if (widgetList["rainfallDay"].enabled === true) {initializeUniBarUni01();} else {uniBar01.canvas.style.display = "none";}
+    if (widgetList["rainfallMonth"].enabled === true) {initializeUniBarUni02();} else {uniBar02.canvas.style.display = "none";}
+    if (widgetList["rainfallYear"].enabled === true) {initializeUniBarUni03();} else {uniBar03.canvas.style.display = "none";}
+    if (widgetList["UV"].enabled === true) {initializeUVBarUV01();} else {uvBar01.canvas.style.display = "none";}
+    if (widgetList["windDirection"].enabled === true) {initializeWind01();} else {windGauge.canvas.style.display = "none";}
+    if (widgetList["windSpeed"].enabled === true) {initializeWS01();} else {windSpeed.canvas.style.display = "none";}
     initializeTicker();
     initializeButtons();
 }
