@@ -26,7 +26,8 @@ var dict = {
 		si: "Naslovnica",
 		fi: "Näkyvä",
 		sv: "Känns som",
-		pt: "Aparente"
+		pt: "Aparente",
+		ca: "Aparent"
 	},
 	apparentDescription: {
 		en: "Perceived temperature based on temperature, humidity, sun, and wind.",
@@ -44,7 +45,8 @@ var dict = {
 		si: "Zaznana temperatura, ki temelji na temperaturi, vlagi, soncu in vetru.",
 		fi: "Havainnoitu lämpötila perustuu lämpötilaan kosteuteen aurinkoon ja tuuliin.",
 		sv: "Upplevd temperatur, baserad på temperatur, fuktighet, sol och vind.",
-		pt: "Temperatura aparente baseada na temperatura, humidade, sol e vento."
+		pt: "Temperatura aparente baseada na temperatura, humidade, sol e vento.",
+		ca: "Temperatura percebuda en funció de la temperatura, l'humitat, el sol i el vent."
 	},
 	temperatureTitle: {
 		en: "Temperature",
@@ -62,7 +64,8 @@ var dict = {
 		si: "Temperatura",
 		fi: "Lämpötila",
 		sv: "Temperatur",
-		pt: "Temperatura"
+		pt: "Temperatura",
+		ca: "Temperatura"
 	},
 	temperatureDescription: {
 		en: "Current air temperature.\nBlue: Low daily temperature.\nRed: High daily temperature.",
@@ -77,10 +80,11 @@ var dict = {
 		nb: "Gjeldene temperatur.\nBlå: Lavest måling i dag.\nRød: Høyest måling i dag.",
 		bg: "Текуща температура на въздуха.\nБлок: Ниска дневна температура.\nРед: Висока дневна температура.",
 		cs: "Aktuální teplota vzduchu.\nModrá: Nízká denní teplota.\nČervené: Vysoká denní teplota.",
-		si: "Trenutna temperatura zraka. \ nModra: nizka dnevna temperatura. \ nRdeča: visoka dnevna temperatura.",
-		fi: "Nykyinen ilman lämpötila. \ NLuku: Alhainen päivittäinen lämpötila. \ NRed: Korkea päivittäinen lämpötila.",
+		si: "Trenutna temperatura zraka. \nModra: nizka dnevna temperatura. \nRdeča: visoka dnevna temperatura.",
+		fi: "Nykyinen ilman lämpötila. \n NLuku: Alhainen päivittäinen lämpötila. \nRed: Korkea päivittäinen lämpötila.",
 		sv: "Aktuell temperatur.\nBlå: Lägsta dagliga temperatur. \nRöd: Högsta dagliga temperatur.",
-		pt: "Temperatura do ar atual.\nAzul: Temperatura diária mínima.\nVermelho: Temperatura diária máxima."
+		pt: "Temperatura do ar atual.\nAzul: Temperatura diária mínima.\nVermelho: Temperatura diária máxima.",
+		ca: "Temperatura de l'aire actual.\nBlau: temperatura diària mínima.\nVermell: temperatura diària màxima."
 	},
 	barometerSteady: {
 		en: "Steady",
@@ -98,7 +102,8 @@ var dict = {
 		si: "Stabilno",
 		fi: "Vakaa",
 		sv: "Stabil",
-		pt: "Estável"
+		pt: "Estável",
+		ca: "Estable"
 	},
 	barometerRate: {
 		en: "Rate",
@@ -116,7 +121,8 @@ var dict = {
 		si: "Razmerje",
 		fi: "Nopeus",
 		sv: "Hastighet",
-		pt: "Variação"
+		pt: "Variação",
+		ca: "Velocitat"
 	},
 	barometerTitle: {
 		en: "Barometer",
@@ -134,7 +140,8 @@ var dict = {
 		si: "Barometer",
 		fi: "Barometri",
 		sv: "Barometer",
-		pt: "Barómetro"
+		pt: "Barómetro",
+		ca: "Baròmetre"
 	},
 	barometerDescription: {
 		en: "The weight of the air, adjusted for the station's altitude.",
@@ -152,7 +159,8 @@ var dict = {
 		si: "Teža zraka, prilagojena višini postaje.",
 		fi: "Ilman paino säädetty asemalle korkeudessa.",
 		sv: "Lufttrycket baserat på väderstationens höjd över havet.",
-		pt: "O peso do ar, ajustado à altitude da estação."
+		pt: "O peso do ar, ajustado à altitude da estação.",
+		ca: "El pes de l'aire, ajustat per a l'altitud de l'estació."
 	},
 	windchillTitle: {
 		en: "Windchill",
@@ -170,7 +178,8 @@ var dict = {
 		si: "Hladen veter",
 		fi: "Tuulen kylmyys",
 		sv: "Köldindex",
-		pt: "Índice de frio"
+		pt: "Índice de frio",
+		ca: "Sensació"
 	},
 	windchillDescription: {
 		en: "How cold it actually feels. Calculated by combining heat and wind speed.",
@@ -188,7 +197,8 @@ var dict = {
 		si: "Kako hladno se dejansko počuti. Izračunano s kombinacijo toplote in hitrosti vetra.",
 		fi: "Kuinka kylmältä se todella tuntuu lasketaan yhdistämällä lämmön ja tuulen nopeus.",
 		sv: "Upplevd temperatur. Baserad på en kombination av temperatur och vindhastighet.",
-		pt: "Temperatura percetível. Calculado combinando a temperatura e a velocidade do vento."
+		pt: "Temperatura percetível. Calculado combinando a temperatura e a velocidade do vento.",
+		ca: "Quin fred se sent realment. Calculat combinant el calor y la velocitat del vent."
 	},
 	humidityTitle: {
 		en: "Humidity",
@@ -206,7 +216,8 @@ var dict = {
 		si: "Vlažnosr",
 		fi: "Kosteus",
 		sv: "Luftfuktighet",
-		pt: "Humidade"
+		pt: "Humidade",
+		ca: "Humitat"
 	},
 	humidityDescription: {
 		en: "The amount of water vapour in the air as a percentage of the amount the air is capable of holding.",
@@ -224,7 +235,8 @@ var dict = {
 		si: "Količina vodne pare v zraku kot odstotek količine, ki jo lahko zadrži zrak.",
 		fi: "Vesihöyryn määrä ilmassa prosentteina siitä määrästä jonka ilma pystyy pitämään.",
 		sv: "Luftfuktighet är ett mått på mängden eller andelen vattenånga som finns i luften.",
-		pt: "A quantidade de vapor de água no ar, como percentagem do total passível de ser retido pelo ar à temperatura atual."
+		pt: "A quantidade de vapor de água no ar, como percentagem do total passível de ser retido pelo ar à temperatura atual.",
+		ca: "La quantitat de vapor d'aigua en l'aire com a percentatge de la quantitat que l'aire es capaç de contenir."
 	},
 	moonSunRise: {
 		en: "Rise",
@@ -242,7 +254,8 @@ var dict = {
 		si: "Vzhod",
 		fi: "Nousu",
 		sv: "Uppgång",
-		pt: "Nascer"
+		pt: "Nascer",
+		ca: "Alba"
 	},
 	moonSunSet: {
 		en: "Set",
@@ -260,7 +273,8 @@ var dict = {
 		si: "Zahod",
 		fi: "Lasku",
 		sv: "Nedgång",
-		pt: "Pôr"
+		pt: "Pôr",
+		ca: "Posta de sol"
 	},
 	moonSunPhase: {
 		en: "Phase",
@@ -278,7 +292,8 @@ var dict = {
 		si: "Faza",
 		fi: "Vaihe",
 		sv: "Fas",
-		pt: "Fase"
+		pt: "Fase",
+		ca: "Fase"
 	},
 	moonSunAge: {
 		en: "Age",
@@ -296,7 +311,8 @@ var dict = {
 		si: "Starost",
 		fi: "Ikä",
 		sv: "Ålder",
-		pt: "Dias"
+		pt: "Dias",
+		ca: "Edat"
 	},
 	moonSunTitleSun: {
 		en: "Sun",
@@ -314,7 +330,8 @@ var dict = {
 		si: "Sonce",
 		fi: "Aurinko",
 		sv: "Sol",
-		pt: "Sol"
+		pt: "Sol",
+		ca: "Sol"
 	},
 	moonSunTitleMoon: {
 		en: "Moon",
@@ -332,7 +349,8 @@ var dict = {
 		si: "Luna",
 		fi: "Kuu",
 		sv: "Måne",
-		pt: "Lua"
+		pt: "Lua",
+		ca: "Lluna"
 	},
 	solarTitle: {
 		en: "Solar",
@@ -350,7 +368,8 @@ var dict = {
 		si: "Sončna energija",
 		fi: "Aurinko",
 		sv: "Solstrålning",
-		pt: "Solar"
+		pt: "Solar",
+		ca: "Solar"
 	},
 	solarSunHours: {
 		en: "Sun Hours",
@@ -368,7 +387,8 @@ var dict = {
 		si: "Sončev čas",
 		fi: "Aurinkoa tunnissa",
 		sv: "Soltimmar",
-		pt: "Horas de sol"
+		pt: "Horas de sol",
+		ca: "Hores de Sol"
 	},
 	solarDescription: {
 		en: "The intensity of the sun's radiation.",
@@ -386,7 +406,8 @@ var dict = {
 		si: "Intenzivnost sončnega sevanja.",
 		fi: "Auringon säteilyn voimakkuus.",
 		sv: "Solintensitet.",
-		pt: "A intensidade da radiação solar."
+		pt: "A intensidade da radiação solar.",
+		ca: "La intensitat de la radiació del Sol."
 	},
 	statusNoDataSince: {
 		en: "No data since",
@@ -404,7 +425,8 @@ var dict = {
 		si: "Ni podatkov od",
 		fi: "Mitään tietoa ei ole",
 		sv: "Ingen data sedan",
-		pt: "Sem dados desde"
+		pt: "Sem dados desde",
+		ca: "Sense dades des de"
 	},
 	statusDataAt: {
 		en: "Latest data received at",
@@ -422,7 +444,8 @@ var dict = {
 		si: "Najnovejši podatki, prejeti ob",
 		fi: "Viimeisimmät tiedot vastaanotettu",
 		sv: "Senaste uppdatering vid kl.",
-		pt: "Últimos dados recebidos em"
+		pt: "Últimos dados recebidos em",
+		ca: "Últimes dades rebudes:"
 	},
 	statusDescription: {
 		en: "Green: New data collected from server.\nGrey: Data on server hasn't changed.\nYellow: Some error during data collection from server.\nRed: No data able to be collected from server.",
@@ -437,10 +460,11 @@ var dict = {
 		nb: "Grønn: Ny infomasjon er hentet fra værstasjon.\nGrå: Ingen forandringer.\nGul: Noen feil under datainnsamling fra værstasjon.\nRød: Ikke mulig å samle inn ny data fra værstasjon.",
 		bg: "Зелена: Нови данни, събрани от сървъра.\nЧаст: Данните на сървъра не са се променили.\nНапред: Някои грешки при събирането на данни от сървъра.\nчервен: Няма данни, които да се събират от сървъра.",
 		cs: "Zelená: nová data shromážděná ze serveru.\nŠedá: Údaje na serveru se nezměnily.\nŽlutá: Některé chyby při sběru dat ze serveru.\nČervená: Žádné údaje nemohou být shromážděny ze serveru.",
-		si: "Zelena: novi podatki, zbrani s strežnika. \ nSiva: Podatki na strežniku se niso spremenili. \ nRumena: Nekatere napake med zbiranjem podatkov s strežnika. \ nRdeča: Ni podatkov, ki bi jih bilo mogoče uporabiti s strežnika.",
+		si: "Zelena: novi podatki, zbrani s strežnika. \nSiva: Podatki na strežniku se niso spremenili. \nRumena: Nekatere napake med zbiranjem podatkov s strežnika. \nRdeča: Ni podatkov, ki bi jih bilo mogoče uporabiti s strežnika.",
 		fi: "Verde: Uusi data päivitetty serveriin.\nVerde: datele de pe server nu s-au schimbat. \nGalben: Unele erori în timpul colectării de date de pe server.\nRosu: Nu există date care să poată fi colectate de pe server.",
 		sv: "Grön: Ny data mottagen från servern. \nGrå: Ingen ändring av mottagen data från servern. \nGul: Fel uppstod vid hämtning av data från servern.\nRöd: Ingen data tillgänglig från servern.",
-		pt: "Verde: Novos dados recolhidos do servidor.\nCinzento: Dados do servidor não alterados.\nAmarelo: Alguns erros durante a recolha de dados do servidor.\nVermelho: Não foi possível recolher dados do servidor."
+		pt: "Verde: Novos dados recolhidos do servidor.\nCinzento: Dados do servidor não alterados.\nAmarelo: Alguns erros durante a recolha de dados do servidor.\nVermelho: Não foi possível recolher dados do servidor.",
+		ca: "Vert: dades noves recopilades del servidor.\nGris: les dades del servidor no han canviat.\nGroc: alguns errors durant la recopilació de dades del servidor.\nVermell: no es poden recopilar dades del servidor."
 	},
 	rainfallTitle: {
 		en: "Rainfall",
@@ -458,7 +482,8 @@ var dict = {
 		si: "Padavine",
 		fi: "Sademäärä",
 		sv: "Nederbörd",
-		pt: "Pluviosidade"
+		pt: "Pluviosidade",
+		ca: "Pluja"
 	},
 	rainfallDailyTitle: {
 		en: "Daily",
@@ -476,7 +501,8 @@ var dict = {
 		si: "Dnevno",
 		fi: "Päivittäin",
 		sv: "Daglig",
-		pt: "Diária"
+		pt: "Diária",
+		ca: "Diari"
 	},
 	rainfallMonthlyTitle: {
 		en: "Monthly",
@@ -494,7 +520,8 @@ var dict = {
 		si: "Mesečno",
 		fi: "Kuukausittain",
 		sv: "Månatligt",
-		pt: "Mensal"
+		pt: "Mensal",
+		ca: "Mensual"
 	},
 	rainfallAnnualTitle: {
 		en: "Annual",
@@ -512,7 +539,8 @@ var dict = {
 		si: "Letno",
 		fi: "Varsinainen",
 		sv: "Årlig",
-		pt: "Anual"
+		pt: "Anual",
+		ca: "Anual"
 	},
 	uvTitle: {
 		en: "UV",
@@ -529,7 +557,8 @@ var dict = {
 		si: "UV",
 		fi: "UV",
 		sv: "UV",
-		pt: "UV"
+		pt: "UV",
+		ca: "UV"
 	},
 	uvDescription: {
 		en: "The intensity of UV radiation - 0-2 is minimal risk of skin damage whilst 8+ is very high.",
@@ -547,7 +576,8 @@ var dict = {
 		si: "Intenzivnost UV sevanja - 0-2 je minimalna nevarnost poškodb kože, medtem ko je 8 + zelo visoka.",
 		fi: "UV-säteilyn intensiteetti - 0-2 on vähäinen ihon vaurioituminen kun taas 8+ on erittäin korkea.",
 		sv: "Intensiteten av UV-strålningen. 0-2 = minimal risk för hudskador. Medan 8+ betyder hög risk för hudskador.",
-		pt: "Intensidade de radiação Ultravioleta - 0 a 2 o risco de danos na pele é mínimo enquanto que mais de 8 é muito alto."
+		pt: "Intensidade de radiação Ultravioleta - 0 a 2 o risco de danos na pele é mínimo enquanto que mais de 8 é muito alto.",
+		ca: "La intensitat de la radiació UV - 0-2 és un risc mínim de dany a la pell, mentre que 8+ és molt alta."
 	},
 	windDirectionLabelN: {
 		en: "N",
@@ -565,7 +595,8 @@ var dict = {
 		si: "S",
 		fi: "Pohjoinen",
 		sv: "N",
-		pt: "N"
+		pt: "N",
+		ca: "N"
 	},
 	windDirectionLabelNE: {
 		en: "NE",
@@ -583,7 +614,8 @@ var dict = {
 		si: "SV",
 		fi: "Koillinen",
 		sv: "NO",
-		pt: "NE"
+		pt: "NE",
+		ca: "NE"
 	},
 	windDirectionLabelE: {
 		en: "E",
@@ -601,7 +633,8 @@ var dict = {
 		si: "V",
 		fi: "Itä",
 		sv: "Ö",
-		pt: "E"
+		pt: "E",
+		ca: "E"
 	},
 	windDirectionLabelSE: {
 		en: "SE",
@@ -619,7 +652,8 @@ var dict = {
 		si: "JV",
 		fi: "Kaakko",
 		sv: "SO",
-		pt: "SE"
+		pt: "SE",
+		ca: "SE"
 	},
 	windDirectionLabelS: {
 		en: "S",
@@ -637,7 +671,8 @@ var dict = {
 		si: "J",
 		fi: "Etelä",
 		sv: "S",
-		pt: "S"
+		pt: "S",
+		ca: "S"
 	},
 	windDirectionLabelSW: {
 		en: "SW",
@@ -655,7 +690,8 @@ var dict = {
 		si: "JZ",
 		fi: "Lounas",
 		sv: "SV",
-		pt: "SO"
+		pt: "SO",
+		ca: "SO"
 	},
 	windDirectionLabelW: {
 		en: "W",
@@ -673,7 +709,8 @@ var dict = {
 		si: "Z",
 		fi: "Länsi",
 		sv: "V",
-		pt: "O"
+		pt: "O",
+		ca: "O"
 	},
 	windDirectionLabelNW: {
 		en: "NW",
@@ -691,7 +728,8 @@ var dict = {
 		si: "SZ",
 		fi: "Luode",
 		sv: "NV",
-		pt: "NO"
+		pt: "NO",
+		ca: "NO"
 	},
 	windDirectionDescription: {
 		en: "The wind direction. Green arrow indicates average wind direction.",
@@ -709,7 +747,8 @@ var dict = {
 		si: "Smer vetra. Zelena puščica označuje povprečno smer vetra.",
 		fi: "Tuulen suunta. Vihreä nuoli osoittaa keskimääräisen tuulen suunnan.",
 		sv: "Vindriktning. Grön pil anger genomsnittlig vindrikting.",
-		pt: "A direção do vento. A seta verde indica a direção do vento média."
+		pt: "A direção do vento. A seta verde indica a direção do vento média.",
+		ca: "La direcció del vent. La fletxa verda indica la direcció mitjana del vent."
 	},
 	windSpeedMax: {
 		en: "max",
@@ -727,7 +766,8 @@ var dict = {
 		si: "max",
 		fi: "max",
 		sv: "Max",
-		pt: "max"
+		pt: "max",
+		ca: "màx"
 	},
 	windSpeedTitle: {
 		en: "Wind Speed",
@@ -745,7 +785,8 @@ var dict = {
 		si: "Hitrost vetra",
 		fi: "Tuulen nopeus",
 		sv: "Vindhastighet",
-		pt: "Velocidade Vento"
+		pt: "Velocidade Vento",
+		ca: "Velocitat del vent"
 	},
 	windSpeedWind: {
 		en: "Wind",
@@ -763,7 +804,8 @@ var dict = {
 		si: "Veter",
 		fi: "Tuuli",
 		sv: "Vind",
-		pt: "Vento"
+		pt: "Vento",
+		ca: "Vent"
 	},
 	windSpeedGust: {
 		en: "Gust",
@@ -781,7 +823,8 @@ var dict = {
 		si: "Sunek",
 		fi: "Puuska",
 		sv: "Byighet",
-		pt: "Rajada"
+		pt: "Rajada",
+		ca: "Cop"
 	},
 	windSpeedAverage: {
 		en: "Average",
@@ -799,7 +842,8 @@ var dict = {
 		si: "Povprečno",
 		fi: "Keskiarvo",
 		sv: "Genomsnittlig",
-		pt: "Média"
+		pt: "Média",
+		ca: "Mitjana"
 	},
 	windSpeedDescription: {
 		en: "Green bar indicates average wind speed.\nPurple bar indicates gust speed.",
@@ -814,10 +858,11 @@ var dict = {
 		nb: "Grønn: Indikerer gjennomsnittlig vindhastighet.\nLilla: indikerer vindhastighet akuratt nå (vindkast).",
 		bg: "Зелената лента показва средната.\nпурпурен скорост на вятъра.",
 		cs: "Zelená čára označuje průměrnou rychlost větru.\nKurzní lišta označuje rychlost poryvu.",
-		si: "Zelena vrstica označuje povprečno hitrost vetra. \ nVijolična vrstica označuje sunek vetra.",
-		fi: "Vihreä palkki ilmaisee keskimääräisen tuulen nopeuden. \ NLila-palkki ilmaisee puuskan nopeuden.",
+		si: "Zelena vrstica označuje povprečno hitrost vetra. \nVijolična vrstica označuje sunek vetra.",
+		fi: "Vihreä palkki ilmaisee keskimääräisen tuulen nopeuden. \nNLila-palkki ilmaisee puuskan nopeuden.",
 		sv: "Grön stapel indikerar genomsnittlig vind. \nLila stapel indikerar vindbyar.",
-		pt: "A barra verde indica a velocidade do vento média.\nA barra roxa indica a velocidade da rajada."
+		pt: "A barra verde indica a velocidade do vento média.\nA barra roxa indica a velocidade da rajada.",
+		ca: "La barra verda indica la velocitat mitjana del vent.\nporpra indica la velocitat del cop."
 	},
 	recordsHighTemp: {
 		en: "Highest temperature",
@@ -835,7 +880,8 @@ var dict = {
 		si: "Najvišja temperatura",
 		fi: "Korkein lämpötila",
 		sv: "Högsta temperatur",
-		pt: "Temperatura mais alta"
+		pt: "Temperatura mais alta",
+		ca: "Temperatura més alta"
 	},
 	recordsLowTemp: {
 		en: "Lowest temperature",
@@ -853,7 +899,8 @@ var dict = {
 		si: "Najnižja temperatura",
 		fi: "Matalin lämpötila",
 		sv: "Lägsta temperatur",
-		pt: "Temperatura mais baixa"
+		pt: "Temperatura mais baixa",
+		ca: "Temperatura més baixa"
 	},
 	recordsHighGust: {
 		en: "Highest gust",
@@ -871,7 +918,8 @@ var dict = {
 		si: "Najvišji sunek",
 		fi: "Korkein puuska",
 		sv: "Högsta byighet",
-		pt: "Rajada máxima"
+		pt: "Rajada máxima",
+		ca: "Cop màxim"
 	},
 	recordsHighRainRate: {
 		en: "Highest rain rate",
@@ -889,7 +937,8 @@ var dict = {
 		si: "Jakost padavin",
 		fi: "Korkein sademäärä",
 		sv: "Största regnmängden",
-		pt: "Pluviosidade máxima"
+		pt: "Pluviosidade máxima",
+		ca: "Intensitat de pluja més alta"
 	},
 	recordsLowBaro: {
 		en: "Lowest barometer",
@@ -907,7 +956,8 @@ var dict = {
 		si: "Najnižji pritisk",
 		fi: "Matalin barometri",
 		sv: "Lägsta lufttryck",
-		pt: "Pressão atmosférica mínima"
+		pt: "Pressão atmosférica mínima",
+		ca: "Baròmetre más baix"
 	},
 	recordsHighBaro: {
 		en: "Highest barometer",
@@ -925,7 +975,8 @@ var dict = {
 		si: "Najvišji pritisk",
 		fi: "KOrkein barometri",
 		sv: "Högsta lufttryck",
-		pt: "Pressão atmosférica máxima"
+		pt: "Pressão atmosférica máxima",
+		ca: "Baròmetre més alt"
 	},
 	recordsHighRainRateDaily: {
 		en: "Highest daily rainfall",
@@ -943,7 +994,8 @@ var dict = {
 		si: "Najvišja dnevna jakost padavin",
 		fi: "Korkein päivittäinen sademäärä",
 		sv: "Högsta dagliga regnmängd",
-		pt: "Pluviosidade máxima diária"
+		pt: "Pluviosidade máxima diária",
+		ca: "Pluja màxima diària"
 	},
 	recordsHighRainRateHourly: {
 		en: "Highest hourly rainfall",
@@ -961,7 +1013,8 @@ var dict = {
 		si: "Najvišja jakost padavin na uro",
 		fi: "Korkein sademäärä tunneittain",
 		sv: "Högsta regnmängd per timme",
-		pt: "Pluviosidade máxima em 1 hora"
+		pt: "Pluviosidade máxima em 1 hora",
+		ca: "Màxima precipitació per hora"
 	},
 	recordsHighAverageWind: {
 		en: "Highest average wind speed",
@@ -979,7 +1032,8 @@ var dict = {
 		si: "Najvišja povprečna hitrost vetra",
 		fi: "Suurin keskimääräinen tuulen nopeus",
 		sv: "Högsta genomsnittliga vindhastighet",
-		pt: "Máxima velocidade do vento média"
+		pt: "Máxima velocidade do vento média",
+		ca: "Velocitat mitjana del vent més alta"
 	},
 	recordsLowWindChill: {
 		en: "Lowest wind chill",
@@ -997,7 +1051,8 @@ var dict = {
 		si: "Najnižji občutek temperature",
 		fi: "Alin tuulenpuuska",
 		sv: "Lägsta köldindex",
-		pt: "Mínimo índice de frio"
+		pt: "Mínimo índice de frio",
+		ca: "Sensació mínima"
 	},
 	recordsWarmestDay: {
 		en: "Warmest day",
@@ -1015,7 +1070,8 @@ var dict = {
 		si: "Najtoplejši dan",
 		fi: "Lämpimin päivä",
 		sv: "Varmaste dagen",
-		pt: "Dia mais quente"
+		pt: "Dia mais quente",
+		ca: "Dia més calurós"
 	},
 	recordsColdestNight: {
 		en: "Coldest night",
@@ -1033,7 +1089,8 @@ var dict = {
 		si: "Najtoplejša noč",
 		fi: "Kylmin yö",
 		sv: "Kallaste natten",
-		pt: "Noite mais fria"
+		pt: "Noite mais fria",
+		ca: "Nit més freda"
 	},
 	recordsColdestDay: {
 		en: "Coldest day",
@@ -1051,7 +1108,8 @@ var dict = {
 		si: "Najbolj mrzel dan",
 		fi: "Kylmin päivä",
 		sv: "Kallaste dagen",
-		pt: "Dia mais frio"
+		pt: "Dia mais frio",
+		ca: "Dia més fred"
 	},
 	recordsWarmestNight: {
 		en: "Warmest night",
@@ -1069,7 +1127,8 @@ var dict = {
 		si: "Najtoplejša noč",
 		fi: "Lämpimin yö",
 		sv: "Varmaste natten",
-		pt: "Noite mais quente"
+		pt: "Noite mais quente",
+		ca: "Nit més calurosa"
 	},
 	recordsHighHeatIndex: {
 		en: "Highest heat index",
@@ -1087,7 +1146,8 @@ var dict = {
 		si: "Najvišji toplotni indeks",
 		fi: "Suurin lämpöindeksi",
 		sv: "Högsta värmeindex",
-		pt: "Máximo índice de calor"
+		pt: "Máximo índice de calor",
+		ca: "Xafogor màxima"
 	},
 	recordsHighSolar: {
 		en: "Highest solar",
@@ -1105,7 +1165,8 @@ var dict = {
 		si: "Najvišje izžarevanje sonca",
 		fi: "Aurinko korkeimmillaan",
 		sv: "Högsta solinstrålningen",
-		pt: "Máximo radiação solar"
+		pt: "Máximo radiação solar",
+		ca: "Radiació solar màxima"
 	},
 	recordsHighUV: {
 		en: "Highest uv index",
@@ -1123,7 +1184,8 @@ var dict = {
 		si: " Najvišji UV",
 		fi: "Korkein uv indeksi",
 		sv: "Högsta UV-index",
-		pt: "Máximo índice UV"
+		pt: "Máximo índice UV",
+		ca: "Index UV màxim"
 	},
 	recordsHighDewPoint: {
 		en: "Highest dew point",
@@ -1141,7 +1203,8 @@ var dict = {
 		si: "Najvišja točka rosišča",
 		fi: "Korkein kastepiste",
 		sv: "Högsta daggpunkten",
-		pt: "Ponto de Orvalho máximo"
+		pt: "Ponto de Orvalho máximo",
+		ca: "Punt de rosada màxim"
 	},
 	recordsLowDewPoint: {
 		en: "Lowest dew point",
@@ -1159,7 +1222,8 @@ var dict = {
 		si: "Najnižja točka rosišča",
 		fi: "Matalin kastepiste",
 		sv: "Lägsta daggpunkten",
-		pt: "Ponto de orvalho mínimo"
+		pt: "Ponto de orvalho mínimo",
+		ca: "Punt de rosada màxim"
 	},
 	forcastShowMore: {
 		en: "Show More",
@@ -1177,7 +1241,8 @@ var dict = {
 		si: "Pokaži več",
 		fi: "Näytä lisää",
 		sv: "Visa mer",
-		pt: "Ver mais"
+		pt: "Ver mais",
+		ca: "Mostrar-ne més"
 	},
 	graphMax: {
 		en: "Max",
@@ -1195,7 +1260,8 @@ var dict = {
 		si: "Max",
 		fi: "Max",
 		sv: "Max",
-		pt: "Max"
+		pt: "Max",
+		ca: "Màx"
 	},
 	graphMin: {
 		en: "Min",
@@ -1213,11 +1279,12 @@ var dict = {
 		si: "Min",
 		fi: "Min",
 		sv: "Min",
-		pt: "Min"
+		pt: "Min",
+		ca: "Mín"
 	},
 	graphLast: {
 		//NOTE: these are used as in: Last XX days, or Last XX Hours, etc.en: "Last",
-        en: "Last",
+		en: "Last",
 		de: "Letzte",
 		nl: "Laatste",
 		da: "Sidste",
@@ -1232,7 +1299,8 @@ var dict = {
 		si: "Zadnjih",
 		fi: "Viimeisin",
 		sv: "Sista",
-		pt: "Últimos(as)"
+		pt: "Últimos(as)",
+		ca: "Últimes"
 	},
 	graphDays: {
 		en: "Days",
@@ -1250,7 +1318,8 @@ var dict = {
 		si: "Dni",
 		fi: "Päivät",
 		sv: "Dagarna",
-		pt: "Dias"
+		pt: "Dias",
+		ca: "Dies"
 	},
 	graphHours: {
 		en: "Hours",
@@ -1268,7 +1337,8 @@ var dict = {
 		si: "Ure",
 		fi: "Tunnit",
 		sv: "Timmarna",
-		pt: "Horas"
+		pt: "Horas",
+		ca: "Hores"
 	},
 	graphHour: {
 		en: "Hour",
@@ -1286,7 +1356,8 @@ var dict = {
 		si: "Ura",
 		fi: "Tunti",
 		sv: "Timme",
-		pt: "Hora"
+		pt: "Hora",
+		ca: "Hora"
 	},
 	graphMonths: {
 		en: "Months",
@@ -1304,7 +1375,8 @@ var dict = {
 		si: "Mesecev",
 		fi: "Kuukaudet",
 		sv: "Månader",
-		pt: "Meses"
+		pt: "Meses",
+		ca: "Mesos"
 	},
 	graphBaroLabel: {
 		en: "Pressure",
@@ -1322,7 +1394,8 @@ var dict = {
 		si: "Pritisk",
 		fi: "Paine",
 		sv: "Lufttryck",
-		pt: "Pressão"
+		pt: "Pressão",
+		ca: "Pressió"
 	},
 	graphHumidityLabel: {
 		en: "Percent",
@@ -1340,7 +1413,8 @@ var dict = {
 		si: "Procent",
 		fi: "Prosentti",
 		sv: "Procent",
-		pt: "Percentagem"
+		pt: "Percentagem",
+		ca: "Percentatge"
 	},
 	graphSolarLabel: {
 		en: "Irradiance",
@@ -1358,7 +1432,8 @@ var dict = {
 		si: "Obsevanje",
 		fi: "Säteilyvoimakkuus",
 		sv: "Solstrålning",
-		pt: "Irradiância"
+		pt: "Irradiância",
+		ca: "Radiació"
 	},
 	graphLabelUV: {
 		en: "Index",
@@ -1376,7 +1451,8 @@ var dict = {
 		si: "Indeks",
 		fi: "Indeksi",
 		sv: "Index",
-		pt: "Índice"
+		pt: "Índice",
+		ca: "Index"
 	},
 	graphLabelWindDirection: {
 		en: "Wind Direction",
@@ -1394,7 +1470,8 @@ var dict = {
 		si: "Smer vetra",
 		fi: "Tuulen suunta",
 		sv: "Vindriktning",
-		pt: "Direção do vento"
+		pt: "Direção do vento",
+		ca: "Direcció del vent"
 	},
 	buttonLabelGraphs: {
 		en: "Graphs",
@@ -1412,7 +1489,8 @@ var dict = {
 		si: "Graf",
 		fi: "Käyrät",
 		sv: "Grafer",
-		pt: "Gráficos"
+		pt: "Gráficos",
+		ca: "Gràfics"
 	},
 	buttonLabelRecords: {
 		en: "Records",
@@ -1423,14 +1501,15 @@ var dict = {
 		fr: "Records",
 		gr: "Εγγραφές",
 		it: "Records",
-		es: "Archivos",
+		es: "Récords",
 		nb: "Rekorder",
 		bg: "Pекорд",
 		cs: "Evidence",
 		si: "Rekordi",
 		fi: "Arkisto",
 		sv: "Rekord",
-		pt: "Registos"
+		pt: "Registos",
+		ca: "Rècords"
 	},
 	buttonLabelAltitude: {
 		en: "Altitude",
@@ -1448,7 +1527,8 @@ var dict = {
 		si: "Nadmorska višina",
 		fi: "Korkeus",
 		sv: "Höjd",
-		pt: "Altitude"
+		pt: "Altitude",
+		ca: "Altitud"
 	},
 	recordsForMonth: {
 		en: "Records for this month",
@@ -1466,7 +1546,8 @@ var dict = {
 		si: "Rekordi za ta mesec",
 		fi: "Tallenteet tässä kuussa",
 		sv: "Rekordet denna månad",
-		pt: "Registos deste mês"
+		pt: "Registos deste mês",
+		ca: "Registres d'aquest mes"
 	},
 	recordsForYear: {
 		en: "Records for this year",
@@ -1484,7 +1565,8 @@ var dict = {
 		si: "Rekordi za to leto",
 		fi: "Tallenteet tälle vuodelle",
 		sv: " Rekordet för detta år",
-		pt: "Registos deste ano"
+		pt: "Registos deste ano",
+		ca: "Registres d'aquest any"
 	},
 	recordsAllTime: {
 		en: "All time records",
@@ -1502,7 +1584,8 @@ var dict = {
 		si: "Rekordi (all time)",
 		fi: "Kaikki tallenteet",
 		sv: "Högsta rekordet någonsin",
-		pt: "Registos históricos"
+		pt: "Registos históricos",
+		ca: "Registres de tots els temps"
 	},
 	forecastTitle: {
 		en: "Forecast",
@@ -1520,7 +1603,8 @@ var dict = {
 		si: "Napoved",
 		fi: "Ennuste",
 		sv: "Prognos",
-		pt: "Previsão"
+		pt: "Previsão",
+		ca: "Predicció"
 	},
 	heatIndexTitle: {
 		en: "Heat Index",
@@ -1538,7 +1622,8 @@ var dict = {
 		si: "Toplotni indeks",
 		fi: "Lämpöindeksi",
 		sv: "Värmeindex",
-		pt: "Índice de calor"
+		pt: "Índice de calor",
+		ca: "Xafogor"
 	},
 	heatIndexDescription: {
 		en: "How hot it really feels when relative humidity is factored with the actual air temperature.",
@@ -1556,7 +1641,8 @@ var dict = {
 		si: "Občutek vročine, ko je relativna vlažnost upoštevana z dejansko temperaturo zraka.",
 		fi: "Kuinka kuumalta se todella tuntuu kun suhteellinen kosteus otetaan huomioon todellisen ilman lämpötilan suhteen.",
 		sv: "Hur varmt det känns när relativa fuktigheten kombineras med aktuell temperatur.",
-		pt: "Temperatura percetível. Calculado combinando a temperatura e humidade relativa."
+		pt: "Temperatura percetível. Calculado combinando a temperatura e humidade relativa.",
+		ca: "El calor que realment se sent quan la humitat relativa es relaciona amb la temperatura de l'aire."
 	},
 	beaufortScaleTitle: {
 		en: "Beaufort Scale",
@@ -1564,7 +1650,8 @@ var dict = {
 		nb: "Beaufort Skala",
 		si: "Boforjeva lestvica",
 		sv: "Beaufort skalan",
-		pt: "Escala de Beaufort"
+		pt: "Escala de Beaufort",
+		ca: "Escala de Beaufort"
 	}
 };
 
