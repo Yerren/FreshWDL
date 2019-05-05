@@ -563,7 +563,7 @@ function setUpTemp01() {
     //Set up fill circle
     tempBar01.roundBotFill = new createjs.Shape();
 	tempBar01.roundBotFill.snapToPixel = true;
-	tempBar01.roundBotFill.graphics.beginFill("rgb(255, 221, 37)");
+	tempBar01.roundBotFill.graphics.beginFill("rgb(255, 37, 37)");
     tempBar01.roundBotFill.graphics.setStrokeStyle(0);
 	tempBar01.circFillCommand = tempBar01.roundBotFill.graphics.drawCircle(0, 0, 0).command;
 	tempBar01.stage.addChild(tempBar01.roundBotFill);
@@ -571,7 +571,7 @@ function setUpTemp01() {
     //Set up fill rectange
     tempBar01.roundRectFillTop = new createjs.Shape();
 	tempBar01.roundRectFillTop.snapToPixel = true;
-	tempBar01.roundRectFillTop.graphics.beginFill("rgb(255, 221, 37)");
+	tempBar01.roundRectFillTop.graphics.beginFill("rgb(255, 37, 37)");
     tempBar01.roundRectFillTop.graphics.setStrokeStyle(0);
 	tempBar01.rectFillCommand = tempBar01.roundRectFillTop.graphics.drawRoundRect(0, 0, 0, 0, 0).command;
 	tempBar01.stage.addChild(tempBar01.roundRectFillTop);
@@ -2211,7 +2211,7 @@ function setUpWC01() {
     //Set up fill circle
     windchill01.roundBotFill = new createjs.Shape();
 	windchill01.roundBotFill.snapToPixel = true;
-	windchill01.roundBotFill.graphics.beginFill("rgb(255, 221, 37)");
+	windchill01.roundBotFill.graphics.beginFill("rgb(255, 37, 37)");
     windchill01.roundBotFill.graphics.setStrokeStyle(0);
 	windchill01.circFillCommand = windchill01.roundBotFill.graphics.drawCircle(0, 0, 0).command;
 	windchill01.stage.addChild(windchill01.roundBotFill);
@@ -2219,7 +2219,7 @@ function setUpWC01() {
     //Set up fill rectange
     windchill01.roundRectFillTop = new createjs.Shape();
 	windchill01.roundRectFillTop.snapToPixel = true;
-	windchill01.roundRectFillTop.graphics.beginFill("rgb(255, 221, 37)");
+	windchill01.roundRectFillTop.graphics.beginFill("rgb(255, 37, 37)");
     windchill01.roundRectFillTop.graphics.setStrokeStyle(0);
 	windchill01.rectFillCommand = windchill01.roundRectFillTop.graphics.drawRoundRect(0, 0, 0, 0, 0).command;
 	windchill01.stage.addChild(windchill01.roundRectFillTop);
@@ -5872,7 +5872,7 @@ function updateTweensWS01() {
     var beaufortSpeed = calculateBeaufort(windSpeed.values.speedOrigional);
     windSpeed.textDisplayBeaufort.text = useDict("beaufortScaleTitle") + ": " + beaufortSpeed.toString();
     
-    var colour = makeColorGradient(.42,.42,.42,0,2,4,10 + beaufortSpeed);
+    var colour = makeColorGradient(.42,.42,.42,1,0,4,10 + beaufortSpeed);
     windSpeed.textDisplayBeaufort.color = "rgb(" + colour[0] + "," + colour[1] + "," + colour[2] + ")";
     
 }
@@ -6753,7 +6753,7 @@ function resizeDivFor01() {
     
     width = width.toString() + "px";
     height = height.toString() + "px";
-    stlyeString = "width:" + width.toString() + ";height:" + height.toString();
+    stlyeString = "background: #F6F6F6;text-align: center;width:" + width.toString() + ";height:" + height.toString();
     
     forecast.displayDiv.setAttribute("style", stlyeString.toString());
     //For browser compadibility

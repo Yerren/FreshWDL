@@ -694,7 +694,7 @@ var dict = {
 		pt: "NO"
 	},
 	windDirectionDescription: {
-		en: "The wind direction. Green arrow indicates average wind direction.",
+		en: "The wind direction. Blue arrow indicates average wind direction.",
 		de: "Die Windrichtung. Der grüne Pfeil zeigt die durchschnittliche Windrichtung an.",
 		nl: "De windrichting. De groene pijl geeft de gemiddelde windrichting aan.",
 		da: "Vindretning. Grøn pil angiver den gennemsnitlige vindretning.",
@@ -705,7 +705,7 @@ var dict = {
 		es: "La dirección del viento. La flecha verde indica la dirección promedio del viento.",
 		nb: "Vindretningen. Grønn pil indikerer gjennomsnittlig vindretning.",
 		bg: "Посоката на вятъра. Зелената стрелка показва средната посока на вятъра.",
-		cs: "The wind direction. Green arrow indicates average wind direction.",
+		cs: "The wind direction. Blue arrow indicates average wind direction.",
 		si: "Smer vetra. Zelena puščica označuje povprečno smer vetra.",
 		fi: "Tuulen suunta. Vihreä nuoli osoittaa keskimääräisen tuulen suunnan.",
 		sv: "Vindriktning. Grön pil anger genomsnittlig vindrikting.",
@@ -748,7 +748,7 @@ var dict = {
 		pt: "Velocidade Vento"
 	},
 	windSpeedWind: {
-		en: "Wind",
+		en: "Wind \nAvg",
 		de: "Wind",
 		nl: "Wind",
 		da: "Vind",
@@ -802,7 +802,7 @@ var dict = {
 		pt: "Média"
 	},
 	windSpeedDescription: {
-		en: "Green bar indicates average wind speed.\nPurple bar indicates gust speed.",
+		en: "Blue bar indicates average wind speed.\nPurple bar indicates gust speed.",
 		de: "Grüner Balken zeigt die durchschnittliche Windgeschwindigkeit an.\nvioletter Balken zeigt die Böengeschwindigkeit an.",
 		nl: "Groene balk geeft de gemiddelde windsnelheid aan. \nPaarse balk geeft de windsnelheid in vlagen aan.",
 		da: "Grøn bjælke angiver middelvind.\nLilla bjælke angiver vindstød.",
@@ -1588,13 +1588,13 @@ function useDict(wordIn) {
 //Customizables
 var globalFontFamily = "Arial", //The font used throughout the page
     colour = {
-        barometer: "40, 104, 206",
+        barometer: "0, 250, 255",
         rainfall: "0, 71, 183",
-        wind: "23, 145, 27",
-        windGust: "188, 0, 255",
+        wind: "88, 130, 226",
+        windGust: "137, 79, 255",
         humidity: "16, 217, 244",
         solar: "245, 193, 18",
-        temp: "209, 32, 32",
+        temp: "255, 37, 37",
         tempLow: "0, 50, 200",
         uv: "234, 242, 45"
     },
