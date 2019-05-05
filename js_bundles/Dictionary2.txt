@@ -1,3 +1,4 @@
+//Dictionary
 var dict = {
     apparentTitle: {
         en: "Apparent",
@@ -8,7 +9,7 @@ var dict = {
         gr: "Εμφανής",
         it: "Apparente",
         es: "Aparente",
-        no: "Tilsynelatende",
+        nb: "Tilsynelatende",
         bg: "Видима",
         cs: "Zdánlivý"
         
@@ -22,7 +23,7 @@ var dict = {
 		gr: "Θεωρημένη θερμοκρασία με βάση τη θερμοκρασία, την υγρασία, τον ήλιο και τον άνεμο.",
 		it: "Temperatura percepita basata su temperatura, umidità, sole e vento.",
 		es: "Temperatura percibida en función de la temperatura, la humedad, el sol y el viento.",
-		no: "Oppfattet temperatur basert på temperatur, fuktighet, sol og vind.",
+		nb: "Oppfattet temperatur basert på temperatur, fuktighet, sol og vind.",
 		bg: "Възприемана температура, базирана на температура, влажност, слънце и вятър.",
 		cs: "Vnímaná teplota na základě teploty, vlhkosti, slunce a větru."
     },
@@ -35,7 +36,7 @@ var dict = {
 		gr: "Θερμοκρασία",
 		it: "Temperatura",
 		es: "Temperatura",
-		no: "Temperatur",
+		nb: "Temperatur",
 		bg: "Температура",
 		cs: "Teplota"
     },
@@ -48,7 +49,7 @@ var dict = {
 		gr: "Τρέχουσα θερμοκρασία αέρα.\nΜπλε: Χαμηλή ημερήσια θερμοκρασία.\nκόκκινος: Υψηλή ημερήσια θερμοκρασία.",
 		it: "Temperatura dell'aria attuale.\nBlu: temperatura giornaliera bassa.\nRosso: temperatura giornaliera elevata.",
 		es: "Temperatura del aire actual.\nAzul: temperatura diaria minima.\nRojo: temperatura diaria máxima.",
-		no: "Nåværende lufttemperatur.\nBlå: Lav daglig temperatur.\nRød: Høy daglig temperatur.",
+		nb: "Gjeldene temperatur.\nBlå: Lavest måling i dag.\nRød: Høyest måling i dag.",
 		bg: "Текуща температура на въздуха.\nБлок: Ниска дневна температура.\nРед: Висока дневна температура.",
 		cs: "Aktuální teplota vzduchu.\nModrá: Nízká denní teplota.\nČervené: Vysoká denní teplota."
     },
@@ -61,7 +62,7 @@ var dict = {
 		gr: "Σταθερά",
 		it: "Costante",
 		es: "Estable",
-		no: "Stabil",
+		nb: "Stabil",
 		bg: "Спокойно",
 		cs: "Stabilní"
     },
@@ -74,7 +75,7 @@ var dict = {
 		gr: "Τιμή",
 		it: "Vota",
 		es: "Velocidad",
-		no: "Intensitet",
+		nb: "Endring",
 		bg: "Норма",
 		cs: "Hodnotit"
     },
@@ -87,7 +88,7 @@ var dict = {
 		gr: "Βαρόμετρο",
 		it: "Barometro",
 		es: "Barometro",
-		no: "Barometer",
+		nb: "Barometer",
 		bg: "Барометър",
 		cs: "Barometr"
     },
@@ -100,7 +101,7 @@ var dict = {
 		gr: "Το βάρος του αέρα, προσαρμοσμένο στο υψόμετρο του σταθμού.",
 		it: "Il peso dell'aria, regolato per l'altitudine della stazione.",
 		es: "El peso del aire, ajustado para la altitud de la estación.",
-		no: "Vekten av luften, justert for stasjonens høyde.",
+		nb: "Vekten av luften, justert for stasjonens høyde.",
 		bg: "Тежестта на въздуха, коригирана спрямо височината на станцията.",
 		cs: "Hmotnost vzduchu, přizpůsobená výšce stanice."
     },
@@ -113,7 +114,7 @@ var dict = {
 		gr: "Δείκτης Ψύχρας",
 		it: "Percepita",
 		es: "Escalofríos",
-		no: "Vind faktor",
+		nb: "Vind faktor",
 		bg: "Cилен вятър",
 		cs: "Chlad vítr"
     },
@@ -126,7 +127,7 @@ var dict = {
 		gr: "Πόσο κρύο αισθάνεται πραγματικά. Υπολογίζεται συνδυάζοντας τη θερμότητα και την ταχύτητα του ανέμου.",
 		it: "Come fa veramente freddo, calcolato combinando il calore e la velocità del vento.",
 		es: "Qué frío se siente realmente. Calculado combinando el calor y la velocidad del viento.",
-		no: "Hvor kaldt det faktisk føles. Beregnet ved å kombinere varme og vindhastighet.",
+		nb: "Hvor kaldt det føles. Beregnet ut fra temperatur og vindhastighet.",
 		bg: "Колко студено се чувства, изчислено чрез комбиниране на топлина и скорост на вятъра.",
 		cs: "Jak studené se skutečně cítí. Vypočítá se kombinací tepla a rychlosti větru."
     },
@@ -139,7 +140,7 @@ var dict = {
 		gr: "Υγρασία",
 		it: "Umidità",
 		es: "Humedad",
-		no: "Fuktighet",
+		nb: "Fuktighet",
 		bg: "Влажност",
 		cs: "Vlhkost"
     },
@@ -152,7 +153,7 @@ var dict = {
 		gr: "Η ποσότητα υδρατμών στον αέρα ως ποσοστό της ποσότητας που μπορεί να συγκρατήσει ο αέρας.",
 		it: "La quantità di vapore acqueo nell'aria in percentuale della quantità di aria che è in grado di trattenere.",
 		es: "La cantidad de vapor de agua en el aire como un porcentaje de la cantidad que el aire es capaz de contener.",
-		no: "Mengden vanndamp i luften som en prosentandel av mengden luften er i stand til å holde.",
+		nb: "En prosentandel av mengden vanndamp luften kan holde.",
 		bg: "Количеството водни пари във въздуха като процент от количеството, което въздухът може да държи.",
 		cs: "Množství vodní páry ve vzduchu jako procento množství, které může vzduch držet."
     },
@@ -165,7 +166,7 @@ var dict = {
 		gr: "Ανατολή Ηλίου",
 		it: "Alba",
 		es: "Amanecer",
-		no: "Sol Opgang",
+		nb: "Opp",
 		bg: "Изгрев слънце",
 		cs: "Svítání"
     },
@@ -178,7 +179,7 @@ var dict = {
 		gr: "Δύση Ηλίου",
 		it: "Tramonto",
 		es: "Puesta de sol",
-		no: "Sol Nedgang",
+		nb: "Ned",
 		bg: "Сън комплект",
 		cs: "Západ slunce"
     },
@@ -191,7 +192,7 @@ var dict = {
 		gr: "Φάση",
 		it: "Fase",
 		es: "Fase",
-		no: "Fase",
+		nb: "Fase",
 		bg: "Фаза",
 		cs: "Fáze"
     },
@@ -204,7 +205,7 @@ var dict = {
 		gr: "ηλικία",
 		it: "Età",
 		es: "Edad",
-		no: "Age",
+		nb: "Alder",
 		bg: "Възраст",
 		cs: "Doba"
     },
@@ -217,7 +218,7 @@ var dict = {
 		gr: "Ήλιος",
 		it: "Sole",
 		es: "Sol",
-		no: "Sol",
+		nb: "Sol",
 		bg: "Cлънце",
 		cs: "Slunce"
     },
@@ -230,7 +231,7 @@ var dict = {
 		gr: "Σελήνη",
 		it: "Luna",
 		es: "Luna",
-		no: "Måne",
+		nb: "Måne",
 		bg: "Луна",
 		cs: "Měsíc"
     },
@@ -243,7 +244,7 @@ var dict = {
 		gr: "Ηλιακός",
 		it: "Solare",
 		es: "Solar",
-		no: "Solar",
+		nb: "Solstråling",
 		bg: "Cлънцето",
 		cs: "Sluneční"
     },
@@ -256,7 +257,7 @@ var dict = {
 		gr: "Ώρες Κυρ",
 		it: "Ore di sole",
 		es: "Horas de sol",
-		no: "Søn timer",
+		nb: "Sol timer",
 		bg: "Часове на слънцето",
 		cs: "Hodiny slunce"
     },
@@ -269,7 +270,7 @@ var dict = {
 		gr: "Η ένταση της ακτινοβολίας του ήλιου.",
 		it: "L'intensità della radiazione solare.",
 		es: "La intensidad de la radiación del sol.",
-		no: "Intensiteten av solens stråling.",
+		nb: "Intensiteten av solens stråling.",
 		bg: "Интензивността на слънчевото излъчване.",
 		cs: "Intenzita slunečního záření."
     },
@@ -282,7 +283,7 @@ var dict = {
 		gr: "Δεν υπάρχουν δεδομένα από τότε",
 		it: "Nessun dato da",
 		es: "Sin datos desde",
-		no: "Ingen data siden",
+		nb: "Ingen data siden",
 		bg: "Няма данни оттогава",
 		cs: "Žádné údaje od té doby"
     },
@@ -295,7 +296,7 @@ var dict = {
 		gr: "Τα τελευταία δεδομένα που ελήφθησαν στο",
 		it: "Ultimi dati ricevuti a",
 		es: "Últimos datos recibidos en",
-		no: "Siste data mottatt på",
+		nb: "Sist oppdatert",
 		bg: "Последни данни, получени от",
 		cs: "Nejnovější údaje obdržené na adrese"
     },
@@ -308,7 +309,7 @@ var dict = {
 		gr: "Πράσινο: Νέα δεδομένα που έχουν συλλεχθεί από το διακομιστή.\nγκρί: Τα δεδομένα στο διακομιστή δεν έχουν αλλάξει.\nκίτρινος: Ορισμένα σφάλματα κατά τη συλλογή δεδομένων από το διακομιστή.\nκόκκινος: Δεν υπάρχουν δεδομένα που μπορούν να συλλεχθούν από το διακομιστή.",
 		it: "Verde: nuovi dati raccolti dal server.\nGrigio: i dati sul server non sono cambiati.\nGlialo: alcuni errori durante la raccolta dei dati dal server.\nRosso: nessun dato può essere raccolto dal server.",
 		es: "Verde: datos nuevos recopilados del servidor.\nGris: los datos en el servidor no han cambiado.\nAmarillo: algunos errores durante la recopilación de datos del servidor.\nRojo: no se pueden recopilar datos del servidor.",
-		no: "Grønn: Ny data innsamlet fra serveren.\nGrå: Data på serveren har ikke blitt endret.\nGul: Noen feil under datainnsamling fra serveren.\nRød: Ingen data som kan hentes fra serveren.",
+		nb: "Grønn: Ny infomasjon er hentet fra værstasjon.\nGrå: Ingen forandringer.\nGul: Noen feil under datainnsamling fra værstasjon.\nRød: Ikke mulig å samle inn ny data fra værstasjon.",
 		bg: "Зелена: Нови данни, събрани от сървъра.\nЧаст: Данните на сървъра не са се променили.\nНапред: Някои грешки при събирането на данни от сървъра.\nчервен: Няма данни, които да се събират от сървъра.",
 		cs: "Zelená: nová data shromážděná ze serveru.\nŠedá: Údaje na serveru se nezměnily.\nŽlutá: Některé chyby při sběru dat ze serveru.\nČervená: Žádné údaje nemohou být shromážděny ze serveru."
         
@@ -322,7 +323,7 @@ var dict = {
 		gr: "Βροχή",
 		it: "Precipitazioni",
 		es: "Lluvia",
-		no: "Nedbør",
+		nb: "Nedbør",
 		bg: "Валежите",
 		cs: "Srážky"
     },
@@ -335,7 +336,7 @@ var dict = {
 		gr: "Καθημερινά",
 		it: "Quotidiano",
 		es: "Diario",
-		no: "Daglig",
+		nb: "Dag",
 		bg: "Eжедневно",
 		cs: "Denně"
     },
@@ -348,7 +349,7 @@ var dict = {
 		gr: "Μηνιαίος",
 		it: "Mensile",
 		es: "Mensual",
-        no: "Månedlig",
+        nb: "Måned",
 		bg: "Месечно",
 		cs: "Měsíční"
     },
@@ -361,7 +362,7 @@ var dict = {
 		gr: "Ετήσιος",
 		it: "Annuale",
 		es: "Anual",
-		no: "Årlig",
+		nb: "År",
 		bg: "Годишен",
 		cs: "Roční"
     },
@@ -374,7 +375,7 @@ var dict = {
 		gr: "UV",
 		it: "UV",
 		es: "UV",
-		no: "UV",
+		nb: "UV",
 		bg: "UV",
 		cs: "UV"
     },
@@ -387,7 +388,7 @@ var dict = {
 		gr: "Η ένταση της ακτινοβολίας UV - 0-2 είναι ο ελάχιστος κίνδυνος βλάβης του δέρματος ενώ το 8+ είναι πολύ υψηλό.",
 		it: "L'intensità della radiazione UV - 0-2 è il minimo rischio di danni alla pelle mentre 8+ è molto alta.",
 		es: "La intensidad de la radiación UV - 0-2 es un riesgo mínimo de daño a la piel, mientras que 8+ es muy alta.",
-		no: "Intensiteten til UV-stråling - 0-2 er minimal risiko for hudskade mens 8+ er veldig høy.",
+		nb: "Intensiteten til UV-stråling - 0-2 er minimal risiko for hudskade, mens 8+ er veldig høy.",
 		bg: "Интензитетът на UV радиация - 0-2 е минимален риск от увреждане на кожата, докато 8+ е много висока.",
 		cs: "Intenzita UV záření - 0-2 představuje minimální riziko poškození kůže, zatímco 8+ je velmi vysoké."
     },
@@ -400,7 +401,7 @@ var dict = {
 		gr: "B",
 		it: "N",
 		es: "N",
-		no: "N",
+		nb: "N",
 		bg: "C",
 		cs: "S"
     },
@@ -413,7 +414,7 @@ var dict = {
 		gr: "BA",
 		it: "NE",
 		es: "NE",
-		no: "NØ",
+		nb: "NØ",
 		bg: "CИ",
 		cs: "SV"
     },
@@ -426,7 +427,7 @@ var dict = {
 		gr: "A",
 		it: "E",
 		es: "E",
-		no: "Ø",
+		nb: "Ø",
 		bg: "И",
 		cs: "V"
     },
@@ -439,7 +440,7 @@ var dict = {
 		gr: "NA",
 		it: "SE",
 		es: "SE",
-		no: "SØ",
+		nb: "SØ",
 		bg: "ЮИ",
 		cs: "JV"
     },
@@ -452,7 +453,7 @@ var dict = {
 		gr: "N",
 		it: "S",
 		es: "S",
-		no: "S",
+		nb: "S",
 		bg: "Ю",
 		cs: "J"
     },
@@ -465,7 +466,7 @@ var dict = {
 		gr: "NΔ",
 		it: "SO",
 		es: "SO",
-		no: "SV",
+		nb: "SV",
 		bg: "Юз",
 		cs: "JZ"
     },
@@ -478,7 +479,7 @@ var dict = {
 		gr: "Δ",
 		it: "O",
 		es: "O",
-		no: "V",
+		nb: "V",
 		bg: "з",
 		cs: "Z"
     },
@@ -491,7 +492,7 @@ var dict = {
 		gr: "BΔ",
 		it: "NO",
 		es: "NO",
-		no: "NV",
+		nb: "NV",
 		bg: "cз",
 		cs: "SZ"
     },
@@ -504,7 +505,7 @@ var dict = {
 		gr: "Η διεύθυνση του ανέμου. Το πράσινο βέλος δείχνει τη μέση κατεύθυνση του ανέμου.",
 		it: "La direzione del vento: la freccia verde indica la direzione media del vento.",
 		es: "La dirección del viento. La flecha verde indica la dirección promedio del viento.",
-		no: "Vindretningen. Grønn pil indikerer gjennomsnittlig vindretning.",
+		nb: "Vindretningen. Grønn pil indikerer gjennomsnittlig vindretning.",
 		bg: "Посоката на вятъра. Зелената стрелка показва средната посока на вятъра.",
 		cs: "The wind direction. Green arrow indicates average wind direction."
     },
@@ -517,7 +518,7 @@ var dict = {
 		gr: "mέγ",
 		it: "max",
 		es: "máx",
-		no: "max",
+		nb: "max",
 		bg: "mакс",
 		cs: "max"
     },
@@ -530,7 +531,7 @@ var dict = {
 		gr: "Ταχύτητα Ανέμου",
 		it: "Velocità del vento",
 		es: "Velocidad del viento",
-		no: "Vindfart",
+		nb: "Vindstyrke",
 		bg: "Скоростта на вятъра",
         cs: "Rychlost větru"
     },
@@ -543,7 +544,7 @@ var dict = {
 		gr: "Ταχύτητα",
 		it: "Vento",
 		es: "Viento",
-		no: "Vind",
+		nb: "Vind",
 		bg: "Вятър",
 		cs: "Vítr"
     },
@@ -556,7 +557,7 @@ var dict = {
 		gr: "φύσημα",
 		it: "Raffica",
 		es: "Ráfaga",
-		no: "Vindkast",
+		nb: "Kast",
 		bg: "Рафал",
 		cs: "Poryv"
     },
@@ -569,7 +570,7 @@ var dict = {
 		gr: "Μέση",
 		it: "Media",
 		es: "Media",
-		no: "Gjennomsnitt",
+		nb: "Gjennomsnitt",
 		bg: "Средна",
 		cs: "Průměrný"
     },
@@ -582,7 +583,7 @@ var dict = {
 		gr: "Η πράσινη ράβδος δείχνει τη μέση ταχύτητα του ανέμου.\nμωβ ράβδος σκουριάς δείχνει την ταχύτητα της ριπής.",
 		it: "La barra verde indica la velocità media del vento.\nPurple barra indica la velocità della raffica.",
 		es: "La barra verde indica la velocidad promedio del viento.\npúrpura color indica la velocidad de ráfaga.",
-		no: "Grønn bar indikerer gjennomsnittlig vindhastighet.\nPurple bar indikerer vindhastighet.",
+		nb: "Grønn: Indikerer gjennomsnittlig vindhastighet.\nLilla: indikerer vindhastighet akuratt nå (vindkast).",
 		bg: "Зелената лента показва средната.\nпурпурен скорост на вятъра.",
 		cs: "Zelená čára označuje průměrnou rychlost větru.\nKurzní lišta označuje rychlost poryvu."
     },
@@ -595,7 +596,7 @@ var dict = {
 		gr: "Υψηλότερη θερμοκρασία",
 		it: "Temperatura massima",
 		es: "Temperatura más alta",
-		no: "Høyeste temperatur",
+		nb: "Høyeste temperatur",
 		bg: "Най-висока температура",
 		cs: "Nejvyšší teplota"
     },
@@ -608,7 +609,7 @@ var dict = {
 		gr: "Χαμηλότερη θερμοκρασία",
 		it: "Temperatura più bassa",
 		es: "Temperatura más baja",
-		no: "Laveste temperatur",
+		nb: "Laveste temperatur",
 		bg: "Най-ниска температура",
 		cs: "Nejnižší teplota"
     },
@@ -621,7 +622,7 @@ var dict = {
 		gr: "Υψηλότερη φύσημα",
 		it: "Il più alto gusto",
 		es: "Mayor ráfaga",
-		no: "Høyeste vindkast",
+		nb: "Kraftigste vindkast",
 		bg: "Най-висок вкус",
 		cs: "Nejvyšší poryv"
     },
@@ -634,7 +635,7 @@ var dict = {
 		gr: "Υψηλότερη βροχόπτωση",
 		it: "Tasso di pioggia più alto",
 		es: "Tasa de lluvia más alta",
-		no: "Høyeste regnfrekvens",
+		nb: "Høyeste endring i nedbør",
 		bg: "Най-висока дъждовна скорост",
 		cs: "Nejvyšší déšť"
     },
@@ -647,7 +648,7 @@ var dict = {
 		gr: "Χαμηλότερο βαρόμετρο",
 		it: "Barometro più basso",
 		es: "Barómetro más bajo",
-		no: "Laveste barometer",
+		nb: "Lavest barometertrykk",
 		bg: "Най-нисък барометър",
 		cs: "Nejnižší barometr"
     },
@@ -660,7 +661,7 @@ var dict = {
 		gr: "Υψηλότερο βαρόμετρο",
 	    it:	"Barometro più alto",
 		es: "Barómetro más alto",
-		no: "Høyeste barometer",
+		nb: "Høyest barometertrykk",
 		bg: "Най-висок барометър",
 		cs: "Nejvyšší barometr"
     },
@@ -673,7 +674,7 @@ var dict = {
 		gr: "Υψηλότερη ημερήσια βροχόπτωση",
 		it: "Pioggia giornaliera massima",
 		es: "La mayor cantidad de lluvia diaria",
-		no: "Høyeste daglige nedbør",
+		nb: "Høyeste daglige nedbør",
 		bg: "Най-високи дневни валежи",
 		cs: "Nejvyšší denní srážky"
     },
@@ -686,7 +687,7 @@ var dict = {
 		gr: "Υψηλότερη ωριαία βροχόπτωση",
 		it: "Pioggia orario più alta",
 		es: "Mayor precipitación por hora",
-		no: "Høyeste timers nedbør",
+		nb: "Høyest nedbør pr.timen",
 		bg: "Най-високи часови валежи",
 		cs: "Nejvyšší hodinové srážky"
     },
@@ -699,7 +700,7 @@ var dict = {
 		gr: "Μέγιστη μέση ταχύτητα ανέμου",
 		it: "Velocità del vento media più alta",
 		es: "Velocidad promedia del viento más alta",
-		no: "Høyeste gjennomsnittlige vindhastighet",
+		nb: "Kraftigste Gj.snitt vindstyrke",
 		bg: "Най-висока средна скорост на вятъра",
 		cs: "Nejvyšší průměrná rychlost větru"
     },
@@ -712,7 +713,7 @@ var dict = {
 		gr: "Ο ψυχρότερος άνεμος",
 		it: "Vento più freddo",
 		es: "Frío del viento más bajo",
-		no: "Laveste vind faktor",
+		nb: "Laveste følt tempratur",
 		bg: "Най-слаб вятър",
 		cs: "Nejnižší chlad vítr"
     },
@@ -725,7 +726,7 @@ var dict = {
 		gr: "Ζεστή ημέρα",
 		it: "Giorno più caldo",
 		es: "El día más cálido",
-		no: "Varmeste dag",
+		nb: "Varmest dag (Snitt 6-18)",
 		bg: "Най-топъл ден",
 		cs: "Nejteplejší den"
     },
@@ -738,7 +739,7 @@ var dict = {
 		gr: "Η πιο ψυχρή νύχτα",
 		it: "Notte più fredda",
 		es: "La noche más fría",
-		no: "Kaldeste natt",
+		nb: "Kaldest natt (Snitt 18-6)",
 		bg: "Най-студена нощ",
 		cs: "Nejchladnější noc"
     },
@@ -751,7 +752,7 @@ var dict = {
 		gr: "Η πιό ψυχρή ημέρα",
 		it: "Giorno più freddo",
 		es: "Día más frío",
-		no: "Kaldeste dag",
+		nb: "Kaldest dag (Snitt 6-18)",
 		bg: "Най-студен ден",
 		cs: "Nejchladnější den"
     },
@@ -764,7 +765,7 @@ var dict = {
 		gr: "Ζεστή νύχτα",
 		it: "Notte più calda",
 		es: "La noche más cálida",
-		no: "Varmeste natt",
+		nb: "Varmest natt (Snitt 18-6)",
 		bg: "Най-топлата нощ",
 		cs: "Teplá noc"
     },
@@ -777,7 +778,7 @@ var dict = {
 		gr: "Υψηλότερος δείκτης θερμότητας",
 		it: "Indice di calore più alto",
 		es: "Índice de calor más alto",
-		no: "Høyeste varmeindeks",
+		nb: "Høyeste følt varme",
 		bg: "Най-висок топлинен индекс",
 		cs: "Highest heat index"
     },
@@ -790,7 +791,7 @@ var dict = {
 		gr: "Υψηλότερο ηλιακό",
 		it: "Il più alto solare",
 		es: "Más alto solar",
-		no: "Høyeste sol",
+		nb: "Høyeste solenergi",
 		bg: "Най-високото слънчево",
 		cs: "Nejvyšší sluneční"
     },
@@ -803,7 +804,7 @@ var dict = {
 		gr: "Υψηλότερο ευρετήριο UV",
 		it: "Indice UV più alto",
 		es: "Índice UV más alto",
-		no: "Høyeste UV-indeks",
+		nb: "Høyeste UV-indeks",
 		bg: "Най-висок UV индекс",
 		cs: "Nejvyšší index UV"
     },
@@ -816,7 +817,7 @@ var dict = {
 		gr: "Υψηλότερο σημείο δρόσου",
 		it: "Punto di rugiada più alto",
 		es: "Punto de rocío más alto",
-		no: "Høyeste duggpunkt",
+		nb: "Høyeste duggpunkt",
 		bg: "Най-висока точка на роса",
 		cs: "Nejvyšší rosný bod"
     },
@@ -829,7 +830,7 @@ var dict = {
 		gr: "Χαμηλότερο σημείο δρόσου",
 		it: "Punto di rugiada più basso",
 		es: "Punto de rocío más bajo",
-		no: "Laveste duggpunkt",
+		nb: "Laveste duggpunkt",
 		bg: "Най-ниска точка на оросяване",
 		cs: "Nejnižší rosný bod"
     },
@@ -842,7 +843,7 @@ var dict = {
 		gr: "Δείτε περισσότερα",
         it: "Mostra di più",
 		es: "Mostrar más",
-        no: "Vis mer",
+        nb: "Vis mer",
 		bg: "Покажи повече",
 		cs: "Zobrazit více"
     },
@@ -855,7 +856,7 @@ var dict = {
 		gr: "Μέγ",
 		it: "Max",
 		es: "Máx",
-		no: "Max",
+		nb: "Max",
 		bg: "Mакс",
 		cs: "Max"
     },
@@ -868,7 +869,7 @@ var dict = {
 		gr: "Ελά",
 		it: "Min",
 		es: "Mín",
-		no: "Mín",
+		nb: "Mín",
 		bg: "Мин",
 		cs: "Min"
     },
@@ -881,7 +882,7 @@ var dict = {
 		gr: "τελευταίος",
 		it: "Ultimo",
 		es: "Último",
-        no: "Siste",
+        nb: "Siste",
 		bg: "Миналата",
 		cs: "Poslední"
     },
@@ -894,7 +895,7 @@ var dict = {
 		gr: "Ημέρες",
 		it: "Giorni",
 		es: "Dias",
-		no: "Dager",
+		nb: "Dager",
 		bg: "дни",
 		cs: "Dny"
     },
@@ -907,7 +908,7 @@ var dict = {
 		gr: "Ωρες",
 		it: "Ore",
 		es: "Horas",
-        no: "Timer",
+        nb: "Timer",
 		bg: "Часа",
 		cs: "Hodiny"
     },
@@ -920,7 +921,7 @@ var dict = {
 		gr: "Ωρα",
 		it: "Ora",
 		es: "Hora",
-		no: "Time",
+		nb: "Time",
 		bg: "Час",
 		cs: "Hodina"
         
@@ -934,7 +935,7 @@ var dict = {
 		gr: "Μήνες",
 		it: "Mesi",
 		es: "Meses",
-        no: "Måneder",
+        nb: "Måned",
 		bg: "Месеци",
 		cs: "Měsíce"
     },
@@ -947,7 +948,7 @@ var dict = {
 		gr: "Πίεση",
 		it: "Pressione",
 		es: "Presión",
-		no: "Press",
+		nb: "Lufttrykk",
 		bg: "Налягане",
 		cs: "Tlak"
     },
@@ -960,7 +961,7 @@ var dict = {
 		gr: "Τοις εκατό",
 		it: "Percentuale",
 		es: "Porcentaje",
-		no: "Prosent",
+		nb: "Prosent",
 		bg: "Процент",
 		cs: "Procent"
     },
@@ -973,7 +974,7 @@ var dict = {
 		gr: "Ακτινοβολία",
 		it: "Irradiazione",
 		es: "Radiación",
-		no: "Irradians",
+		nb: "",
 		bg: "Irradiance",
 		cs: "Ozáření"
     },
@@ -986,7 +987,7 @@ var dict = {
 		gr: "Δείκτης",
 		it: "Indice",
 		es: "Índice",
-		no: "Index",
+		nb: "Index",
 		bg: "Индекс",
 		cs: "Index"
     },
@@ -999,7 +1000,7 @@ var dict = {
 		gr: "Κατεύθυνση ανέμου",
 		it: "La direzione del vento",
 		es: "Dirección del viento",
-        no: "Vindretning",
+        nb: "Vindretning",
 		bg: "Посока на вятъра",
 		cs: "Směr větru"
     },
@@ -1012,7 +1013,7 @@ var dict = {
 		gr: "διάγραμμα",
 		it: "Grafici",
 		es: "Gráficos",
-		no: "Grafer",
+		nb: "Grafer",
 		bg: "Графики",
 		cs: "Grafy"
     },
@@ -1025,7 +1026,7 @@ var dict = {
 		gr: "Εγγραφές",
 		it: "Records",
 		es: "Archivos",
-		no: "Records",
+		nb: "Rekorder",
 		bg: "Pекорд",
 		cs: "Evidence"
     },
@@ -1038,7 +1039,7 @@ var dict = {
 		gr: "Υψόμετρο",
 		it: "Altitudine",
 		es: "Altitud",
-		no: "Høyde",
+		nb: "Høyde",
 		bg: "Bисочина",
 		cs: "Nadmořská výška"
     },
@@ -1051,7 +1052,7 @@ var dict = {
 		gr: "Εγγραφές για αυτόν τον μήνα",
 		it: "Record per questo mese",
 		es: "Registros para este mes",
-		no: "Records for denne måneden",
+		nb: "Rekorder denne måneden",
 		bg: "Записи за този месец",
 		cs: "Záznamy za tento měsíc"
     },
@@ -1064,7 +1065,7 @@ var dict = {
 		gr: "Εγγραφές για το τρέχον έτος",
 		it: "Record per quest'anno",
 		es: "Registros para este año",
-		no: "Records for this year",
+		nb: "Rekorder i år",
 		bg: "Рекорди за тази година",
 		cs: "Záznamy pro tento rok"
     },
@@ -1077,7 +1078,7 @@ var dict = {
 		gr: "Όλες οι εγγραφές χρόνου",
 		it: "Record di tutti i tempi",
 		es: "Registros de todos los tiempos",
-		no: "All time records",
+		nb: "Rekorder totalt",
 		bg: "Всички времеви записи",
 		cs: "Všechny záznamy času"
     },
@@ -1090,7 +1091,7 @@ var dict = {
 		gr: "Πρόβλεψη",
 		it: "Prevedere",
 		es: "Pronóstico",
-		no: "Prognose",
+		nb: "Værvarsel",
 		bg: "Прогноза",
 		cs: "Předpověď"
     },
@@ -1103,7 +1104,7 @@ var dict = {
 		gr: "Δείκτης θερμότητας",
 		it: "Indice di calore",
 		es: "Índice de calor",
-		no: "Varme index",
+		nb: "Følt varme",
 		bg: "Индекс на топлина",
 		cs: "Teplo index"
     },
@@ -1116,11 +1117,12 @@ var dict = {
 		gr: "Πόσο ζεστό αισθάνεται πραγματικά όταν η σχετική υγρασία υπολογίζεται με την πραγματική θερμοκρασία του αέρα.",
 		it: "Quanto fa veramente caldo quando l'umidità relativa viene calcolata con la temperatura dell'aria effettiva.",
 		es: "Qué calor realmente se siente cuando la humedad relativa se tiene en cuenta con la temperatura real del aire.",
-		no: "Hvor varmt føles det virkelig når relativ luftfuktighet er fakturert med den faktiske lufttemperaturen.",
+		nb: "Hvor varmt det virkelig føles når den relative luftfuktigheten er tatt med i selve lufttemperaturen..",
 		bg: "Колко горещо наистина се чувства, когато относителната влажност се отчита с действителната температура на въздуха.",
 		cs: "Jak horko to opravdu cítí, když je relativní vlhkost zohledněna skutečnou teplotou vzduchu."
     },
     beaufortScaleTitle: {
-        en: "Beaufort Scale"
+        en: "Beaufort Scale",
+        nb: "Beaufort Skala"
     }
 };
