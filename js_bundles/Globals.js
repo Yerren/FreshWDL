@@ -255,7 +255,7 @@ var dict = {
 		fi: "Nousu",
 		sv: "Uppgång",
 		pt: "Nascer",
-		ca: "Alba"
+		ca: "Sortida"
 	},
 	moonSunSet: {
 		en: "Set",
@@ -266,7 +266,7 @@ var dict = {
 		fr: "Coucher",
 		gr: "Δύση Ηλίου",
 		it: "Tramonto",
-		es: "Puesta de sol",
+		es: "Puesta",
 		nb: "Ned",
 		bg: "Сън комплект",
 		cs: "Západ slunce",
@@ -274,7 +274,7 @@ var dict = {
 		fi: "Lasku",
 		sv: "Nedgång",
 		pt: "Pôr",
-		ca: "Posta de sol"
+		ca: "Posta"
 	},
 	moonSunPhase: {
 		en: "Phase",
@@ -445,7 +445,7 @@ var dict = {
 		fi: "Viimeisimmät tiedot vastaanotettu",
 		sv: "Senaste uppdatering vid kl.",
 		pt: "Últimos dados recebidos em",
-		ca: "Últimes dades rebudes:"
+		ca: "Últimes dades rebudes"
 	},
 	statusDescription: {
 		en: "Green: New data collected from server.\nGrey: Data on server hasn't changed.\nYellow: Some error during data collection from server.\nRed: No data able to be collected from server.",
@@ -494,7 +494,7 @@ var dict = {
 		fr: "Jour",
 		gr: "Καθημερινά",
 		it: "Quotidiano",
-		es: "Diario",
+		es: "Día",
 		nb: "Dag",
 		bg: "Eжедневно",
 		cs: "Denně",
@@ -502,7 +502,7 @@ var dict = {
 		fi: "Päivittäin",
 		sv: "Daglig",
 		pt: "Diária",
-		ca: "Diari"
+		ca: "Dia"
 	},
 	rainfallMonthlyTitle: {
 		en: "Monthly",
