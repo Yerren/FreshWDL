@@ -162,6 +162,8 @@ html, body {
     padding: 2% 2%;
     background-color: rgb(153, 195, 154);
     color: white;
+    float:right;
+    width:96%;
 }
 
 .footer-text {
@@ -217,6 +219,7 @@ html, body {
 
 /* Drop Down Menu */
 .select-style {
+    float: right;
     padding: 0;
     margin: 0;
     border: 1px solid #ccc;
