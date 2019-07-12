@@ -6,35 +6,29 @@ document.write('\
             <div id="forecastText", style="overflow: hidden;"></div>\
         </div>\
         <div id="left" class="widgetContainer">\
-            <div id="leftTopLeft" class="widgetContainer">\
+            <div id="leftTop" class="widgetContainer">\
                 <canvas id="TempBar01"></canvas>\
             </div>\
-            <div id="leftTopRight" class="widgetContainer">\
-                <canvas id="Windchill01"></canvas>\
-            </div>\
-            <div id="leftBottomLeft" class="widgetContainer">\
-                <canvas id="TempBar02"></canvas>\
-            </div>\
-            <div id="leftBottomRight" class="widgetContainer">\
-                <canvas id="TempBar03"></canvas>\
-            </div>\
+            <canvas id="HumidityGauge01"></canvas>\
         </div>\
         <div id="center" class="widgetContainer">\
             <div id="centerTop" class="widgetContainer">\
+                <canvas id="Windchill01"></canvas>\
                 <canvas id="WindGauge01"></canvas>\
                 <canvas id="WindSpeed01"></canvas>\
             </div>\
             <div id="centerBottom" class="widgetContainer">\
                 <div id="leftCenterBottom" class="widgetContainer">\
-                    <canvas id="TitleRainfall01"></canvas>\
-                    <canvas id="RainBar3"></canvas>\
-                    <canvas id="RainBar2"></canvas>\
-                    <canvas id="RainBar1"></canvas>\
-                </div>\
-                <div id="rightCenterBottom" class="widgetContainer">\
-                    <canvas id="HumidityGauge01"></canvas>\
+                    <canvas id="SolarBar01"></canvas>\
+                    <canvas id="UVBar01"></canvas>\
                     <canvas id="Barometer01"></canvas>\
                     <canvas id="Apparent01"></canvas>\
+                </div>\
+                <div id="rightCenterBottom" class="widgetContainer">\
+                    <canvas id="TitleRainfall01"></canvas>\
+                    <canvas id="RainBar1"></canvas>\
+                    <canvas id="RainBar2"></canvas>\
+                    <canvas id="RainBar3"></canvas>\
                 </div>\
             </div>\
         </div>\
@@ -45,10 +39,6 @@ document.write('\
                 </div>\
                 <div id="windGraphCanvas01CanvasDiv" class="OuterCanvasDiv">\
                     <canvas id="windGraphCanvas01"></canvas>\
-                </div>\
-                <div id="rightLeftBottom" class="widgetContainer">\
-                    <canvas id="SolarBar01"></canvas>\
-                    <canvas id="UVBar01"></canvas>\
                 </div>\
             </div>\
             <div id="rightRight" class="widgetContainer">\
