@@ -269,7 +269,7 @@ var dict = {
 		es: "Puesta",
 		nb: "Ned",
 		bg: "Сън комплект",
-		cs: "Západ slunce",
+		cs: "Západ měsíce",
 		si: "Zahod",
 		fi: "Lasku",
 		sv: "Nedgång",
