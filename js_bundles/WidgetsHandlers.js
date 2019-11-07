@@ -229,6 +229,17 @@ var tempBar01 = {
 	dashEndCommand: [],
 	dash: [],
 	label: [],
+    arrow: {
+        middleLine: null,
+        middleLineStrokeCommand: null,
+        middleLineStartCommand: null,
+        middleLineEndCommand: null,
+        pointerLine: null,
+        pointerLineStrokeCommand: null,
+        pointerLineStartCommand: null,
+        pointerLineMidCommand: null,
+        pointerLineEndCommand: null,
+    },
 	setupVars: {
         dashes: [],
         dashGap: null,
@@ -248,7 +259,9 @@ var tempBar01 = {
         posFillBar: {},
 		posHLLabel: {},
         cutOffLength: null,
-        minHLspace: null
+        minHLspace: null,
+        posArrow: null,
+        arrowLengthFactor: null
 	},
 	constants: {
 		minTemp: -10,
@@ -274,12 +287,14 @@ var tempBar01 = {
 		highTempOut: 0,
 		lowTempIn: 0,
 		lowTempOut: 0,
+        trend: 0,
         unitsIn: "temp"
 	},
 	valuesOld: {
 		tempIn: 0,
 		highTempIn: 0,
-		lowTempIn: 0
+		lowTempIn: 0,
+        trend: 0
 	}
 };
 
@@ -305,16 +320,17 @@ function formatInputTemp01() {
 	tempBar01.values.lowTempOut = tempBar01.values.lowTempIn.map(tempBar01.constants.minTemp, tempBar01.constants.maxTemp, 1.04, 0.17);
 }
 
-function drawTemperatureBarTemp01(tempIn, highTempIn, lowTempIn, unitChange) {
+function drawTemperatureBarTemp01(tempIn, highTempIn, lowTempIn, trend, unitChange) {
     //Is called when new data is sent.
     unitChange = unitChange || false;
     
     //check to see if any reason to update
-    if (tempBar01.valuesOld.TempIn != tempIn || tempBar01.valuesOld.highTempIn != highTempIn || tempBar01.valuesOld.lowTempIn != lowTempIn || unitChange === true) {
+    if (tempBar01.valuesOld.TempIn != tempIn || tempBar01.valuesOld.highTempIn != highTempIn || tempBar01.valuesOld.lowTempIn != lowTempIn || tempBar01.valuesOld.trend != lowTempIn || trend === true) {
         //Sets inputs to new data
         tempBar01.values.tempIn = Number(tempIn);
         tempBar01.values.highTempIn = Number(highTempIn);
         tempBar01.values.lowTempIn = Number(lowTempIn);
+        tempBar01.values.trend = parseInt(trend);
 
         //Starts the tweens (animations) of the inputs
         formatInputTemp01();
@@ -325,9 +341,15 @@ function drawTemperatureBarTemp01(tempIn, highTempIn, lowTempIn, unitChange) {
         createjs.Tween.get(tempBar01.tweens.lowTemp, {override:true})
             .to({h: tempBar01.values.lowTempOut}, 2000, createjs.Ease.quartInOut);
         
+        //Call so that the trend arrow gets updated
+        if (tempBar01.valuesOld.trend != trend) {
+            updateTopTemp01();
+        }
+        
         tempBar01.valuesOld.TempIn = tempIn;
         tempBar01.valuesOld.highTempIn = highTempIn;
         tempBar01.valuesOld.lowTempIn = lowTempIn;
+        tempBar01.valuesOld.trend = trend;
     }
 }
 
@@ -388,6 +410,8 @@ function updateTopTemp01() {
     tempBar01.setupVars.textDisplaySize = tempBar01.canvas.height / 19;
 	tempBar01.setupVars.textHLSize = tempBar01.canvas.height / 21;
     tempBar01.setupVars.minHLspace = 0.04;
+    tempBar01.setupVars.arrowStroke = tempBar01.setupVars.barWidth / 15;
+    tempBar01.setupVars.arrowLengthFactor = 0.04;
     tempBar01.setupVars.posBar = {
         x: ((tempBar01.canvas.height / 2) - (tempBar01.setupVars.barWidth / 2)),
         y: ((tempBar01.canvas.height / 2) - (tempBar01.setupVars.barHeight / 2))
@@ -414,6 +438,10 @@ function updateTopTemp01() {
     tempBar01.setupVars.posFillBar = {
         x: ((tempBar01.canvas.height / 2) - (tempBar01.setupVars.barFillWidth / 2)),
         y: ((tempBar01.canvas.height / 2) - (tempBar01.setupVars.barFillHeight / 2))
+    };
+    tempBar01.setupVars.posArrow = {
+        x: tempBar01.canvas.width * 0.7,
+        y: tempBar01.setupVars.posFillCirc.y
     };
     tempBar01.setupVars.cutOffLength = tempBar01.canvas.height * (299 / 400);
 
@@ -511,6 +539,37 @@ function updateTopTemp01() {
 	tempBar01.roundRectTop.mask = new createjs.Shape(new createjs.Graphics().dr(0, 0, tempBar01.canvas.height, tempBar01.setupVars.cutOffLength));
 	tempBar01.roundRectFillTop.mask = new createjs.Shape(new createjs.Graphics().dr(0, 0, tempBar01.canvas.height, tempBar01.setupVars.cutOffLength * 1.1));
 	tempBar01.roundBot.mask = new createjs.Shape(new createjs.Graphics().dr(0, tempBar01.setupVars.cutOffLength, tempBar01.canvas.height, tempBar01.canvas.height));
+    
+    //Trend Arrow
+    var arrowTop = 1 - tempBar01.setupVars.arrowLengthFactor,
+        arrowBot = 1 + tempBar01.setupVars.arrowLengthFactor;
+    if (tempBar01.values.trend !== 0) {
+        tempBar01.arrow.middleLine.visible = true;
+        tempBar01.arrow.middleLineStrokeCommand.width = tempBar01.setupVars.arrowStroke;
+        tempBar01.arrow.middleLineStartCommand.x = tempBar01.setupVars.posArrow.x;
+        tempBar01.arrow.middleLineStartCommand.y = tempBar01.setupVars.posArrow.y * arrowTop;
+        tempBar01.arrow.middleLineEndCommand.x = tempBar01.setupVars.posArrow.x;
+        tempBar01.arrow.middleLineEndCommand.y = tempBar01.setupVars.posArrow.y * arrowBot;
+    } else {
+        tempBar01.arrow.middleLine.visible = false;
+        tempBar01.arrow.pointerLine.graphics._stroke.style = "rgb(255, 221, 37)";
+    }
+    
+    if (tempBar01.values.trend > 0) {
+        tempBar01.arrow.pointerLine.graphics._stroke.style = "rgb(" + colour.temp + ")";
+        tempBar01.arrow.middleLine.graphics._stroke.style = "rgb(" + colour.temp + ")";
+    } else if(tempBar01.values.trend < 0) {
+        tempBar01.arrow.pointerLine.graphics._stroke.style = "rgb(" + colour.tempLow + ")";
+        tempBar01.arrow.middleLine.graphics._stroke.style = "rgb(" + colour.tempLow + ")";
+    }
+    
+    tempBar01.arrow.pointerLineStrokeCommand.width = tempBar01.setupVars.arrowStroke;
+    tempBar01.arrow.pointerLineStartCommand.x = tempBar01.setupVars.posArrow.x * arrowTop;
+    tempBar01.arrow.pointerLineStartCommand.y = tempBar01.setupVars.posArrow.y;
+    tempBar01.arrow.pointerLineMidCommand.x = tempBar01.setupVars.posArrow.x;
+    tempBar01.arrow.pointerLineMidCommand.y = tempBar01.setupVars.posArrow.y * (1 - tempBar01.setupVars.arrowLengthFactor * tempBar01.values.trend); //Neat way to get arrow to point in right direction.
+    tempBar01.arrow.pointerLineEndCommand.x = tempBar01.setupVars.posArrow.x * arrowBot;
+    tempBar01.arrow.pointerLineEndCommand.y = tempBar01.setupVars.posArrow.y;
 	
 }
 
@@ -628,6 +687,27 @@ function setUpTemp01() {
         tempBar01.stage.addChild(tempBar01.highDisplay);
         tempBar01.stage.addChild(tempBar01.lowDisplay);
     }
+    
+    //Set up trend arrow
+    //Middle Line
+    tempBar01.arrow.middleLine = new createjs.Shape();
+    tempBar01.arrow.middleLine.snapToPixel = true;
+    tempBar01.arrow.middleLine.graphics.beginStroke("rgb(" + colour.temp + ")");
+    tempBar01.arrow.middleLineStrokeCommand = tempBar01.arrow.middleLine.graphics.setStrokeStyle(10).command;
+    tempBar01.arrow.middleLineStrokeCommand.caps = "round";
+    tempBar01.arrow.middleLineStartCommand = tempBar01.arrow.middleLine.graphics.moveTo(0, 0).command;
+    tempBar01.arrow.middleLineEndCommand = tempBar01.arrow.middleLine.graphics.lineTo(100, 100).command;
+    tempBar01.stage.addChild(tempBar01.arrow.middleLine);
+    //Pointer
+    tempBar01.arrow.pointerLine = new createjs.Shape();
+    tempBar01.arrow.pointerLine.snapToPixel = true;
+    tempBar01.arrow.pointerLine.graphics.beginStroke("rgb(" + colour.temp + ")");
+    tempBar01.arrow.pointerLineStrokeCommand = tempBar01.arrow.pointerLine.graphics.setStrokeStyle(10).command;
+    tempBar01.arrow.pointerLineStrokeCommand.caps = "round";
+    tempBar01.arrow.pointerLineStartCommand = tempBar01.arrow.pointerLine.graphics.moveTo(0, 0).command;
+    tempBar01.arrow.pointerLineMidCommand = tempBar01.arrow.pointerLine.graphics.lineTo(50, 50).command;
+    tempBar01.arrow.pointerLineEndCommand = tempBar01.arrow.pointerLine.graphics.lineTo(100, 100).command;
+    tempBar01.stage.addChild(tempBar01.arrow.pointerLine);
 }
 
 function initializeTemp01() {
@@ -641,7 +721,7 @@ function initializeTemp01() {
         updateTweensTemp01();
     });
     window.addEventListener("clientRawDataUpdate", function () {
-        drawTemperatureBarTemp01(arrayClientraw[4], arrayClientraw[46], arrayClientraw[47]);
+        drawTemperatureBarTemp01(arrayClientraw[4], arrayClientraw[46], arrayClientraw[47], arrayClientraw[143]);
     });
     
     //Creates information tooltip
@@ -1678,7 +1758,14 @@ function drawBarometerB01(pressureIn, trendIn, unitChange) {
         
         //check if trend value is 0 or -0, and display "steady" if it is.
         if (parseFloat(barometer01.values.trend) != 0.0) {
-            barometer01.textDisplayT.text = barometer01.values.trend + units[barometer01.config.unitsIn.toString()][currentUnits[barometer01.config.unitsIn.toString()]][1].toString() + "/hr";
+            var tempTrend = barometer01.values.trend + units[barometer01.config.unitsIn.toString()][currentUnits[barometer01.config.unitsIn.toString()]][1].toString() + "/hr";
+            
+            //Add a "+" if trend is positive. (Negative trend automatically handled by input data).
+            if (parseFloat(barometer01.values.trend) > 0) {
+                tempTrend = "+" + tempTrend;
+            }
+            
+            barometer01.textDisplayT.text = tempTrend;
         } else {
             barometer01.textDisplayT.text = useDict("barometerSteady");
         }
@@ -1873,6 +1960,7 @@ var windchill01 = {
 	dash: [],
 	label: [],
     defaultMode: null,
+    tooltip: null,
 	setupVars: {
         dashes: [],
         dashGap: null,
@@ -1971,6 +2059,8 @@ function drawWindchillBarWC01(tempIn, highTempIn, lowTempIn, unitChange) {
         
         //Set title (incase of switch between heat Index and windchill)
         windchill01.textTitle.text = (widgetList.windChill.mode === "windchill") ? useDict("windchillTitle") : useDict("heatIndexTitle");
+        //Set tooltip (same reason as for title)
+        widgetList.windChill.tooltip.setContent((widgetList.windChill.mode === "windchill") ? useDict("windchillDescription") : useDict("heatIndexDescription"));
         
         windchill01.valuesOld.TempIn = tempIn;
         windchill01.valuesOld.highTempIn = highTempIn;
@@ -2306,7 +2396,7 @@ function initializeWC01() {
     });
     
     //Creates information tooltip
-    new Opentip(windchill01.canvas, (widgetList.windChill.mode === "windchill") ? useDict("windchillDescription") : useDict("heatIndexDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    widgetList.windChill.tooltip = new Opentip(windchill01.canvas, (widgetList.windChill.mode === "windchill") ? useDict("windchillDescription") : useDict("heatIndexDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpWC01();
@@ -2396,9 +2486,13 @@ function resizeTextBaroG01() {
 
 function configureGraphBaroLine01(baseIn, graphIn) {
     //Display line graph
-    baseIn = globalGraphs[baseIn];
-    graphIn = baseIn.graphs[graphIn];
-
+    try {
+        baseIn = globalGraphs[baseIn];
+        graphIn = baseIn.graphs[graphIn];
+    } catch(err) {
+        console.log("Graph not enabled.")
+        return;
+    }
     var graphData = [],
         style = baseIn.style.toString();
     
@@ -2521,8 +2615,13 @@ function resizeTextRainBar01() {
 
 function configureGraphRainBar01(baseIn, graphIn) {
     //Display bar graph
-    baseIn = globalGraphs[baseIn];
-    graphIn = baseIn.graphs[graphIn];
+    try {
+        baseIn = globalGraphs[baseIn];
+        graphIn = baseIn.graphs[graphIn];
+    } catch(err) {
+        console.log("Graph not enabled.")
+        return;
+    }
 
     var graphData = [],
         graphLabels = [],
@@ -2660,8 +2759,13 @@ function resizeTextTempG01() {
 
 function configureGraphTempLine01(baseIn, graphIn) {
     //Display line graph
-    baseIn = globalGraphs[baseIn];
-    graphIn = baseIn.graphs[graphIn];
+    try {
+        baseIn = globalGraphs[baseIn];
+        graphIn = baseIn.graphs[graphIn];
+    } catch(err) {
+        console.log("Graph not enabled.")
+        return;
+    }
 
     var graphData = [],
         style = baseIn.style.toString();
@@ -2799,8 +2903,13 @@ function resizeTextWindG01() {
 
 function configureGraphWindLine01(baseIn, graphIn) {
     //Display line graph
-    baseIn = globalGraphs[baseIn];
-    graphIn = baseIn.graphs[graphIn];
+    try {
+        baseIn = globalGraphs[baseIn];
+        graphIn = baseIn.graphs[graphIn];
+    } catch(err) {
+        console.log("Graph not enabled.")
+        return;
+    }
 
     var graphData = [],
         style = baseIn.style.toString();
@@ -2901,6 +3010,17 @@ var humidityGauge = {
         lBase: null,
         rBase: null
     },
+    arrow: {
+        middleLine: null,
+        middleLineStrokeCommand: null,
+        middleLineStartCommand: null,
+        middleLineEndCommand: null,
+        pointerLine: null,
+        pointerLineStrokeCommand: null,
+        pointerLineStartCommand: null,
+        pointerLineMidCommand: null,
+        pointerLineEndCommand: null,
+    },
 	setupVars: {
         outerCircleRad: null,
         innerCricleRad: null,
@@ -2915,7 +3035,8 @@ var humidityGauge = {
         textTitleSize: null,
         posTextTitle: null,
         textDisplaySize: null,
-        posTextDisplay: null
+        posTextDisplay: null,
+        posArrow: null
 	},
     tweens: {
         r: 0
@@ -2923,27 +3044,37 @@ var humidityGauge = {
 	values: {
 		humidityIn: 0,
 		humidityOut: 0,
+        trend: 0,
         unitsIn: "humidity"
 	},
     valuesOLD: {
-		humidityIn: 0
+		humidityIn: 0,
+        trend: 0
     }
 };
 
-function drawHumidityGaugeHum01(humidityIn, unitChange) {
+function drawHumidityGaugeHum01(humidityIn, trend, unitChange) {
     //Is called when new data is sent.
-    
     unitChange = unitChange || false;
     
-    if (humidityGauge.valuesOLD.humidityIn != humidityIn || unitChange === true) {
+    if (humidityGauge.valuesOLD.humidityIn != humidityIn || humidityGauge.valuesOLD.trend != trend || unitChange === true) {
         var halfAngleDeg = (Math.PI - Math.acos((humidityGauge.setupVars.cutOffLength - humidityGauge.setupVars.posOuterCircle.y) / humidityGauge.setupVars.outerCircleRad)) * (180 / Math.PI);
-
+        
+        humidityGauge.values.trend = parseInt(trend);
+        
         humidityGauge.values.humidityIn = parseFloat(humidityIn, 0);
         humidityGauge.values.humidityOut = humidityGauge.values.humidityIn.map(0, 100, -halfAngleDeg, halfAngleDeg);
         createjs.Tween.get(humidityGauge.tweens, {override:true})
             .to({r: humidityGauge.values.humidityOut}, 2000, createjs.Ease.quartInOut);
         
+        
+        //Call so that the trend arrow gets updated
+        if (humidityGauge.valuesOLD.trend != trend) {
+            updateTopHum01();
+        }
+        
         humidityGauge.valuesOLD.humidityIn = humidityIn;
+        humidityGauge.valuesOLD.trend = trend;
     }
 }
 
@@ -2992,6 +3123,10 @@ function updateTopHum01() {
     humidityGauge.setupVars.posTextDisplay = {
         x: humidityGauge.setupVars.posOuterCircle.x,
         y: humidityGauge.setupVars.cutOffLength * (103 / 110)
+    };
+    humidityGauge.setupVars.posArrow = {
+        x: humidityGauge.canvas.width / 2,
+        y: humidityGauge.canvas.height * 0.65
     };
 	//Update the visual elements
     
@@ -3075,7 +3210,26 @@ function updateTopHum01() {
 			humidityGauge.dashEndCommand[i].y = Math.cos(angle) * (humidityGauge.setupVars.dashEndRad + humidityGauge.setupVars.outerCircleRad) / 2;
 		}
 	}
-	
+    
+    //Trend Arrow
+    if (humidityGauge.values.trend !== 0) {
+        humidityGauge.arrow.middleLine.visible = true;
+        humidityGauge.arrow.middleLineStrokeCommand.width = humidityGauge.setupVars.strokeSize;
+        humidityGauge.arrow.middleLineStartCommand.x = humidityGauge.setupVars.posArrow.x;
+        humidityGauge.arrow.middleLineStartCommand.y = humidityGauge.setupVars.posArrow.y * 0.95;
+        humidityGauge.arrow.middleLineEndCommand.x = humidityGauge.setupVars.posArrow.x;
+        humidityGauge.arrow.middleLineEndCommand.y = humidityGauge.setupVars.posArrow.y * 1.05;
+    } else {
+        humidityGauge.arrow.middleLine.visible = false;
+    }
+    
+    humidityGauge.arrow.pointerLineStrokeCommand.width = humidityGauge.setupVars.strokeSize;
+    humidityGauge.arrow.pointerLineStartCommand.x = humidityGauge.setupVars.posArrow.x * 0.95;
+    humidityGauge.arrow.pointerLineStartCommand.y = humidityGauge.setupVars.posArrow.y;
+    humidityGauge.arrow.pointerLineMidCommand.x = humidityGauge.setupVars.posArrow.x;
+    humidityGauge.arrow.pointerLineMidCommand.y = humidityGauge.setupVars.posArrow.y * (1 - 0.05 * humidityGauge.values.trend); //Neat way to get arrow to point in right direction.
+    humidityGauge.arrow.pointerLineEndCommand.x = humidityGauge.setupVars.posArrow.x * 1.05;
+    humidityGauge.arrow.pointerLineEndCommand.y = humidityGauge.setupVars.posArrow.y;
 }
 
 function resizeCanvasHum01() {
@@ -3167,12 +3321,33 @@ function setUpHum01() {
     for (i = 0; i < humidityGauge.largeDashTotal * 2; i++) {
 		humidityGauge.dash[i] = new createjs.Shape();
 		humidityGauge.dash[i].snapToPixel = true;
-		humidityGauge.dash[i].graphics.beginStroke("black", 1);
+		humidityGauge.dash[i].graphics.beginStroke("black");
 		humidityGauge.dashStrokeCommand[i] = humidityGauge.dash[i].graphics.setStrokeStyle(110).command;
 		humidityGauge.dashStartCommand[i] = humidityGauge.dash[i].graphics.moveTo(0, 0).command;
 		humidityGauge.dashEndCommand[i] = humidityGauge.dash[i].graphics.lineTo(0, 0).command;
 		humidityGauge.stage.addChild(humidityGauge.dash[i]);
 	}
+    
+    //Set up trend arrow
+    //Middle Line
+    humidityGauge.arrow.middleLine = new createjs.Shape();
+    humidityGauge.arrow.middleLine.snapToPixel = true;
+    humidityGauge.arrow.middleLine.graphics.beginStroke("rgb(" + colour.humidity + ")");
+    humidityGauge.arrow.middleLineStrokeCommand = humidityGauge.arrow.middleLine.graphics.setStrokeStyle(10).command;
+    humidityGauge.arrow.middleLineStrokeCommand.caps = "round";
+    humidityGauge.arrow.middleLineStartCommand = humidityGauge.arrow.middleLine.graphics.moveTo(0, 0).command;
+    humidityGauge.arrow.middleLineEndCommand = humidityGauge.arrow.middleLine.graphics.lineTo(100, 100).command;
+    humidityGauge.stage.addChild(humidityGauge.arrow.middleLine);
+    //Pointer
+    humidityGauge.arrow.pointerLine = new createjs.Shape();
+    humidityGauge.arrow.pointerLine.snapToPixel = true;
+    humidityGauge.arrow.pointerLine.graphics.beginStroke("rgb(" + colour.humidity + ")");
+    humidityGauge.arrow.pointerLineStrokeCommand = humidityGauge.arrow.pointerLine.graphics.setStrokeStyle(10).command;
+    humidityGauge.arrow.pointerLineStrokeCommand.caps = "round";
+    humidityGauge.arrow.pointerLineStartCommand = humidityGauge.arrow.pointerLine.graphics.moveTo(0, 0).command;
+    humidityGauge.arrow.pointerLineMidCommand = humidityGauge.arrow.pointerLine.graphics.lineTo(50, 50).command;
+    humidityGauge.arrow.pointerLineEndCommand = humidityGauge.arrow.pointerLine.graphics.lineTo(100, 100).command;
+    humidityGauge.stage.addChild(humidityGauge.arrow.pointerLine);
 }
 
 function initializeHum01() {
@@ -3186,7 +3361,7 @@ function initializeHum01() {
         updateTweensHum01();
     });
     window.addEventListener("clientRawDataUpdate", function () {
-        drawHumidityGaugeHum01(arrayClientraw[5]);
+        drawHumidityGaugeHum01(arrayClientraw[5], arrayClientraw[144]);
     });
     
     
@@ -3515,8 +3690,17 @@ var solarBar01 = {
 	textPercentage: null,
 	textSunHours: null,
 	textTitle: null,
+    largeDashTotal: 6,
 	textMaxLabel: null,
+    scaleSequence: [2.0, 2.0, 2.5],
+    scalePos: -1,
+    dashStrokeCommand: [],
+	dashStartCommand: [],
+	dashEndCommand: [],
+	dash: [],
+	label: [],
 	setupVars: {
+        dashes: [],
         barWidth: null,
         barFillWidth: null,
         barHeight: null,
@@ -3525,8 +3709,16 @@ var solarBar01 = {
 		textDisplaySize: null,
 		textTitleSize: null,
 		textMaxLabelSize: null,
+        textSize: null,
         posBar: {},
         posFillBar: {}
+	},
+    constants: {
+		minUni: 0,
+		minUniDEFAULT: 0,
+		maxUni: 250,
+		maxUniDEFAULT: 250,
+        actualMaxPercent: 0.90
 	},
     tweens: {
         barFill: {
@@ -3555,18 +3747,40 @@ var solarBar01 = {
 function formatInputSol01() {
 	//Formats the universal to be displayed correctly
     
-    //Adjust to units
-    solarBar01.values.percentIn = formatDataToUnit(solarBar01.values.percentIn, solarBar01.config.unitsIn);
-    
-    //Map the inputs to the current scale (as a proportion)
-	solarBar01.values.percentOut = solarBar01.values.percentIn.map(0, 100, 0, 1);
+    if (widgetList.solar.mode === "Watt") {
+        //Adjust to units
+        solarBar01.values.uniIn = formatDataToUnit(solarBar01.values.uniIn, solarBar01.config.unitsIn);
+        
+        //Adjust Range if needed: If the input is bigger than the current maximum of the range, increase the maximum.
+        while (solarBar01.values.uniIn > solarBar01.constants.maxUni * solarBar01.constants.actualMaxPercent) {
+            solarBar01.scalePos = (solarBar01.scalePos + 1) % solarBar01.scaleSequence.length;
+            solarBar01.constants.maxUni *= solarBar01.scaleSequence[solarBar01.scalePos];
+        }
+
+        //Adjust Range if needed: If the input is less than the current maximum of the range, decrease the maximum. 
+        while ((solarBar01.values.uniIn <= (solarBar01.constants.maxUni / solarBar01.scaleSequence[solarBar01.scalePos]) * solarBar01.constants.actualMaxPercent && solarBar01.constants.maxUni > solarBar01.constants.maxUniDEFAULT)) {
+            solarBar01.constants.maxUni /= solarBar01.scaleSequence[solarBar01.scalePos];
+            solarBar01.scalePos = solarBar01.scalePos - 1;
+            //Reverse wrap around (like using modulo for negative numbers. Credit: https://dev.to/maurobringolf/a-neat-trick-to-compute-modulo-of-negative-numbers-111e)
+            solarBar01.scalePos = (solarBar01.scalePos % solarBar01.scaleSequence.length + solarBar01.scaleSequence.length) % solarBar01.scaleSequence.length;
+        }
+
+        //Map the inputs to the current scale (as a percentage)
+        solarBar01.values.uniOut = solarBar01.values.uniIn.map(solarBar01.constants.minUni, solarBar01.constants.maxUni, 0, 1);
+    } else {
+        //Adjust to units
+        solarBar01.values.percentIn = formatDataToUnit(solarBar01.values.percentIn, solarBar01.config.unitsIn); //TODO: Replace with just a NUMBER call
+
+        //Map the inputs to the current scale (as a proportion)
+        solarBar01.values.percentOut = solarBar01.values.percentIn.map(0, 100, 0, 1);
+    }
 }
 
 function drawSolarBarSol01(percentIn, uniIn, sunHoursIn, unitChange) {
     //Is called when new data is sent.
     unitChange = unitChange || false;
     
-    if (solarBar01.valuesOLD.uniIn != percentIn || solarBar01.valuesOLD.percentIn != uniIn || solarBar01.valuesOLD.sunHoursIn != sunHoursIn || unitChange === true) {
+    if (solarBar01.valuesOLD.uniIn != uniIn || solarBar01.valuesOLD.percentIn != percentIn || solarBar01.valuesOLD.sunHoursIn != sunHoursIn || unitChange === true) {
         //Sets inputs to new data
         solarBar01.values.uniIn = Number(uniIn);
         solarBar01.values.percentIn = Number(percentIn);
@@ -3574,11 +3788,16 @@ function drawSolarBarSol01(percentIn, uniIn, sunHoursIn, unitChange) {
 
         //Starts the tweens (animations) of the inputs
         formatInputSol01();
-        createjs.Tween.get(solarBar01.tweens.barFill, {override:true})
-            .to({h: solarBar01.values.percentOut}, 2000, createjs.Ease.quartInOut);
         
-        solarBar01.valuesOLD.uniIn = percentIn;
-        solarBar01.valuesOLD.percentIn = uniIn;
+        if (widgetList.solar.mode === "Watt") {
+            createjs.Tween.get(solarBar01.tweens.barFill, {override:true})
+            .to({h: solarBar01.values.uniOut}, 2000, createjs.Ease.quartInOut);
+        } else {
+            createjs.Tween.get(solarBar01.tweens.barFill, {override:true})
+            .to({h: solarBar01.values.percentOut}, 2000, createjs.Ease.quartInOut);
+        }
+        solarBar01.valuesOLD.uniIn = uniIn;
+        solarBar01.valuesOLD.percentIn = percentIn;
         solarBar01.valuesOLD.sunHoursIn = sunHoursIn;
     }
 }
@@ -3593,38 +3812,41 @@ function updateTweensSol01() {
 	//Text Displays
 	solarBar01.textDisplay.text = solarBar01.values.uniIn.toString() + units[solarBar01.config.unitsIn.toString()][currentUnits[solarBar01.config.unitsIn.toString()]][1].toString();
     
-	solarBar01.textPercentage.text = solarBar01.values.percentIn.toString() + "%";
-    
 	solarBar01.textSunHours.text = useDict("solarSunHours") + ": " + solarBar01.values.sunHoursIn.toString();
+    
+    //Labels
+    if (widgetList.solar.mode === "Watt") {
+        for (i = 0; i < solarBar01.largeDashTotal; i++) {
+            solarBar01.label[i].text = solarBar01.constants.maxUni - ((solarBar01.constants.maxUni - solarBar01.constants.minUni) / (solarBar01.largeDashTotal - 1)) * i;
+        }
+    } else {
+        solarBar01.textPercentage.text = solarBar01.values.percentIn.toString() + "%";
+    }
+    
 }
 
 function updateTopSol01() {
 	//Updates the non-animated sections of the Widget. Gets called everytime the canvas is resized Uses the commands initialized in the setUp function to make changes to values.
     
 	//Set variables - all relative to canvas size so that dynamic resizing is possible.
+    solarBar01.setupVars.dashLength = solarBar01.canvas.height * 0.04;
+    solarBar01.setupVars.dashGap = solarBar01.canvas.height * 0.025;
     solarBar01.setupVars.barWidth = solarBar01.canvas.height * 0.075;
     solarBar01.setupVars.barFillWidth = solarBar01.setupVars.barWidth;
     solarBar01.setupVars.barHeight = solarBar01.canvas.height * 0.75;
     solarBar01.setupVars.barFillHeight = solarBar01.setupVars.barHeight;
     solarBar01.setupVars.strokeSize = solarBar01.setupVars.barWidth / 40;
-    solarBar01.setupVars.textDisplaySize = solarBar01.canvas.height / 20;
+    solarBar01.setupVars.textDisplaySize = solarBar01.canvas.height / 21;
     solarBar01.setupVars.textTitleSize = solarBar01.canvas.height / 17;
     solarBar01.setupVars.textMaxLabelSize = solarBar01.canvas.height / 19;
+    solarBar01.setupVars.textSize = solarBar01.canvas.height / 20;
     solarBar01.setupVars.posBar = {
         x: ((solarBar01.canvas.height / 2) - (solarBar01.setupVars.barWidth / 2)),
         y: ((solarBar01.canvas.height / 2) - (solarBar01.canvas.height * 0.8 / 2))
     };
-    solarBar01.setupVars.posTextPercentage = {
-        x: solarBar01.setupVars.posBar.x + solarBar01.setupVars.barWidth / 2,
-        y: solarBar01.setupVars.barHeight * (201 / 170)
-    };
-    solarBar01.setupVars.posTextSunHours = {
-        x: solarBar01.setupVars.posBar.x - solarBar01.setupVars.barWidth / 4,
-        y: solarBar01.setupVars.barHeight * (201 / 155)
-    };
-    solarBar01.setupVars.posText = {
-        x: solarBar01.setupVars.posBar.x + solarBar01.setupVars.barWidth / 2,
-        y: solarBar01.setupVars.barHeight * (201 / 162)
+    solarBar01.setupVars.posDash = {
+        x: (solarBar01.canvas.height / 2) - (solarBar01.setupVars.barWidth / 2) - solarBar01.setupVars.dashLength - solarBar01.setupVars.dashGap,
+        y: (solarBar01.canvas.height - solarBar01.setupVars.barHeight) *0.41
     };
     solarBar01.setupVars.posTextTitle = {
         x: solarBar01.setupVars.posBar.x + solarBar01.setupVars.barWidth / 2,
@@ -3638,6 +3860,29 @@ function updateTopSol01() {
         x: ((solarBar01.canvas.height / 2) - (solarBar01.setupVars.barFillWidth / 2)),
         y: ((solarBar01.canvas.height / 2) - (solarBar01.setupVars.barFillHeight / 2))
     };
+    if (widgetList.solar.mode === "Watt") {
+        solarBar01.setupVars.posText = {
+            x: solarBar01.setupVars.posBar.x + solarBar01.setupVars.barWidth / 2,
+            y: solarBar01.setupVars.barHeight * (201 / 170)
+        };
+        solarBar01.setupVars.posTextSunHours = {
+            x: solarBar01.setupVars.posBar.x + solarBar01.setupVars.barWidth / 3,
+            y: solarBar01.setupVars.barHeight * (201 / 162)
+        };
+    } else {
+        solarBar01.setupVars.posTextPercentage = {
+            x: solarBar01.setupVars.posBar.x + solarBar01.setupVars.barWidth / 2,
+            y: solarBar01.setupVars.barHeight * (201 / 170)
+        };
+        solarBar01.setupVars.posTextSunHours = {
+            x: solarBar01.setupVars.posBar.x + solarBar01.setupVars.barWidth / 3,
+            y: solarBar01.setupVars.barHeight * (201 / 155)
+        };
+        solarBar01.setupVars.posText = {
+            x: solarBar01.setupVars.posBar.x + solarBar01.setupVars.barWidth / 2,
+            y: solarBar01.setupVars.barHeight * (201 / 162)
+        };
+    }
     
 	//Update the visual elements
     
@@ -3648,6 +3893,34 @@ function updateTopSol01() {
 	solarBar01.rectCommand.w = solarBar01.setupVars.barWidth;
 	solarBar01.rectCommand.h = solarBar01.setupVars.barHeight;
 	
+    //Dashes
+    if (widgetList.solar.mode === "Watt") {
+        var gap = (solarBar01.setupVars.barHeight - solarBar01.setupVars.posDash.y) / ((solarBar01.largeDashTotal) * 9 - 10.5);
+        for (i = 0; i < (solarBar01.largeDashTotal * 10 - 9); i++) {
+            var dashY = sharpenValue(gap * i + solarBar01.setupVars.posDash.y);
+            //Large
+            if (i % 10 === 0) {
+                solarBar01.dashStrokeCommand[i].width = solarBar01.setupVars.strokeSize;
+                solarBar01.dashStartCommand[i].x = solarBar01.setupVars.posDash.x;
+                solarBar01.dashStartCommand[i].y = dashY;
+                solarBar01.dashEndCommand[i].x = solarBar01.setupVars.posDash.x + solarBar01.setupVars.dashLength;
+                solarBar01.dashEndCommand[i].y = dashY;
+
+                //Text Label Positioning - located here as they line up with the large dashes
+                solarBar01.label[i / 10].y = dashY;
+                solarBar01.label[i / 10].x = (solarBar01.setupVars.posDash.x - solarBar01.setupVars.dashLength) * (12 / 11);
+                solarBar01.label[i / 10].font = solarBar01.setupVars.textSize + "px arial";
+            } else if (i % 5 === 0) {
+                //Med
+                solarBar01.dashStrokeCommand[i].width = solarBar01.setupVars.strokeSize;
+                solarBar01.dashStartCommand[i].x = solarBar01.setupVars.posDash.x + solarBar01.setupVars.dashLength - (solarBar01.setupVars.dashLength / 2);
+                solarBar01.dashStartCommand[i].y = dashY;
+                solarBar01.dashEndCommand[i].x = (solarBar01.setupVars.posDash.x + solarBar01.setupVars.dashLength);
+                solarBar01.dashEndCommand[i].y = dashY;
+            }
+        }
+    }
+    
 	//Bar Fill
 	solarBar01.rectFillCommand.x = solarBar01.setupVars.posFillBar.x;
 	solarBar01.rectFillCommand.w = solarBar01.setupVars.barFillWidth;
@@ -3657,9 +3930,16 @@ function updateTopSol01() {
 	solarBar01.textDisplay.y = solarBar01.setupVars.posText.y;
 	solarBar01.textDisplay.font = "bold " + solarBar01.setupVars.textDisplaySize + "px arial";
 
-	solarBar01.textPercentage.x = solarBar01.setupVars.posTextPercentage.x;
-	solarBar01.textPercentage.y = solarBar01.setupVars.posTextPercentage.y;
-	solarBar01.textPercentage.font = "bold " + solarBar01.setupVars.textDisplaySize + "px arial";
+    if (widgetList.solar.mode !== "Watt") {
+        //Percentage Text
+        solarBar01.textPercentage.x = solarBar01.setupVars.posTextPercentage.x;
+        solarBar01.textPercentage.y = solarBar01.setupVars.posTextPercentage.y;
+        solarBar01.textPercentage.font = "bold " + solarBar01.setupVars.textDisplaySize + "px arial";
+        //Text Max Label
+        solarBar01.textMaxLabel.x = solarBar01.setupVars.posTextMaxLabel.x;
+        solarBar01.textMaxLabel.y = solarBar01.setupVars.posTextMaxLabel.y;
+        solarBar01.textMaxLabel.font = "bold " + solarBar01.setupVars.textMaxLabelSize + "px arial";
+    }
     
     solarBar01.textSunHours.x = solarBar01.setupVars.posTextSunHours.x;
 	solarBar01.textSunHours.y = solarBar01.setupVars.posTextSunHours.y;
@@ -3671,11 +3951,7 @@ function updateTopSol01() {
 	solarBar01.textTitle.y = solarBar01.setupVars.posTextTitle.y;
 	solarBar01.textTitle.font = "bold " + solarBar01.setupVars.textTitleSize + "px arial";
     setFontMaxWidth(solarBar01.textTitle, solarBar01.canvas, solarBar01.stage, true);
-    
-    //Text Max Label
-	solarBar01.textMaxLabel.x = solarBar01.setupVars.posTextMaxLabel.x;
-	solarBar01.textMaxLabel.y = solarBar01.setupVars.posTextMaxLabel.y;
-	solarBar01.textMaxLabel.font = "bold " + solarBar01.setupVars.textMaxLabelSize + "px arial";
+
     
     //Gives the call to update the animated sections of the widgets
     updateTweensSol01();
@@ -3708,6 +3984,27 @@ function setUpSol01() {
 	solarBar01.rectCommand = solarBar01.rectTop.graphics.drawRect(0, 0, 0, 0).command;
 	solarBar01.stage.addChild(solarBar01.rectTop);
     
+    
+    //Set up Dashes and labels - if on W/m^2 mode
+    if (widgetList.solar.mode === "Watt") {
+        for (i = 0; i < solarBar01.largeDashTotal * 10; i++) {
+            //Dashes
+            solarBar01.dash[i] = new createjs.Shape();
+            solarBar01.dash[i].snapToPixel = true;
+            solarBar01.dash[i].graphics.beginStroke("black", 1);
+            solarBar01.dashStrokeCommand[i] = solarBar01.dash[i].graphics.setStrokeStyle(0).command;
+            solarBar01.dashStartCommand[i] = solarBar01.dash[i].graphics.moveTo(0, 0).command;
+            solarBar01.dashEndCommand[i] = solarBar01.dash[i].graphics.lineTo(0, 0).command;
+            solarBar01.stage.addChild(solarBar01.dash[i]);
+
+            //Labels
+            solarBar01.label[i] = new createjs.Text("0px Arial", "black");
+            solarBar01.label[i].textBaseline = "middle";
+            solarBar01.label[i].textAlign = "right";
+            solarBar01.stage.addChild(solarBar01.label[i]);
+        }
+    }
+    
     //Set up fill rectange
     solarBar01.rectFillTop = new createjs.Shape();
 	solarBar01.rectFillTop.snapToPixel = true;
@@ -3722,10 +4019,12 @@ function setUpSol01() {
 	solarBar01.textDisplay.textAlign = "center";
 	solarBar01.stage.addChild(solarBar01.textDisplay);
     
-    solarBar01.textPercentage = new createjs.Text("0px Arial", "black");
-	solarBar01.textPercentage.textBaseline = "middle";
-	solarBar01.textPercentage.textAlign = "center";
-	solarBar01.stage.addChild(solarBar01.textPercentage);
+    if (widgetList.solar.mode !== "Watt") {
+        solarBar01.textPercentage = new createjs.Text("0px Arial", "black");
+        solarBar01.textPercentage.textBaseline = "middle";
+        solarBar01.textPercentage.textAlign = "center";
+        solarBar01.stage.addChild(solarBar01.textPercentage);
+    }
     
     solarBar01.textSunHours = new createjs.Text("0px Arial", "black");
 	solarBar01.textSunHours.textBaseline = "middle";
@@ -3740,11 +4039,13 @@ function setUpSol01() {
 	solarBar01.textTitle.text = solarBar01.config.title;
     
     //Set up max label
-	solarBar01.textMaxLabel = new createjs.Text("0px Arial", "black");
-	solarBar01.textMaxLabel.textBaseline = "middle";
-	solarBar01.textMaxLabel.textAlign = "right";
-	solarBar01.stage.addChild(solarBar01.textMaxLabel);
-	solarBar01.textMaxLabel.text = solarBar01.config.textMaxLabel;
+    if (widgetList.solar.mode !== "Watt") {
+        solarBar01.textMaxLabel = new createjs.Text("0px Arial", "black");
+        solarBar01.textMaxLabel.textBaseline = "middle";
+        solarBar01.textMaxLabel.textAlign = "right";
+        solarBar01.stage.addChild(solarBar01.textMaxLabel);
+        solarBar01.textMaxLabel.text = solarBar01.config.textMaxLabel;
+    }
 }
 
 function initializeSolarBarSol01() {
@@ -4123,7 +4424,9 @@ var uniBar01 = {
 	botStrokeCommand: null,
 	textDisplay: null,
 	textTitle: null,
-	largeDashTotal: 5,
+	largeDashTotal: 6,
+    scaleSequence: [2.0, 2.0, 2.5],
+    scalePos: -1,
 	dashStrokeCommand: [],
 	dashStartCommand: [],
 	dashEndCommand: [],
@@ -4147,8 +4450,8 @@ var uniBar01 = {
 	constants: {
 		minUni: 0,
 		minUniDEFAULT: 0,
-		maxUni: 4,
-		maxUniDEFAULT: 4,
+		maxUni: 5,
+		maxUniDEFAULT: 5,
         actualMaxPercent: 0.75
 	},
     tweens: {
@@ -4176,11 +4479,19 @@ function formatInputUni01() {
     //Adjust to units
     uniBar01.values.uniIn = formatDataToUnit(uniBar01.values.uniIn, uniBar01.config.unitsIn);
     
-	//Adjust Range if needed: If the input is bigger than the current maximum of the range, increase the maximum. 
-	while (uniBar01.values.uniIn > uniBar01.constants.maxUni * uniBar01.constants.actualMaxPercent) {uniBar01.constants.maxUni *= 2; }
+	//Adjust Range if needed: If the input is bigger than the current maximum of the range, increase the maximum.
+	while (uniBar01.values.uniIn > uniBar01.constants.maxUni * uniBar01.constants.actualMaxPercent) {
+        uniBar01.scalePos = (uniBar01.scalePos + 1) % uniBar01.scaleSequence.length;
+        uniBar01.constants.maxUni *= uniBar01.scaleSequence[uniBar01.scalePos];
+    }
 
     //Adjust Range if needed: If the input is less than the current maximum of the range, decrease the maximum. 
-	while ((uniBar01.values.uniIn <= (uniBar01.constants.maxUni / 2) * uniBar01.constants.actualMaxPercent && uniBar01.constants.maxUni > uniBar01.constants.maxUniDEFAULT)) {uniBar01.constants.maxUni /= 2; }
+	while ((uniBar01.values.uniIn <= (uniBar01.constants.maxUni / uniBar01.scaleSequence[uniBar01.scalePos]) * uniBar01.constants.actualMaxPercent && uniBar01.constants.maxUni > uniBar01.constants.maxUniDEFAULT)) {
+        uniBar01.constants.maxUni /= uniBar01.scaleSequence[uniBar01.scalePos];
+        uniBar01.scalePos = uniBar01.scalePos - 1;
+        //Reverse wrap around (like using modulo for negative numbers. Credit: https://dev.to/maurobringolf/a-neat-trick-to-compute-modulo-of-negative-numbers-111e)
+        uniBar01.scalePos = (uniBar01.scalePos % uniBar01.scaleSequence.length + uniBar01.scaleSequence.length) % uniBar01.scaleSequence.length;
+    }
 	
     //Map the inputs to the current scale (as a percentage)
 	uniBar01.values.uniOut = uniBar01.values.uniIn.map(uniBar01.constants.minUni, uniBar01.constants.maxUni, 0, 1);
@@ -4267,7 +4578,7 @@ function updateTopUni01() {
 	uniBar01.rectCommand.h = uniBar01.setupVars.barHeight;
     
 	//Dashes
-    var gap = (uniBar01.setupVars.barHeight - uniBar01.setupVars.posDash.y) / ((uniBar01.largeDashTotal) * 10 - 15);
+    var gap = (uniBar01.setupVars.barHeight - uniBar01.setupVars.posDash.y) / ((uniBar01.largeDashTotal) * 9 - 10);
     //This just works... 
 	for (i = 0; i < (uniBar01.largeDashTotal * 10 - 9); i++) {
         var dashY = sharpenValue(gap * i + uniBar01.setupVars.posDash.y);
@@ -4436,7 +4747,9 @@ var uniBar02 = {
 	botStrokeCommand: null,
 	textDisplay: null,
 	textTitle: null,
-	largeDashTotal: 5,
+	largeDashTotal: 6,
+    scaleSequence: [2.0, 2.0, 2.5],
+    scalePos: -1,
 	dashStrokeCommand: [],
 	dashStartCommand: [],
 	dashEndCommand: [],
@@ -4460,8 +4773,8 @@ var uniBar02 = {
 	constants: {
 		minUni: 0,
 		minUniDEFAULT: 0,
-		maxUni: 4,
-		maxUniDEFAULT: 4,
+		maxUni: 5,
+		maxUniDEFAULT: 5,
         actualMaxPercent: 0.75
 	},
     tweens: {
@@ -4489,11 +4802,19 @@ function formatInputUni02() {
     //Adjust to units
     uniBar02.values.uniIn = formatDataToUnit(uniBar02.values.uniIn, uniBar02.config.unitsIn);
     
-	//Adjust Range if needed: If the input is bigger than the current maximum of the range, increase the maximum. 
-	while (uniBar02.values.uniIn > uniBar02.constants.maxUni * uniBar02.constants.actualMaxPercent) {uniBar02.constants.maxUni *= 2; }
+	//Adjust Range if needed: If the input is bigger than the current maximum of the range, increase the maximum.
+	while (uniBar02.values.uniIn > uniBar02.constants.maxUni * uniBar02.constants.actualMaxPercent) {
+        uniBar02.scalePos = (uniBar02.scalePos + 1) % uniBar02.scaleSequence.length;
+        uniBar02.constants.maxUni *= uniBar02.scaleSequence[uniBar02.scalePos];
+    }
 
     //Adjust Range if needed: If the input is less than the current maximum of the range, decrease the maximum. 
-	while ((uniBar02.values.uniIn <= (uniBar02.constants.maxUni / 2) * uniBar02.constants.actualMaxPercent && uniBar02.constants.maxUni > uniBar02.constants.maxUniDEFAULT)) {uniBar02.constants.maxUni /= 2; }
+	while ((uniBar02.values.uniIn <= (uniBar02.constants.maxUni / uniBar02.scaleSequence[uniBar02.scalePos]) * uniBar02.constants.actualMaxPercent && uniBar02.constants.maxUni > uniBar02.constants.maxUniDEFAULT)) {
+        uniBar02.constants.maxUni /= uniBar02.scaleSequence[uniBar02.scalePos];
+        uniBar02.scalePos = uniBar02.scalePos - 1;
+        //Reverse wrap around (like using modulo for negative numbers. Credit: https://dev.to/maurobringolf/a-neat-trick-to-compute-modulo-of-negative-numbers-111e)
+        uniBar02.scalePos = (uniBar02.scalePos % uniBar02.scaleSequence.length + uniBar02.scaleSequence.length) % uniBar02.scaleSequence.length;
+    }
 	
     //Map the inputs to the current scale (as a percentage)
 	uniBar02.values.uniOut = uniBar02.values.uniIn.map(uniBar02.constants.minUni, uniBar02.constants.maxUni, 0, 1);
@@ -4580,7 +4901,7 @@ function updateTopUni02() {
 	uniBar02.rectCommand.h = uniBar02.setupVars.barHeight;
     
 	//Dashes
-    var gap = (uniBar02.setupVars.barHeight - uniBar02.setupVars.posDash.y) / ((uniBar02.largeDashTotal) * 10 - 15);
+    var gap = (uniBar02.setupVars.barHeight - uniBar02.setupVars.posDash.y) / ((uniBar02.largeDashTotal) * 9 - 10);
     //This just works... 
 	for (i = 0; i < (uniBar02.largeDashTotal * 10 - 9); i++) {
 		//Large
@@ -4749,7 +5070,9 @@ var uniBar03 = {
 	botStrokeCommand: null,
 	textDisplay: null,
 	textTitle: null,
-	largeDashTotal: 5,
+	largeDashTotal: 6,
+    scaleSequence: [2.0, 2.0, 2.5],
+    scalePos: -1,
 	dashStrokeCommand: [],
 	dashStartCommand: [],
 	dashEndCommand: [],
@@ -4773,8 +5096,8 @@ var uniBar03 = {
 	constants: {
 		minUni: 0,
 		minUniDEFAULT: 0,
-		maxUni: 4,
-		maxUniDEFAULT: 4,
+		maxUni: 5,
+		maxUniDEFAULT: 5,
         actualMaxPercent: 0.75
 	},
     tweens: {
@@ -4802,11 +5125,19 @@ function formatInputUni03() {
     //Adjust to units
     uniBar03.values.uniIn = formatDataToUnit(uniBar03.values.uniIn, uniBar03.config.unitsIn);
     
-	//Adjust Range if needed: If the input is bigger than the current maximum of the range, increase the maximum. 
-	while (uniBar03.values.uniIn > uniBar03.constants.maxUni * uniBar03.constants.actualMaxPercent) {uniBar03.constants.maxUni *= 2; }
+	//Adjust Range if needed: If the input is bigger than the current maximum of the range, increase the maximum.
+	while (uniBar03.values.uniIn > uniBar03.constants.maxUni * uniBar03.constants.actualMaxPercent) {
+        uniBar03.scalePos = (uniBar03.scalePos + 1) % uniBar03.scaleSequence.length;
+        uniBar03.constants.maxUni *= uniBar03.scaleSequence[uniBar03.scalePos];
+    }
 
     //Adjust Range if needed: If the input is less than the current maximum of the range, decrease the maximum. 
-	while ((uniBar03.values.uniIn <= (uniBar03.constants.maxUni / 2) * uniBar03.constants.actualMaxPercent && uniBar03.constants.maxUni > uniBar03.constants.maxUniDEFAULT)) {uniBar03.constants.maxUni /= 2; }
+	while ((uniBar03.values.uniIn <= (uniBar03.constants.maxUni / uniBar03.scaleSequence[uniBar03.scalePos]) * uniBar03.constants.actualMaxPercent && uniBar03.constants.maxUni > uniBar03.constants.maxUniDEFAULT)) {
+        uniBar03.constants.maxUni /= uniBar03.scaleSequence[uniBar03.scalePos];
+        uniBar03.scalePos = uniBar03.scalePos - 1;
+        //Reverse wrap around (like using modulo for negative numbers. Credit: https://dev.to/maurobringolf/a-neat-trick-to-compute-modulo-of-negative-numbers-111e)
+        uniBar03.scalePos = (uniBar03.scalePos % uniBar03.scaleSequence.length + uniBar03.scaleSequence.length) % uniBar03.scaleSequence.length;
+    }
 	
     //Map the inputs to the current scale (as a percentage)
 	uniBar03.values.uniOut = uniBar03.values.uniIn.map(uniBar03.constants.minUni, uniBar03.constants.maxUni, 0, 1);
@@ -4893,7 +5224,7 @@ function updateTopUni03() {
 	uniBar03.rectCommand.h = uniBar03.setupVars.barHeight;
     
 	//Dashes
-    var gap = (uniBar03.setupVars.barHeight - uniBar03.setupVars.posDash.y) / ((uniBar03.largeDashTotal) * 10 - 15);
+    var gap = (uniBar03.setupVars.barHeight - uniBar03.setupVars.posDash.y) / ((uniBar03.largeDashTotal) * 9 - 10);
     //This just works... 
 	for (i = 0; i < (uniBar03.largeDashTotal * 10 - 9); i++) {
 		//Large
@@ -5716,7 +6047,7 @@ var windSpeed = {
     textDisplayBeaufort: null,
 	windHighDisplay: null,
 	gustHighDisplay: null,
-	largeDashTotal: 5,
+	largeDashTotal: 6,
 	dashStrokeCommand: [],
 	dashStartCommand: [],
 	dashEndCommand: [],
@@ -5786,12 +6117,10 @@ function formatInputWS01() {
     windSpeed.values.windHighSpeedIn = formatDataToUnit(windSpeed.values.windHighSpeedIn, windSpeed.values.unitsIn);
     windSpeed.values.gustHighSpeedIn = formatDataToUnit(windSpeed.values.gustHighSpeedIn, windSpeed.values.unitsIn);
     
-	//Adjust Range if needed: if any of the inputs (current, windHigh, gustHigh), are less than the current minimum of the range, decrease the minimum. If any of the inputs (current, windHigh, gustHigh), are bigger than the current maximum of the range, increase the maximum. 
-	while (windSpeed.values.speedIn < windSpeed.constants.minSpeed || windSpeed.values.gustIn < windSpeed.constants.minSpeed || windSpeed.values.windHighSpeedIn < windSpeed.constants.minSpeed || windSpeed.values.gustHighSpeedIn < windSpeed.constants.minSpeed) {windSpeed.constants.minSpeed -= windSpeed.largeDashTotal - 1; }
+    //If any of the inputs (current, windHigh, gustHigh), are bigger than the current maximum of the range, increase the maximum. 
 	while (windSpeed.values.speedIn > windSpeed.constants.maxSpeed || windSpeed.values.gustIn > windSpeed.constants.maxSpeed || windSpeed.values.windHighSpeedIn > windSpeed.constants.maxSpeed || windSpeed.values.gustHighSpeedIn > windSpeed.constants.maxSpeed) {windSpeed.constants.maxSpeed += windSpeed.largeDashTotal - 1; }
 
-    //Adjust Range if needed: if all of the inputs (current, windHigh, gustHigh), are bigger than the current minimum of the range, increase the minimum. If all of the inputs (current, windHigh, gustHigh), are less than the current maximum of the range, decrease the maximum. 
-	while (windSpeed.values.speedIn >= windSpeed.constants.minSpeed + (windSpeed.largeDashTotal - 1) && windSpeed.values.gustIn >= windSpeed.constants.minSpeed + (windSpeed.largeDashTotal - 1) && windSpeed.values.windHighSpeedIn >= windSpeed.constants.minSpeed + (windSpeed.largeDashTotal - 1) && windSpeed.values.gustHighSpeedIn >= windSpeed.constants.minSpeed + (windSpeed.largeDashTotal - 1) && windSpeed.constants.minSpeed < windSpeed.constants.minSpeedDEFAULT) {windSpeed.constants.minSpeed += windSpeed.largeDashTotal - 1; }
+    //If all of the inputs (current, windHigh, gustHigh), are less than the current maximum of the range, decrease the maximum. 
 	while (windSpeed.values.speedIn <= windSpeed.constants.maxSpeed - (windSpeed.largeDashTotal - 1) && windSpeed.values.gustIn <= windSpeed.constants.maxSpeed - (windSpeed.largeDashTotal - 1) && windSpeed.values.windHighSpeedIn <= windSpeed.constants.maxSpeed - (windSpeed.largeDashTotal - 1) && windSpeed.values.gustHighSpeedIn <= windSpeed.constants.maxSpeed - (windSpeed.largeDashTotal - 1) && windSpeed.constants.maxSpeed > windSpeed.constants.maxSpeedDEFAULT) {windSpeed.constants.maxSpeed -= windSpeed.largeDashTotal - 1; }
 	
     //Map the inputs to the current scale
@@ -6712,6 +7041,11 @@ function formatAndDisplayForecastFor01(textInput) {
     if (textInput === null) {
         textInput = forecast.storedTextInput;
     }
+    
+    if (textInput === "---") {
+        textInput = "";
+    }
+    
     forecast.storedTextInput = textInput;
     var origionalText = textInput.replace(/_/g, " "),
         editedText = origionalText,
@@ -7250,7 +7584,7 @@ function initializeModalGraph01() {
     modalGraph.header = document.getElementById("graphHeader");
     modalGraph.footer = document.getElementById("graphFooter");
     modalGraph.headerText = document.getElementById("graphHeaderText");
-    modalGraph.currentGraph = ["barometer", "hourlyDay"];
+    modalGraph.currentGraph = [Object.keys(globalGraphs)[0], Object.keys(globalGraphs[Object.keys(globalGraphs)[0]].graphs)[0]];
     
 	drawGraphLine();
     
@@ -7300,7 +7634,7 @@ function updateUnits(unitType) {
         drawUniratureBarUni03(arrayClientraw[9], true);
         configureGraphRainBar01("rainfallBar", "dailyMonth");
     } else if (unitType == "temp") {
-        drawTemperatureBarTemp01(arrayClientraw[4], arrayClientraw[46], arrayClientraw[47], true);
+        drawTemperatureBarTemp01(arrayClientraw[4], arrayClientraw[46], arrayClientraw[47], arrayClientraw[143], true);
         drawTemperatureBarTemp02(
             getExtraInput(widgetList.temperature02.input)[0], getExtraInput(widgetList.temperature02.input)[1], getExtraInput(widgetList.temperature02.input)[2], true);
         drawTemperatureBarTemp03(
@@ -7458,9 +7792,9 @@ function initModalHandler() {
     modal.button = document.getElementById("GraphsButton");
     modal.button.innerHTML = useDict("buttonLabelGraphs");
     modal.button.addEventListener('click', function() {
-        modal.selectMenu.value = "barometerhourlyDay";
+        modal.selectMenu.value = Object.keys(globalGraphs)[0] + Object.keys(globalGraphs[Object.keys(globalGraphs)[0]].graphs)[0];
         modal.modal.style.display = "block";
-        configureGraph("barometer", "hourlyDay");
+        configureGraph(Object.keys(globalGraphs)[0], Object.keys(globalGraphs[Object.keys(globalGraphs)[0]].graphs)[0]);
         modalGraph.chart.resize();
     }, false);
     
@@ -7475,6 +7809,11 @@ function graphChange(obj) {
 //INITIALISATION OF ALL
 function initAll() {
     //Calls initialisation functions of everything needed
+    var baroGraphCanvas = document.getElementById('baroGraphCanvas01'),
+        rainGraphCanvas = document.getElementById('rainGraphCanvas01'),
+        tempGraphCanvas = document.getElementById('tempGraphCanvas01'),
+        windGraphCanvas = document.getElementById('windGraphCanvas01');
+    
     apparent01.canvas = document.getElementById(apparent01.config.canvasID.toString());
     solarBar01.canvas = document.getElementById(solarBar01.config.canvasID.toString());
     uvBar01.canvas = document.getElementById(uvBar01.config.canvasID.toString());
@@ -7483,10 +7822,10 @@ function initAll() {
     tempBar03.canvas = document.getElementById('TempBar03');
     barometer01.canvas = document.getElementById(barometer01.config.canvasID.toString());
     windchill01.canvas = document.getElementById('Windchill01');
-    baroGraph.canvas = document.getElementById('baroGraphCanvas01').getContext("2d", {alpha: false});
-    rainGraph.canvas = document.getElementById('rainGraphCanvas01').getContext("2d", {alpha: false});
-    tempGraph.canvas = document.getElementById('tempGraphCanvas01').getContext("2d", {alpha: false});
-    windGraph.canvas = document.getElementById('windGraphCanvas01').getContext("2d", {alpha: false});
+    baroGraph.canvas = baroGraphCanvas.getContext("2d", {alpha: false});
+    rainGraph.canvas = rainGraphCanvas.getContext("2d", {alpha: false});
+    tempGraph.canvas = tempGraphCanvas.getContext("2d", {alpha: false});
+    windGraph.canvas = windGraphCanvas.getContext("2d", {alpha: false});
     humidityGauge.canvas = document.getElementById('HumidityGauge01');
     moonSun01.canvas = document.getElementById(moonSun01.config.canvasID.toString());
     status01.canvas = document.getElementById(status01.config.canvasID.toString());
@@ -7497,31 +7836,39 @@ function initAll() {
     windGauge.canvas = document.getElementById('WindGauge01');
     windSpeed.canvas = document.getElementById('WindSpeed01');
     initialiseLayout();
-    if (widgetList["apparent"].enabled === true) {initializeApparentA01();} else if (apparent01.canvas !== null) {apparent01.canvas.style.display = "none";}
-    if (widgetList["temperature"].enabled === true) {initializeTemp01();} else if (tempBar01.canvas !== null) {tempBar01.canvas.style.display = "none";}
-    if (widgetList["temperature02"].enabled === true) {initializeTemp02();} else if (tempBar02.canvas !== null) {tempBar02.canvas.style.display = "none";}
-    if (widgetList["temperature03"].enabled === true) {initializeTemp03();} else if (tempBar03.canvas !== null) {tempBar03.canvas.style.display = "none";}
-    if (widgetList["barometer"].enabled === true) {initializeBarometerB01();} else if (barometer01.canvas !== null) {barometer01.canvas.style.display = "none";}
-    if (widgetList["windChill"].enabled === true) {initializeWC01();} else if (windchill01.canvas !== null) {windchill01.canvas.style.display = "none";}
+    if (widgetList["apparent"].enabled === true) {initializeApparentA01();} else if (apparent01.canvas != null) {apparent01.canvas.style.display = "none";}
+    if (widgetList["temperature"].enabled === true) {initializeTemp01();} else if (tempBar01.canvas != null) {tempBar01.canvas.style.display = "none";}
+    if (widgetList["temperature02"].enabled === true) {initializeTemp02();} else if (tempBar02.canvas != null) {tempBar02.canvas.style.display = "none";}
+    if (widgetList["temperature03"].enabled === true) {initializeTemp03();} else if (tempBar03.canvas != null) {tempBar03.canvas.style.display = "none";}
+    if (widgetList["barometer"].enabled === true) {initializeBarometerB01();} else if (barometer01.canvas != null) {barometer01.canvas.style.display = "none";}
+    if (widgetList["windChill"].enabled === true) {initializeWC01();} else if (windchill01.canvas != null) {windchill01.canvas.style.display = "none";}
     if (widgetList["forecastHandler"].enabled === true) {forecastInitFor01();}
-    if (widgetList["graphHandler"].enabled === true) {initializeModalGraph01();}
-    if (widgetList["graphHandlerBarometer"].enabled === true) {initializeBaroGraph01();} else if (baroGraph.canvas !== null) {baroGraph.canvas.style.display = "none";}
-    if (widgetList["graphHandlerRainfall"].enabled === true) {initializeRainGraph01();} else if (rainGraph.canvas !== null) {rainGraph.canvas.style.display = "none";}
-    if (widgetList["graphHandlerTemperature"].enabled === true) {initializeTempGraph01();} else if (tempGraph.canvas !== null) {tempGraph.canvas.style.display = "none";}
-    if (widgetList["graphHandlerWindSpeed"].enabled === true) {initializeWindGraph01();} else if (windGraph.canvas !== null) {windGraph.canvas.style.display = "none";}
-    if (widgetList["humidity"].enabled === true) {initializeHum01();} else if (humidityGauge.canvas !== null) {humidityGauge.canvas.style.display = "none";}
-    if (widgetList["modalHandler"].enabled === true) {initModalHandler();}
-    if (widgetList["moonSun"].enabled === true) {initializeMoonSunMS01();} else if (moonSun01.canvas !== null) {moonSun01.canvas.style.display = "none";}
+    if (widgetList["graphHandlerBarometer"].enabled === true) {initializeBaroGraph01();} else if (baroGraph.canvas != null) {baroGraph.canvas.style.display = "none";}
+    if (widgetList["graphHandlerRainfall"].enabled === true) {initializeRainGraph01();} else if (rainGraph.canvas != null) {rainGraph.canvas.style.display = "none";}
+    if (widgetList["graphHandlerTemperature"].enabled === true) {initializeTempGraph01();} else if (tempGraph.canvas != null) {tempGraph.canvas.style.display = "none";}
+    if (widgetList["graphHandlerWindSpeed"].enabled === true) {initializeWindGraph01();} else if (windGraph.canvas != null) {windGraph.canvas.style.display = "none";}
+    if (widgetList["humidity"].enabled === true) {initializeHum01();} else if (humidityGauge.canvas != null) {humidityGauge.canvas.style.display = "none";}
+    if (widgetList["moonSun"].enabled === true) {initializeMoonSunMS01();} else if (moonSun01.canvas != null) {moonSun01.canvas.style.display = "none";}
     if (widgetList["recordHandler"].enabled === true) {recordsInitRe01();}
-    if (widgetList["solar"].enabled === true) {initializeSolarBarSol01();} else if (solarBar01.canvas !== null) {solarBar01.canvas.style.display = "none";}
-    if (widgetList["status"].enabled === true) {initializeStatusS01();} else if (status01.canvas !== null) {status01.canvas.style.display = "none";}
-    if (widgetList["rainfallTitle"].enabled === true) {initializeTitleRainfallTR01();} else if (titleRainfall01.canvas !== null) {titleRainfall01.canvas.style.display = "none";}
-    if (widgetList["rainfallDay"].enabled === true) {initializeUniBarUni01();} else if (uniBar01.canvas !== null) {uniBar01.canvas.style.display = "none";}
-    if (widgetList["rainfallMonth"].enabled === true) {initializeUniBarUni02();} else if (uniBar02.canvas !== null) {uniBar02.canvas.style.display = "none";}
-    if (widgetList["rainfallYear"].enabled === true) {initializeUniBarUni03();} else if (uniBar03.canvas !== null) {uniBar03.canvas.style.display = "none";}
-    if (widgetList["UV"].enabled === true) {initializeUVBarUV01();} else if (uvBar01.canvas !== null) {uvBar01.canvas.style.display = "none";}
-    if (widgetList["windDirection"].enabled === true) {initializeWind01();} else if (windGauge.canvas !== null) {windGauge.canvas.style.display = "none";}
-    if (widgetList["windSpeed"].enabled === true) {initializeWS01();} else if (windSpeed.canvas !== null) {windSpeed.canvas.style.display = "none";}
+    if (widgetList["solar"].enabled === true) {initializeSolarBarSol01();} else if (solarBar01.canvas != null) {solarBar01.canvas.style.display = "none";}
+    if (widgetList["status"].enabled === true) {initializeStatusS01();} else if (status01.canvas != null) {status01.canvas.style.display = "none";}
+    if (widgetList["rainfallTitle"].enabled === true) {initializeTitleRainfallTR01();} else if (titleRainfall01.canvas != null) {titleRainfall01.canvas.style.display = "none";}
+    if (widgetList["rainfallDay"].enabled === true) {initializeUniBarUni01();} else if (uniBar01.canvas != null) {uniBar01.canvas.style.display = "none";}
+    if (widgetList["rainfallMonth"].enabled === true) {initializeUniBarUni02();} else if (uniBar02.canvas != null) {uniBar02.canvas.style.display = "none";}
+    if (widgetList["rainfallYear"].enabled === true) {initializeUniBarUni03();} else if (uniBar03.canvas != null) {uniBar03.canvas.style.display = "none";}
+    if (widgetList["UV"].enabled === true) {initializeUVBarUV01();} else if (uvBar01.canvas != null) {uvBar01.canvas.style.display = "none";}
+    if (widgetList["windDirection"].enabled === true) {initializeWind01();} else if (windGauge.canvas != null) {windGauge.canvas.style.display = "none";}
+    if (widgetList["windSpeed"].enabled === true) {initializeWS01();} else if (windSpeed.canvas != null) {windSpeed.canvas.style.display = "none";}
+    if (graphList["barometer"].enabled === false) {delete(globalGraphs.barometer); if (baroGraphCanvas != null) {baroGraphCanvas.style.display = "none";}}
+    if (graphList["humidity"].enabled === false) {delete(globalGraphs.humidity);}
+    if (graphList["solar"].enabled === false) {delete(globalGraphs.solar);}
+    if (graphList["temp"].enabled === false) {delete(globalGraphs.temp); if (tempGraphCanvas != null) {tempGraphCanvas.style.display = "none";}}
+    if (graphList["uv"].enabled === false) {delete(globalGraphs.uv);}
+    if (graphList["windDir"].enabled === false) {delete(globalGraphs.windDir);}
+    if (graphList["windSpeed"].enabled === false) {delete(globalGraphs.windSpeed); if (windGraphCanvas != null) {windGraphCanvas.style.display = "none";}}
+    if (graphList["rainfall"].enabled === false) {delete(globalGraphs.rainfallBar); delete(globalGraphs.rainfallLine); if (rainGraphCanvas != null) {rainGraphCanvas.style.display = "none";}}
+    if (widgetList["graphHandler"].enabled === true) {initializeModalGraph01();}
+    if (widgetList["modalHandler"].enabled === true) {initModalHandler();}
     initializeTicker();
     initializeButtons();
 }

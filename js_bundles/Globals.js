@@ -2141,7 +2141,7 @@ var widgetList = {
     modalHandler: {enabled: true},
     moonSun: {enabled: true},
     recordHandler: {enabled: true},
-    solar: {enabled: true},
+    solar: {enabled: true, mode: "percentage"},
     status: {enabled: true},
     rainfallTitle: {enabled: true},
     rainfallDay: {enabled: true},
@@ -2150,7 +2150,18 @@ var widgetList = {
     UV: {enabled: true},
     windDirection: {enabled: true},
     windSpeed: {enabled: true}
-};
+},
+    graphList = {
+    barometer: {enabled: true},
+    humidity: {enabled: true},
+    solar: {enabled: true},
+    temp: {enabled: true},
+    uv: {enabled: true},
+    windDir: {enabled: true},
+    windSpeed: {enabled: true},
+    rainfall: {enabled: true}
+}
+
 //Alter widgetList settings to match any changes made in the config file
 if (typeof gaugeSettings !== "undefined") {//Check to see if gauge setting list exists.
     gaugeSettingsWidgets = Object.keys(gaugeSettings);
@@ -2159,6 +2170,18 @@ if (typeof gaugeSettings !== "undefined") {//Check to see if gauge setting list 
             var gaugeWidgetKeys = Object.keys(gaugeSettings[gaugeSettingsWidgets[i]]);
             for (p = 0; p < gaugeWidgetKeys.length; p++) {
                 widgetList[gaugeSettingsWidgets[i].toString()][gaugeWidgetKeys[p]] = gaugeSettings[gaugeSettingsWidgets[i].toString()][gaugeWidgetKeys[p]];
+            }
+        }
+    }
+}
+
+if (typeof graphSettings !== "undefined") {//Check to see if graph setting list exists.
+    graphSettingsWidgets = Object.keys(graphSettings);
+    for (i = 0; i < graphSettingsWidgets.length; i++) {
+        if (typeof graphList[graphSettingsWidgets[i]] !== "undefined") {
+            var graphWidgetKeys = Object.keys(graphSettings[graphSettingsWidgets[i]]);
+            for (p = 0; p < graphWidgetKeys.length; p++) {
+                graphList[graphSettingsWidgets[i].toString()][graphWidgetKeys[p]] = graphSettings[graphSettingsWidgets[i].toString()][graphWidgetKeys[p]];
             }
         }
     }
@@ -2258,7 +2281,7 @@ function initialiseLayout() {
 	resizeContainer();
     
     //Set version number:
-    document.getElementById("Version").innerHTML = "FreshWDL - Version: 1.1.7.8 Alpha. yerren@renerica.com";
+    document.getElementById("Version").innerHTML = "FreshWDL - Version: 1.1.8 Alpha. yerren@renerica.com";
 }
 
 //Set global Graph options

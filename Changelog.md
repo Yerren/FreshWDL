@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## 1.1.8 Alpha 2019-11-03
+_Quality of Life Update_
+
+#### Added
+- Option to only show Watts per Meter Squared on solar gauge. (To activate this, add the following to the 'solar' section of 'gaugeSettings' in your config file: mode: "Watt").
+- Option to disable particular graphs if desired.
+- Trend arrow to humidity gauge.
+- Trend arrow to main temperature gauge.
+
+#### Changes
+- Barometer now displays "+" sign for positive trends.
+- Windchill/heatindex gauge now changes tooltip accordingly.
+- Changed number of ticks on rain gauges to make nicer numbers.
+- Changed rainfall tick scaling method - no long uniform scaling - to produce nicer numbers.
+- Changed number of ticks on windspeed gauge to produce whole numbers.
+- Null (blank, "---") forecasts are now suppressed.
+
 ## 1.1.7 Alpha 2018-07-06
 
 #### Added
