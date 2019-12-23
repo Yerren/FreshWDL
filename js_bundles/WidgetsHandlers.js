@@ -7218,6 +7218,7 @@ function resizeDivRe01() {
         stlyeString = null,
         increaseCount = 0;
     
+    
 	//Adjusts modal div to math resized window. always adjust to the smallest dimention
     if (document.documentElement.clientHeight <= document.documentElement.clientWidth) {
 		width = document.documentElement.clientHeight * modalDivSize * 1.5;
@@ -7228,16 +7229,16 @@ function resizeDivRe01() {
 	}
     
     records.table.style.fontSize = sharpenValue(Math.pow(height, 2) / 10000) + "px";
-        while (records.modalRecordsDiv.clientHeight < records.table.clientHeight) {
-            records.table.style.fontSize = sharpenValue(Math.pow(height, 2) / (10000 + 1000 * increaseCount)) + "px";
-            increaseCount += 1;
-        }
-        
+    while (records.modalRecordsDiv.clientHeight + 2 < records.table.clientHeight) {
+        records.table.style.fontSize = sharpenValue(Math.pow(height, 2) / (10000 + 1000 * increaseCount)) + "px";
+        increaseCount += 1;
+    }
     
     width = width.toString() + "px";
     height = height.toString() + "px";
     stlyeString = "width:" + width.toString() + ";height:" + height.toString();
     records.modalRecordsDiv.setAttribute("style", stlyeString.toString());
+    
     //For browser compadibility
     records.modalRecordsDiv.style.width = width.toString();
     records.modalRecordsDiv.style.height = height.toString();
