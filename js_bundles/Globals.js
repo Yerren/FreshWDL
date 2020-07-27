@@ -24,7 +24,7 @@ var dict = {
 		bg: "Видима",
 		cs: "Zdánlivá",
 		si: "Naslovnica",
-		fi: "Näkyvä",
+		fi: "Tuntuu kuin",
 		sv: "Känns som",
 		pt: "Aparente",
 		ca: "Aparent"
@@ -43,7 +43,7 @@ var dict = {
 		bg: "Възприемана температура, базирана на температура, влажност, слънце и вятър.",
 		cs: "Pocitová teplota na základě teploty, vlhkosti, slunce a větru.",
 		si: "Zaznana temperatura, ki temelji na temperaturi, vlagi, soncu in vetru.",
-		fi: "Havainnoitu lämpötila perustuu lämpötilaan kosteuteen aurinkoon ja tuuliin.",
+		fi: "Koettu lämpötila perustuu lämpötilaan, kosteuteen, aurinkoon ja tuuleen.",
 		sv: "Upplevd temperatur, baserad på temperatur, fuktighet, sol och vind.",
 		pt: "Temperatura aparente baseada na temperatura, humidade, sol e vento.",
 		ca: "Temperatura percebuda en funció de la temperatura, l'humitat, el sol i el vent."
@@ -81,7 +81,7 @@ var dict = {
 		bg: "Текуща температура на въздуха.\nБлок: Ниска дневна температура.\nРед: Висока дневна температура.",
 		cs: "Aktuální teplota vzduchu.\nModrá: Nejnižší denní teplota.\nČervené: Nejvyšší denní teplota.",
 		si: "Trenutna temperatura zraka. \nModra: nizka dnevna temperatura. \nRdeča: visoka dnevna temperatura.",
-		fi: "Nykyinen ilman lämpötila. \n NLuku: Alhainen päivittäinen lämpötila. \nRed: Korkea päivittäinen lämpötila.",
+		fi: "Tämänhetkinen ilman lämpötila.\nSininen: Päivän alin lämpötila.\nPunainen: Päivän ylin lämpötila.",
 		sv: "Aktuell temperatur.\nBlå: Lägsta dagliga temperatur. \nRöd: Högsta dagliga temperatur.",
 		pt: "Temperatura do ar atual.\nAzul: Temperatura diária mínima.\nVermelho: Temperatura diária máxima.",
 		ca: "Temperatura de l'aire actual.\nBlau: temperatura diària mínima.\nVermell: temperatura diària màxima."
@@ -157,7 +157,7 @@ var dict = {
 		bg: "Тежестта на въздуха, коригирана спрямо височината на станцията.",
 		cs: "Tlak vzduchu, přizpůsobený nadmořské výšce stanice.",
 		si: "Teža zraka, prilagojena višini postaje.",
-		fi: "Ilman paino säädetty asemalle korkeudessa.",
+		fi: "Ilmanpaine perustuen sääaseman korkeuteen merenpinnasta.",
 		sv: "Lufttrycket baserat på väderstationens höjd över havet.",
 		pt: "O peso do ar, ajustado à altitude da estação.",
 		ca: "El pes de l'aire, ajustat per a l'altitud de l'estació."
@@ -176,7 +176,7 @@ var dict = {
 		bg: "Cилен вятър",
 		cs: "Faktor větru",
 		si: "Hladen veter",
-		fi: "Tuulen kylmyys",
+		fi: "Tuulen hyytävyys",
 		sv: "Köldindex",
 		pt: "Índice de frio",
 		ca: "Sensació"
@@ -195,7 +195,7 @@ var dict = {
 		bg: "Колко студено се чувства, изчислено чрез комбиниране на топлина и скорост на вятъра.",
 		cs: "Jak je teplota skutečně vnímána. Vypočítá se kombinací teploty a rychlosti větru.",
 		si: "Kako hladno se dejansko počuti. Izračunano s kombinacijo toplote in hitrosti vetra.",
-		fi: "Kuinka kylmältä se todella tuntuu lasketaan yhdistämällä lämmön ja tuulen nopeus.",
+		fi: "Koettu lämpötila lasketaan yhdistämällä lämpötila ja tuulen nopeus.",
 		sv: "Upplevd temperatur. Baserad på en kombination av temperatur och vindhastighet.",
 		pt: "Temperatura percetível. Calculado combinando a temperatura e a velocidade do vento.",
 		ca: "Quin fred se sent realment. Calculat combinant el calor y la velocitat del vent."
@@ -214,7 +214,7 @@ var dict = {
 		bg: "Влажност",
 		cs: "Vlhkost",
 		si: "Vlažnosr",
-		fi: "Kosteus",
+		fi: "Ilman kosteus",
 		sv: "Luftfuktighet",
 		pt: "Humidade",
 		ca: "Humitat"
@@ -233,7 +233,7 @@ var dict = {
 		bg: "Количеството водни пари във въздуха като процент от количеството, което въздухът може да държи.",
 		cs: "Množství vodní páry ve vzduchu jako procento max. množství, které může vzduch obsahovat.",
 		si: "Količina vodne pare v zraku kot odstotek količine, ki jo lahko zadrži zrak.",
-		fi: "Vesihöyryn määrä ilmassa prosentteina siitä määrästä jonka ilma pystyy pitämään.",
+		fi: "Ilman kosteus on prosentuaalinen vesihöyryn määrä siitä määrästä, joka ilmassa enintään voi vallitsevassa lämpötilassa olla.",
 		sv: "Luftfuktighet är ett mått på mängden eller andelen vattenånga som finns i luften.",
 		pt: "A quantidade de vapor de água no ar, como percentagem do total passível de ser retido pelo ar à temperatura atual.",
 		ca: "La quantitat de vapor d'aigua en l'aire com a percentatge de la quantitat que l'aire es capaç de contenir."
@@ -385,7 +385,7 @@ var dict = {
 		bg: "Часове на слънцето",
 		cs: "Doba svitu slunce",
 		si: "Sončev čas",
-		fi: "Aurinkoa tunnissa",
+		fi: "Auringonpaiste",
 		sv: "Soltimmar",
 		pt: "Horas de sol",
 		ca: "Hores de Sol"
@@ -423,7 +423,7 @@ var dict = {
 		bg: "Няма данни оттогава",
 		cs: "Žádné údaje od té doby",
 		si: "Ni podatkov od",
-		fi: "Mitään tietoa ei ole",
+		fi: "Ei tietoja sitten",
 		sv: "Ingen data sedan",
 		pt: "Sem dados desde",
 		ca: "Sense dades des de"
@@ -461,7 +461,7 @@ var dict = {
 		bg: "Зелена: Нови данни, събрани от сървъра.\nЧаст: Данните на сървъра не са се променили.\nНапред: Някои грешки при събирането на данни от сървъра.\nчервен: Няма данни, които да се събират от сървъра.",
 		cs: "Zelená: Nová data načtená ze serveru.\nŠedá: Údaje na serveru se nezměnily.\nŽlutá: Některé chyby při sběru dat ze serveru.\nČervená: Žádné údaje nemohly být ze serveru načteny.",
 		si: "Zelena: novi podatki, zbrani s strežnika. \nSiva: Podatki na strežniku se niso spremenili. \nRumena: Nekatere napake med zbiranjem podatkov s strežnika. \nRdeča: Ni podatkov, ki bi jih bilo mogoče uporabiti s strežnika.",
-		fi: "Verde: Uusi data päivitetty serveriin.\nVerde: datele de pe server nu s-au schimbat. \nGalben: Unele erori în timpul colectării de date de pe server.\nRosu: Nu există date care să poată fi colectate de pe server.",
+		fi: "Vihreä: Viimeisimmät tiedot kerätty palvelimelta.\nHarmaa: Palvelimen tiedot eivät ole muuttuneet.\nKeltainen: Joitain virheitä kerätessä tietoja palvelimelta.\nPunainen: Tietoja ei voitu kerätä palvelimelta.",
 		sv: "Grön: Ny data mottagen från servern. \nGrå: Ingen ändring av mottagen data från servern. \nGul: Fel uppstod vid hämtning av data från servern.\nRöd: Ingen data tillgänglig från servern.",
 		pt: "Verde: Novos dados recolhidos do servidor.\nCinzento: Dados do servidor não alterados.\nAmarelo: Alguns erros durante a recolha de dados do servidor.\nVermelho: Não foi possível recolher dados do servidor.",
 		ca: "Vert: dades noves recopilades del servidor.\nGris: les dades del servidor no han canviat.\nGroc: alguns errors durant la recopilació de dades del servidor.\nVermell: no es poden recopilar dades del servidor."
@@ -499,7 +499,7 @@ var dict = {
 		bg: "Eжедневно",
 		cs: "Denní",
 		si: "Dnevno",
-		fi: "Päivittäin",
+		fi: "Päivän",
 		sv: "Daglig",
 		pt: "Diária",
 		ca: "Dia"
@@ -518,7 +518,7 @@ var dict = {
 		bg: "Месечно",
 		cs: "Měsíční",
 		si: "Mesečno",
-		fi: "Kuukausittain",
+		fi: "Kuukauden",
 		sv: "Månatligt",
 		pt: "Mensal",
 		ca: "Mensual"
@@ -537,7 +537,7 @@ var dict = {
 		bg: "Годишен",
 		cs: "Roční",
 		si: "Letno",
-		fi: "Varsinainen",
+		fi: "Vuoden",
 		sv: "Årlig",
 		pt: "Anual",
 		ca: "Anual"
@@ -574,7 +574,7 @@ var dict = {
 		bg: "Интензитетът на UV радиация - 0-2 е минимален риск от увреждане на кожата, докато 8+ е много висока.",
 		cs: "Intenzita UV záření - 0-2 představuje minimální riziko poškození kůže, zatímco 8+ je velmi vysoké riziko.",
 		si: "Intenzivnost UV sevanja - 0-2 je minimalna nevarnost poškodb kože, medtem ko je 8 + zelo visoka.",
-		fi: "UV-säteilyn intensiteetti - 0-2 on vähäinen ihon vaurioituminen kun taas 8+ on erittäin korkea.",
+		fi: "UV-säteilyn voimakkuus - 0-2 on vähäinen ihon vaurioituminen, kun taas 8+ on erittäin korkea.",
 		sv: "Intensiteten av UV-strålningen. 0-2 = minimal risk för hudskador. Medan 8+ betyder hög risk för hudskador.",
 		pt: "Intensidade de radiação Ultravioleta - 0 a 2 o risco de danos na pele é mínimo enquanto que mais de 8 é muito alto.",
 		ca: "La intensitat de la radiació UV - 0-2 és un risc mínim de dany a la pell, mentre que 8+ és molt alta."
@@ -764,7 +764,7 @@ var dict = {
 		bg: "mакс",
 		cs: "max",
 		si: "max",
-		fi: "max",
+		fi: "Max",
 		sv: "Max",
 		pt: "max",
 		ca: "màx"
@@ -859,7 +859,7 @@ var dict = {
 		bg: "Зелената лента показва средната.\nпурпурен скорост на вятъра.",
 		cs: "Zelená čára označuje průměrnou rychlost větru.\nSloupec označuje rychlost poryvu.",
 		si: "Zelena vrstica označuje povprečno hitrost vetra. \nVijolična vrstica označuje sunek vetra.",
-		fi: "Vihreä palkki ilmaisee keskimääräisen tuulen nopeuden. \nNLila-palkki ilmaisee puuskan nopeuden.",
+		fi: "Vihreä palkki ilmaisee keskimääräisen tuulen nopeuden.\nVioletti palkki ilmaisee puuskan nopeuden.",
 		sv: "Grön stapel indikerar genomsnittlig vind. \nLila stapel indikerar vindbyar.",
 		pt: "A barra verde indica a velocidade do vento média.\nA barra roxa indica a velocidade da rajada.",
 		ca: "La barra verda indica la velocitat mitjana del vent.\nporpra indica la velocitat del cop."
@@ -954,7 +954,7 @@ var dict = {
 		bg: "Най-нисък барометър",
 		cs: "Nejnižší tlak vzduchu",
 		si: "Najnižji pritisk",
-		fi: "Matalin barometri",
+		fi: "Matalin ilmanpaine",
 		sv: "Lägsta lufttryck",
 		pt: "Pressão atmosférica mínima",
 		ca: "Baròmetre más baix"
@@ -973,7 +973,7 @@ var dict = {
 		bg: "Най-висок барометър",
 		cs: "Nejvyšší tlak vzduchu",
 		si: "Najvišji pritisk",
-		fi: "KOrkein barometri",
+		fi: "Korkein ilmanpaine",
 		sv: "Högsta lufttryck",
 		pt: "Pressão atmosférica máxima",
 		ca: "Baròmetre més alt"
@@ -1049,7 +1049,7 @@ var dict = {
 		bg: "Най-слаб вятър",
 		cs: "Nejnižší pocitová teplota",
 		si: "Najnižji občutek temperature",
-		fi: "Alin tuulenpuuska",
+		fi: "Alin hyytävyys",
 		sv: "Lägsta köldindex",
 		pt: "Mínimo índice de frio",
 		ca: "Sensació mínima"
@@ -1163,7 +1163,7 @@ var dict = {
 		bg: "Най-високото слънчево",
 		cs: "Nejvyšší sluneční svit",
 		si: "Najvišje izžarevanje sonca",
-		fi: "Aurinko korkeimmillaan",
+		fi: "Voimakkain auringon säteily",
 		sv: "Högsta solinstrålningen",
 		pt: "Máximo radiação solar",
 		ca: "Radiació solar màxima"
@@ -1182,7 +1182,7 @@ var dict = {
 		bg: "Най-висок UV индекс",
 		cs: "Nejvyšší index UV",
 		si: " Najvišji UV",
-		fi: "Korkein uv indeksi",
+		fi: "Korkein UV-indeksi",
 		sv: "Högsta UV-index",
 		pt: "Máximo índice UV",
 		ca: "Index UV màxim"
@@ -1639,7 +1639,7 @@ var dict = {
 		bg: "Колко горещо наистина се чувства, когато относителната влажност се отчита с действителната температура на въздуха.",
 		cs: "Jakou teplotu pociťujeme, když je skutečná teplota zohledněna relativní vlhkostí vzduchu.",
 		si: "Občutek vročine, ko je relativna vlažnost upoštevana z dejansko temperaturo zraka.",
-		fi: "Kuinka kuumalta se todella tuntuu kun suhteellinen kosteus otetaan huomioon todellisen ilman lämpötilan suhteen.",
+		fi: "Kuinka kuumalta ilma tuntuu, kun suhteellinen kosteus otetaan huomioon todellisen ilman lämpötilan suhteen.",
 		sv: "Hur varmt det känns när relativa fuktigheten kombineras med aktuell temperatur.",
 		pt: "Temperatura percetível. Calculado combinando a temperatura e humidade relativa.",
 		ca: "El calor que realment se sent quan la humitat relativa es relaciona amb la temperatura de l'aire."
