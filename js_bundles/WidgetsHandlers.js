@@ -6923,12 +6923,11 @@ function updateClientraw() {
                 doneCR = true;
                 
                 if (arrayClientraw.indexOf("-") != -1) {
-                    
+
                     //Meteohub compadibility changes
                     for(i = 0; i < arrayClientraw.length; i++) {
                         if (arrayClientraw[i].toString() === "-") {arrayClientraw[i] = "0";}
                     }
-                    
                 }
                 
             } else {
@@ -6953,8 +6952,7 @@ function updateClientrawExtra() {
                 arrayClientrawExtra = xhttpCRE.responseText.toString().split(" ");
                 doneCRE = true;
                 
-                if (arrayClientraw.indexOf("-") != -1) {
-                    
+                if (arrayClientrawExtra.indexOf("-") != -1) {
                     //Meteohub compadibility changes
                     for(i = 0; i < arrayClientrawExtra.length; i++) {
                         if (arrayClientrawExtra[i].toString() === "-") {arrayClientrawExtra[i] = "0";}
@@ -6983,8 +6981,7 @@ function updateClientrawHour() {
                 arrayClientrawHour = xhttpCRH.responseText.toString().split(" ");
                 doneCRH = true;
                 
-                if (arrayClientraw.indexOf("-") != -1) {
-                    
+                if (arrayClientrawHour.indexOf("-") != -1) {
                     //Meteohub compadibility changes
                     for(i = 0; i < arrayClientrawHour.length; i++) {
                         if (arrayClientrawHour[i].toString() === "-") {arrayClientrawHour[i] = "0";}
@@ -7013,13 +7010,12 @@ function updateClientrawDaily() {
                 arrayClientrawDaily = xhttpCRD.responseText.toString().split(" ");
                 doneCRD = true;
                 
-                if (arrayClientraw.indexOf("-") != -1) {
+                if (arrayClientrawDaily.indexOf("-") != -1) {
                     
                     //Meteohub compadibility changes
                     for(i = 0; i < arrayClientrawDaily.length; i++) {
                         if (arrayClientrawDaily[i].toString() === "-") {arrayClientrawDaily[i] = "0";}
                     }
-                    
                 }
                 
             } else {
