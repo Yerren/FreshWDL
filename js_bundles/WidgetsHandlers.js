@@ -6593,6 +6593,12 @@ var arrayClientraw = [],
 
 //Helper Functions
 function formatTimestampsToMoments(dataArrayIn, dayIn, formatIn) {
+    
+    // Meteohub compadibility fix
+    if (dayIn === "0") {
+        dayIn = moment().format("DD");
+    }
+    
     //Formats timestamp Array to Moments
     var returnArray = [];
     for (i = 0; i < dataArrayIn.length; i++) {
@@ -6793,6 +6799,7 @@ function processGraphData() {
         graphDict["baroHours24"].push(arrayClientrawExtra[574 + i]);
         graphDict["timestampHour"].push(arrayClientrawExtra[578 + i]);
     }
+    
     graphDict["timestampHour"] = formatTimestampsToMoments(graphDict["timestampHour"], arrayClientrawExtra[700], "DD:HH:mm");
     
     //31 day arrays
@@ -6855,10 +6862,6 @@ function tryUpdateWidgets() {
                 }
                 if (arrayClientrawExtra.equals(arrayClientrawExtraOld) === false) {
                     arrayClientrawExtraOld = arrayClientrawExtra;
-                    //Meteohub compadibility changes
-                    for(i = 0; i < arrayClientrawExtra.length; i++) {
-                        if (arrayClientrawExtra[i].toString() === "-") {arrayClientrawExtra[i] = "0"}
-                    }
                     window.dispatchEvent(loadEvents.clientRawExtra);
                 }
                 if (arrayClientrawDaily.equals(arrayClientrawDailyOld) === false) {
@@ -6918,6 +6921,16 @@ function updateClientraw() {
                 dataCollectErrorCR = false;
                 arrayClientraw = xhttpCR.responseText.toString().split(" ");
                 doneCR = true;
+                
+                if (arrayClientraw.indexOf("-") != -1) {
+                    
+                    //Meteohub compadibility changes
+                    for(i = 0; i < arrayClientraw.length; i++) {
+                        if (arrayClientraw[i].toString() === "-") {arrayClientraw[i] = "0";}
+                    }
+                    
+                }
+                
             } else {
                 dataCollectErrorCR = true;
             }
@@ -6930,7 +6943,6 @@ function updateClientraw() {
 
 function updateClientrawExtra() {
 	//updates the Clientraw Extra Array with data from server
-	
 	var xhttpCRE;
 	xhttpCRE = loadArray(baseURL + clientRawExtraName);
 	
@@ -6940,6 +6952,16 @@ function updateClientrawExtra() {
                 dataCollectErrorCRE = false;
                 arrayClientrawExtra = xhttpCRE.responseText.toString().split(" ");
                 doneCRE = true;
+                
+                if (arrayClientraw.indexOf("-") != -1) {
+                    
+                    //Meteohub compadibility changes
+                    for(i = 0; i < arrayClientrawExtra.length; i++) {
+                        if (arrayClientrawExtra[i].toString() === "-") {arrayClientrawExtra[i] = "0";}
+                    }
+                    
+                }
+                
             } else {
                 dataCollectErrorCRE = true;
             }
@@ -6951,7 +6973,6 @@ function updateClientrawExtra() {
 
 function updateClientrawHour() {
 	//updates the Clientraw Hour Array with data from server
-	
 	var xhttpCRH;
 	xhttpCRH = loadArray(baseURL + clientRawHourName);
     
@@ -6961,6 +6982,16 @@ function updateClientrawHour() {
                 dataCollectErrorCRH = false;
                 arrayClientrawHour = xhttpCRH.responseText.toString().split(" ");
                 doneCRH = true;
+                
+                if (arrayClientraw.indexOf("-") != -1) {
+                    
+                    //Meteohub compadibility changes
+                    for(i = 0; i < arrayClientrawHour.length; i++) {
+                        if (arrayClientrawHour[i].toString() === "-") {arrayClientrawHour[i] = "0";}
+                    }
+                    
+                }
+                
             } else {
                 dataCollectErrorCRH = true;
             }
@@ -6972,7 +7003,6 @@ function updateClientrawHour() {
 
 function updateClientrawDaily() {
 	//updates the Clientraw Daily Array with data from server
-	
 	var xhttpCRD;
 	xhttpCRD = loadArray(baseURL + clientRawDailyName);
     
@@ -6982,6 +7012,16 @@ function updateClientrawDaily() {
                 dataCollectErrorCRD = false;
                 arrayClientrawDaily = xhttpCRD.responseText.toString().split(" ");
                 doneCRD = true;
+                
+                if (arrayClientraw.indexOf("-") != -1) {
+                    
+                    //Meteohub compadibility changes
+                    for(i = 0; i < arrayClientrawDaily.length; i++) {
+                        if (arrayClientrawDaily[i].toString() === "-") {arrayClientrawDaily[i] = "0";}
+                    }
+                    
+                }
+                
             } else {
                 dataCollectErrorCRD = true;
             }
