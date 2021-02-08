@@ -2161,7 +2161,7 @@ var widgetList = {
     windDir: {enabled: true},
     windSpeed: {enabled: true},
     rainfall: {enabled: true}
-}
+}  
 
 //Alter widgetList settings to match any changes made in the config file
 if (typeof gaugeSettings !== "undefined") {//Check to see if gauge setting list exists.
@@ -2282,7 +2282,7 @@ function initialiseLayout() {
 	resizeContainer();
     
     //Set version number:
-    document.getElementById("Version").innerHTML = "FreshWDL - Version: 1.1.8.1 Alpha. yerren@renerica.com";
+    document.getElementById("Version").innerHTML = "FreshWDL - Version: 1.1.8.2 Alpha. yerren@renerica.com";
 }
 
 //Set global Graph options
