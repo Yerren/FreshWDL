@@ -6592,7 +6592,34 @@ var arrayClientraw = [],
     };
 
 //Helper Functions
-function formatTimestampsToMoments(dataArrayIn, dayIn, formatIn) {
+function formatTimestampsToMoments(dataArrayIn, dayIn, formatIn, stationNameTime) {
+    
+    // Check whether it's 12 or 24 hour format (maxHour will be either 12 or 23(!))
+    var maxHour = -1,
+        hr = -1;
+    for (i = 0; i < dataArrayIn.length; i++) {
+        hr = parseInt(dataArrayIn[i].split(":")[0]);
+        if (hr > maxHour) {
+            maxHour = hr;
+        }
+    }
+    
+    pm = stationNameTime.split(":")[stationNameTime.split(":").length - 1].indexOf("PM");  // Returns -1 if not currently PM, or if the data is in 24 hour format (!).
+    
+    // Convert to 24 hour format if needed
+    if (maxHour == 12) {
+        var addTwelve = pm != -1,
+            splitData = "",
+            justHour = -1;
+        for (i = 0; i < dataArrayIn.length; i++) {
+            splitData = dataArrayIn[i].split(":");
+            justHour = parseInt(splitData[0]);
+            dataArrayIn[i] = ((justHour + (12 * addTwelve)) % 24).toString() + ":" + splitData[1];  // Do the conversion. A bit janky, but it works.
+            if (justHour == 12) {
+                addTwelve = !addTwelve;
+            }
+        }
+    }
     
     // Meteohub compadibility fix
     if (dayIn === "0") {
@@ -6600,8 +6627,12 @@ function formatTimestampsToMoments(dataArrayIn, dayIn, formatIn) {
     }
     
     //Formats timestamp Array to Moments
-    var returnArray = [];
+    var returnArray = [],
+        doneDayJump = false;
     for (i = 0; i < dataArrayIn.length; i++) {
+        
+        
+        
         returnArray.push(moment(dayIn + ":" + dataArrayIn[i], formatIn.toString()));
         //fix day changes
         if (i > 0 && returnArray[i] < returnArray[i - 1]) {
@@ -6800,7 +6831,7 @@ function processGraphData() {
         graphDict["timestampHour"].push(arrayClientrawExtra[578 + i]);
     }
     
-    graphDict["timestampHour"] = formatTimestampsToMoments(graphDict["timestampHour"], arrayClientrawExtra[700], "DD:HH:mm");
+    graphDict["timestampHour"] = formatTimestampsToMoments(graphDict["timestampHour"], arrayClientrawExtra[700], "DD:HH:mm", arrayClientraw[32]);
     
     //31 day arrays
     for (i = 0; i < 31; i++) {
