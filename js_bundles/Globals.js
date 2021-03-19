@@ -2282,7 +2282,7 @@ function initialiseLayout() {
 	resizeContainer();
     
     //Set version number:
-    document.getElementById("Version").innerHTML = "FreshWDL - Version: 1.1.8.4 Alpha. yerren@renerica.com";
+    document.getElementById("Version").innerHTML = "FreshWDL - Version: 1.1.8.5 Alpha. yerren@renerica.com";
 }
 
 //Set global Graph options
