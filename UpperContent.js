@@ -46,11 +46,11 @@ document.write('\
         <div class="modal-content">\
             <div id="graphHeader" class="modal-header">\
                 <span id="graphClose" class="close">&#215</span>\
-                <h2 id="graphHeaderText" class="header-text">Modal Header</h2>\
+                <h2 id="graphHeaderText" class="header-text">FreshWDL</h2>\
             </div>\
             <div id="ModalCanvasDiv" class="OuterCanvasDiv">\
                 <canvas id="ModalCanvas" style="background-color:#FFFFFF">\
-                Your browser does not support the canvas element.\
+                Live weather display.\
                 </canvas>\
             </div>\
             <div id="graphFooter" class="modal-footer">\
