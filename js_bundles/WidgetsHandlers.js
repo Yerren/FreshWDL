@@ -2509,7 +2509,7 @@ function configureGraphBaroLine01(baseIn, graphIn) {
     
     //configure as line chart
     drawBaroGraphLine01();
-    baroGraph.chart.data.datasets[0] = graphStyles[style];
+    baroGraph.chart.data.datasets[0] = Object.assign({}, graphStyles[style]);
     baroGraph.chart.data.datasets[0].label = baseIn.label.toString() + " (" + units[baseIn.unit.toString()][currentUnits[baseIn.unit.toString()]][1].toString() + ")";
     baroGraph.chart.data.datasets[0].data = graphData;
     baroGraph.chart.options.scales.xAxes[0].time.unit = graphIn.timeDisplay.toString();
@@ -2638,7 +2638,7 @@ function configureGraphRainBar01(baseIn, graphIn) {
     //configure as bar chart
     drawRainGraphBar01();
     
-    rainGraph.chart.data.datasets[0] = graphStyles[style];
+    rainGraph.chart.data.datasets[0] = Object.assign({}, graphStyles[style]);
     rainGraph.chart.data.datasets[0].label = baseIn.label.toString() + " (" + units[baseIn.unit.toString()][currentUnits[baseIn.unit.toString()]][1].toString() + ")";
     rainGraph.chart.data.datasets[0].data = graphData;
     rainGraph.chart.data.labels = graphLabels;
@@ -2783,7 +2783,7 @@ function configureGraphTempLine01(baseIn, graphIn) {
     
     //configure as line chart
     drawTempGraphLine01();;
-    tempGraph.chart.data.datasets[0] = graphStyles[style];
+    tempGraph.chart.data.datasets[0] = Object.assign({}, graphStyles[style]);
     tempGraph.chart.data.datasets[0].label = baseIn.label.toString() + " (" + units[baseIn.unit.toString()][currentUnits[baseIn.unit.toString()]][1].toString() + ")";
     tempGraph.chart.data.datasets[0].data = graphData;
     tempGraph.chart.options.scales.xAxes[0].time.unit = graphIn.timeDisplay.toString();
@@ -2927,7 +2927,7 @@ function configureGraphWindLine01(baseIn, graphIn) {
     
     //configure as line chart
     drawWindGraphLine01();
-    windGraph.chart.data.datasets[0] = graphStyles[style];
+    windGraph.chart.data.datasets[0] = Object.assign({}, graphStyles[style]);
     windGraph.chart.data.datasets[0].label = baseIn.label.toString() + " (" + units[baseIn.unit.toString()][currentUnits[baseIn.unit.toString()]][1].toString() + ")";
     windGraph.chart.data.datasets[0].data = graphData;
     windGraph.chart.options.scales.xAxes[0].time.unit = graphIn.timeDisplay.toString();
@@ -7531,7 +7531,7 @@ function configureGraphLine(baseIn, graphIn) {
     
     //configure as line chart
     drawGraphLine();
-    modalGraph.chart.data.datasets[0] = graphStyles[style];
+    modalGraph.chart.data.datasets[0] = Object.assign({}, graphStyles[style]);
     modalGraph.chart.data.datasets[0].label = baseIn.label.toString() + " (" + units[baseIn.unit.toString()][currentUnits[baseIn.unit.toString()]][1].toString() + ")";
     modalGraph.chart.data.datasets[0].data = graphData;
     modalGraph.chart.options.scales.xAxes[0].time.unit = graphIn.timeDisplay.toString();
@@ -7594,7 +7594,7 @@ function configureGraphBar(baseIn, graphIn) {
     //configure as bar chart
     drawGraphBar();
     
-    modalGraph.chart.data.datasets[0] = graphStyles[style];
+    modalGraph.chart.data.datasets[0] = Object.assign({}, graphStyles[style]);
     modalGraph.chart.data.datasets[0].label = baseIn.label.toString() + " (" + units[baseIn.unit.toString()][currentUnits[baseIn.unit.toString()]][1].toString() + ")";
     modalGraph.chart.data.datasets[0].data = graphData;
     modalGraph.chart.data.labels = graphLabels;
@@ -7860,9 +7860,9 @@ function initModalHandler() {
     modal.button = document.getElementById("GraphsButton");
     modal.button.innerHTML = useDict("buttonLabelGraphs");
     modal.button.addEventListener('click', function() {
-        modal.selectMenu.value = Object.keys(globalGraphs)[0] + Object.keys(globalGraphs[Object.keys(globalGraphs)[0]].graphs)[0];
+        modal.selectMenu.value = modalGraph.currentGraph[0] + modalGraph.currentGraph[1];
         modal.modal.style.display = "block";
-        configureGraph(Object.keys(globalGraphs)[0], Object.keys(globalGraphs[Object.keys(globalGraphs)[0]].graphs)[0]);
+        configureGraph(modalGraph.currentGraph[0], modalGraph.currentGraph[1]);
         modalGraph.chart.resize();
     }, false);
     
