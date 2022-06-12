@@ -2150,7 +2150,7 @@ var widgetList = {
     rainfallYear: {enabled: true},
     UV: {enabled: true},
     windDirection: {enabled: true},
-    windSpeed: {enabled: true}
+    windSpeed: {enabled: true, gustMode: "current"}
 },
     graphList = {
     barometer: {enabled: true},
@@ -2282,7 +2282,7 @@ function initialiseLayout() {
 	resizeContainer();
     
     //Set version number:
-    document.getElementById("Version").innerHTML = "FreshWDL - Version: 1.1.8.6 Alpha.";
+    document.getElementById("Version").innerHTML = "FreshWDL - Version: 1.1.8.7 Alpha.";
 }
 
 //Set global Graph options

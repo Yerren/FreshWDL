@@ -28,6 +28,10 @@ var clientRawName = "clientraw.txt", //The names of your clientraw files
         windChill: {
             mode: "windchill", //The default mode, either "heatIndex" or "windchill" (note: lowercase c)
             autoSwitch: true //If true, will switch between heat index/wind chill depending on what is appropriate.
+        },
+        windSpeed: {
+            enabled: true, 
+            gustMode: "current" //Set to "current" for the gust to display the current windspeed, or to "max" for it to display the maximum windspeed in the last 60 seconds.
         }
     },
     graphSettings = {
