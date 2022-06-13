@@ -6531,7 +6531,7 @@ function initializeWS01() {
         updateTweensWS01(); 
     });
     window.addEventListener("clientRawDataUpdate", function () {
-        drawSpeedBarWS01(arrayClientraw[1], (widgetList.gustMode.mode==="current")?arrayClientraw[2]:arrayClientraw[140], arrayClientraw[113], arrayClientraw[71]);
+        drawSpeedBarWS01(arrayClientraw[1], (widgetList.windSpeed.gustMode.mode==="current")?arrayClientraw[2]:arrayClientraw[140], arrayClientraw[113], arrayClientraw[71]);
     });
     
     //Creates information tooltip
@@ -7694,7 +7694,7 @@ function updateUnits(unitType) {
         drawBarometerB01(arrayClientraw[6], arrayClientraw[50], true);
         configureGraphBaroLine01("barometer", "hourlyDay");
     } else if (unitType == "wind") {
-        drawSpeedBarWS01(arrayClientraw[1], (widgetList.gustMode.mode==="current")?arrayClientraw[2]:arrayClientraw[140], arrayClientraw[113], arrayClientraw[71], true);
+        drawSpeedBarWS01(arrayClientraw[1], (widgetList.windSpeed.gustMode.mode==="current")?arrayClientraw[2]:arrayClientraw[140], arrayClientraw[113], arrayClientraw[71], true);
         configureGraphWindLine01("windSpeed", "hourlyDay");
     } else if (unitType == "rainfall") {
         drawUniratureBarUni01(arrayClientraw[7], true);
