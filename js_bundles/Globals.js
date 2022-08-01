@@ -138,7 +138,7 @@ var dict = {
 		bg: "Барометър",
 		cs: "Tlakoměr",
 		si: "Barometer",
-		fi: "Barometri",
+		fi: "Ilmanpaine",
 		sv: "Barometer",
 		pt: "Barómetro",
 		ca: "Baròmetre"
@@ -1297,7 +1297,7 @@ var dict = {
 		bg: "Посл.",
 		cs: "Poslední",
 		si: "Zadnjih",
-		fi: "Viimeisin",
+		fi: "viimeisimmät",
 		sv: "Sista",
 		pt: "Últimos(as)",
 		ca: "Últimes"
@@ -1316,7 +1316,7 @@ var dict = {
 		bg: "Дни",
 		cs: "Dny",
 		si: "Dni",
-		fi: "Päivät",
+		fi: "päivää",
 		sv: "Dagarna",
 		pt: "Dias",
 		ca: "Dies"
@@ -1335,7 +1335,7 @@ var dict = {
 		bg: "Часа",
 		cs: "Hodiny",
 		si: "Ure",
-		fi: "Tunnit",
+		fi: "tuntia",
 		sv: "Timmarna",
 		pt: "Horas",
 		ca: "Hores"
@@ -1354,7 +1354,7 @@ var dict = {
 		bg: "Час",
 		cs: "Hodina",
 		si: "Ura",
-		fi: "Tunti",
+		fi: "60 minuuttia",
 		sv: "Timme",
 		pt: "Hora",
 		ca: "Hora"
@@ -1373,7 +1373,7 @@ var dict = {
 		bg: "Месеца",
 		cs: "Měsíce",
 		si: "Mesecev",
-		fi: "Kuukaudet",
+		fi: "Kuukautta",
 		sv: "Månader",
 		pt: "Meses",
 		ca: "Mesos"
@@ -1654,6 +1654,7 @@ var dict = {
 		ca: "Escala de Beaufort",
 		cs: "Beaufortova stupnice síly větru",
 		bg: "Скала на Бофорт"
+		fi: "Boforiasteikko"
 	}
 };
 
