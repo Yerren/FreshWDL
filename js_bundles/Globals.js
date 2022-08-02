@@ -544,6 +544,7 @@ var dict = {
 	},
 	uvTitle: {
 		en: "UV",
+		de: "UV",
 		nl: "UV",
 		da: "UV",
 		ro: "UV",
