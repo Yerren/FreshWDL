@@ -1654,7 +1654,7 @@ var dict = {
 		pt: "Escala de Beaufort",
 		ca: "Escala de Beaufort",
 		cs: "Beaufortova stupnice síly větru",
-		bg: "Скала на Бофорт"
+		bg: "Скала на Бофорт",
 		fi: "Boforiasteikko"
 	}
 };
