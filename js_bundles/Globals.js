@@ -128,7 +128,7 @@ var dict = {
 		sv: "Hastighet",
 		pt: "Variação",
 		ca: "Velocitat",
-		hr: "Kretanje"
+		hr: "Trend"
 	},
 	barometerTitle: {
 		en: "Barometer",
@@ -530,7 +530,7 @@ var dict = {
 		sv: "Daglig",
 		pt: "Diária",
 		ca: "Dia",
-		hr: "Današnje"
+		hr: "Današnja"
 	},
 	rainfallMonthlyTitle: {
 		en: "Monthly",
@@ -550,7 +550,7 @@ var dict = {
 		sv: "Månatligt",
 		pt: "Mensal",
 		ca: "Mensual", 
-		hr: "Mjesečne"
+		hr: "Mjesečna"
 	},
 	rainfallAnnualTitle: {
 		en: "Annual",
