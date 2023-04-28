@@ -2241,7 +2241,8 @@ var widgetList = {
     rainfallYear: {enabled: true},
     UV: {enabled: true},
     windDirection: {enabled: true},
-    windSpeed: {enabled: true, gustMode: "current"}
+    windSpeed: {enabled: true, gustMode: "current"},
+    buttons: {enabled: true}
 },
     graphList = {
     barometer: {enabled: true},

@@ -7755,6 +7755,8 @@ function initializeButtons() {
     buttons.wind.addEventListener('click', function() {changeUnit("wind"); }, false);
     buttons.rainfall.addEventListener('click', function() {changeUnit("rainfall"); }, false);
     buttons.temp.addEventListener('click', function() {changeUnit("temp"); }, false);
+    
+    checkOffLoaded();
 }
 
 //MODAL HANDLER
@@ -7903,6 +7905,9 @@ function initAll() {
     uniBar03.canvas = document.getElementById(uniBar03.config.canvasID.toString());
     windGauge.canvas = document.getElementById('WindGauge01');
     windSpeed.canvas = document.getElementById('WindSpeed01');
+    
+    buttonDiv = document.getElementById('bottom');
+    
     initialiseLayout();
     if (widgetList["apparent"].enabled === true) {initializeApparentA01();} else if (apparent01.canvas != null) {apparent01.canvas.style.display = "none";}
     if (widgetList["temperature"].enabled === true) {initializeTemp01();} else if (tempBar01.canvas != null) {tempBar01.canvas.style.display = "none";}
@@ -7937,6 +7942,7 @@ function initAll() {
     if (graphList["rainfall"].enabled === false) {delete(globalGraphs.rainfallBar); delete(globalGraphs.rainfallLine); if (rainGraphCanvas != null) {rainGraphCanvas.style.display = "none";}}
     if (widgetList["graphHandler"].enabled === true) {initializeModalGraph01();}
     if (widgetList["modalHandler"].enabled === true) {initModalHandler();}
+    if (widgetList["buttons"].enabled === true) {initializeButtons();} else if (buttonDiv != null) {buttonDiv.style.display = "none";}
+
     initializeTicker();
-    initializeButtons();
 }
