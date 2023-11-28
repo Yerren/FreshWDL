@@ -6934,7 +6934,7 @@ function loadArray(url) {
 		xhttpVar = new ActiveXObject("Microsoft.XMLHTTP");
 	}
 	
-	xhttpVar.open("GET", "url?nocache=" + (new Date()).getTime(), true);
+	xhttpVar.open("GET", url + "?nocache=" + (new Date()).getTime(), true);
     xhttpVar.setRequestHeader("Cache-Control", "no-cache");
     xhttpVar.send();
 	
