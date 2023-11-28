@@ -6924,7 +6924,9 @@ function tryUpdateWidgets() {
 
 function loadArray(url) {
 	//Gets data from Clientraw files
-	var xhttpVar;
+	var xhttpVar,
+        nocache_date = new Date(),
+        nocashe_string = `${nocache_date.getFullYear()}${nocache_date.getMonth()}${nocache_date.getDate()}${nocache_date.getTime()}`;
 	
 	if (window.XMLHttpRequest) {
 		// code for modern browsers
@@ -6934,7 +6936,7 @@ function loadArray(url) {
 		xhttpVar = new ActiveXObject("Microsoft.XMLHTTP");
 	}
 	
-	xhttpVar.open("GET", url + "?nocache=" + (new Date()).getTime(), true);
+	xhttpVar.open("GET", url + "?nocache=" + nocashe_string, true);
     xhttpVar.setRequestHeader("Cache-Control", "no-cache");
     xhttpVar.send();
 	
