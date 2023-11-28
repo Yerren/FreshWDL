@@ -2374,7 +2374,7 @@ function initialiseLayout() {
 	resizeContainer();
     
     //Set version number:
-    document.getElementById("Version").innerHTML = "FreshWDL - Version: 1.1.8.12 Alpha.";
+    document.getElementById("Version").innerHTML = "FreshWDL - Version: 1.1.8.13 Alpha.";
 }
 
 //Set global Graph options
