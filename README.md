@@ -35,4 +35,4 @@ If you want to suggest a feature or report a bug, either go to the "Issues" tab 
 
 ## Donate
 If this project has helped you out, or if you simply want to support its continued development, please consider donating :)
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YUWBQ597CU24U)
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Donate', '#29abe0', 'G2G6SUREK');kofiwidget2.draw();</script> 
