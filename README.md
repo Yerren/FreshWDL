@@ -35,4 +35,5 @@ If you want to suggest a feature or report a bug, either go to the "Issues" tab 
 
 ## Donate
 If this project has helped you out, or if you simply want to support its continued development, please consider donating :)
-<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Donate', '#29abe0', 'G2G6SUREK');kofiwidget2.draw();</script> 
+
+<a href='https://ko-fi.com/G2G6SUREK' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi5.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
