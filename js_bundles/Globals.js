@@ -2217,43 +2217,46 @@ var globalGraphs = {
 
 //Widget Config / Settings
 var widgetList = {
-    apparent: {enabled: true},
-    temperature: {enabled: true, title: "default", highLowEnabled: true},
-    temperature02: {enabled: false, title: "default", highLowEnabled: true, input: 1}, //input: extra sensor 1
-    temperature03: {enabled: false, title: "default", highLowEnabled: true, input: 2}, //input: extra sensor 1
-    barometer: {enabled: true},
-    windChill: {enabled: true, mode: "windchill", autoSwitch: true},
-    forecastHandler: {enabled: true},
-    graphHandler: {enabled: true},
-    graphHandlerBarometer: {enabled: true},
-    graphHandlerRainfall: {enabled: true},
-    graphHandlerTemperature: {enabled: true},
-    graphHandlerWindSpeed: {enabled: true},
-    humidity: {enabled: true},
-    modalHandler: {enabled: true},
-    moonSun: {enabled: true},
-    recordHandler: {enabled: true},
-    solar: {enabled: true, mode: "percentage"},
-    status: {enabled: true},
-    rainfallTitle: {enabled: true},
-    rainfallDay: {enabled: true},
-    rainfallMonth: {enabled: true},
-    rainfallYear: {enabled: true},
-    UV: {enabled: true},
-    windDirection: {enabled: true},
-    windSpeed: {enabled: true, gustMode: "current"},
-    buttons: {enabled: true}
+        apparent: {enabled: true},
+        temperature: {enabled: true, title: "default", highLowEnabled: true},
+        temperature02: {enabled: false, title: "default", highLowEnabled: true, input: 1}, //input: extra sensor 1
+        temperature03: {enabled: false, title: "default", highLowEnabled: true, input: 2}, //input: extra sensor 1
+        barometer: {enabled: true},
+        windChill: {enabled: true, mode: "windchill", autoSwitch: true},
+        forecastHandler: {enabled: true},
+        graphHandler: {enabled: true},
+        graphHandlerBarometer: {enabled: true},
+        graphHandlerRainfall: {enabled: true},
+        graphHandlerTemperature: {enabled: true},
+        graphHandlerWindSpeed: {enabled: true},
+        humidity: {enabled: true},
+        modalHandler: {enabled: true},
+        moonSun: {enabled: true},
+        recordHandler: {enabled: true},
+        solar: {enabled: true, mode: "percentage"},
+        status: {enabled: true},
+        rainfallTitle: {enabled: true},
+        rainfallDay: {enabled: true},
+        rainfallMonth: {enabled: true},
+        rainfallYear: {enabled: true},
+        UV: {enabled: true},
+        windDirection: {enabled: true},
+        windSpeed: {enabled: true, gustMode: "current"},
+        buttons: {enabled: true}
 },
     graphList = {
-    barometer: {enabled: true},
-    humidity: {enabled: true},
-    solar: {enabled: true},
-    temp: {enabled: true},
-    uv: {enabled: true},
-    windDir: {enabled: true},
-    windSpeed: {enabled: true},
-    rainfall: {enabled: true}
-}  
+        barometer: {enabled: true},
+        humidity: {enabled: true},
+        solar: {enabled: true},
+        temp: {enabled: true},
+        uv: {enabled: true},
+        windDir: {enabled: true},
+        windSpeed: {enabled: true},
+        rainfall: {enabled: true}
+},
+    generalList = {
+        tooltipsEnabled: true
+    };
 
 //Alter widgetList settings to match any changes made in the config file
 if (typeof gaugeSettings !== "undefined") {//Check to see if gauge setting list exists.
@@ -2279,6 +2282,15 @@ if (typeof graphSettings !== "undefined") {//Check to see if graph setting list 
         }
     }
 }
+
+if (typeof generalSettings !== "undefined") {
+    generalSettingsKeys = Object.keys(generalSettings);
+    for (i = 0; i < generalSettingsKeys.length; i++) {
+        if (typeof generalList[generalSettingsKeys[i]] !== "undefined") {
+            generalList[generalSettingsKeys[i]] = generalSettings[generalSettingsKeys[i]];
+        }
+    }
+} 
 
 //Functions globally used
 //IE compadibility fix

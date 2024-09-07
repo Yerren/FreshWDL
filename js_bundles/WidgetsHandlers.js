@@ -149,7 +149,9 @@ function initializeApparentA01() {
         drawApparentA01(arrayClientraw[130]);
     });
     //Creates information tooltip
-    new Opentip(apparent01.canvas, useDict("apparentDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    if (generalList.tooltipsEnabled) {
+        new Opentip(apparent01.canvas, useDict("apparentDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    }
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpA01();
@@ -725,8 +727,9 @@ function initializeTemp01() {
     });
     
     //Creates information tooltip
-    new Opentip(tempBar01.canvas, useDict("temperatureDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
-    
+    if (generalList.tooltipsEnabled) {
+        new Opentip(tempBar01.canvas, useDict("temperatureDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    }
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpTemp01();
 	
@@ -1204,7 +1207,9 @@ function initializeTemp02() {
     });
     
     //Creates information tooltip
-    new Opentip(tempBar02.canvas, useDict("temperatureDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    if (generalList.tooltipsEnabled) {
+        new Opentip(tempBar02.canvas, useDict("temperatureDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    }
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpTemp02();
@@ -1682,7 +1687,9 @@ function initializeTemp03() {
     });
     
     //Creates information tooltip
-    new Opentip(tempBar03.canvas, useDict("temperatureDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    if (generalList.tooltipsEnabled) {
+        new Opentip(tempBar03.canvas, useDict("temperatureDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    }
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpTemp03();
@@ -1902,8 +1909,10 @@ function initializeBarometerB01() {
     
     
     //Creates information tooltip
-    new Opentip(barometer01.canvas, useDict("barometerDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
-    
+    if (generalList.tooltipsEnabled) {
+        new Opentip(barometer01.canvas, useDict("barometerDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    }
+        
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpB01();
 	
@@ -2060,7 +2069,9 @@ function drawWindchillBarWC01(tempIn, highTempIn, lowTempIn, unitChange) {
         //Set title (incase of switch between heat Index and windchill)
         windchill01.textTitle.text = (widgetList.windChill.mode === "windchill") ? useDict("windchillTitle") : useDict("heatIndexTitle");
         //Set tooltip (same reason as for title)
-        widgetList.windChill.tooltip.setContent((widgetList.windChill.mode === "windchill") ? useDict("windchillDescription") : useDict("heatIndexDescription"));
+        if (generalList.tooltipsEnabled) {
+            widgetList.windChill.tooltip.setContent((widgetList.windChill.mode === "windchill") ? useDict("windchillDescription") : useDict("heatIndexDescription"));
+        }
         
         windchill01.valuesOld.TempIn = tempIn;
         windchill01.valuesOld.highTempIn = highTempIn;
@@ -2396,7 +2407,9 @@ function initializeWC01() {
     });
     
     //Creates information tooltip
-    widgetList.windChill.tooltip = new Opentip(windchill01.canvas, (widgetList.windChill.mode === "windchill") ? useDict("windchillDescription") : useDict("heatIndexDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    if (generalList.tooltipsEnabled) {
+        widgetList.windChill.tooltip = new Opentip(windchill01.canvas, (widgetList.windChill.mode === "windchill") ? useDict("windchillDescription") : useDict("heatIndexDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    }
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpWC01();
@@ -3366,7 +3379,9 @@ function initializeHum01() {
     
     
     //Creates information tooltip
-    new Opentip(humidityGauge.canvas, useDict("humidityDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    if (generalList.tooltipsEnabled) {
+        new Opentip(humidityGauge.canvas, useDict("humidityDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    }
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpHum01();
@@ -4065,7 +4080,9 @@ function initializeSolarBarSol01() {
     });
     
     //Creates information tooltip
-    new Opentip(solarBar01.canvas, useDict("solarDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    if (generalList.tooltipsEnabled) {
+        new Opentip(solarBar01.canvas, useDict("solarDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    }
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpSol01();
@@ -4290,7 +4307,9 @@ function initializeStatusS01() {
     });
     
     //Creates information tooltip
-    new Opentip(status01.canvas, useDict("statusDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    if (generalList.tooltipsEnabled) {
+        new Opentip(status01.canvas, useDict("statusDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    }
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpS01();
@@ -5593,8 +5612,10 @@ function initializeUVBarUV01() {
     
     
     //Creates information tooltip
-    new Opentip(uvBar01.canvas, useDict("uvDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
-    
+    if (generalList.tooltipsEnabled) {
+        new Opentip(uvBar01.canvas, useDict("uvDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    }
+        
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpUV01();
 	
@@ -5991,8 +6012,10 @@ function initializeWind01() {
     });
     
     //Creates information tooltip
-    new Opentip(windGauge.canvas, useDict("windDirectionDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
-    
+    if (generalList.tooltipsEnabled) {
+        new Opentip(windGauge.canvas, useDict("windDirectionDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    }
+        
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpWind01();
 	
@@ -6535,7 +6558,9 @@ function initializeWS01() {
     });
     
     //Creates information tooltip
-    new Opentip(windSpeed.canvas, useDict("windSpeedDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    if (generalList.tooltipsEnabled) {
+        new Opentip(windSpeed.canvas, useDict("windSpeedDescription"),  { background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"});
+    }
     
 	//Set up shapes: intitializes all the variables and makes it so they can be adjusted later by storing their commands.
 	setUpWS01();
@@ -7065,15 +7090,16 @@ var intervalJobCR = null;
 var intervalJobCRE = null;
 var intervalJobCRH = null;
 var intervalJobCRD = null;
+var updateInteval = 5000;
 
 updateClientraw();
 updateClientrawExtra();
 updateClientrawHour();
 updateClientrawDaily();
-intervalJobCR = setInterval(updateClientraw, 5000);
-intervalJobCRE = setInterval(updateClientrawExtra, 5000);
-intervalJobCRH = setInterval(updateClientrawHour, 5000);
-intervalJobCRD = setInterval(updateClientrawDaily, 5000);
+intervalJobCR = setInterval(updateClientraw, updateInteval);
+intervalJobCRE = setInterval(updateClientrawExtra, updateInteval);
+intervalJobCRH = setInterval(updateClientrawHour, updateInteval);
+intervalJobCRD = setInterval(updateClientrawDaily, updateInteval);
 
 //TICK UPDATER
 //Ticker frame updates
