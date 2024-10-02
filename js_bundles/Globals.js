@@ -1736,6 +1736,7 @@ var dict = {
 	beaufortScaleTitle: {
 		en: "Beaufort Scale",
 		de: "Beaufort Skala",
+		nl: "Schaal van Beaufort",
 		nb: "Beaufort Skala",
 		si: "Boforjeva lestvica",
 		sv: "Beaufort skalan",
