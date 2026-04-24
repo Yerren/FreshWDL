@@ -2430,6 +2430,11 @@ function checkOffLoaded() {
     numLoaded += 1;
     if (numLoaded >= numWidgets) {
         loaded = true;
-        tryUpdateWidgets();
+        // Legacy path: tryUpdateWidgets was a global. In OO mode, App.start()
+        // drives the first poll via DataManager, so the call is redundant
+        // when the global is absent.
+        if (typeof tryUpdateWidgets === "function") {
+            tryUpdateWidgets();
+        }
     }
 }

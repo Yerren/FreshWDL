@@ -1,53 +1,50 @@
+// Reference layout. Widgets are mounted into `[data-widget="id"]`
+// placeholders by js_bundles/LayoutMount.js — the canvas (and wrapper, for
+// chart widgets) is injected at boot. `id` values must match the manifest
+// entries in index-oo.html. Users wanting a custom layout can ignore this
+// file and author their own HTML/CSS using the same data-widget attribute.
 document.write('\
     <div id="FWDLcontainer">\
         <div id="top" class="widgetContainer">\
-            <canvas id="MoonSun01"></canvas>\
-            <canvas id="Status01"></canvas>\
-            <div id="forecastText", style="overflow: hidden;"></div>\
+            <div data-widget="moonSun" class="widgetSlot"></div>\
+            <div data-widget="status" class="widgetSlot"></div>\
+            <div id="forecastText" style="overflow: hidden;"></div>\
         </div>\
         <div id="left" class="widgetContainer">\
             <div id="leftTop" class="widgetContainer">\
-                <canvas id="TempBar01"></canvas>\
+                <div data-widget="temperature" class="widgetSlot"></div>\
             </div>\
-            <canvas id="HumidityGauge01"></canvas>\
+            <div data-widget="humidity" class="widgetSlot"></div>\
         </div>\
         <div id="center" class="widgetContainer">\
             <div id="centerTop" class="widgetContainer">\
-                <canvas id="Windchill01"></canvas>\
-                <canvas id="WindGauge01"></canvas>\
-                <canvas id="WindSpeed01"></canvas>\
+                <div data-widget="windChill" class="widgetSlot"></div>\
+                <div data-widget="windDirection" class="widgetSlot"></div>\
+                <div data-widget="windSpeed" class="widgetSlot"></div>\
             </div>\
             <div id="centerBottom" class="widgetContainer">\
                 <div id="leftCenterBottom" class="widgetContainer">\
-                    <canvas id="SolarBar01"></canvas>\
-                    <canvas id="UVBar01"></canvas>\
-                    <canvas id="Barometer01"></canvas>\
-                    <canvas id="Apparent01"></canvas>\
+                    <div data-widget="solar" class="widgetSlot"></div>\
+                    <div data-widget="UV" class="widgetSlot"></div>\
+                    <div data-widget="barometer" class="widgetSlot"></div>\
+                    <div data-widget="apparent" class="widgetSlot"></div>\
                 </div>\
                 <div id="rightCenterBottom" class="widgetContainer">\
-                    <canvas id="TitleRainfall01"></canvas>\
-                    <canvas id="RainBar1"></canvas>\
-                    <canvas id="RainBar2"></canvas>\
-                    <canvas id="RainBar3"></canvas>\
+                    <div data-widget="rainfallTitle" class="widgetSlot"></div>\
+                    <div data-widget="rainfallDay" class="widgetSlot"></div>\
+                    <div data-widget="rainfallMonth" class="widgetSlot"></div>\
+                    <div data-widget="rainfallYear" class="widgetSlot"></div>\
                 </div>\
             </div>\
         </div>\
         <div id="right" class="widgetContainer">\
             <div id="rightLeft" class="widgetContainer">\
-                <div id="rainGraphCanvas01CanvasDiv" class="OuterCanvasDiv">\
-                    <canvas id="rainGraphCanvas01"></canvas>\
-                </div>\
-                <div id="windGraphCanvas01CanvasDiv" class="OuterCanvasDiv">\
-                    <canvas id="windGraphCanvas01"></canvas>\
-                </div>\
+                <div data-widget="rainGraph" class="widgetSlot chartSlot"></div>\
+                <div data-widget="windGraph" class="widgetSlot chartSlot"></div>\
             </div>\
             <div id="rightRight" class="widgetContainer">\
-                <div id="tempGraphCanvas01CanvasDiv" class="OuterCanvasDiv">\
-                    <canvas id="tempGraphCanvas01"></canvas>\
-                </div>\
-                <div id="baroGraphCanvas01CanvasDiv" class="OuterCanvasDiv">\
-                    <canvas id="baroGraphCanvas01"></canvas>\
-                </div>\
+                <div data-widget="tempGraph" class="widgetSlot chartSlot"></div>\
+                <div data-widget="baroGraph" class="widgetSlot chartSlot"></div>\
             </div>\
         </div>\
         <div id="bottom" class="widgetContainer">\

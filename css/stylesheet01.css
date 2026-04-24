@@ -282,3 +282,34 @@ html, body {
     margin: 0;
     padding-left: 1%
 }
+
+/* data-widget placeholders. LayoutMount injects a <canvas> (or the
+   .OuterCanvasDiv wrapper for chart widgets) into each .widgetSlot at
+   boot; widgets derive all drawing measurements from their canvas width,
+   so slot width is the only layout input that matters. The per-slot
+   width rules below reproduce the default shipped layout — a custom
+   layout can ignore them and size placeholders with any CSS. */
+.widgetSlot {
+    float: left;
+    display: block;
+    overflow: hidden;
+}
+.widgetSlot > canvas,
+.widgetSlot > .OuterCanvasDiv {
+    display: block;
+    width: 100%;
+}
+.widgetSlot > .OuterCanvasDiv > canvas {
+    display: block;
+    width: 100%;
+}
+
+#top > .widgetSlot[data-widget="status"]  { width: 60%; float: left; }
+#top > .widgetSlot[data-widget="moonSun"] { width: 20%; float: right; }
+#leftTop > .widgetSlot { width: 100%; }
+#left > .widgetSlot[data-widget="humidity"] { width: 100%; }
+#centerTop > .widgetSlot { width: 33.3333%; }
+#leftCenterBottom > .widgetSlot { width: 100%; float: right; }
+#rightCenterBottom > .widgetSlot { width: 100%; }
+#rightLeft > .widgetSlot,
+#rightRight > .widgetSlot { width: 100%; height: 50%; }
