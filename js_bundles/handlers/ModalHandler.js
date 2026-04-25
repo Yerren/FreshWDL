@@ -1,6 +1,5 @@
 /*jslint plusplus: true, sloppy: true, indent: 4 */
 // ModalHandler: DOM handler for the graph popup modal.
-// OO conversion of legacy modal global + initModalHandler.
 // Exposes global.graphChange for the inline onchange="graphChange(this)" on the select menu.
 
 (function (global) {

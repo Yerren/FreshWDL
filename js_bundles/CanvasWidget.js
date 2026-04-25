@@ -6,11 +6,18 @@
 
 (function (global) {
     function CanvasWidget(config) {
+        if (config && !config.elementId && config.canvasID) {
+            config.elementId = config.canvasID;
+        }
         WidgetBase.call(this, config);
         this.canvas = null;
         this.stage = null;
         this.setupVars = {};
-        this.tooltipText = config.tooltipText || null;
+        var tooltipText = config.tooltipText;
+        if (tooltipText === undefined && config.tooltipKey && typeof useDict === "function") {
+            tooltipText = useDict(config.tooltipKey);
+        }
+        this.tooltipText = tooltipText || null;
         if (config.aspectRatio) { this.aspectRatio = config.aspectRatio; }
     }
     WidgetBase.inherit(CanvasWidget, WidgetBase);
@@ -105,6 +112,17 @@
                 borderColor: "#D3D3D3"
             });
         }
+    };
+
+    CanvasWidget.prototype.destroy = function () {
+        if (this.tooltip) {
+            if (typeof this.tooltip.deactivate === "function") { this.tooltip.deactivate(); }
+            if (this.tooltip.container && this.tooltip.container.parentNode) {
+                this.tooltip.container.parentNode.removeChild(this.tooltip.container);
+            }
+            this.tooltip = null;
+        }
+        WidgetBase.prototype.destroy.call(this);
     };
 
     CanvasWidget.prototype.initialize = function () {

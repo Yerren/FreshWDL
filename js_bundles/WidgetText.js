@@ -235,7 +235,6 @@
     function WidgetText(config) {
         config = config || {};
         config.canvasID = config.canvasID || config.elementId;
-        config.elementId = config.elementId || config.canvasID;
         CanvasWidget.call(this, config);
 
         this._templateSrc = config.template || "";

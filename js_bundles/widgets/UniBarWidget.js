@@ -9,7 +9,6 @@
 (function (global) {
     function UniBarWidget(config) {
         config = config || {};
-        config.elementId = config.elementId || config.canvasID;
         config.events = config.events || ["clientRawDataUpdate"];
         config.unitEvents = config.unitEvents || ["rainfall"];
         WidgetBar.call(this, config);
@@ -156,8 +155,6 @@
         this.updateTweens();
     };
 
-    // Width-driven sizing. Original canvas.height/canvas.width was
-    // (2.5/3.0) / (1/3.01) = 2.5 * 3.01 / 3.0 ≈ 2.5083.
     UniBarWidget.prototype.aspectRatio = 2.5 * 3.01 / 3.0;
 
     UniBarWidget.prototype.applyStageTransform = function () {

@@ -1,6 +1,5 @@
 /*jslint plusplus: true, sloppy: true, indent: 4 */
-// TemperatureBarWidget: merged replacement for the legacy TempBarWidget +
-// WindchillWidget pair. Drives tempBar01/02/03 and the windchill/heat-index
+// TemperatureBarWidget: drives tempBar01/02/03 and the windchill/heat-index
 // bar via config flags.
 //
 // Config keys:
@@ -229,13 +228,21 @@
         vo.highTempIn = highTempIn;
         vo.lowTempIn  = lowTempIn;
         vo.trend      = trend;
+        this.refreshLabels();
+    };
+
+    TemperatureBarWidget.prototype.refreshLabels = function () {
+        var v = this.values, c = this.constants, ldt = this.largeDashTotal,
+            unitsKey = v.unitsIn.toString(),
+            unitStr = units[unitsKey][currentUnits[unitsKey]][1].toString();
+        this.highDisplay.text = v.highTempIn.toString() + unitStr;
+        this.lowDisplay.text  = v.lowTempIn.toString() + unitStr;
+        this.updateScaleLabels(ldt, c.minTemp, c.maxTemp);
+        this.textDisplay.text = v.tempIn.toString() + unitStr;
     };
 
     TemperatureBarWidget.prototype.updateTweens = function () {
-        var v = this.values, c = this.constants, rc = this.rectCommand,
-            rfc = this.rectFillCommand, ldt = this.largeDashTotal,
-            unitsKey = v.unitsIn.toString(),
-            unitStr = units[unitsKey][currentUnits[unitsKey]][1].toString();
+        var rc = this.rectCommand, rfc = this.rectFillCommand;
 
         rfc.h = this.tweens.barFill.h * (rc.h - rc.y);
         rfc.y = rc.h - rfc.h;
@@ -244,19 +251,16 @@
         this.lowMarkerEndCommand.y  = this.lowMarkerStartCommand.y  = this.tweens.lowTemp.h  * (rc.h - rc.y);
 
         var highLabelY = this.highMarkerEndCommand.y,
-            lowLabelY  = this.lowMarkerEndCommand.y;
-        while ((lowLabelY - highLabelY) / this.canvas.height < this.setupVars.minHLspace) {
-            lowLabelY  += 1;
-            highLabelY -= 1;
+            lowLabelY  = this.lowMarkerEndCommand.y,
+            minSpace   = this.setupVars.minHLspace * this.canvas.height,
+            gap        = lowLabelY - highLabelY;
+        if (gap < minSpace) {
+            var pad = (minSpace - gap) / 2;
+            highLabelY -= pad;
+            lowLabelY  += pad;
         }
-
-        this.highDisplay.y    = highLabelY;
-        this.highDisplay.text = v.highTempIn.toString() + unitStr;
-        this.lowDisplay.y     = lowLabelY;
-        this.lowDisplay.text  = v.lowTempIn.toString() + unitStr;
-
-        this.updateScaleLabels(ldt, c.minTemp, c.maxTemp);
-        this.textDisplay.text = v.tempIn.toString() + unitStr;
+        this.highDisplay.y = highLabelY;
+        this.lowDisplay.y  = lowLabelY;
     };
 
     TemperatureBarWidget.prototype.updateTop = function () {
@@ -351,11 +355,20 @@
         this.lowDisplay.x     = sv.posHLLabel.x;
         this.lowDisplay.font  = "bold " + sv.textHLSize + "px arial";
 
+        this.refreshLabels();
         this.updateTweens();
 
-        this.roundRectTop.mask    = new createjs.Shape(new createjs.Graphics().dr(0, 0, c.height, sv.cutOffLength));
-        this.roundRectFillTop.mask = new createjs.Shape(new createjs.Graphics().dr(0, 0, c.height, sv.cutOffLength * 1.1));
-        this.roundBot.mask        = new createjs.Shape(new createjs.Graphics().dr(0, sv.cutOffLength, c.height, c.height));
+        if (!this._maskTop) {
+            this._maskTop     = new createjs.Shape();
+            this._maskTopFill = new createjs.Shape();
+            this._maskBot     = new createjs.Shape();
+            this.roundRectTop.mask     = this._maskTop;
+            this.roundRectFillTop.mask = this._maskTopFill;
+            this.roundBot.mask         = this._maskBot;
+        }
+        this._maskTop.graphics.clear().dr(0, 0, c.height, sv.cutOffLength);
+        this._maskTopFill.graphics.clear().dr(0, 0, c.height, sv.cutOffLength * 1.1);
+        this._maskBot.graphics.clear().dr(0, sv.cutOffLength, c.height, c.height);
 
         if (this.config.withArrow && this.arrow) {
             var arrowTop = 1 - sv.arrowLengthFactor,

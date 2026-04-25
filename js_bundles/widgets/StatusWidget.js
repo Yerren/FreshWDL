@@ -8,7 +8,6 @@
     function StatusWidget(config) {
         config = config || {};
         config.canvasID = config.canvasID || "Status01";
-        config.elementId = config.elementId || config.canvasID;
         config.events = config.events || [
             "clientRawDataUpdate", "clientRawExtraDataUpdate",
             "clientRawHourDataUpdate", "clientRawDailyDataUpdate"
@@ -132,7 +131,6 @@
         setFontMaxWidthLeft(this.textDisplayD, this.canvas, this.stage);
     };
 
-    // Original width = 6.19*parent.cH, height = 0.4*parent.cH → h/w = 0.4/6.19.
     StatusWidget.prototype.aspectRatio = 0.4 / 6.19;
 
     StatusWidget.prototype.setUp = function () {

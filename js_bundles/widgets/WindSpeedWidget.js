@@ -6,7 +6,6 @@
     function WindSpeedWidget(config) {
         config = config || {};
         config.canvasID = config.canvasID || "WindSpeed01";
-        config.elementId = config.elementId || config.canvasID;
         config.events = config.events || ["clientRawDataUpdate"];
         config.unitEvents = config.unitEvents || ["wind"];
         config.tooltipText = config.tooltipText ||
@@ -130,6 +129,7 @@
         vo.gustIn          = gustIn;
         vo.windHighSpeedIn = windHighSpeedIn;
         vo.gustHighSpeedIn = gustHighSpeedIn;
+        this.refreshLabels();
     };
 
     WindSpeedWidget.prototype.makeColorGradient = function (f1, f2, f3, p1, p2, p3, i) {
@@ -141,33 +141,28 @@
         ];
     };
 
-    WindSpeedWidget.prototype.updateTweens = function () {
+    WindSpeedWidget.prototype.refreshLabels = function () {
         var v = this.values, c = this.constants, ldt = this.largeDashTotal,
-            sv = this.setupVars,
             unitStr = units[v.unitsIn][currentUnits[v.unitsIn]][1].toString();
 
-        this.updateVerticalFillFromBottom(this.tweens.barFillLeft.h,  this.rectLeftCommand,  this.rectFillLeftCommand);
-        this.updateVerticalFillFromBottom(this.tweens.barFillRight.h, this.rectRightCommand, this.rectFillRightCommand);
-
-        this.windHighMarkerEndCommand.y   = this.windHighMarkerStartCommand.y   = this.tweens.windHighSpeed.h * this.rectLeftCommand.h  + this.rectLeftCommand.y;
-        this.gustHighMarkerEndCommand.y   = this.gustHighMarkerStartCommand.y   = this.tweens.gustHighSpeed.h * this.rectRightCommand.h + this.rectRightCommand.y;
-
         this.windHighDisplay.text = useDict("windSpeedMax") + ":\n" + v.windHighSpeedIn.toString();
-        setMaxWidthGivenWidth(this.gustHighDisplay, sv.barWidth);
-
         this.gustHighDisplay.text = useDict("windSpeedMax") + ":\n" + v.gustHighSpeedIn.toString();
-        setFontMaxWidth(this.textTitle, this.canvas, this.stage);
-
         this.updateScaleLabels(ldt, c.minSpeed, c.maxSpeed);
-
         this.textDisplayWind.text = v.speedIn.toString() + "\n" + unitStr;
         this.textDisplayGust.text = v.gustIn.toString()  + "\n" + unitStr;
 
         var beaufortSpeed = calculateBeaufort(v.speedOrigional);
         this.textDisplayBeaufort.text = useDict("beaufortScaleTitle") + ": " + beaufortSpeed.toString();
-
         var grad = this.makeColorGradient(0.42, 0.42, 0.42, 0, 2, 4, 10 + beaufortSpeed);
         this.textDisplayBeaufort.color = "rgb(" + grad[0] + "," + grad[1] + "," + grad[2] + ")";
+    };
+
+    WindSpeedWidget.prototype.updateTweens = function () {
+        this.updateVerticalFillFromBottom(this.tweens.barFillLeft.h,  this.rectLeftCommand,  this.rectFillLeftCommand);
+        this.updateVerticalFillFromBottom(this.tweens.barFillRight.h, this.rectRightCommand, this.rectFillRightCommand);
+
+        this.windHighMarkerEndCommand.y = this.windHighMarkerStartCommand.y = this.tweens.windHighSpeed.h * this.rectLeftCommand.h  + this.rectLeftCommand.y;
+        this.gustHighMarkerEndCommand.y = this.gustHighMarkerStartCommand.y = this.tweens.gustHighSpeed.h * this.rectRightCommand.h + this.rectRightCommand.y;
     };
 
     WindSpeedWidget.prototype.updateTop = function () {
@@ -213,8 +208,6 @@
         this.rectRightCommand.h = sv.barHeight;
 
         var gap = sv.barHeight / ((ldt - 1) * 2);
-        // WindSpeed track uses step-2 indexing: majors (labeled) at even
-        // indices, "mid" half-dashes on odd indices. No minors.
         this.drawLinearDashTrack({
             totalDashes: ldt * 2 - 1,
             orientation: "vertical",
@@ -280,14 +273,13 @@
         this.textDisplayBeaufort.font = "bold " + sv.beaufortSize + "px arial";
         setFontMaxWidth(this.textDisplayBeaufort, this.canvas, this.stage);
 
+        this.refreshLabels();
         this.updateTweens();
     };
 
-    // Width-driven sizing: canvas.height / canvas.width = 1.5.
     WindSpeedWidget.prototype.aspectRatio = 1.5;
 
     WindSpeedWidget.prototype.applyStageTransform = function () {
-        // Original: stage.x = -canvas.height / (1.5 * 3.3) = -canvas.width / 3.3.
         this.stage.x = -(this.canvas.width / 3.3);
     };
 

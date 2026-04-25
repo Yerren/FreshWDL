@@ -1,19 +1,11 @@
 /*jslint plusplus: true, sloppy: true, indent: 4 */
 // MainChartWidget: config-driven WidgetChart subclass for the four main-page
 // Chart.js graphs (baroGraph / rainGraph / tempGraph / windGraph).
-//
-// OO conversion of legacy baroGraph / rainGraph / tempGraph / windGraph
-// globals and their initializeXxxGraph01 / drawXxxGraph{Line|Bar}01 /
-// resizeCanvasXxxG01 / resizeTextXxxG01 / configureGraphXxx{Line|Bar}01
-// functions. All four share the same resize math and text-sizing math;
-// the only real differences are chart type (line vs bar) and the x-axis
-// type (time vs category) — both driven by the graphType config key.
 
 (function (global) {
     function MainChartWidget(config) {
         config = config || {};
         config.canvasID = config.canvasID || null;
-        config.elementId = config.elementId || config.canvasID;
         config.events = config.events || ["graphDataUpdated"];
         if (!config.unitEvents && config.defaultBase &&
                 typeof globalGraphs !== "undefined" && globalGraphs[config.defaultBase]) {
@@ -47,9 +39,6 @@
         }
     };
 
-    // Legacy drawBaroGraphLine01 / drawRainGraphBar01 / drawTempGraphLine01 /
-    // drawWindGraphLine01. All four share the same options scaffold; only
-    // the x-axis type and chart type differ.
     MainChartWidget.prototype.drawChart = function () {
         var xAxis;
         if (this.graphType === "bar") {
@@ -86,7 +75,6 @@
         });
     };
 
-    // Legacy resizeTextXxxG01.
     MainChartWidget.prototype.resizeText = function () {
         var parentDiv = this.canvasDiv.parentElement;
         this.chart.options.title.fontSize = parentDiv.clientWidth * 0.05;
@@ -97,7 +85,6 @@
             this.chart.options.scales.xAxes[0].ticks.major.fontSize = parentDiv.clientWidth * 0.04;
     };
 
-    // Legacy resizeCanvasXxxG01.
     MainChartWidget.prototype.resize = function () {
         var ratio = 0.7,
             parentDiv = this.canvasDiv.parentElement;
@@ -110,9 +97,6 @@
         this.chart.update();
     };
 
-    // Legacy configureGraphXxx{Line|Bar}01. The line variants store data as
-    // {x, y} objects and use baseIn.data[0]; the bar variant stores scalars
-    // and uses baseIn.data (no array index) plus a graphLabels array.
     MainChartWidget.prototype.configureGraph = function (baseKey, rangeKey) {
         var baseIn, graphIn;
         try {
@@ -142,9 +126,6 @@
             }
         }
 
-        // In-place update: mutate datasets/options then chart.update() rather
-        // than destroy/recreate on every poll. graphType is fixed per widget
-        // instance, so there is no bar↔line case to fall back on.
         var datasetStyle = WidgetBase.extend({}, graphStyles[style]),
             unitLabel = baseIn.label.toString() + " (" +
                 units[baseIn.unit.toString()][currentUnits[baseIn.unit.toString()]][1].toString() + ")";
@@ -166,7 +147,7 @@
             this.chart.options.scales.yAxes[0].ticks[tickKeys[i]] = baseIn.tickOptions[tickKeys[i]];
         }
 
-        this.resize();
+        this.chart.update();
     };
 
     global.MainChartWidget = MainChartWidget;

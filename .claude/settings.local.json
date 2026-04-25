@@ -4,7 +4,10 @@
       "Bash(cd /tmp)",
       "Bash(cat)",
       "Bash(node verify.js)",
-      "Bash(node verify2.js)"
+      "Bash(node verify2.js)",
+      "Bash(git diff *)",
+      "Read(//tmp/**)",
+      "Bash(node *)"
     ]
   }
 }

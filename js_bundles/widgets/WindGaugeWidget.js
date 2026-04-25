@@ -6,7 +6,6 @@
     function WindGaugeWidget(config) {
         config = config || {};
         config.canvasID = config.canvasID || "WindGauge01";
-        config.elementId = config.elementId || config.canvasID;
         config.events = config.events || ["clientRawDataUpdate"];
         config.tooltipText = config.tooltipText ||
             (typeof useDict === "function" ? useDict("windDirectionDescription") : "");

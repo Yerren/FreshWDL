@@ -1,8 +1,6 @@
 /*jslint plusplus: true, sloppy: true, indent: 4 */
 // WidgetBar: CanvasWidget subclass for bar-style widgets. Owns the shared
-// drawLinearDashTrack helper that collapses the major/mid/minor dash-loop
-// duplicated across SolarBarWidget, TemperatureBarWidget, UniBarWidget and
-// WindSpeedWidget into one place, so a bug fix in one lands everywhere.
+// drawLinearDashTrack helper used by all bar widgets.
 
 (function (global) {
     function WidgetBar(config) {

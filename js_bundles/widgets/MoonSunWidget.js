@@ -7,7 +7,6 @@
     function MoonSunWidget(config) {
         config = config || {};
         config.canvasID = config.canvasID || "MoonSun01";
-        config.elementId = config.elementId || config.canvasID;
         config.events = config.events || ["clientRawExtraDataUpdate"];
         config.template = config.template || [
             '<shape type="roundedRect" x="5%" y="5%" w="90%" h="90%"',

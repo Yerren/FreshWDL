@@ -2,9 +2,6 @@
 // App: top-level bootstrap. Owns the WidgetRegistry, WidgetFactory, and
 // DataManager; wires the CreateJS ticker that fires the frameUpdate event;
 // and kicks off the initial build/polling sequence.
-//
-// Replaces the legacy initAll() + inline updateClientraw*/setInterval calls +
-// initializeTicker() at the bottom of WidgetsHandlers.js.
 
 (function (global) {
     function App(config) {
@@ -26,7 +23,6 @@
         this.tickHandler = null;
     }
 
-    // Legacy initializeTicker / tickHandler.
     App.prototype.initializeTicker = function () {
         this.tickerEvent = new CustomEvent("frameUpdate");
         var self = this;

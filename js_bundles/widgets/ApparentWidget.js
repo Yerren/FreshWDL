@@ -6,7 +6,6 @@
     function ApparentWidget(config) {
         config = config || {};
         config.canvasID = config.canvasID || "Apparent01";
-        config.elementId = config.elementId || config.canvasID;
         config.events = config.events || ["clientRawDataUpdate"];
         config.unitEvents = config.unitEvents || ["temp"];
         config.tooltipText = config.tooltipText ||
@@ -24,8 +23,6 @@
     }
     WidgetBase.inherit(ApparentWidget, WidgetText);
 
-    // Width-driven sizing: canvas.height = canvas.width * aspectRatio.
-    // Original ratio was (0.17 * parent.clientHeight) / (0.3 * parent.clientHeight).
     ApparentWidget.prototype.aspectRatio = 17 / 30;
 
     global.ApparentWidget = ApparentWidget;

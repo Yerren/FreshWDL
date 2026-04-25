@@ -114,8 +114,8 @@
             { done: "doneCRD", error: "dataCollectErrorCRD", attempted: "attemptedCRD" });
     };
 
-    // Legacy tryUpdateWidgets. Dispatches data-update events and triggers
-    // main-page graph reconfigurations when all four fetches have resolved.
+    // Dispatches data-update events and triggers main-page graph
+    // reconfigurations when all four fetches have resolved.
     DataManager.prototype.tryUpdateWidgets = function () {
         if (global.loaded !== true) { return; }
 

@@ -6,7 +6,6 @@
     function UVBarWidget(config) {
         config = config || {};
         config.canvasID = config.canvasID || "UVBar01";
-        config.elementId = config.elementId || config.canvasID;
         config.events = config.events || ["clientRawDataUpdate"];
         WidgetBar.call(this, config);
         this.rectTop = null;

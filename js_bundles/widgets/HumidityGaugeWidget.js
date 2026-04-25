@@ -1,13 +1,10 @@
 /*jslint plusplus: true, sloppy: true, indent: 4 */
 // HumidityGaugeWidget: circular gauge for humidity (0-100 %).
-// OO conversion of legacy humidityGauge / initializeHum01 / setUpHum01 /
-// resizeCanvasHum01 / updateTopHum01 / drawHumidityGaugeHum01 / updateTweensHum01.
 
 (function (global) {
     function HumidityGaugeWidget(config) {
         config = config || {};
         config.canvasID = config.canvasID || "HumidityGauge01";
-        config.elementId = config.elementId || config.canvasID;
         config.events = config.events || ["clientRawDataUpdate"];
         config.tooltipText = config.tooltipText ||
             (typeof useDict === "function" ? useDict("humidityDescription") : "");
@@ -74,7 +71,6 @@
         this.arrow = this.createTrendArrow({ color: "rgb(" + colour.humidity + ")" });
     };
 
-    // Legacy drawHumidityGaugeHum01.
     HumidityGaugeWidget.prototype.draw = function (humidityIn, trend, unitChange) {
         unitChange = unitChange || false;
         if (String(this.valuesOld.humidityIn) !== String(humidityIn) || String(this.valuesOld.trend) !== String(trend) || unitChange === true) {
@@ -83,7 +79,7 @@
             )) * (180 / Math.PI);
 
             this.values.trend = parseInt(trend);
-            this.values.humidityIn = parseFloat(humidityIn, 0);
+            this.values.humidityIn = parseFloat(humidityIn);
             this.values.humidityOut = this.values.humidityIn.map(0, 100, -halfAngleDeg, halfAngleDeg);
             createjs.Tween.get(this.tweens, { override: true })
                 .to({ r: this.values.humidityOut }, 2000, createjs.Ease.quartInOut);
@@ -93,12 +89,12 @@
             }
             this.valuesOld.humidityIn = humidityIn;
             this.valuesOld.trend = trend;
+            this.textDisplay.text = this.values.humidityIn.toString() + "%";
         }
     };
 
     HumidityGaugeWidget.prototype.updateTweens = function () {
         this.rotatePointer(this.tweens.r);
-        this.textDisplay.text = this.values.humidityIn.toString() + "%";
     };
 
     HumidityGaugeWidget.prototype.updateTop = function () {
@@ -167,7 +163,11 @@
         this.pointer.x = this.canvas.width / 2;
         this.pointer.y = this.canvas.height / 2;
 
-        this.outerCircle.mask = new createjs.Shape(new createjs.Graphics().dr(0, 0, this.canvas.width, sv.cutOffLength));
+        if (!this._maskShape) {
+            this._maskShape = new createjs.Shape();
+            this.outerCircle.mask = this._maskShape;
+        }
+        this._maskShape.graphics.clear().dr(0, 0, this.canvas.width, sv.cutOffLength);
 
         var halfAngle = Math.PI - Math.acos((sv.cutOffLength - sv.posOuterCircle.y) / sv.outerCircleRad);
         this.drawRadialDashesAndLabels({

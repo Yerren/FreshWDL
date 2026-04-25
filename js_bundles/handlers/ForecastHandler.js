@@ -1,7 +1,5 @@
 /*jslint plusplus: true, sloppy: true, indent: 4 */
 // ForecastHandler: DOM handler for the forecast strip + "show more" modal.
-// OO conversion of legacy forecast / formatAndDisplayForecastFor01 /
-// resizeDivFor01 / forecastInitFor01.
 
 (function (global) {
     function ForecastHandler(config) {
@@ -57,7 +55,6 @@
         this._listeners.push({ event: "click", handler: showMoreHandler, target: this.displayDiv });
     };
 
-    // Legacy formatAndDisplayForecastFor01.
     ForecastHandler.prototype.formatAndDisplay = function (textInput) {
         if (textInput === null) {
             textInput = this.storedTextInput;
@@ -86,7 +83,6 @@
         }
     };
 
-    // Legacy resizeDivFor01.
     ForecastHandler.prototype.resize = function () {
         if (!this.displayDiv) { return; }
 

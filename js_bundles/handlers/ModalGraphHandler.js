@@ -1,7 +1,5 @@
 /*jslint plusplus: true, sloppy: true, indent: 4 */
 // ModalGraphHandler: DOM handler for the modal Chart.js popup graph.
-// OO conversion of legacy modalGraph global + drawGraphLine/Bar, cleanCanvas,
-// configureGraphLine/Bar, configureGraph, resizeCanvasModG01, initializeModalGraph01.
 // Registered as "modalGraph" so App.onDataRefresh can call refresh().
 
 (function (global) {

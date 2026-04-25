@@ -1,15 +1,11 @@
 /*jslint plusplus: true, sloppy: true, indent: 4 */
-// SolarBarWidget: bar widget for solar radiation/sun-percentage display.
-// OO conversion of legacy solarBar01 / initializeSolarBarSol01 / setUpSol01 /
-// resizeCanvasSol01 / updateTopSol01 / drawSolarBarSol01 / formatInputSol01 /
-// updateTweensSol01. Dual-mode: "Watt" (W/m^2 with dashes and numeric labels)
-// or percentage (default).
+// SolarBarWidget: bar widget for solar radiation. Dual-mode: "Watt" (W/m^2
+// with dashes and numeric labels) or percentage (default).
 
 (function (global) {
     function SolarBarWidget(config) {
         config = config || {};
         config.canvasID = config.canvasID || "SolarBar01";
-        config.elementId = config.elementId || config.canvasID;
         config.events = config.events || ["clientRawDataUpdate", "clientRawExtraDataUpdate"];
         config.tooltipText = config.tooltipText ||
             (typeof useDict === "function" ? useDict("solarDescription") : "");
@@ -91,7 +87,6 @@
         }
     };
 
-    // Legacy formatInputSol01.
     SolarBarWidget.prototype.formatInput = function () {
         var v = this.values, c = this.constants;
         if (this.mode === "Watt") {
@@ -104,7 +99,6 @@
         }
     };
 
-    // Legacy drawSolarBarSol01.
     SolarBarWidget.prototype.draw = function (percentIn, uniIn, sunHoursIn, unitChange) {
         unitChange = unitChange || false;
         if (this.valuesOld.uniIn != uniIn || this.valuesOld.percentIn != percentIn ||
@@ -125,18 +119,15 @@
             this.valuesOld.uniIn = uniIn;
             this.valuesOld.percentIn = percentIn;
             this.valuesOld.sunHoursIn = sunHoursIn;
+            this.refreshLabels();
         }
     };
 
-    // Legacy updateTweensSol01.
-    SolarBarWidget.prototype.updateTweens = function () {
+    SolarBarWidget.prototype.refreshLabels = function () {
         var c = this.constants, unitKey = this.unitsIn.toString();
-        this.updateVerticalFillFromBottom(this.tweens.barFill.h);
-
         this.textDisplay.text = this.values.uniIn.toString() +
             units[unitKey][currentUnits[unitKey]][1].toString();
         this.textSunHours.text = useDict("solarSunHours") + ": " + this.values.sunHoursIn.toString();
-
         if (this.mode === "Watt") {
             this.updateScaleLabels(this.largeDashTotal, c.minUni, c.maxUni);
         } else {
@@ -144,7 +135,10 @@
         }
     };
 
-    // Legacy updateTopSol01.
+    SolarBarWidget.prototype.updateTweens = function () {
+        this.updateVerticalFillFromBottom(this.tweens.barFill.h);
+    };
+
     SolarBarWidget.prototype.updateTop = function () {
         var sv = this.setupVars;
         sv.dashLength = this.canvas.height * 0.04;
@@ -251,6 +245,7 @@
         this.textTitle.font = "bold " + sv.textTitleSize + "px arial";
         setFontMaxWidth(this.textTitle, this.canvas, this.stage, true);
 
+        this.refreshLabels();
         this.updateTweens();
     };
 

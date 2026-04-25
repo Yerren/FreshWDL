@@ -1,7 +1,6 @@
 /*jslint plusplus: true, sloppy: true, indent: 4 */
 // ButtonsHandler: DOM handler for the five unit-toggle buttons.
-// OO conversion of legacy buttons global + updateUnits, changeUnit, initializeButtons.
-// Uses window.app.registry to call draw()/configureGraph() on converted OO widgets.
+// Uses window.app.registry to call draw()/configureGraph() on widgets.
 
 (function (global) {
     function ButtonsHandler(config) {

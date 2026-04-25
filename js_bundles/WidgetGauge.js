@@ -34,38 +34,42 @@
         return { shape: shape, commands: commands };
     };
 
-    // Lay out a radial dash-and-label sweep across `halfAngle` radians starting
-    // from the bottom-vertical. `count` large dashes span [0, halfAngle*2];
-    // with `minorsBetween` interpolated minor dashes between them (for half-
-    // tick markers). Each dash's graphics/commands come from createDashes,
-    // and each major dash's matching label is centered at `labelRadius`.
+    // Lay out radial dashes and labels around a center. Two wrap modes:
+    //   "full" — `count` majors equally spaced around the whole circle.
+    //   "arc"  — `count` majors span ±halfAngle from the bottom-vertical.
+    // `minorsBetween` minor dashes sit between each major.
     //
-    // opts: { cx, cy, outerR, innerR, minorInnerR, count, minorsBetween,
-    //         strokeSize, labelRadius, labelFontSize, labels }
-    // Full-circle variant of drawRadialDashesAndLabels, used by compass-style
-    // gauges (WindGaugeWidget) where `count` equally-spaced majors wrap the
-    // whole ring with no duplicate at start/end. `minorsBetween` minors sit
-    // between each major. Total dashes allocated = count * (minorsBetween+1).
-    //
-    // opts: { cx, cy, outerR, innerR, minorInnerR, count, minorsBetween,
-    //         strokeSize, labelRadius, labelFontSize, labels }
-    WidgetGauge.prototype.drawRadialRing = function (opts) {
+    // opts: { wrap, cx, cy, outerR, innerR, minorInnerR, count, minorsBetween,
+    //         halfAngle (arc only), strokeSize, labelRadius, labelFontSize,
+    //         labels }
+    WidgetGauge.prototype.drawRadialDashes = function (opts) {
         var cx = opts.cx, cy = opts.cy,
             outerR = opts.outerR, innerR = opts.innerR,
             minorInnerR = opts.minorInnerR !== undefined ? opts.minorInnerR : (innerR + outerR) / 2,
             count = opts.count,
-            minorsBetween = opts.minorsBetween || 0,
+            wrap = opts.wrap || "full",
+            isFull = (wrap === "full"),
+            minorsBetween = opts.minorsBetween !== undefined ? opts.minorsBetween : (isFull ? 0 : 1),
             step = minorsBetween + 1,
-            total = count * step,
-            segment = (2 * Math.PI) / total,
+            total, segment, baseAngle,
             labels = opts.labels || [],
             strokeSize = opts.strokeSize,
             labelRadius = opts.labelRadius,
             labelFontSize = opts.labelFontSize,
             i, angle, endR, labelIdx;
 
+        if (isFull) {
+            total = count * step;
+            segment = (2 * Math.PI) / total;
+            baseAngle = 2 * Math.PI;
+        } else {
+            total = (count - 1) * step + 1;
+            segment = 2 * opts.halfAngle / (count - 1) / step;
+            baseAngle = opts.halfAngle + Math.PI;
+        }
+
         for (i = 0; i < total; i++) {
-            angle = 2 * Math.PI - segment * i;
+            angle = baseAngle - segment * i;
             this.dash[i].regX = -cx;
             this.dash[i].regY = -cy;
             this.dashStrokeCommand[i].width = strokeSize;
@@ -91,47 +95,14 @@
         }
     };
 
+    WidgetGauge.prototype.drawRadialRing = function (opts) {
+        opts.wrap = "full";
+        this.drawRadialDashes(opts);
+    };
+
     WidgetGauge.prototype.drawRadialDashesAndLabels = function (opts) {
-        var cx = opts.cx, cy = opts.cy,
-            outerR = opts.outerR, innerR = opts.innerR,
-            minorInnerR = opts.minorInnerR !== undefined ? opts.minorInnerR : (innerR + outerR) / 2,
-            count = opts.count,
-            minorsBetween = opts.minorsBetween || 1,
-            step = minorsBetween + 1,
-            halfAngle = opts.halfAngle,
-            total = (count - 1) * step + 1,
-            segment = 2 * halfAngle / (count - 1) / step,
-            labels = opts.labels || [],
-            strokeSize = opts.strokeSize,
-            labelRadius = opts.labelRadius,
-            labelFontSize = opts.labelFontSize,
-            i, angle, endR, labelIdx;
-
-        for (i = 0; i < total; i++) {
-            angle = halfAngle - (segment * i) + Math.PI;
-            this.dash[i].regX = -cx;
-            this.dash[i].regY = -cy;
-            this.dashStrokeCommand[i].width = strokeSize;
-            this.dashStartCommand[i].x = Math.sin(angle) * outerR;
-            this.dashStartCommand[i].y = Math.cos(angle) * outerR;
-            endR = (i % step === 0) ? innerR : minorInnerR;
-            this.dashEndCommand[i].x = Math.sin(angle) * endR;
-            this.dashEndCommand[i].y = Math.cos(angle) * endR;
-
-            if (i % step === 0) {
-                labelIdx = i / step;
-                if (this.label && this.label[labelIdx]) {
-                    this.label[labelIdx].regX = -cx;
-                    this.label[labelIdx].regY = -cy;
-                    this.label[labelIdx].x = Math.sin(angle) * labelRadius;
-                    this.label[labelIdx].y = Math.cos(angle) * labelRadius;
-                    this.label[labelIdx].font = labelFontSize + "px arial";
-                    if (labels[labelIdx] !== undefined) {
-                        this.label[labelIdx].text = labels[labelIdx].toString();
-                    }
-                }
-            }
-        }
+        opts.wrap = "arc";
+        this.drawRadialDashes(opts);
     };
 
     global.WidgetGauge = WidgetGauge;

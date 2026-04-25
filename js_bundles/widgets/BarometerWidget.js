@@ -7,7 +7,6 @@
     function BarometerWidget(config) {
         config = config || {};
         config.canvasID = config.canvasID || "Barometer01";
-        config.elementId = config.elementId || config.canvasID;
         config.events = config.events || ["clientRawDataUpdate"];
         config.unitEvents = config.unitEvents || ["pressure"];
         config.tooltipText = config.tooltipText ||
