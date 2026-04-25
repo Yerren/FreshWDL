@@ -100,7 +100,7 @@
             step = minorsBetween + 1,
             halfAngle = opts.halfAngle,
             total = (count - 1) * step + 1,
-            segment = halfAngle / (count - 1) / step,
+            segment = 2 * halfAngle / (count - 1) / step,
             labels = opts.labels || [],
             strokeSize = opts.strokeSize,
             labelRadius = opts.labelRadius,

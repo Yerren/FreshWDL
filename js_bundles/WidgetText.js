@@ -55,13 +55,12 @@
     // descriptors. Supports self-closing <shape .../> and paired <text>...</text>.
     function tokenizeTemplate(src) {
         var elements = [];
-        var re = /<(shape|text)\s+([^>]*?)(\/)?>([\s\S]*?)(?:<\/\1>|)/g;
+        var re = /<(shape|text)\s+([^>]*?)\/>|<(shape|text)\s+([^>]*?)>([\s\S]*?)<\/\3>/g;
         var m;
         while ((m = re.exec(src)) !== null) {
-            var tag = m[1],
-                attrStr = m[2] || "",
-                selfClose = m[3] === "/",
-                inner = selfClose ? "" : (m[4] || "");
+            var tag, attrStr, inner;
+            if (m[1]) { tag = m[1]; attrStr = m[2] || ""; inner = ""; }
+            else      { tag = m[3]; attrStr = m[4] || ""; inner = m[5] || ""; }
             elements.push({
                 tag: tag,
                 attrs: parseAttrs(attrStr),

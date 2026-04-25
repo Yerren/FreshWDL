@@ -20,9 +20,12 @@
     // so every drawing measurement is deterministic from width alone.
     CanvasWidget.prototype.aspectRatio = 1.0;
 
-    // Default resize: width from parent, height derived from width via
-    // aspectRatio. Subclasses override applyStageTransform() to recompute
-    // stage.x/y offsets once the canvas has been resized.
+    // Default resize: contain-fit. Canvas grows to fill the slot but is
+    // capped by whichever of slot.clientWidth / slot.clientHeight hits the
+    // wall first, preserving aspectRatio (= height / width). If the slot
+    // has no usable height (clientHeight === 0), fall back to width-driven.
+    // Subclasses override applyStageTransform() to recompute stage.x/y
+    // offsets once the canvas has been resized.
     CanvasWidget.prototype.resize = function () {
         if (!this.canvas) { return; }
         var parent = this.canvas.parentElement;
@@ -30,9 +33,19 @@
         if (this.config.sizer) {
             this.config.sizer(this.canvas, parent);
         } else {
-            var w = parent.clientWidth;
+            var W = parent.clientWidth,
+                H = parent.clientHeight,
+                w, h;
+            if (W <= 0) { return; }
+            if (H <= 0 || W * this.aspectRatio <= H) {
+                w = W;
+                h = W * this.aspectRatio;
+            } else {
+                h = H;
+                w = H / this.aspectRatio;
+            }
             this.canvas.width = w;
-            this.canvas.height = w * this.aspectRatio;
+            this.canvas.height = h;
         }
         this.applyStageTransform();
         if (typeof this.updateTop === "function") { this.updateTop(); }

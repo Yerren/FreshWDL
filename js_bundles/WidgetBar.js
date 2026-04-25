@@ -48,7 +48,7 @@
             if (isMinor && !minorsEnabled) { continue; }
 
             // Major dashes reach the full dashLength. Mid = half. Minor = third.
-            var innerOffset = isMajor ? 0 : (isMid ? dashLength / 2 : dashLength / 3),
+            var innerOffset = isMajor ? 0 : (isMid ? dashLength / 2 : 2 * dashLength / 3),
                 coord = computeCoord(i);
 
             this.dashStrokeCommand[i].width = strokeSize;
