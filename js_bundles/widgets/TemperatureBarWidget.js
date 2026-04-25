@@ -194,12 +194,14 @@
     };
 
     TemperatureBarWidget.prototype.draw = function (tempIn, highTempIn, lowTempIn, trend, unitChange) {
-        var vo = this.valuesOld, withArrow = !!this.config.withArrow;
-        unitChange = unitChange || false;
+        var withArrow = !!this.config.withArrow,
+            prevTrend = this.valuesOld.trend;
         trend = (trend === undefined) ? 0 : trend;
 
-        if (!unitChange && vo.tempIn === tempIn && vo.highTempIn === highTempIn &&
-                vo.lowTempIn === lowTempIn && vo.trend === trend) {
+        if (!this.hasChanged({
+                tempIn: tempIn, highTempIn: highTempIn,
+                lowTempIn: lowTempIn, trend: trend
+            }, unitChange)) {
             return;
         }
 
@@ -220,14 +222,10 @@
             }
         }
 
-        if (withArrow && vo.trend !== trend) {
+        if (withArrow && prevTrend !== trend) {
             this.updateTop();
         }
 
-        vo.tempIn = tempIn;
-        vo.highTempIn = highTempIn;
-        vo.lowTempIn  = lowTempIn;
-        vo.trend      = trend;
         this.refreshLabels();
     };
 
@@ -264,19 +262,13 @@
     };
 
     TemperatureBarWidget.prototype.updateTop = function () {
-        var sv = this.setupVars, c = this.canvas, ldt = this.largeDashTotal;
+        var c = this.canvas, ldt = this.largeDashTotal,
+            sv = this.computeBarLayout({ fillWidthScale: 0.6, dashLengthRatio: 0.075 });
 
-        sv.dashLength      = c.height * 0.075;
-        sv.dashGap         = c.height * 0.025;
-        sv.barWidth        = c.height * 0.075;
-        sv.barFillWidth    = sv.barWidth * 0.6;
-        sv.barHeight       = c.height * 0.8;
-        sv.barFillHeight   = sv.barHeight;
         sv.circRad         = c.height * 0.1;
         sv.fillCircRad     = sv.circRad * 0.85;
         sv.cornerRad       = sv.barWidth / 2;
         sv.cornerFillRad   = sv.barFillWidth / 2;
-        sv.strokeSize      = sv.barWidth / 40;
         sv.textSize        = c.height / 17;
         sv.textDisplaySize = c.height / 19;
         sv.textHLSize      = c.height / 21;
@@ -284,16 +276,14 @@
         sv.arrowStroke        = sv.barWidth / 15;
         sv.arrowLengthFactor  = 0.04;
 
-        sv.posBar = { x: (c.height / 2) - (sv.barWidth / 2), y: (c.height / 2) - (sv.barHeight / 2) };
-        sv.posCirc = { x: c.height / 2, y: c.height * (3 / 4) + sv.circRad - sv.circRad / 10 };
-        sv.posFillCirc = { x: c.height / 2, y: c.height * (3 / 4) + sv.circRad - sv.circRad / 10 };
+        sv.posCirc      = { x: c.height / 2, y: c.height * (3 / 4) + sv.circRad - sv.circRad / 10 };
+        sv.posFillCirc  = { x: c.height / 2, y: c.height * (3 / 4) + sv.circRad - sv.circRad / 10 };
         sv.posTextTitle = { x: c.height / 2, y: (c.height - sv.barHeight) / 2 - sv.cornerRad };
         sv.posDash = {
-            x: (c.height / 2) - (sv.barWidth / 2) - sv.dashLength - sv.dashGap,
+            x: sv.posBar.x - sv.dashLength - sv.dashGap,
             y: (c.height - sv.barHeight) / 2 + sv.cornerRad / 2
         };
         sv.posHLLabel = { x: (c.height / 2) + (sv.barWidth / 2) + sv.dashGap };
-        sv.posFillBar = { x: (c.height / 2) - (sv.barFillWidth / 2), y: (c.height / 2) - (sv.barFillHeight / 2) };
         sv.posArrow = { x: c.width * 0.7, y: sv.posFillCirc.y };
         sv.cutOffLength = c.height * (299 / 400);
 

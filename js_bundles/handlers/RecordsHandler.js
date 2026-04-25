@@ -105,6 +105,7 @@
         this.selectMenu      = document.getElementById("selectMenuRecords");
 
         this.headerText.innerHTML = useDict("buttonLabelRecords");
+        this.button.innerHTML     = useDict("buttonLabelRecords");
 
         var option1 = document.createElement("option"),
             option2 = document.createElement("option"),

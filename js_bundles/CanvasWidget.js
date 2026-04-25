@@ -88,22 +88,6 @@
 
     CanvasWidget.prototype.updateTweens = function () {};
 
-    CanvasWidget.prototype.attachResizeHandlers = function () {
-        var self = this,
-            handler = function () { self.resize(); };
-        if (typeof onMobile !== "undefined" && onMobile === false) {
-            window.addEventListener("resize", handler, false);
-            this._listeners.push({ event: "resize", handler: handler });
-        } else {
-            // Deprecated MediaQueryList.addListener used intentionally: the
-            // IE9+ compatibility floor rules out addEventListener("change") on
-            // matchMedia. destroy() pairs this with removeListener via target.
-            var mql = window.matchMedia("(orientation: portrait)");
-            mql.addListener(handler);
-            this._listeners.push({ event: "orientation", handler: handler, target: mql });
-        }
-    };
-
     CanvasWidget.prototype.attachTooltip = function () {
         if (this.tooltipText && typeof Opentip !== "undefined") {
             this.tooltip = new Opentip(this.canvas, this.tooltipText, {
@@ -130,16 +114,7 @@
         this.createStage();
         this.attachFrameUpdate();
         this.attachTooltip();
-
-        var events = this.config.events || [];
-        for (var i = 0; i < events.length; i++) {
-            this.listenForData(events[i]);
-        }
-        var unitEvents = this.config.unitEvents || [];
-        for (var j = 0; j < unitEvents.length; j++) {
-            this.listenForUnitChange(unitEvents[j]);
-        }
-
+        this._wireConfigListeners();
         this.setUp();
         this.attachResizeHandlers();
         this.resize();

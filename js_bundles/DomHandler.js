@@ -27,33 +27,9 @@
     DomHandler.prototype.enable = function () { this.enabled = true; };
     DomHandler.prototype.disable = function () { this.enabled = false; };
 
-    DomHandler.prototype.attachResizeHandlers = function () {
-        var self = this,
-            handler = function () { self.resize(); };
-        if (typeof onMobile !== "undefined" && onMobile === false) {
-            window.addEventListener("resize", handler, false);
-            this._listeners.push({ event: "resize", handler: handler });
-        } else {
-            // See CanvasWidget.attachResizeHandlers: addListener is kept for
-            // IE9+ compatibility; destroy() removes it via target.removeListener.
-            var mql = window.matchMedia("(orientation: portrait)");
-            mql.addListener(handler);
-            this._listeners.push({ event: "orientation", handler: handler, target: mql });
-        }
-    };
-
     DomHandler.prototype.initialize = function () {
         this.resolveElement();
-
-        var events = this.config.events || [];
-        for (var i = 0; i < events.length; i++) {
-            this.listenForData(events[i]);
-        }
-        var unitEvents = this.config.unitEvents || [];
-        for (var j = 0; j < unitEvents.length; j++) {
-            this.listenForUnitChange(unitEvents[j]);
-        }
-
+        this._wireConfigListeners();
         this.setUp();
         this.attachResizeHandlers();
         this.resize();

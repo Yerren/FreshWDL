@@ -59,6 +59,32 @@
         return DataBindings.read(this._bindingResolvers);
     };
 
+    // Compare each field of newValues against this.valuesOld. Returns true
+    // (and atomically commits the new values into valuesOld) when any field
+    // differs or `force` is truthy; returns false otherwise. Replaces the
+    // hand-rolled `valuesOld.X != X && ... ; ... ; valuesOld.X = X` pattern
+    // duplicated across the bar widgets. Loose equality matches the legacy
+    // behaviour (some callers pass strings, others numbers).
+    WidgetBase.prototype.hasChanged = function (newValues, force) {
+        var k, changed = !!force;
+        if (!changed) {
+            for (k in newValues) {
+                if (Object.prototype.hasOwnProperty.call(newValues, k) &&
+                        this.valuesOld[k] != newValues[k]) {
+                    changed = true;
+                    break;
+                }
+            }
+        }
+        if (!changed) { return false; }
+        for (k in newValues) {
+            if (Object.prototype.hasOwnProperty.call(newValues, k)) {
+                this.valuesOld[k] = newValues[k];
+            }
+        }
+        return true;
+    };
+
     // Listen for a clientraw-related event and route it through onDataUpdate.
     WidgetBase.prototype.listenForData = function (eventName) {
         var self = this;
@@ -84,6 +110,33 @@
     WidgetBase.prototype.markLoaded = function () {
         if (typeof checkOffLoaded === "function") {
             checkOffLoaded();
+        }
+    };
+
+    // Wire each event in config.events through onDataUpdate, and each unit
+    // type in config.unitEvents through redrawForUnitChange.
+    WidgetBase.prototype._wireConfigListeners = function () {
+        var events = (this.config && this.config.events) || [],
+            unitEvents = (this.config && this.config.unitEvents) || [], i;
+        for (i = 0; i < events.length; i++) { this.listenForData(events[i]); }
+        for (i = 0; i < unitEvents.length; i++) { this.listenForUnitChange(unitEvents[i]); }
+    };
+
+    // Default resize wiring: window resize (desktop) or orientation media-
+    // query (mobile). Subclasses inherit this; the matching teardown lives
+    // in destroy() which removes via target.removeListener for the mql case.
+    WidgetBase.prototype.attachResizeHandlers = function () {
+        var self = this,
+            handler = function () { self.resize(); };
+        if (typeof onMobile !== "undefined" && onMobile === false) {
+            window.addEventListener("resize", handler, false);
+            this._listeners.push({ event: "resize", handler: handler });
+        } else {
+            // Deprecated MediaQueryList.addListener: kept for IE9+ floor —
+            // destroy() pairs this with mql.removeListener via target.
+            var mql = window.matchMedia("(orientation: portrait)");
+            mql.addListener(handler);
+            this._listeners.push({ event: "orientation", handler: handler, target: mql });
         }
     };
 

@@ -100,27 +100,20 @@
     };
 
     SolarBarWidget.prototype.draw = function (percentIn, uniIn, sunHoursIn, unitChange) {
-        unitChange = unitChange || false;
-        if (this.valuesOld.uniIn != uniIn || this.valuesOld.percentIn != percentIn ||
-            this.valuesOld.sunHoursIn != sunHoursIn || unitChange === true) {
-            this.values.uniIn = Number(uniIn);
-            this.values.percentIn = Number(percentIn);
-            this.values.sunHoursIn = Number(sunHoursIn);
-
-            this.formatInput();
-
-            if (this.mode === "Watt") {
-                createjs.Tween.get(this.tweens.barFill, { override: true })
-                    .to({ h: this.values.uniOut }, 2000, createjs.Ease.quartInOut);
-            } else {
-                createjs.Tween.get(this.tweens.barFill, { override: true })
-                    .to({ h: this.values.percentOut }, 2000, createjs.Ease.quartInOut);
-            }
-            this.valuesOld.uniIn = uniIn;
-            this.valuesOld.percentIn = percentIn;
-            this.valuesOld.sunHoursIn = sunHoursIn;
-            this.refreshLabels();
+        if (!this.hasChanged({ uniIn: uniIn, percentIn: percentIn, sunHoursIn: sunHoursIn }, unitChange)) {
+            return;
         }
+        this.values.uniIn = Number(uniIn);
+        this.values.percentIn = Number(percentIn);
+        this.values.sunHoursIn = Number(sunHoursIn);
+
+        this.formatInput();
+
+        var target = (this.mode === "Watt") ? this.values.uniOut : this.values.percentOut;
+        createjs.Tween.get(this.tweens.barFill, { override: true })
+            .to({ h: target }, 2000, createjs.Ease.quartInOut);
+
+        this.refreshLabels();
     };
 
     SolarBarWidget.prototype.refreshLabels = function () {
@@ -140,37 +133,29 @@
     };
 
     SolarBarWidget.prototype.updateTop = function () {
-        var sv = this.setupVars;
-        sv.dashLength = this.canvas.height * 0.04;
-        sv.dashGap = this.canvas.height * 0.025;
-        sv.barWidth = this.canvas.height * 0.075;
-        sv.barFillWidth = sv.barWidth;
-        sv.barHeight = this.canvas.height * 0.75;
-        sv.barFillHeight = sv.barHeight;
-        sv.strokeSize = sv.barWidth / 40;
-        sv.textDisplaySize = this.canvas.height / 21;
-        sv.textTitleSize = this.canvas.height / 17;
-        sv.textMaxLabelSize = this.canvas.height / 19;
-        sv.textSize = this.canvas.height / 20;
-        sv.posBar = {
-            x: ((this.canvas.height / 2) - (sv.barWidth / 2)),
-            y: ((this.canvas.height / 2) - (this.canvas.height * 0.8 / 2))
-        };
+        var c = this.canvas,
+            sv = this.computeBarLayout({
+                barHeightRatio: 0.75,
+                verticalRef: 0.8,
+                dashLengthRatio: 0.04
+            });
+
+        sv.textDisplaySize  = c.height / 21;
+        sv.textTitleSize    = c.height / 17;
+        sv.textMaxLabelSize = c.height / 19;
+        sv.textSize         = c.height / 20;
+
         sv.posDash = {
-            x: (this.canvas.height / 2) - (sv.barWidth / 2) - sv.dashLength - sv.dashGap,
-            y: (this.canvas.height - sv.barHeight) * 0.41
+            x: sv.posBar.x - sv.dashLength - sv.dashGap,
+            y: (c.height - sv.barHeight) * 0.41
         };
         sv.posTextTitle = {
             x: sv.posBar.x + sv.barWidth / 2,
-            y: this.canvas.height * 0.8 * (1 / 17)
+            y: c.height * 0.8 * (1 / 17)
         };
         sv.posTextMaxLabel = {
             x: sv.posBar.x - sv.barWidth * (1 / 4),
-            y: (this.canvas.height - sv.barHeight) / 2
-        };
-        sv.posFillBar = {
-            x: ((this.canvas.height / 2) - (sv.barFillWidth / 2)),
-            y: ((this.canvas.height / 2) - (sv.barFillHeight / 2))
+            y: (c.height - sv.barHeight) / 2
         };
         if (this.mode === "Watt") {
             sv.posText = {
@@ -196,11 +181,7 @@
             };
         }
 
-        this.topStrokeCommand.width = sv.strokeSize;
-        this.rectCommand.x = sv.posBar.x;
-        this.rectCommand.y = sv.posBar.y;
-        this.rectCommand.w = sv.barWidth;
-        this.rectCommand.h = sv.barHeight;
+        this.applyRectGeometry();
 
         if (this.mode === "Watt") {
             var gap = (sv.barHeight - sv.posDash.y) / ((this.largeDashTotal) * 9 - 10.5);
@@ -218,9 +199,6 @@
                 textSize: sv.textSize
             });
         }
-
-        this.rectFillCommand.x = sv.posFillBar.x;
-        this.rectFillCommand.w = sv.barFillWidth;
 
         this.textDisplay.x = sv.posText.x;
         this.textDisplay.y = sv.posText.y;

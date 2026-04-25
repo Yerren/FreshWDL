@@ -114,5 +114,63 @@
         }
     };
 
+    // Common bar-layout math. Writes barWidth/barFillWidth/barHeight/
+    // barFillHeight/strokeSize (and optional dashLength/dashGap) plus
+    // posBar/posFillBar onto this.setupVars.
+    //
+    // opts:
+    //   barWidthRatio    – barWidth = canvas.height * ratio (default 0.075)
+    //   barHeightRatio   – barHeight = canvas.height * ratio (default 0.8)
+    //   fillWidthScale   – barFillWidth = barWidth * scale (default 1)
+    //   verticalRef      – reference ratio used for posBar.y centering
+    //                      (default = barHeightRatio; pass an explicit value
+    //                      when the bar is shifted relative to its height,
+    //                      as in UVBar/SolarBar where the bar is 0.75 tall
+    //                      but centered against a 0.8 reference)
+    //   dashLengthRatio  – if set, sv.dashLength = canvas.height * ratio
+    //   dashGapRatio     – sv.dashGap = canvas.height * ratio (default 0.025)
+    WidgetBar.prototype.computeBarLayout = function (opts) {
+        opts = opts || {};
+        var sv = this.setupVars, c = this.canvas,
+            barWidthRatio  = opts.barWidthRatio  !== undefined ? opts.barWidthRatio  : 0.075,
+            barHeightRatio = opts.barHeightRatio !== undefined ? opts.barHeightRatio : 0.8,
+            fillWidthScale = opts.fillWidthScale !== undefined ? opts.fillWidthScale : 1,
+            verticalRef    = opts.verticalRef    !== undefined ? opts.verticalRef    : barHeightRatio,
+            dashGapRatio   = opts.dashGapRatio   !== undefined ? opts.dashGapRatio   : 0.025;
+
+        sv.barWidth      = c.height * barWidthRatio;
+        sv.barFillWidth  = sv.barWidth * fillWidthScale;
+        sv.barHeight     = c.height * barHeightRatio;
+        sv.barFillHeight = sv.barHeight;
+        sv.strokeSize    = sv.barWidth / 40;
+        if (opts.dashLengthRatio !== undefined) {
+            sv.dashLength = c.height * opts.dashLengthRatio;
+            sv.dashGap    = c.height * dashGapRatio;
+        }
+        sv.posBar = {
+            x: (c.height / 2) - (sv.barWidth / 2),
+            y: (c.height / 2) - (c.height * verticalRef / 2)
+        };
+        sv.posFillBar = {
+            x: (c.height / 2) - (sv.barFillWidth / 2),
+            y: (c.height / 2) - (sv.barFillHeight / 2)
+        };
+        return sv;
+    };
+
+    // Write the standard topStrokeCommand + rectCommand + rectFillCommand
+    // values from the layout in setupVars. TempBar uses rounded corners and
+    // mutates rectCommand.radiusTR/TL/BR/BL itself, so it skips this helper.
+    WidgetBar.prototype.applyRectGeometry = function () {
+        var sv = this.setupVars;
+        this.topStrokeCommand.width = sv.strokeSize;
+        this.rectCommand.x = sv.posBar.x;
+        this.rectCommand.y = sv.posBar.y;
+        this.rectCommand.w = sv.barWidth;
+        this.rectCommand.h = sv.barHeight;
+        this.rectFillCommand.x = sv.posFillBar.x;
+        this.rectFillCommand.w = sv.barFillWidth;
+    };
+
     global.WidgetBar = WidgetBar;
 })(typeof window !== "undefined" ? window : this);

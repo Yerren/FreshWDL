@@ -70,15 +70,12 @@
     };
 
     UniBarWidget.prototype.draw = function (uniIn, unitChange) {
-        unitChange = unitChange || false;
-        if (this.valuesOld.uniIn == uniIn && unitChange !== true) { return; }
+        if (!this.hasChanged({ uniIn: uniIn }, unitChange)) { return; }
 
         this.values.uniIn = uniIn;
         this.formatInput();
         createjs.Tween.get(this.tweens.barFill, { override: true })
             .to({ h: this.values.uniOut }, 2000, createjs.Ease.quartInOut);
-
-        this.valuesOld.uniIn = uniIn;
     };
 
     UniBarWidget.prototype.updateTweens = function () {
@@ -91,39 +88,21 @@
     };
 
     UniBarWidget.prototype.updateTop = function () {
-        var sv = this.setupVars, c = this.canvas, ldt = this.largeDashTotal;
+        var c = this.canvas, ldt = this.largeDashTotal,
+            sv = this.computeBarLayout({ dashLengthRatio: 0.075 });
 
-        sv.dashLength      = c.height * 0.075;
-        sv.dashGap         = c.height * 0.025;
-        sv.barWidth        = c.height * 0.075;
-        sv.barFillWidth    = sv.barWidth;
-        sv.barHeight       = c.height * 0.8;
-        sv.barFillHeight   = sv.barHeight;
-        sv.strokeSize      = sv.barWidth / 40;
         sv.textSize        = c.height / 17;
         sv.textDisplaySize = c.height / 19;
         sv.textTitleSize   = c.height / 17;
 
-        sv.posBar = {
-            x: (c.height / 2) - (sv.barWidth / 2),
-            y: (c.height / 2) - (sv.barHeight / 2)
-        };
         sv.posDash = {
-            x: (c.height / 2) - (sv.barWidth / 2) - sv.dashLength - sv.dashGap,
+            x: sv.posBar.x - sv.dashLength - sv.dashGap,
             y: (c.height - sv.barHeight) / 2
         };
-        sv.posText = { x: sv.posBar.x, y: sv.barHeight * (201 / 170) };
+        sv.posText      = { x: sv.posBar.x, y: sv.barHeight * (201 / 170) };
         sv.posTextTitle = { x: sv.posBar.x * (9 / 10), y: sv.barHeight * (1 / 17) };
-        sv.posFillBar = {
-            x: (c.height / 2) - (sv.barFillWidth / 2),
-            y: (c.height / 2) - (sv.barFillHeight / 2)
-        };
 
-        this.topStrokeCommand.width = sv.strokeSize;
-        this.rectCommand.x = sv.posBar.x;
-        this.rectCommand.y = sv.posBar.y;
-        this.rectCommand.w = sv.barWidth;
-        this.rectCommand.h = sv.barHeight;
+        this.applyRectGeometry();
 
         var gap = (sv.barHeight - sv.posDash.y) / ((ldt) * 9 - 10);
         this.drawLinearDashTrack({
@@ -139,9 +118,6 @@
             labelX: (sv.posDash.x - sv.dashLength) * (6 / 5),
             textSize: sv.textSize
         });
-
-        this.rectFillCommand.x = sv.posFillBar.x;
-        this.rectFillCommand.w = sv.barFillWidth;
 
         this.textDisplay.x    = sv.posText.x;
         this.textDisplay.y    = sv.posText.y;

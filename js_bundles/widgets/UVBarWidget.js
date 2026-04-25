@@ -23,9 +23,10 @@
             textTitleSize: null, textMaxLabelSize: null,
             posBar: {}, posFillBar: {}
         };
-        this.tweens  = { barFill: { h: 0 } };
-        this.values  = { uniIn: 0, uniOut: 0 };
-        this.unitsIn = "uv";
+        this.tweens    = { barFill: { h: 0 } };
+        this.values    = { uniIn: 0, uniOut: 0 };
+        this.valuesOld = { uniIn: null };
+        this.unitsIn   = "uv";
     }
     WidgetBase.inherit(UVBarWidget, WidgetBar);
 
@@ -35,60 +36,36 @@
     };
 
     UVBarWidget.prototype.draw = function (uniIn) {
-        this.values.uniIn = Number(uniIn);
-        this.values.uniIn = formatDataToUnit(this.values.uniIn, this.unitsIn);
+        if (!this.hasChanged({ uniIn: uniIn })) { return; }
+        this.values.uniIn = formatDataToUnit(Number(uniIn), this.unitsIn);
         this.values.uniOut = this.values.uniIn.map(0, 16, 0, 1);
         createjs.Tween.get(this.tweens.barFill, { override: true })
             .to({ h: this.values.uniOut }, 2000, createjs.Ease.quartInOut);
+        this.refreshLabels();
     };
 
-    UVBarWidget.prototype.updateTweens = function () {
+    UVBarWidget.prototype.refreshLabels = function () {
         var unitStr = units[this.unitsIn][currentUnits[this.unitsIn]][1].toString();
-        this.updateVerticalFillFromBottom(this.tweens.barFill.h);
         this.textDisplay.text = this.values.uniIn.toString() + unitStr;
     };
 
-    UVBarWidget.prototype.updateTop = function () {
-        var sv = this.setupVars, c = this.canvas;
+    UVBarWidget.prototype.updateTweens = function () {
+        this.updateVerticalFillFromBottom(this.tweens.barFill.h);
+    };
 
-        sv.barWidth        = c.height * 0.075;
-        sv.barFillWidth    = sv.barWidth;
-        sv.barHeight       = c.height * 0.75;
-        sv.barFillHeight   = sv.barHeight;
-        sv.strokeSize      = sv.barWidth / 40;
-        sv.textDisplaySize = c.height / 19;
-        sv.textTitleSize   = c.height / 17;
+    UVBarWidget.prototype.updateTop = function () {
+        var c = this.canvas,
+            sv = this.computeBarLayout({ barHeightRatio: 0.75, verticalRef: 0.8 });
+
+        sv.textDisplaySize  = c.height / 19;
+        sv.textTitleSize    = c.height / 17;
         sv.textMaxLabelSize = c.height / 19;
 
-        sv.posBar = {
-            x: (c.height / 2) - (sv.barWidth / 2),
-            y: (c.height / 2) - (c.height * 0.8 / 2)
-        };
-        sv.posText = {
-            x: sv.posBar.x + sv.barWidth / 2,
-            y: sv.barHeight * (201 / 170)
-        };
-        sv.posTextTitle = {
-            x: sv.posBar.x + sv.barWidth / 2,
-            y: sv.barHeight * (1 / 17)
-        };
-        sv.posTextMaxLabel = {
-            x: sv.posBar.x - sv.barWidth * (1 / 4),
-            y: (c.height - sv.barHeight) / 2
-        };
-        sv.posFillBar = {
-            x: (c.height / 2) - (sv.barFillWidth / 2),
-            y: (c.height / 2) - (sv.barFillHeight / 2)
-        };
+        sv.posText         = { x: sv.posBar.x + sv.barWidth / 2, y: sv.barHeight * (201 / 170) };
+        sv.posTextTitle    = { x: sv.posBar.x + sv.barWidth / 2, y: sv.barHeight * (1 / 17) };
+        sv.posTextMaxLabel = { x: sv.posBar.x - sv.barWidth * (1 / 4), y: (c.height - sv.barHeight) / 2 };
 
-        this.topStrokeCommand.width = sv.strokeSize;
-        this.rectCommand.x = sv.posBar.x;
-        this.rectCommand.y = sv.posBar.y;
-        this.rectCommand.w = sv.barWidth;
-        this.rectCommand.h = sv.barHeight;
-
-        this.rectFillCommand.x = sv.posFillBar.x;
-        this.rectFillCommand.w = sv.barFillWidth;
+        this.applyRectGeometry();
 
         this.textDisplay.x    = sv.posText.x;
         this.textDisplay.y    = sv.posText.y;
@@ -103,6 +80,7 @@
         this.textMaxLabel.y    = sv.posTextMaxLabel.y;
         this.textMaxLabel.font = "bold " + sv.textMaxLabelSize + "px arial";
 
+        this.refreshLabels();
         this.updateTweens();
     };
 

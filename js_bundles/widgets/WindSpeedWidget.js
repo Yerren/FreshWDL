@@ -105,11 +105,10 @@
     };
 
     WindSpeedWidget.prototype.draw = function (speedIn, gustIn, windHighSpeedIn, gustHighSpeedIn, unitChange) {
-        unitChange = unitChange || false;
-        var vo = this.valuesOld;
-        if (speedIn == vo.speedIn && gustIn == vo.gustIn &&
-                windHighSpeedIn == vo.windHighSpeedIn && gustHighSpeedIn == vo.gustHighSpeedIn &&
-                unitChange !== true) {
+        if (!this.hasChanged({
+                speedIn: speedIn, gustIn: gustIn,
+                windHighSpeedIn: windHighSpeedIn, gustHighSpeedIn: gustHighSpeedIn
+            }, unitChange)) {
             return;
         }
 
@@ -125,10 +124,6 @@
         createjs.Tween.get(this.tweens.windHighSpeed, { override: true }).to({ h: this.values.windHighSpeedOut }, 2000, createjs.Ease.quartInOut);
         createjs.Tween.get(this.tweens.gustHighSpeed, { override: true }).to({ h: this.values.gustHighSpeedOut }, 2000, createjs.Ease.quartInOut);
 
-        vo.speedIn         = speedIn;
-        vo.gustIn          = gustIn;
-        vo.windHighSpeedIn = windHighSpeedIn;
-        vo.gustHighSpeedIn = gustHighSpeedIn;
         this.refreshLabels();
     };
 
