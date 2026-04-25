@@ -2131,7 +2131,7 @@ var widgetList = {
     temperature02: {enabled: false, title: "default", highLowEnabled: true, input: 1}, //input: extra sensor 1
     temperature03: {enabled: false, title: "default", highLowEnabled: true, input: 2}, //input: extra sensor 1
     barometer: {enabled: true},
-    windChill: {enabled: true, mode: "windchill", autoSwitch: true},
+    windChill: {enabled: true, mode: "windchill", autoSwitch: true, highLowEnabled: true},
     forecastHandler: {enabled: true},
     graphHandler: {enabled: true},
     graphHandlerBarometer: {enabled: true},

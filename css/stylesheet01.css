@@ -317,7 +317,7 @@ html, body {
    UV (col 2) and Solar (col 3) as tall bars side-by-side. */
 #leftCenterBottom {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
 }
 #leftCenterBottom > .widgetSlot[data-widget="barometer"] { grid-row: 1; grid-column: 1; }
