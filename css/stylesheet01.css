@@ -306,8 +306,8 @@ html, body {
     width: 100%;
 }
 
-#top > .widgetSlot[data-widget="status"]  { width: 60%; height: 100%; float: left; }
-#top > .widgetSlot[data-widget="moonSun"] { width: 20%; height: 100%; float: right; }
+#top > .widgetSlot[data-widget="status"]  { width: 80%; height: 100%; float: left; align-items: flex-start; justify-content: flex-start; }
+#top > .widgetSlot[data-widget="moonSun"] { width: 20%; height: 100%; float: right; justify-content: flex-end; }
 #leftTop > .widgetSlot { width: 100%; height: 100%; }
 #left > .widgetSlot[data-widget="humidity"] { width: 100%; height: 34%; }
 #centerTop > .widgetSlot { width: 33.3333%; height: 100%; float: left; }
