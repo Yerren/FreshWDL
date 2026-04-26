@@ -1,0 +1,125 @@
+:root {
+  --bg: #1e1f22;
+  --panel: #2b2d31;
+  --panel-2: #313338;
+  --border: #1a1b1e;
+  --text: #e3e5e8;
+  --text-dim: #9aa0a6;
+  --accent: #5865f2;
+  --accent-2: #4752c4;
+  --warn: #faa61a;
+  --error: #ed4245;
+  --grid-line: rgba(255, 255, 255, 0.08);
+  --grid-line-strong: rgba(255, 255, 255, 0.18);
+  font-family: system-ui, sans-serif;
+  font-size: 13px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0; padding: 0; height: 100%; width: 100%;
+  background: var(--bg); color: var(--text);
+}
+
+button {
+  background: var(--panel-2); color: var(--text);
+  border: 1px solid var(--border); border-radius: 4px;
+  padding: 4px 10px; font-size: 13px; cursor: pointer;
+}
+button:hover { background: #3a3c42; }
+button.primary { background: var(--accent); border-color: var(--accent-2); }
+button.primary:hover { background: var(--accent-2); }
+
+input, select {
+  background: var(--panel); color: var(--text);
+  border: 1px solid var(--border); border-radius: 3px;
+  padding: 3px 6px; font-size: 13px;
+}
+input[type="number"] { width: 60px; }
+
+label { font-size: 12px; color: var(--text-dim); }
+
+.app {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 220px 1fr 320px;
+  grid-template-areas:
+    "toolbar  toolbar  toolbar"
+    "palette  canvas   inspector"
+    "log      log      log";
+  height: 100vh;
+  gap: 1px;
+  background: var(--border);
+}
+
+.toolbar   { grid-area: toolbar;   background: var(--panel); padding: 6px 10px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.palette   { grid-area: palette;   background: var(--panel); overflow-y: auto; padding: 8px; }
+.canvas    { grid-area: canvas;    background: #0e0e10; position: relative; overflow: hidden; }
+.inspector { grid-area: inspector; background: var(--panel); overflow-y: auto; padding: 10px; }
+.log       { grid-area: log;       background: var(--panel-2); padding: 4px 10px; font-family: ui-monospace, monospace; font-size: 12px; max-height: 130px; overflow-y: auto; }
+
+.palette h3, .inspector h3 {
+  margin: 4px 0 6px; font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.5px; color: var(--text-dim);
+}
+
+.palette-item {
+  background: var(--panel-2); border: 1px solid var(--border);
+  border-radius: 4px; padding: 6px 8px; margin-bottom: 4px;
+  cursor: grab; user-select: none;
+}
+.palette-item:hover { background: #3a3c42; }
+.palette-item .pi-type { font-size: 11px; color: var(--text-dim); }
+
+.toolbar .sep { width: 1px; height: 22px; background: var(--border); }
+.toolbar .group { display: flex; gap: 4px; align-items: center; }
+.toolbar .group label { margin-right: 2px; }
+
+.grid-host {
+  background: #0a0a0c;
+  border: 1px solid var(--border);
+}
+
+.grid-overlay { position: absolute; inset: 0; pointer-events: none; }
+.grid-overlay .cell { border-right: 1px solid var(--grid-line); border-bottom: 1px solid var(--grid-line); }
+
+.widget-rect {
+  position: absolute;
+  border: 1px solid var(--accent);
+  background: rgba(88, 101, 242, 0.12);
+  border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; color: var(--text);
+  cursor: move; user-select: none;
+}
+.widget-rect.selected { background: rgba(88, 101, 242, 0.26); border-width: 2px; }
+.widget-rect .label { pointer-events: none; padding: 2px 6px; }
+.widget-rect .resize-handle {
+  position: absolute; width: 8px; height: 8px;
+  background: var(--accent); border: 1px solid #fff;
+}
+.widget-rect .rh-se { right: -4px; bottom: -4px; cursor: nwse-resize; }
+.widget-rect .rh-e  { right: -4px; top: 50%; margin-top: -4px; cursor: ew-resize; }
+.widget-rect .rh-s  { bottom: -4px; left: 50%; margin-left: -4px; cursor: ns-resize; }
+
+.field-row { display: flex; align-items: center; gap: 6px; margin: 4px 0; }
+.field-row > label { flex: 0 0 90px; }
+.field-row > input, .field-row > select { flex: 1; min-width: 0; }
+
+.bindings-table {
+  width: 100%; border-collapse: collapse; margin-top: 4px;
+}
+.bindings-table th, .bindings-table td {
+  padding: 3px 4px; font-size: 12px; text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.bindings-table th { color: var(--text-dim); font-weight: normal; }
+.bindings-table input { width: 100%; }
+.bindings-table .err input { border-color: var(--error); }
+
+.log .entry-error { color: var(--error); }
+.log .entry-warn  { color: var(--warn); }
+
+.empty-hint { color: var(--text-dim); padding: 20px; text-align: center; font-style: italic; }

@@ -33,26 +33,28 @@
     ButtonsHandler.prototype.setUp = function () {
         var self = this;
 
-        this.buttons.altitude = document.getElementById("AltitudeButton");
-        this.buttons.pressure = document.getElementById("PressureButton");
-        this.buttons.wind     = document.getElementById("WindButton");
-        this.buttons.rainfall = document.getElementById("RainfallButton");
-        this.buttons.temp     = document.getElementById("TempButton");
+        // Buttons are optional — custom layouts may omit any subset. Each
+        // missing element is silently skipped (no label, no listener).
+        var buttonSpec = {
+            altitude: { id: "AltitudeButton", label: "buttonLabelAltitude" },
+            pressure: { id: "PressureButton", label: "graphBaroLabel" },
+            wind:     { id: "WindButton",     label: "windSpeedWind" },
+            rainfall: { id: "RainfallButton", label: "rainfallTitle" },
+            temp:     { id: "TempButton",     label: "temperatureTitle" }
+        };
 
-        this.buttons.altitude.innerHTML = useDict("buttonLabelAltitude");
-        this.buttons.pressure.innerHTML = useDict("graphBaroLabel");
-        this.buttons.wind.innerHTML     = useDict("windSpeedWind");
-        this.buttons.rainfall.innerHTML = useDict("rainfallTitle");
-        this.buttons.temp.innerHTML     = useDict("temperatureTitle");
-
-        var unitKeys = ["altitude", "pressure", "wind", "rainfall", "temp"];
-        for (var k = 0; k < unitKeys.length; k++) {
+        var keys = Object.keys(buttonSpec), k;
+        for (k = 0; k < keys.length; k++) {
             (function (unit) {
-                var btn = self.buttons[unit],
-                    handler = function () { self.changeUnit(unit); };
+                var spec = buttonSpec[unit],
+                    btn = document.getElementById(spec.id);
+                self.buttons[unit] = btn;
+                if (!btn) { return; }
+                btn.innerHTML = useDict(spec.label);
+                var handler = function () { self.changeUnit(unit); };
                 btn.addEventListener("click", handler, false);
                 self._listeners.push({ event: "click", handler: handler, target: btn });
-            }(unitKeys[k]));
+            }(keys[k]));
         }
     };
 

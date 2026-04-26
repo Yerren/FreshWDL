@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>FreshWDL Preview</title>
+  <link rel="stylesheet" type="text/css" href="/runtime/css/stylesheet01.css" />
+  <link rel="stylesheet" type="text/css" href="/runtime/css/opentip.min.css" />
+  <style>
+    html, body { background: #fff; margin: 0; }
+    /* Hide loading screen ASAP — we drive the preview manually. */
+    #loadingScreen { display: none !important; }
+  </style>
+
+  <script src="/runtime/Modals.js"></script>
+</head>
+<body>
+  <div id="loadingScreen"><div id="loadingText">
+    <p id="titleText">Preview</p><p id="loadingMessage">Loading…</p>
+  </div></div>
+
+  <script src="/runtime/js_bundles/Loading.js"></script>
+
+  <!-- Use a local config that points at /runtime/sample/ for clientraw URLs.
+       The parent frame can override window.PREVIEW_DATA_URL_PREFIX before
+       calling renderLayout(). -->
+  <script>
+    // Expose a hook so the parent frame can re-render without reloading.
+    window.__previewHost = {
+      renderLayout: null, // assigned below
+      pendingDoc: null,
+    };
+  </script>
+  <script src="/runtime/config.js"></script>
+  <script src="/runtime/js_bundles/easeljs-0.8.2.min.js"></script>
+  <script src="/runtime/js_bundles/tweenjs-0.6.2.min.js"></script>
+  <script src="/runtime/js_bundles/opentip-native.min.js"></script>
+  <script src="/runtime/js_bundles/moment-with-locales.min.js"></script>
+  <script src="/runtime/js_bundles/Chart.min.js"></script>
+  <script src="/runtime/js_bundles/Globals.js"></script>
+  <script src="/runtime/js_bundles/DataHelpers.js"></script>
+  <script src="/runtime/js_bundles/DataBindings.js"></script>
+  <script src="/runtime/js_bundles/WidgetBase.js"></script>
+  <script src="/runtime/js_bundles/CanvasWidget.js"></script>
+  <script src="/runtime/js_bundles/DomHandler.js"></script>
+  <script src="/runtime/js_bundles/WidgetText.js"></script>
+  <script src="/runtime/js_bundles/WidgetBar.js"></script>
+  <script src="/runtime/js_bundles/WidgetGauge.js"></script>
+  <script src="/runtime/js_bundles/WidgetChart.js"></script>
+  <script src="/runtime/js_bundles/widgets/ApparentWidget.js"></script>
+  <script src="/runtime/js_bundles/widgets/SolarBarWidget.js"></script>
+  <script src="/runtime/js_bundles/widgets/HumidityGaugeWidget.js"></script>
+  <script src="/runtime/js_bundles/widgets/MainChartWidget.js"></script>
+  <script src="/runtime/js_bundles/widgets/TemperatureBarWidget.js"></script>
+  <script src="/runtime/js_bundles/widgets/BarometerWidget.js"></script>
+  <script src="/runtime/js_bundles/widgets/MoonSunWidget.js"></script>
+  <script src="/runtime/js_bundles/widgets/StatusWidget.js"></script>
+  <script src="/runtime/js_bundles/widgets/TitleRainfallWidget.js"></script>
+  <script src="/runtime/js_bundles/widgets/UniBarWidget.js"></script>
+  <script src="/runtime/js_bundles/widgets/UVBarWidget.js"></script>
+  <script src="/runtime/js_bundles/widgets/WindGaugeWidget.js"></script>
+  <script src="/runtime/js_bundles/widgets/WindSpeedWidget.js"></script>
+  <script src="/runtime/js_bundles/handlers/ForecastHandler.js"></script>
+  <script src="/runtime/js_bundles/handlers/RecordsHandler.js"></script>
+  <script src="/runtime/js_bundles/handlers/ModalGraphHandler.js"></script>
+  <script src="/runtime/js_bundles/handlers/ButtonsHandler.js"></script>
+  <script src="/runtime/js_bundles/handlers/ModalHandler.js"></script>
+  <script src="/runtime/js_bundles/WidgetRegistry.js"></script>
+  <script src="/runtime/js_bundles/WidgetFactory.js"></script>
+  <script src="/runtime/js_bundles/DataManager.js"></script>
+  <script src="/runtime/js_bundles/LayoutMount.js"></script>
+  <script src="/runtime/js_bundles/App.js"></script>
+
+  <script>
+    // Render-driver. The parent frame posts {type:"render", layoutJsSource}
+    // and we eval it. The Layout.js source is a regular script that calls
+    // document.write() (capturing markup into our placeholder) and constructs
+    // window.app, after which we call app.start().
+    (function () {
+      var container = null;
+
+      function applyLayout(layoutJsSource) {
+        // Point the runtime at our chosen clientraw source. config.js declares
+        // customBaseURL as a `var`, so we just reassign on globalThis.
+        if (typeof window.PREVIEW_DATA_URL_PREFIX === "string") {
+          window.customBaseURL = window.PREVIEW_DATA_URL_PREFIX;
+        } else {
+          window.customBaseURL = "/runtime/";
+        }
+
+        // Tear down previous app if any.
+        try { if (window.app && window.app.stop) window.app.stop(); } catch (e) {}
+        try { if (window.app && window.app.destroy) window.app.destroy(); } catch (e) {}
+
+        // Replace any existing FWDLcontainer + bottom buttons.
+        var prev = document.getElementById("FWDLcontainer");
+        if (prev) prev.remove();
+        var prevBottom = document.getElementById("bottom");
+        if (prevBottom) prevBottom.remove();
+        var prevVer = document.getElementById("Version");
+        if (prevVer) prevVer.remove();
+
+        // Override document.write so the layout markup goes into a known place
+        // rather than appending to body wherever the script lives.
+        var bufferedHTML = "";
+        var origWrite = document.write;
+        document.write = function (s) { bufferedHTML += s; };
+
+        try {
+          // eslint-disable-next-line no-eval
+          (0, eval)(layoutJsSource);
+        } finally {
+          document.write = origWrite;
+        }
+
+        var holder = document.createElement("div");
+        holder.innerHTML = bufferedHTML;
+        // Move children to body (preserving order).
+        while (holder.firstChild) document.body.appendChild(holder.firstChild);
+
+        // Ensure every manifest enabledKey has a widgetList entry. Editor-
+        // created widgets may use keys the stock Globals.js doesn't know.
+        try {
+          var manifest = (window.app && window.app.manifest) || [];
+          for (var i = 0; i < manifest.length; i++) {
+            var k = manifest[i].enabledKey;
+            if (k && typeof window.widgetList === "object" && !window.widgetList[k]) {
+              window.widgetList[k] = { enabled: true };
+            }
+          }
+        } catch (e) {}
+
+        // Neutralise the legacy fixed-aspect-ratio sizing helpers from
+        // Globals.js — they assume the original 16:9 layout and stamp
+        // explicit pixel width/height on #FWDLcontainer that fight the grid
+        // CSS our codegen emits. The grid container is responsive on its own.
+        window.initialiseLayout = function () {
+          var v = document.getElementById("Version");
+          if (v) { v.innerHTML = "FreshWDL Preview"; }
+        };
+        window.resizeContainer = function () {};
+
+        if (window.app && typeof window.app.start === "function") {
+          try { window.app.start(); } catch (e) { console.error("preview app.start failed", e); }
+        }
+
+        // Diagnostic: log each widget's canvas size after start. If a slot
+        // ended up with 0×0, the widget will be invisible — surfaces that
+        // immediately rather than leaving a silent blank canvas.
+        try {
+          setTimeout(function () {
+            var slots = document.querySelectorAll("[data-widget]");
+            slots.forEach(function (s) {
+              var c = s.querySelector("canvas");
+              if (c) {
+                console.log("[preview] " + s.getAttribute("data-widget") +
+                  " slot=" + s.clientWidth + "x" + s.clientHeight +
+                  " canvas=" + c.width + "x" + c.height);
+              } else {
+                console.warn("[preview] " + s.getAttribute("data-widget") + " has no canvas");
+              }
+            });
+          }, 200);
+        } catch (e) {}
+      }
+
+      window.__previewHost.renderLayout = applyLayout;
+
+      window.addEventListener("message", function (e) {
+        var msg = e.data;
+        if (!msg || typeof msg !== "object") return;
+        if (msg.type === "render" && typeof msg.layoutJsSource === "string") {
+          if (typeof msg.dataUrlPrefix === "string") {
+            window.PREVIEW_DATA_URL_PREFIX = msg.dataUrlPrefix;
+          }
+          applyLayout(msg.layoutJsSource);
+        }
+      });
+
+      // Notify parent we're ready.
+      window.parent && window.parent.postMessage({ type: "previewReady" }, "*");
+    })();
+  </script>
+</body>
+</html>

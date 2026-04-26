@@ -15,6 +15,7 @@
 //   widgetListInput:KEY -> getExtraInput(widgetList[KEY].input)
 //   widgetListInput:KEY[K] -> getExtraInput(widgetList[KEY].input)[K]
 //   const:VALUE         -> literal string VALUE
+//   dict:KEY            -> useDict(KEY) (dictionary lookup, evaluated each read)
 //   fn:NAME             -> window[NAME]() (escape hatch for computed values)
 //
 // A binding value may also be a function; it is called verbatim each time.
@@ -90,6 +91,14 @@
         if (m) {
             var lit = m[1];
             return function () { return lit; };
+        }
+
+        m = /^dict:([A-Za-z0-9_]+)$/.exec(spec);
+        if (m) {
+            var dkey = m[1];
+            return function () {
+                return (typeof useDict === "function") ? useDict(dkey) : dkey;
+            };
         }
 
         m = /^fn:([A-Za-z_$][A-Za-z0-9_$]*)$/.exec(spec);

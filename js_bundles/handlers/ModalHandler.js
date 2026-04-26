@@ -16,8 +16,8 @@
     WidgetBase.inherit(ModalHandler, DomHandler);
 
     ModalHandler.prototype.openModal = function (val1, val2, menuValue) {
-        this.selectMenu.value = menuValue;
-        this.modal.style.display = "block";
+        if (this.selectMenu) { this.selectMenu.value = menuValue; }
+        if (this.modal) { this.modal.style.display = "block"; }
         if (this.graphHandler) {
             this.graphHandler.configureGraph(val1, val2);
             this.graphHandler.chart.resize();
@@ -30,31 +30,41 @@
         this.graphHandler = global.app ? global.app.registry.get("modalGraph") : null;
 
         this.modal = document.getElementById("myModal");
-        this.modal.style.display = "none";
+        if (this.modal) { this.modal.style.display = "none"; }
         this.span = document.getElementById("graphClose");
         this.selectMenu = document.getElementById("selectMenu");
 
-        var gGkeys = Object.keys(globalGraphs), a, b;
-        for (a = 0; a < gGkeys.length; a++) {
-            var currentGraphKeys = Object.keys(globalGraphs[gGkeys[a]].graphs);
-            for (b = 0; b < currentGraphKeys.length; b++) {
-                var optionLabel = gGkeys[a].toString() + currentGraphKeys[b].toString(),
-                    opt = document.createElement("option");
-                opt.value = optionLabel;
-                this.graphInputs[optionLabel] = [gGkeys[a], currentGraphKeys[b]];
-                opt.text = globalGraphs[gGkeys[a]].graphs[currentGraphKeys[b]].title;
-                this.selectMenu.add(opt);
+        if (this.selectMenu && typeof globalGraphs !== "undefined") {
+            var gGkeys = Object.keys(globalGraphs), a, b;
+            for (a = 0; a < gGkeys.length; a++) {
+                var currentGraphKeys = Object.keys(globalGraphs[gGkeys[a]].graphs);
+                for (b = 0; b < currentGraphKeys.length; b++) {
+                    var optionLabel = gGkeys[a].toString() + currentGraphKeys[b].toString(),
+                        opt = document.createElement("option");
+                    opt.value = optionLabel;
+                    this.graphInputs[optionLabel] = [gGkeys[a], currentGraphKeys[b]];
+                    opt.text = globalGraphs[gGkeys[a]].graphs[currentGraphKeys[b]].title;
+                    this.selectMenu.add(opt);
+                }
             }
         }
 
+        // Tolerant track(): silently skips missing targets so ModalHandler can
+        // coexist with custom layouts that omit some/all of the graph canvases
+        // or the GraphsButton.
         var track = function (target, event, handler) {
+            if (!target) { return; }
             target.addEventListener(event, handler, false);
             self._listeners.push({ event: event, handler: handler, target: target });
         };
 
-        track(this.span, "click", function () { self.modal.style.display = "none"; });
+        track(this.span, "click", function () {
+            if (self.modal) { self.modal.style.display = "none"; }
+        });
         track(window, "click", function (event) {
-            if (event.target === self.modal) { self.modal.style.display = "none"; }
+            if (self.modal && event.target === self.modal) {
+                self.modal.style.display = "none";
+            }
         });
 
         this.graphs.rain = document.getElementById("rainGraphCanvas01");
@@ -78,12 +88,15 @@
         });
 
         this.button = document.getElementById("GraphsButton");
-        this.button.innerHTML = useDict("buttonLabelGraphs");
-        track(this.button, "click", function () {
-            var firstKey = Object.keys(globalGraphs)[0],
-                firstRange = Object.keys(globalGraphs[firstKey].graphs)[0];
-            self.openModal(firstKey, firstRange, firstKey + firstRange);
-        });
+        if (this.button) {
+            this.button.innerHTML = useDict("buttonLabelGraphs");
+            track(this.button, "click", function () {
+                if (typeof globalGraphs === "undefined") { return; }
+                var firstKey = Object.keys(globalGraphs)[0],
+                    firstRange = Object.keys(globalGraphs[firstKey].graphs)[0];
+                self.openModal(firstKey, firstRange, firstKey + firstRange);
+            });
+        }
 
         // Expose global for inline onchange="graphChange(this)" in UpperContent.js
         global.graphChange = function (obj) {

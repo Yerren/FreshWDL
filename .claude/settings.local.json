@@ -11,7 +11,12 @@
       "Bash(grep -o 'scaleLabelFontSize[^;,}]\\\\{0,80\\\\}' C:/Users/Yerren/Documents/GitHub/FreshWDL/js_bundles/Chart.min.js)",
       "Bash(grep -oE '.{0,200}scaleLabel.{0,300}' C:/Users/Yerren/Documents/GitHub/FreshWDL/js_bundles/Chart.min.js)",
       "Bash(grep -oE '.{0,400}scaleLabelX.{0,400}' C:/Users/Yerren/Documents/GitHub/FreshWDL/js_bundles/Chart.min.js)",
-      "Bash(grep -oE '.{0,300}f\\\\.display.{0,800}' C:/Users/Yerren/Documents/GitHub/FreshWDL/js_bundles/Chart.min.js)"
+      "Bash(grep -oE '.{0,300}f\\\\.display.{0,800}' C:/Users/Yerren/Documents/GitHub/FreshWDL/js_bundles/Chart.min.js)",
+      "Bash(npm --version)",
+      "Bash(npm install *)",
+      "Bash(npx tsc *)",
+      "Bash(npx vite *)",
+      "Bash(grep -nE \"^\\\\s{4}[a-zA-Z]+\\\\s*:\\\\s*\\\\{$\" \"C:/Users/Yerren/Documents/GitHub/FreshWDL/js_bundles/Globals.js\")"
     ]
   }
 }

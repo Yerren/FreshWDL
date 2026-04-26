@@ -108,12 +108,15 @@
     };
 
     MainChartWidget.prototype.configureGraph = function (baseKey, rangeKey) {
-        var baseIn, graphIn;
-        try {
-            baseIn = globalGraphs[baseKey];
-            graphIn = baseIn.graphs[rangeKey];
-        } catch (err) {
-            console.log("Graph not enabled.");
+        if (typeof globalGraphs === "undefined") { return; }
+        var baseIn = globalGraphs[baseKey];
+        if (!baseIn || !baseIn.graphs) {
+            console.log("Graph base '" + baseKey + "' not enabled.");
+            return;
+        }
+        var graphIn = baseIn.graphs[rangeKey];
+        if (!graphIn) {
+            console.log("Graph range '" + rangeKey + "' not defined for base '" + baseKey + "'.");
             return;
         }
 
