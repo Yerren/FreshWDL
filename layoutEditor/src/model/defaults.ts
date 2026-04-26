@@ -1,6 +1,34 @@
 import { CATALOG, getCatalogEntry } from "../catalog";
 import { DEFAULT_BUTTONS, type LayoutDoc, type WidgetInstance } from "./types";
 
+// Handlers are part of every layout — the runtime needs them to wire up
+// modals, buttons, forecast text, etc. They are not user-addable/removable.
+export const REQUIRED_HANDLERS: { type: string; instanceId: string }[] = [
+  { type: "ButtonsHandler",     instanceId: "buttons" },
+  { type: "ModalHandler",       instanceId: "modalHandler" },
+  { type: "ModalGraphHandler",  instanceId: "modalGraph" },
+  { type: "RecordsHandler",     instanceId: "records" },
+  { type: "ForecastHandler",    instanceId: "forecast" },
+];
+
+export function isRequiredHandlerType(type: string): boolean {
+  return REQUIRED_HANDLERS.some((h) => h.type === type);
+}
+
+function buildRequiredHandlers(): WidgetInstance[] {
+  return REQUIRED_HANDLERS.map((h) => defaultsForType(h.type, h.instanceId, { col: 1, row: 1 }));
+}
+
+// Ensure every required handler is present in `widgets`. Used both for fresh
+// layouts and when loading from storage/JSON, so older docs get migrated.
+export function ensureRequiredHandlers(widgets: WidgetInstance[]): WidgetInstance[] {
+  const present = new Set(widgets.map((w) => w.type));
+  const missing = REQUIRED_HANDLERS
+    .filter((h) => !present.has(h.type))
+    .map((h) => defaultsForType(h.type, h.instanceId, { col: 1, row: 1 }));
+  return missing.length ? [...widgets, ...missing] : widgets;
+}
+
 // Grid container is 16:9. Toolbar exposes a single "Grid size" = number of
 // rows. Cells are square, so cols = round(rows × 16 / 9). Catalog defaultArea
 // values are tuned for ~14 rows / ~25 cols.
@@ -15,11 +43,7 @@ export function emptyLayout(): LayoutDoc {
   return {
     version: 1,
     grid: { ...DEFAULT_GRID },
-    widgets: [
-      // Always-present non-canvas handlers (mirror Layout.js).
-      defaultsForType("ButtonsHandler", "buttons", { col: 1, row: 1 }),
-      defaultsForType("ModalHandler",   "modalHandler", { col: 1, row: 1 }),
-    ],
+    widgets: buildRequiredHandlers(),
     buttons: [...DEFAULT_BUTTONS],
     preview: { source: "sample", liveUrlPrefix: "/" },
   };

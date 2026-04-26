@@ -4,7 +4,7 @@
 //   1) document.write('… <style> … <DOM> …') with grid CSS + per-slot placement
 //   2) IIFE building the manifest array and constructing window.app
 
-import { getCatalogEntry } from "../catalog";
+import { getCatalogEntry, isPlacedInGrid } from "../catalog";
 import type { ButtonConfig, LayoutDoc, WidgetInstance } from "../model/types";
 
 export function emitLayoutJs(doc: LayoutDoc): string {
@@ -35,10 +35,7 @@ export function emitLayoutJs(doc: LayoutDoc): string {
 
 function emitStyle(doc: LayoutDoc): string {
   const { cols, rows } = doc.grid;     // 16:9 grid: cols ≈ rows × 16/9
-  const widgetSlots = doc.widgets.filter((w) => {
-    const e = getCatalogEntry(w.type);
-    return e?.needsCanvas;
-  });
+  const widgetSlots = doc.widgets.filter((w) => isPlacedInGrid(getCatalogEntry(w.type)));
 
   const slotRules = widgetSlots.map((w) => {
     const a = w.area;
@@ -76,29 +73,27 @@ function emitStyle(doc: LayoutDoc): string {
 // ---------------- DOM ----------------
 
 function emitDom(doc: LayoutDoc): string {
-  const widgetSlots = doc.widgets.filter((w) => {
-    const e = getCatalogEntry(w.type);
-    return e?.needsCanvas;
-  });
+  const widgetSlots = doc.widgets.filter((w) => isPlacedInGrid(getCatalogEntry(w.type)));
 
   const slotMarkup = widgetSlots.map((w) => {
     // The MainChartWidget references an outer wrapping div in the existing
     // CSS; LayoutMount handles that automatically. Slot is identical here.
     const extraClass = w.type === "MainChartWidget" ? " chartSlot" : "";
+    if (w.type === "ForecastHandler") {
+      // ForecastHandler.resize() sizes #forecastText off its parentElement,
+      // so #forecastText must be nested inside the slot (not be the slot
+      // itself). Otherwise its parent is #FWDLcontainer and it overflows.
+      const elementId = String(w.options.elementId ?? "forecastText");
+      return `        <div data-widget="${w.instanceId}" class="widgetSlot"><div id="${elementId}" style="overflow: hidden;"></div></div>`;
+    }
     return `        <div data-widget="${w.instanceId}" class="widgetSlot${extraClass}"></div>`;
   }).join("\n");
-
-  // Special placeholder elements referenced by handlers (e.g. ForecastHandler reads #forecastText).
-  const forecastSlot = doc.widgets.some((w) => w.type === "ForecastHandler")
-    ? '        <div id="forecastText" style="overflow: hidden; position: absolute; opacity: 0;"></div>\n'
-    : "";
 
   const buttons = emitButtons(doc.buttons);
 
   return [
     '    <div id="FWDLcontainer">',
     slotMarkup,
-    forecastSlot.trimEnd(),
     "    </div>",
     '    <div id="bottom" class="widgetContainer">',
     buttons,

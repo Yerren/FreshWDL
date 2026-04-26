@@ -29,7 +29,11 @@ export type CatalogEntry = {
   type: string;                // matches Ctor name in runtime, e.g. "TemperatureBarWidget"
   category: "Widget" | "Handler";
   ctor: string;                // identifier emitted as `Ctor:` in manifest
-  needsCanvas: boolean;        // true → DOM slot + canvas id; false → handler-only
+  needsCanvas: boolean;        // true → DOM slot + canvas id; false → no canvas
+  // True when the entry should occupy a grid slot in the editor + emitted DOM.
+  // Implied true when needsCanvas is true; explicitly set on handlers that
+  // own a non-canvas DOM element (e.g. ForecastHandler → #forecastText).
+  placedInGrid?: boolean;
   defaultEnabledKey: string;
   defaultCanvasIdPrefix: string;
   defaultArea: { colSpan: number; rowSpan: number };
@@ -315,9 +319,14 @@ export const CATALOG: CatalogEntry[] = [
     category: "Handler",
     ctor: "ForecastHandler",
     needsCanvas: false,
+    placedInGrid: true,
+    // resize() sets the inner div to width = parentHeight × 6.19 and height
+    // = parentHeight × 0.59, so its own aspect ratio is 0.59 / 6.19. Lock
+    // the slot to match.
+    aspectRatio: 0.59 / 6.19,
     defaultEnabledKey: "forecastHandler",
     defaultCanvasIdPrefix: "",
-    defaultArea: { colSpan: 12, rowSpan: 3 },
+    defaultArea: { colSpan: 12, rowSpan: 1 },
     bindings: [],
     options: [
       { key: "elementId", label: "Element id", type: "string", default: "forecastText" },
@@ -375,4 +384,10 @@ export const CATALOG: CatalogEntry[] = [
 
 export function getCatalogEntry(type: string): CatalogEntry | undefined {
   return CATALOG.find((c) => c.type === type);
+}
+
+// True for any entry that occupies a slot in the grid (canvas widgets and
+// non-canvas handlers like ForecastHandler that own a positioned DOM element).
+export function isPlacedInGrid(entry: CatalogEntry | undefined): boolean {
+  return !!entry && (entry.needsCanvas || entry.placedInGrid === true);
 }

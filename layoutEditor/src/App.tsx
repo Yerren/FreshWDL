@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { LayoutDoc, WidgetInstance } from "./model/types";
-import { emptyLayout, newInstance, colsForRows } from "./model/defaults";
+import { emptyLayout, ensureRequiredHandlers, isRequiredHandlerType, newInstance, colsForRows } from "./model/defaults";
 import { validateLayout } from "./model/validation";
 import { emitLayoutJs } from "./codegen/emitLayoutJs";
 import { Toolbar } from "./ui/Toolbar";
@@ -34,7 +34,11 @@ export function App() {
     });
   };
   const removeWidget = (id: string) => {
-    setDoc((d) => ({ ...d, widgets: d.widgets.filter((w) => w.instanceId !== id) }));
+    setDoc((d) => {
+      const target = d.widgets.find((w) => w.instanceId === id);
+      if (target && isRequiredHandlerType(target.type)) return d;
+      return { ...d, widgets: d.widgets.filter((w) => w.instanceId !== id) };
+    });
     if (selectedId === id) setSelectedId(null);
   };
 
@@ -82,6 +86,7 @@ function loadFromStorage(): LayoutDoc | null {
       // Force 16:9 grid — older layouts may have square or asymmetric values.
       const rows = parsed.grid.rows;
       parsed.grid = { cols: colsForRows(rows), rows };
+      parsed.widgets = ensureRequiredHandlers(parsed.widgets);
       return parsed;
     }
   } catch {}
@@ -110,6 +115,7 @@ function importJson(setDoc: (d: LayoutDoc) => void) {
       try {
         const parsed = JSON.parse(txt) as LayoutDoc;
         if (parsed.version !== 1) throw new Error("Unsupported layout version");
+        parsed.widgets = ensureRequiredHandlers(parsed.widgets);
         setDoc(parsed);
       } catch (e) {
         alert("Failed to load JSON: " + (e as Error).message);

@@ -1,4 +1,5 @@
-import { getCatalogEntry } from "../catalog";
+import { getCatalogEntry, isPlacedInGrid } from "../catalog";
+import { isRequiredHandlerType } from "../model/defaults";
 import type { LayoutDoc, WidgetInstance } from "../model/types";
 import { validateSpec } from "../model/validation";
 
@@ -50,7 +51,7 @@ export function Inspector({ doc, selected, updateWidget, removeWidget }: Props) 
         </div>
       )}
 
-      {entry.needsCanvas && (
+      {isPlacedInGrid(entry) && (
         <>
           <h3 style={{ marginTop: 14 }}>Grid area
             {entry.aspectRatio != null && (
@@ -162,9 +163,11 @@ export function Inspector({ doc, selected, updateWidget, removeWidget }: Props) 
         </>
       )}
 
-      <div style={{ marginTop: 16, display: "flex", gap: 6 }}>
-        <button onClick={() => removeWidget(selected.instanceId)}>Delete widget</button>
-      </div>
+      {!isRequiredHandlerType(selected.type) && (
+        <div style={{ marginTop: 16, display: "flex", gap: 6 }}>
+          <button onClick={() => removeWidget(selected.instanceId)}>Delete widget</button>
+        </div>
+      )}
     </div>
   );
 }

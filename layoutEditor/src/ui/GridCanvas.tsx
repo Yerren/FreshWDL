@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { getCatalogEntry } from "../catalog";
+import { getCatalogEntry, isPlacedInGrid } from "../catalog";
 import { ASPECT_W, ASPECT_H } from "../model/defaults";
 import type { GridArea, LayoutDoc, WidgetInstance } from "../model/types";
 
@@ -50,7 +50,7 @@ export function GridCanvas({ doc, setDoc, selectedId, setSelectedId }: Props) {
   const offsetX = (wrapper.w - hostW) / 2;
   const offsetY = (wrapper.h - hostH) / 2;
 
-  const placed = doc.widgets.filter((w) => getCatalogEntry(w.type)?.needsCanvas);
+  const placed = doc.widgets.filter((w) => isPlacedInGrid(getCatalogEntry(w.type)));
 
   useEffect(() => {
     if (!drag) return;
