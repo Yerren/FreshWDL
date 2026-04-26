@@ -31,7 +31,21 @@
         createjs.Ticker.addEventListener("tick", this.tickHandler);
     };
 
+    App.prototype.pruneDisabledGraphs = function () {
+        if (typeof global.graphList === "undefined" || typeof global.globalGraphs === "undefined") { return; }
+        var gl = global.graphList, gg = global.globalGraphs;
+        if (gl.barometer && gl.barometer.enabled === false) { delete gg.barometer; }
+        if (gl.humidity  && gl.humidity.enabled  === false) { delete gg.humidity; }
+        if (gl.solar     && gl.solar.enabled     === false) { delete gg.solar; }
+        if (gl.temp      && gl.temp.enabled      === false) { delete gg.temp; }
+        if (gl.uv        && gl.uv.enabled        === false) { delete gg.uv; }
+        if (gl.windDir   && gl.windDir.enabled   === false) { delete gg.windDir; }
+        if (gl.windSpeed && gl.windSpeed.enabled === false) { delete gg.windSpeed; }
+        if (gl.rainfall  && gl.rainfall.enabled  === false) { delete gg.rainfallBar; delete gg.rainfallLine; }
+    };
+
     App.prototype.start = function () {
+        this.pruneDisabledGraphs();
         if (typeof global.initialiseLayout === "function") {
             global.initialiseLayout();
         }

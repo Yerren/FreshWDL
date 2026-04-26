@@ -1,3 +1,4 @@
+// Modal markup shared by every layout: records, forecast, and graph dialogs.
 document.write('\
     <!-- The Records Modal -->\
     <div id="recordsModal" class="modal">\
