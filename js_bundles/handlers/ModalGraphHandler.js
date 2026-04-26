@@ -54,7 +54,7 @@
             },
             legend: { display: false }
         };
-        this.chart = new Chart(this.canvas.getContext("2d", { alpha: false }), {
+        this.chart = new Chart(this.canvas.getContext("2d"), {
             type: "line",
             data: { datasets: [] },
             options: options
@@ -72,7 +72,7 @@
                 xAxes: [{ type: 'category' }]
             }
         };
-        this.chart = new Chart(this.canvas.getContext("2d", { alpha: false }), {
+        this.chart = new Chart(this.canvas.getContext("2d"), {
             type: "bar",
             data: { labels: [], datasets: [] },
             options: options
