@@ -7,6 +7,8 @@
         config = config || {};
         config.canvasID = config.canvasID || "UVBar01";
         config.events = config.events || ["clientRawDataUpdate"];
+        config.tooltipText = config.tooltipText ||
+            (typeof useDict === "function" ? useDict("uvDescription") : "");
         WidgetBar.call(this, config);
         this.rectTop = null;
         this.rectFillTop = null;

@@ -24,6 +24,9 @@
         }
         config.events = events;
         config.unitEvents = config.unitEvents || ["temp"];
+        if (!config.tooltipSource && !config.tooltipText && typeof useDict === "function") {
+            config.tooltipText = useDict("temperatureDescription");
+        }
         WidgetBar.call(this, config);
         this.largeDashTotal = 5;
 
@@ -86,6 +89,10 @@
 
     TemperatureBarWidget.prototype.attachTooltip = function () {
         if (typeof Opentip === "undefined") { return; }
+        if (!this.config.tooltipSource) {
+            CanvasWidget.prototype.attachTooltip.call(this);
+            return;
+        }
         var text = this.resolveTooltip();
         this.tooltip = new Opentip(this.canvas, text, {
             background: "#D3D3D3", shadowColor: "#D3D3D3", borderColor: "#D3D3D3"

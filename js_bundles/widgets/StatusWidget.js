@@ -12,6 +12,8 @@
             "clientRawDataUpdate", "clientRawExtraDataUpdate",
             "clientRawHourDataUpdate", "clientRawDailyDataUpdate"
         ];
+        config.tooltipText = config.tooltipText ||
+            (typeof useDict === "function" ? useDict("statusDescription") : "");
         WidgetText.call(this, config);
         this.blankBlinkColour = null;
         this.circle = null;
