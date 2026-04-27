@@ -18,15 +18,19 @@ export type BindingFieldDef = {
   hint?: string;               // shown under the input
 };
 
+export type DictOrText = { mode: "dict" | "text"; value: string };
+
 export type OptionFieldDef =
-  | { key: string; label: string; type: "boolean";  default: boolean; hint?: string }
-  | { key: string; label: string; type: "string";   default: string;  hint?: string }
-  | { key: string; label: string; type: "number";   default: number;  hint?: string }
-  | { key: string; label: string; type: "select";   default: string;  options: string[]; hint?: string }
-  | { key: string; label: string; type: "textarea"; default: string;  rows?: number; hint?: string };
+  | { key: string; label: string; type: "boolean";    default: boolean;    hint?: string }
+  | { key: string; label: string; type: "string";     default: string;     hint?: string }
+  | { key: string; label: string; type: "number";     default: number;     hint?: string }
+  | { key: string; label: string; type: "select";     default: string;     options: string[]; hint?: string }
+  | { key: string; label: string; type: "textarea";   default: string;     rows?: number; hint?: string }
+  | { key: string; label: string; type: "dictOrText"; default: DictOrText; hint?: string };
 
 export type CatalogEntry = {
   type: string;                // matches Ctor name in runtime, e.g. "TemperatureBarWidget"
+  displayName: string;         // friendly label shown in palette / canvas / inspector
   category: "Widget" | "Handler";
   ctor: string;                // identifier emitted as `Ctor:` in manifest
   needsCanvas: boolean;        // true → DOM slot + canvas id; false → no canvas
@@ -71,6 +75,7 @@ export const CATALOG: CatalogEntry[] = [
   // ---------------- Generic text widget (template-driven) ----------------
   {
     type: "WidgetText",
+    displayName: "Text",
     category: "Widget",
     ctor: "WidgetText",
     needsCanvas: true,
@@ -94,6 +99,7 @@ export const CATALOG: CatalogEntry[] = [
   // ---------------- Bar / Gauge widgets ----------------
   {
     type: "TemperatureBarWidget",
+    displayName: "Temperature Bar",
     category: "Widget",
     ctor: "TemperatureBarWidget",
     needsCanvas: true,
@@ -107,6 +113,9 @@ export const CATALOG: CatalogEntry[] = [
       { key: "trend", label: "Trend", defaultSpec: cr(143), required: false },
     ],
     options: [
+      { key: "title",           label: "Title",          type: "dictOrText",
+        default: { mode: "dict", value: "temperatureTitle" },
+        hint: "Overrides the default title. Leave blank for the runtime default." },
       { key: "widgetListKey",   label: "widgetList key", type: "string",  default: "temperature" },
       { key: "withArrow",       label: "With arrow",     type: "boolean", default: true },
       { key: "withAutoSwitch",  label: "Auto-switch",    type: "boolean", default: false,
@@ -117,6 +126,7 @@ export const CATALOG: CatalogEntry[] = [
   },
   {
     type: "HumidityGaugeWidget",
+    displayName: "Humidity Gauge",
     category: "Widget",
     ctor: "HumidityGaugeWidget",
     needsCanvas: true,
@@ -127,10 +137,15 @@ export const CATALOG: CatalogEntry[] = [
       { key: "humidity", label: "Humidity", defaultSpec: cr(5),   required: true },
       { key: "trend",    label: "Trend",    defaultSpec: cr(144), required: false },
     ],
-    options: [],
+    options: [
+      { key: "title", label: "Title", type: "dictOrText",
+        default: { mode: "dict", value: "humidityTitle" },
+        hint: "Overrides the default title (which appends \" (%)\")." },
+    ],
   },
   {
     type: "BarometerWidget",
+    displayName: "Barometer",
     category: "Widget",
     ctor: "BarometerWidget",
     needsCanvas: true,
@@ -141,11 +156,16 @@ export const CATALOG: CatalogEntry[] = [
       { key: "pressure", label: "Pressure", defaultSpec: cr(6),  required: true },
       { key: "trend",    label: "Trend",    defaultSpec: cr(50), required: false },
     ],
-    options: [],
+    options: [
+      { key: "title", label: "Title", type: "dictOrText",
+        default: { mode: "dict", value: "barometerTitle" },
+        hint: "Overrides the default title." },
+    ],
     notes: "Includes hard-coded sign/Steady logic for trend. For a plain pressure readout use the generic Text widget.",
   },
   {
     type: "WindSpeedWidget",
+    displayName: "Wind Speed",
     category: "Widget",
     ctor: "WindSpeedWidget",
     needsCanvas: true,
@@ -158,10 +178,15 @@ export const CATALOG: CatalogEntry[] = [
       { key: "windHigh", label: "Wind high",defaultSpec: cr(113), required: false },
       { key: "gustHigh", label: "Gust high",defaultSpec: cr(71),  required: false },
     ],
-    options: [],
+    options: [
+      { key: "title", label: "Title", type: "dictOrText",
+        default: { mode: "dict", value: "windSpeedTitle" },
+        hint: "Overrides the default title." },
+    ],
   },
   {
     type: "WindGaugeWidget",
+    displayName: "Wind Gauge",
     category: "Widget",
     ctor: "WindGaugeWidget",
     needsCanvas: true,
@@ -176,6 +201,7 @@ export const CATALOG: CatalogEntry[] = [
   },
   {
     type: "ApparentWidget",
+    displayName: "Apparent Temperature",
     category: "Widget",
     ctor: "ApparentWidget",
     needsCanvas: true,
@@ -185,10 +211,15 @@ export const CATALOG: CatalogEntry[] = [
     bindings: [
       { key: "temp", label: "Apparent °", defaultSpec: cr(130), required: true },
     ],
-    options: [],
+    options: [
+      { key: "title", label: "Title", type: "dictOrText",
+        default: { mode: "dict", value: "apparentTitle" },
+        hint: "Overrides the default title." },
+    ],
   },
   {
     type: "UVBarWidget",
+    displayName: "UV Index Bar",
     category: "Widget",
     ctor: "UVBarWidget",
     needsCanvas: true,
@@ -198,10 +229,15 @@ export const CATALOG: CatalogEntry[] = [
     bindings: [
       { key: "uv", label: "UV index", defaultSpec: cr(79), required: true },
     ],
-    options: [],
+    options: [
+      { key: "title", label: "Title", type: "dictOrText",
+        default: { mode: "dict", value: "uvTitle" },
+        hint: "Overrides the default title." },
+    ],
   },
   {
     type: "SolarBarWidget",
+    displayName: "Solar Bar",
     category: "Widget",
     ctor: "SolarBarWidget",
     needsCanvas: true,
@@ -213,10 +249,15 @@ export const CATALOG: CatalogEntry[] = [
       { key: "watts",    label: "Watts",     defaultSpec: cr(127),   required: false },
       { key: "sunHours", label: "Sun hours", defaultSpec: crE(696),  required: false },
     ],
-    options: [],
+    options: [
+      { key: "title", label: "Title", type: "dictOrText",
+        default: { mode: "dict", value: "solarTitle" },
+        hint: "Overrides the default title." },
+    ],
   },
   {
     type: "MoonSunWidget",
+    displayName: "Sun & Moon",
     category: "Widget",
     ctor: "MoonSunWidget",
     needsCanvas: true,
@@ -236,6 +277,7 @@ export const CATALOG: CatalogEntry[] = [
   },
   {
     type: "StatusWidget",
+    displayName: "Status Bar",
     category: "Widget",
     ctor: "StatusWidget",
     needsCanvas: true,
@@ -251,6 +293,7 @@ export const CATALOG: CatalogEntry[] = [
   },
   {
     type: "UniBarWidget",
+    displayName: "Generic Bar",
     category: "Widget",
     ctor: "UniBarWidget",
     needsCanvas: true,
@@ -261,12 +304,14 @@ export const CATALOG: CatalogEntry[] = [
       { key: "value", label: "Value", defaultSpec: cr(7), required: true },
     ],
     options: [
-      { key: "title", label: "Title (dict key)", type: "string", default: "rainfallDailyTitle",
-        hint: "Emitted as useDict(\"<key>\")." },
+      { key: "title", label: "Title", type: "dictOrText",
+        default: { mode: "dict", value: "rainfallDailyTitle" },
+        hint: "Pick a key from the language dictionary, or enter literal text." },
     ],
   },
   {
     type: "TitleRainfallWidget",
+    displayName: "Rainfall Title (legacy)",
     category: "Widget",
     ctor: "TitleRainfallWidget",
     needsCanvas: true,
@@ -279,6 +324,7 @@ export const CATALOG: CatalogEntry[] = [
   },
   {
     type: "MainChartWidget",
+    displayName: "Main Chart",
     category: "Widget",
     ctor: "MainChartWidget",
     needsCanvas: true,
@@ -300,6 +346,7 @@ export const CATALOG: CatalogEntry[] = [
   // ---------------- DOM Handlers (no canvas) ----------------
   {
     type: "ForecastHandler",
+    displayName: "Forecast",
     category: "Handler",
     ctor: "ForecastHandler",
     needsCanvas: false,
@@ -314,6 +361,7 @@ export const CATALOG: CatalogEntry[] = [
   },
   {
     type: "RecordsHandler",
+    displayName: "Records",
     category: "Handler",
     ctor: "RecordsHandler",
     needsCanvas: false,
@@ -326,6 +374,7 @@ export const CATALOG: CatalogEntry[] = [
   },
   {
     type: "ModalGraphHandler",
+    displayName: "Modal Graph",
     category: "Handler",
     ctor: "ModalGraphHandler",
     needsCanvas: false,
@@ -338,6 +387,7 @@ export const CATALOG: CatalogEntry[] = [
   },
   {
     type: "ModalHandler",
+    displayName: "Modal",
     category: "Handler",
     ctor: "ModalHandler",
     needsCanvas: false,
@@ -350,6 +400,7 @@ export const CATALOG: CatalogEntry[] = [
   },
   {
     type: "ButtonsHandler",
+    displayName: "Buttons",
     category: "Handler",
     ctor: "ButtonsHandler",
     needsCanvas: false,

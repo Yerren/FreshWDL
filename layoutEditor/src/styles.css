@@ -101,9 +101,14 @@ label { font-size: 12px; color: var(--text-dim); }
   position: absolute; width: 8px; height: 8px;
   background: var(--accent); border: 1px solid #fff;
 }
-.widget-rect .rh-se { right: -4px; bottom: -4px; cursor: nwse-resize; }
-.widget-rect .rh-e  { right: -4px; top: 50%; margin-top: -4px; cursor: ew-resize; }
-.widget-rect .rh-s  { bottom: -4px; left: 50%; margin-left: -4px; cursor: ns-resize; }
+.widget-rect .rh-n  { top: -4px;    left: 50%;  margin-left: -4px; cursor: ns-resize; }
+.widget-rect .rh-s  { bottom: -4px; left: 50%;  margin-left: -4px; cursor: ns-resize; }
+.widget-rect .rh-e  { right: -4px;  top: 50%;   margin-top: -4px;  cursor: ew-resize; }
+.widget-rect .rh-w  { left: -4px;   top: 50%;   margin-top: -4px;  cursor: ew-resize; }
+.widget-rect .rh-ne { right: -4px;  top: -4px;    cursor: nesw-resize; }
+.widget-rect .rh-nw { left: -4px;   top: -4px;    cursor: nwse-resize; }
+.widget-rect .rh-se { right: -4px;  bottom: -4px; cursor: nwse-resize; }
+.widget-rect .rh-sw { left: -4px;   bottom: -4px; cursor: nesw-resize; }
 
 .field-row { display: flex; align-items: center; gap: 6px; margin: 4px 0; }
 .field-row > label { flex: 0 0 90px; }

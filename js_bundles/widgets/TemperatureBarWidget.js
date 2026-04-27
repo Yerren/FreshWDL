@@ -103,6 +103,7 @@
     };
 
     TemperatureBarWidget.prototype.resolveTitle = function () {
+        if (this.config.title) { return this.config.title; }
         var src = this.config.titleSource;
         if (!src) {
             var wl = widgetList[this.config.widgetListKey],

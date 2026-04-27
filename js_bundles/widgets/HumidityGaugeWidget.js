@@ -59,7 +59,7 @@
         this.innerDotCommand = dot.circleCommand;
 
         this.textDisplay = this.createText(" ");
-        this.textTitle = this.createText(useDict("humidityTitle") + " (%)");
+        this.textTitle = this.createText(this.config.title || (useDict("humidityTitle") + " (%)"));
 
         this.createLabels(this.largeDashTotal, { align: "center" });
         for (var i = 0; i < this.largeDashTotal; i++) {

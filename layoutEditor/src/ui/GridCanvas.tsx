@@ -11,10 +11,12 @@ type Props = {
   setSelectedId: (id: string | null) => void;
 };
 
+type ResizeEdge = "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw";
+
 type DragState =
   | null
   | { kind: "move"; id: string; sx: number; sy: number; startArea: GridArea; cellW: number; cellH: number }
-  | { kind: "resize"; id: string; edge: "se" | "e" | "s"; sx: number; sy: number;
+  | { kind: "resize"; id: string; edge: ResizeEdge; sx: number; sy: number;
       startArea: GridArea; cellW: number; cellH: number };
 
 export function GridCanvas({ doc, setDoc, selectedId, setSelectedId }: Props) {
@@ -73,25 +75,23 @@ export function GridCanvas({ doc, setDoc, selectedId, setSelectedId }: Props) {
             const rs = clamp(drag.startArea.rowStart + dy, 1, d.grid.rows - rowSpan + 1);
             return { ...w, area: { colStart: cs, colEnd: cs + colSpan, rowStart: rs, rowEnd: rs + rowSpan } };
           }
-          // resize
-          const startColSpan = drag.startArea.colEnd - drag.startArea.colStart;
-          const startRowSpan = drag.startArea.rowEnd - drag.startArea.rowStart;
-          let newColSpan = startColSpan;
-          let newRowSpan = startRowSpan;
-          if (drag.edge === "e" || drag.edge === "se") newColSpan = Math.max(1, startColSpan + dx);
-          if (drag.edge === "s" || drag.edge === "se") newRowSpan = Math.max(1, startRowSpan + dy);
-          // Clamp to grid bounds.
-          newColSpan = Math.min(newColSpan, d.grid.cols - drag.startArea.colStart + 1);
-          newRowSpan = Math.min(newRowSpan, d.grid.rows - drag.startArea.rowStart + 1);
-          return {
-            ...w,
-            area: {
-              colStart: drag.startArea.colStart,
-              colEnd:   drag.startArea.colStart + newColSpan,
-              rowStart: drag.startArea.rowStart,
-              rowEnd:   drag.startArea.rowStart + newRowSpan,
-            },
-          };
+          // resize: edges named by compass direction. n/w move the start
+          // corner (and may shrink the span to 1); s/e move the end corner.
+          const edge = drag.edge;
+          let { colStart, colEnd, rowStart, rowEnd } = drag.startArea;
+          if (edge.includes("w")) {
+            colStart = clamp(drag.startArea.colStart + dx, 1, drag.startArea.colEnd - 1);
+          }
+          if (edge.includes("e")) {
+            colEnd = clamp(drag.startArea.colEnd + dx, drag.startArea.colStart + 1, d.grid.cols + 1);
+          }
+          if (edge.includes("n")) {
+            rowStart = clamp(drag.startArea.rowStart + dy, 1, drag.startArea.rowEnd - 1);
+          }
+          if (edge.includes("s")) {
+            rowEnd = clamp(drag.startArea.rowEnd + dy, drag.startArea.rowStart + 1, d.grid.rows + 1);
+          }
+          return { ...w, area: { colStart, colEnd, rowStart, rowEnd } };
         }),
       }));
     };
@@ -111,7 +111,7 @@ export function GridCanvas({ doc, setDoc, selectedId, setSelectedId }: Props) {
     setDrag({ kind: "move", id: w.instanceId, sx: e.clientX, sy: e.clientY,
       startArea: { ...w.area }, cellW, cellH });
   };
-  const startResize = (e: React.PointerEvent, w: WidgetInstance, edge: "se" | "e" | "s") => {
+  const startResize = (e: React.PointerEvent, w: WidgetInstance, edge: ResizeEdge) => {
     e.preventDefault();
     e.stopPropagation();
     setSelectedId(w.instanceId);
@@ -145,12 +145,17 @@ export function GridCanvas({ doc, setDoc, selectedId, setSelectedId }: Props) {
               className={"widget-rect" + (w.instanceId === selectedId ? " selected" : "")}
               style={{ left, top, width, height }}
               onPointerDown={(e) => startMove(e, w)}
-              title={w.type}
+              title={getCatalogEntry(w.type)?.displayName ?? w.type}
             >
-              <span className="label">{w.instanceId}<br/><small style={{ opacity: 0.7 }}>{w.type.replace(/Widget$/, "")}</small></span>
-              <div className="resize-handle rh-e" onPointerDown={(e) => startResize(e, w, "e")} />
-              <div className="resize-handle rh-s" onPointerDown={(e) => startResize(e, w, "s")} />
+              <span className="label">{w.instanceId}<br/><small style={{ opacity: 0.7 }}>{getCatalogEntry(w.type)?.displayName ?? w.type}</small></span>
+              <div className="resize-handle rh-n"  onPointerDown={(e) => startResize(e, w, "n")} />
+              <div className="resize-handle rh-s"  onPointerDown={(e) => startResize(e, w, "s")} />
+              <div className="resize-handle rh-e"  onPointerDown={(e) => startResize(e, w, "e")} />
+              <div className="resize-handle rh-w"  onPointerDown={(e) => startResize(e, w, "w")} />
+              <div className="resize-handle rh-ne" onPointerDown={(e) => startResize(e, w, "ne")} />
+              <div className="resize-handle rh-nw" onPointerDown={(e) => startResize(e, w, "nw")} />
               <div className="resize-handle rh-se" onPointerDown={(e) => startResize(e, w, "se")} />
+              <div className="resize-handle rh-sw" onPointerDown={(e) => startResize(e, w, "sw")} />
             </div>
           );
         })}

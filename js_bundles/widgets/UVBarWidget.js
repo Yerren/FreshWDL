@@ -106,7 +106,7 @@
         this.rectFillCommand = fill.rectCommand;
 
         this.textDisplay  = this.createText("");
-        this.textTitle    = this.createText(useDict("uvTitle"));
+        this.textTitle    = this.createText(this.config.title || useDict("uvTitle"));
         this.textMaxLabel = this.createText("16", { align: "right" });
     };
 

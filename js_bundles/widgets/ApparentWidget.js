@@ -17,7 +17,7 @@
             '<text x="50%" y="71%" font="bold 15%w arial">{{temp|unit:temp}}</text>'
         ].join("\n");
         config.extras = config.extras || {
-            title: function () { return useDict("apparentTitle"); }
+            title: function () { return config.title || useDict("apparentTitle"); }
         };
         WidgetText.call(this, config);
     }

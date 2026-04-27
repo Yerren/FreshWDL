@@ -319,7 +319,7 @@
 
         this.createLabels(ldt);
 
-        this.textTitle       = this.createText(useDict("windSpeedTitle"),  { baseline: "bottom" });
+        this.textTitle       = this.createText(this.config.title || useDict("windSpeedTitle"),  { baseline: "bottom" });
         this.textTitleWind   = this.createText(useDict("windSpeedWind"),   { baseline: "top" });
         this.textTitleGust   = this.createText(useDict("windSpeedGust"),   { baseline: "top" });
         this.textDisplayWind = this.createText("", { baseline: "bottom" });

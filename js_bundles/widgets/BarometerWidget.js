@@ -20,7 +20,7 @@
             '<text x="50%" y="75%"  font="bold 12.5%w arial" maxWidth="90%">{{trendDisplay}}</text>'
         ].join("\n");
         config.extras = config.extras || {
-            title:     function () { return useDict("barometerTitle"); },
+            title:     function () { return config.title || useDict("barometerTitle"); },
             rateLabel: function () { return useDict("barometerRate") + ":"; },
             trendDisplay: function () {
                 var trend = formatDataToUnit(arrayClientraw[50], "pressure");

@@ -173,9 +173,20 @@ function emitConfig(w: WidgetInstance, entry: ReturnType<typeof getCatalogEntry>
     if (opt.key === "withBackground") continue;
     const v = optionValues[opt.key];
     if (v === undefined || v === null || v === "") continue;
-    if (opt.key === "title" && typeof v === "string") {
-      // UniBar convention: emit useDict("<key>")
-      parts.push(`title: useDict(${jsString(v)})`);
+    if (opt.type === "dictOrText") {
+      // Dict mode → emit useDict("<key>"); literal mode → plain string.
+      // Tolerate the legacy plain-string shape (treated as dict key).
+      let mode: "dict" | "text" = "dict";
+      let value = "";
+      if (typeof v === "string") {
+        value = v;
+      } else if (v && typeof v === "object" && "mode" in (v as object) && "value" in (v as object)) {
+        const o = v as { mode: string; value: string };
+        if (o.mode === "text") mode = "text";
+        value = String(o.value ?? "");
+      }
+      if (!value) continue;
+      parts.push(`${opt.key}: ${mode === "dict" ? `useDict(${jsString(value)})` : jsString(value)}`);
       continue;
     }
     if (opt.key === "elementId" && typeof v === "string") {

@@ -1,8 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { DictOrText } from "../catalog";
 import { getCatalogEntry, isPlacedInGrid } from "../catalog";
 import { isRequiredHandlerType } from "../model/defaults";
+import { useDictKeys } from "../model/dictKeys";
 import type { LayoutDoc, WidgetInstance } from "../model/types";
 import { validateSpec } from "../model/validation";
+
+function asDictOrText(v: unknown, fallback: DictOrText): DictOrText {
+  if (v && typeof v === "object" && "mode" in (v as object) && "value" in (v as object)) {
+    const o = v as { mode: unknown; value: unknown };
+    if ((o.mode === "dict" || o.mode === "text") && typeof o.value === "string") {
+      return { mode: o.mode, value: o.value };
+    }
+  }
+  if (typeof v === "string") return { mode: "dict", value: v };
+  return fallback;
+}
 
 type Props = {
   doc: LayoutDoc;
@@ -32,7 +45,7 @@ export function Inspector({ doc, selected, updateWidget, removeWidget }: Props) 
 
   return (
     <div className="inspector">
-      <h3>{entry.type}</h3>
+      <h3>{entry.displayName}</h3>
 
       <div className="field-row">
         <label>Instance id</label>
@@ -106,6 +119,18 @@ export function Inspector({ doc, selected, updateWidget, removeWidget }: Props) 
                   ratio={Number(v ?? opt.default)}
                   onChange={setOpt}
                   hint={opt.hint}
+                />
+              );
+            }
+            if (opt.type === "dictOrText") {
+              const dt = asDictOrText(v, opt.default);
+              return (
+                <DictOrTextInput
+                  key={opt.key}
+                  label={opt.label}
+                  hint={opt.hint}
+                  value={dt}
+                  onChange={setOpt}
                 />
               );
             }
@@ -287,6 +312,103 @@ function DynamicBindingsEditor({ selected, upd }: DynProps) {
       <button onClick={add} style={{ marginTop: 4 }}>+ Add binding</button>
       <SpecHelp />
     </>
+  );
+}
+
+function DictOrTextInput(
+  { label, hint, value, onChange }: {
+    label: string;
+    hint?: string;
+    value: DictOrText;
+    onChange: (v: DictOrText) => void;
+  },
+) {
+  const keys = useDictKeys();
+  const [query, setQuery] = useState(value.mode === "dict" ? value.value : "");
+  const [open, setOpen] = useState(false);
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+
+  // Re-seed the search box when the underlying value changes (widget switch).
+  useEffect(() => {
+    if (value.mode === "dict") setQuery(value.value);
+  }, [value.mode, value.value]);
+
+  // Close the suggestion list on outside click.
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e: MouseEvent) => {
+      if (!wrapRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, [open]);
+
+  const matches = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return keys.slice(0, 50);
+    return keys.filter((k) => k.toLowerCase().includes(q)).slice(0, 50);
+  }, [keys, query]);
+
+  return (
+    <div title={hint} style={{ margin: "6px 0" }}>
+      <div className="field-row" style={{ marginBottom: 2 }}>
+        <label>{label}</label>
+        <select
+          value={value.mode}
+          style={{ flex: "0 0 auto", width: "auto" }}
+          onChange={(e) => {
+            const mode = e.target.value as "dict" | "text";
+            onChange({ mode, value: value.value });
+          }}
+        >
+          <option value="dict">Dictionary</option>
+          <option value="text">Literal text</option>
+        </select>
+      </div>
+      {value.mode === "dict" ? (
+        <div ref={wrapRef} style={{ position: "relative" }}>
+          <input
+            style={{ width: "100%" }}
+            placeholder={keys.length ? "Search dictionary keys…" : "Loading dictionary…"}
+            value={query}
+            onFocus={() => setOpen(true)}
+            onChange={(e) => { setQuery(e.target.value); setOpen(true); }}
+            onBlur={() => onChange({ mode: "dict", value: query })}
+          />
+          {open && matches.length > 0 && (
+            <div style={{
+              position: "absolute", top: "100%", left: 0, right: 0, zIndex: 10,
+              background: "var(--panel-2)", border: "1px solid var(--border)",
+              borderRadius: 3, maxHeight: 180, overflowY: "auto", fontSize: 12,
+            }}>
+              {matches.map((k) => (
+                <div
+                  key={k}
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    setQuery(k);
+                    onChange({ mode: "dict", value: k });
+                    setOpen(false);
+                  }}
+                  style={{ padding: "3px 6px", cursor: "pointer" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "#3a3c42")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                >
+                  {k}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      ) : (
+        <input
+          style={{ width: "100%" }}
+          value={value.value}
+          onChange={(e) => onChange({ mode: "text", value: e.target.value })}
+        />
+      )}
+      {hint && <div style={{ fontSize: 11, color: "var(--text-dim)" }}>{hint}</div>}
+    </div>
   );
 }
 

@@ -13,7 +13,7 @@ export function Palette({ onPickType }: Props) {
       <h3>Widgets</h3>
       {items.map((c) => (
         <div key={c.type} className="palette-item" onClick={() => onPickType(c.type)} title="Click to add at top-left">
-          <div>{c.type.replace(/Widget$|Handler$/, "")}</div>
+          <div>{c.displayName}</div>
           <div className="pi-type">
             {c.category === "Handler" ? (c.notes ?? "handler") : `${c.bindings.length} binding${c.bindings.length === 1 ? "" : "s"}`}
           </div>
