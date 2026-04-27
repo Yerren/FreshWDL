@@ -225,7 +225,7 @@ export const CATALOG: CatalogEntry[] = [
     needsCanvas: true,
     defaultEnabledKey: "UV",
     defaultCanvasIdPrefix: "UVBar",
-    defaultArea: { colSpan: 2, rowSpan: 6 },
+    defaultArea: { colSpan: 2, rowSpan: 5 },
     bindings: [
       { key: "uv", label: "UV index", defaultSpec: cr(79), required: true },
     ],
@@ -243,7 +243,7 @@ export const CATALOG: CatalogEntry[] = [
     needsCanvas: true,
     defaultEnabledKey: "solar",
     defaultCanvasIdPrefix: "SolarBar",
-    defaultArea: { colSpan: 2, rowSpan: 6 },
+    defaultArea: { colSpan: 2, rowSpan: 5 },
     bindings: [
       { key: "percent",  label: "% of max",  defaultSpec: cr(34),    required: true },
       { key: "watts",    label: "Watts",     defaultSpec: cr(127),   required: false },

@@ -89,7 +89,7 @@
 
     UniBarWidget.prototype.updateTop = function () {
         var c = this.canvas, ldt = this.largeDashTotal,
-            sv = this.computeBarLayout({ dashLengthRatio: 0.075 });
+            sv = this.computeBarLayout({ barHeightRatio: 0.75, verticalRef: 0.8, dashLengthRatio: 0.075 });
 
         sv.textSize        = c.height / 17;
         sv.textDisplaySize = c.height / 19;
