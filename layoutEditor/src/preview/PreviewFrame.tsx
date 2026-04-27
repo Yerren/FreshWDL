@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import type { LayoutDoc } from "../model/types";
 import { emitLayoutJs } from "../codegen/emitLayoutJs";
 
@@ -15,6 +15,9 @@ export function PreviewFrame({ doc, overlayMode, style }: Props) {
   // legacy runtime sizes its canvases once at construction and has no resize
   // hook, so we rebuild on resize to avoid widgets stuck at 0×0.
   const [sizeNonce, setSizeNonce] = useState(0);
+
+  const layoutJsSource = useMemo(() => emitLayoutJs(doc), [doc]);
+  const dataUrlPrefix = doc.preview.source === "live" ? doc.preview.liveUrlPrefix : "/runtime/";
 
   useEffect(() => {
     function onMsg(e: MessageEvent) {
@@ -42,22 +45,18 @@ export function PreviewFrame({ doc, overlayMode, style }: Props) {
     // legacy runtime initializes canvases at 0×0 and they stay invisible
     // until the next rebuild.
     if (frame.clientWidth < 4 || frame.clientHeight < 4) return;
-    const send = () => {
-      const dataUrlPrefix = doc.preview.source === "live"
-        ? doc.preview.liveUrlPrefix
-        : "/runtime/";
+    // Debounce so dragging or rapid resizes don't tear down + rebuild widgets
+    // on every event.
+    const t = setTimeout(() => {
       frame.contentWindow!.postMessage({
         type: "render",
-        layoutJsSource: emitLayoutJs(doc),
+        layoutJsSource,
         dataUrlPrefix,
         overlayMode: !!overlayMode,
       }, "*");
-    };
-    // Debounce so dragging or rapid resizes don't tear down + rebuild widgets
-    // on every event.
-    const t = setTimeout(send, 150);
+    }, 150);
     return () => clearTimeout(t);
-  }, [doc, ready, overlayMode, sizeNonce]);
+  }, [layoutJsSource, dataUrlPrefix, ready, overlayMode, sizeNonce]);
 
   if (overlayMode) {
     return (

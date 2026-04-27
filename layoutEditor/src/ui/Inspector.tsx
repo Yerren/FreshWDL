@@ -1,26 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { DictOrText } from "../catalog";
-import { getCatalogEntry, isPlacedInGrid } from "../catalog";
+import { coerceDictOrText, getCatalogEntry, isPlacedInGrid } from "../catalog";
 import { isRequiredHandlerType } from "../model/defaults";
 import { useDictKeys } from "../model/dictKeys";
-import type { LayoutDoc, WidgetInstance } from "../model/types";
-import { validateSpec } from "../model/validation";
-
-function asDictOrText(v: unknown, fallback: DictOrText): DictOrText {
-  if (v && typeof v === "object" && "mode" in (v as object) && "value" in (v as object)) {
-    const o = v as { mode: unknown; value: unknown };
-    if ((o.mode === "dict" || o.mode === "text") && typeof o.value === "string") {
-      return { mode: o.mode, value: o.value };
-    }
-  }
-  if (typeof v === "string") return { mode: "dict", value: v };
-  return fallback;
-}
+import type { GridArea, LayoutDoc, WidgetInstance } from "../model/types";
+import { IDENT_RE, validateSpec } from "../model/validation";
 
 type Props = {
   doc: LayoutDoc;
   selected: WidgetInstance | null;
-  updateWidget: (id: string, updater: (w: WidgetInstance) => WidgetInstance) => void;
+  updateWidget: (id: string, patch: Partial<WidgetInstance>) => void;
   removeWidget: (id: string) => void;
 };
 
@@ -41,7 +30,9 @@ export function Inspector({ doc, selected, updateWidget, removeWidget }: Props) 
   if (!entry) return <div className="inspector">Unknown type: {selected.type}</div>;
 
   const upd = (patch: Partial<WidgetInstance>) =>
-    updateWidget(selected.instanceId, (w) => ({ ...w, ...patch }));
+    updateWidget(selected.instanceId, patch);
+  const setAreaField = (k: keyof GridArea, v: string) =>
+    upd({ area: { ...selected.area, [k]: int(v) } });
 
   return (
     <div className="inspector">
@@ -71,18 +62,18 @@ export function Inspector({ doc, selected, updateWidget, removeWidget }: Props) 
           <div className="field-row">
             <label>Col start</label>
             <input type="number" value={selected.area.colStart}
-              onChange={(e) => upd({ area: { ...selected.area, colStart: int(e.target.value) } })} />
+              onChange={(e) => setAreaField("colStart", e.target.value)} />
             <label>end</label>
             <input type="number" value={selected.area.colEnd}
-              onChange={(e) => upd({ area: { ...selected.area, colEnd: int(e.target.value) } })} />
+              onChange={(e) => setAreaField("colEnd", e.target.value)} />
           </div>
           <div className="field-row">
             <label>Row start</label>
             <input type="number" value={selected.area.rowStart}
-              onChange={(e) => upd({ area: { ...selected.area, rowStart: int(e.target.value) } })} />
+              onChange={(e) => setAreaField("rowStart", e.target.value)} />
             <label>end</label>
             <input type="number" value={selected.area.rowEnd}
-              onChange={(e) => upd({ area: { ...selected.area, rowEnd: int(e.target.value) } })} />
+              onChange={(e) => setAreaField("rowEnd", e.target.value)} />
           </div>
         </>
       )}
@@ -123,7 +114,7 @@ export function Inspector({ doc, selected, updateWidget, removeWidget }: Props) 
               );
             }
             if (opt.type === "dictOrText") {
-              const dt = asDictOrText(v, opt.default);
+              const dt = coerceDictOrText(v, opt.default);
               return (
                 <DictOrTextInput
                   key={opt.key}
@@ -294,7 +285,7 @@ function DynamicBindingsEditor({ selected, upd }: DynProps) {
           )}
           {entries.map(([k, spec]) => {
             const err = validateSpec(spec);
-            const keyOk = /^[A-Za-z_][A-Za-z0-9_]*$/.test(k);
+            const keyOk = IDENT_RE.test(k);
             return (
               <tr key={k} className={err || !keyOk ? "err" : ""}>
                 <td><input defaultValue={k} onBlur={(e) => setKey(k, e.target.value)} /></td>
@@ -357,7 +348,7 @@ function DictOrTextInput(
           value={value.mode}
           style={{ flex: "0 0 auto", width: "auto" }}
           onChange={(e) => {
-            const mode = e.target.value as "dict" | "text";
+            const mode = e.target.value as DictOrText["mode"];
             onChange({ mode, value: value.value });
           }}
         >

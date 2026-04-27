@@ -422,3 +422,19 @@ export function getCatalogEntry(type: string): CatalogEntry | undefined {
 export function isPlacedInGrid(entry: CatalogEntry | undefined): boolean {
   return !!entry && (entry.needsCanvas || entry.placedInGrid === true);
 }
+
+export function getPlacedWidgets<T extends { type: string }>(widgets: T[]): T[] {
+  return widgets.filter((w) => isPlacedInGrid(getCatalogEntry(w.type)));
+}
+
+// Tolerates the legacy plain-string shape (treated as a dict key).
+export function coerceDictOrText(v: unknown, fallback: DictOrText): DictOrText {
+  if (v && typeof v === "object" && "mode" in (v as object) && "value" in (v as object)) {
+    const o = v as { mode: unknown; value: unknown };
+    if ((o.mode === "dict" || o.mode === "text") && typeof o.value === "string") {
+      return { mode: o.mode, value: o.value };
+    }
+  }
+  if (typeof v === "string") return { mode: "dict", value: v };
+  return fallback;
+}

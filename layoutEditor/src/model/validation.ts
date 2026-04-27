@@ -10,7 +10,10 @@
 //   fn:NAME
 
 import type { LayoutDoc, WidgetInstance } from "./types";
-import { getCatalogEntry } from "../catalog";
+import { getCatalogEntry, getPlacedWidgets } from "../catalog";
+
+export const IDENT_RE = /^[A-Za-z_][A-Za-z0-9_]*$/;
+const INSTANCE_ID_RE = /^[A-Za-z][A-Za-z0-9_]*$/;
 
 export type ValidationIssue = {
   level: "error" | "warn";
@@ -53,7 +56,7 @@ export function validateLayout(doc: LayoutDoc): ValidationIssue[] {
     } else {
       seenIds.add(w.instanceId);
     }
-    if (!/^[A-Za-z][A-Za-z0-9_]*$/.test(w.instanceId)) {
+    if (!INSTANCE_ID_RE.test(w.instanceId)) {
       issues.push({ level: "error", instanceId: w.instanceId,
         message: `instance id '${w.instanceId}' must start with a letter and contain only letters/digits/underscore` });
     }
@@ -80,7 +83,7 @@ export function validateLayout(doc: LayoutDoc): ValidationIssue[] {
     if (entry.dynamicBindings) {
       // Free-form bindings: validate every declared spec and key shape.
       for (const k of Object.keys(w.bindings)) {
-        if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(k)) {
+        if (!IDENT_RE.test(k)) {
           issues.push({ level: "error", instanceId: w.instanceId, field: k,
             message: `binding key '${k}' must be a valid identifier` });
         }
@@ -124,10 +127,7 @@ export function validateLayout(doc: LayoutDoc): ValidationIssue[] {
   }
 
   // Overlap warnings (CSS Grid permits overlap, but it usually isn't intended).
-  const placed = doc.widgets.filter((w) => {
-    const e = getCatalogEntry(w.type);
-    return e?.needsCanvas;
-  });
+  const placed = getPlacedWidgets(doc.widgets);
   for (let i = 0; i < placed.length; i++) {
     for (let j = i + 1; j < placed.length; j++) {
       if (areasOverlap(placed[i].area, placed[j].area)) {

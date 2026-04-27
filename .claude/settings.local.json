@@ -16,7 +16,9 @@
       "Bash(npm install *)",
       "Bash(npx tsc *)",
       "Bash(npx vite *)",
-      "Bash(grep -nE \"^\\\\s{4}[a-zA-Z]+\\\\s*:\\\\s*\\\\{$\" \"C:/Users/Yerren/Documents/GitHub/FreshWDL/js_bundles/Globals.js\")"
+      "Bash(grep -nE \"^\\\\s{4}[a-zA-Z]+\\\\s*:\\\\s*\\\\{$\" \"C:/Users/Yerren/Documents/GitHub/FreshWDL/js_bundles/Globals.js\")",
+      "Read(//c//**)",
+      "Bash(echo \"exit=$?\")"
     ]
   }
 }

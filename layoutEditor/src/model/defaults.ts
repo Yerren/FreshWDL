@@ -48,7 +48,10 @@ export function emptyLayout(): LayoutDoc {
   };
 }
 
-let __idCounter = 1;
+export function clamp(n: number, lo: number, hi: number): number {
+  return Math.max(lo, Math.min(hi, isFinite(n) ? n : lo));
+}
+
 export function freshInstanceId(type: string, existing: WidgetInstance[]): string {
   const base = type.replace(/Widget$|Handler$/, "");
   const lower = base.charAt(0).toLowerCase() + base.slice(1);
@@ -86,7 +89,9 @@ export function defaultsForType(
     instanceId,
     type,
     enabledKey: entry.defaultEnabledKey,
-    canvasID: entry.needsCanvas ? `${entry.defaultCanvasIdPrefix}${pad2(__idCounter++)}` : "",
+    // canvasID is filled in by newInstance, which can see existing widgets and
+    // pick a non-colliding suffix. Placeholder here for required-handler init.
+    canvasID: "",
     area: {
       colStart: position.col,
       colEnd:   position.col + Math.max(1, entry.defaultArea.colSpan),

@@ -1,8 +1,11 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { getCatalogEntry, isPlacedInGrid } from "../catalog";
-import { ASPECT_W, ASPECT_H } from "../model/defaults";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { getCatalogEntry, getPlacedWidgets } from "../catalog";
+import { ASPECT_W, ASPECT_H, clamp } from "../model/defaults";
 import type { GridArea, LayoutDoc, WidgetInstance } from "../model/types";
 import { PreviewFrame } from "../preview/PreviewFrame";
+
+const RESIZE_EDGES = ["n", "s", "e", "w", "ne", "nw", "se", "sw"] as const;
+type ResizeEdge = typeof RESIZE_EDGES[number];
 
 type Props = {
   doc: LayoutDoc;
@@ -10,8 +13,6 @@ type Props = {
   selectedId: string | null;
   setSelectedId: (id: string | null) => void;
 };
-
-type ResizeEdge = "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw";
 
 type DragState =
   | null
@@ -23,16 +24,18 @@ export function GridCanvas({ doc, setDoc, selectedId, setSelectedId }: Props) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const [wrapper, setWrapper] = useState({ w: 1, h: 1 });
   const [drag, setDrag] = useState<DragState>(null);
+  const lastDeltaRef = useRef<{ dx: number; dy: number } | null>(null);
 
-  // Track the outer .canvas size so we can size the grid host to a square.
   useLayoutEffect(() => {
     const el = wrapperRef.current;
     if (!el) return;
-    const ro = new ResizeObserver(() => {
-      setWrapper({ w: el.clientWidth, h: el.clientHeight });
-    });
+    const apply = () => {
+      const w = el.clientWidth, h = el.clientHeight;
+      setWrapper((prev) => (prev.w === w && prev.h === h ? prev : { w, h }));
+    };
+    const ro = new ResizeObserver(apply);
     ro.observe(el);
-    setWrapper({ w: el.clientWidth, h: el.clientHeight });
+    apply();
     return () => ro.disconnect();
   }, []);
 
@@ -57,17 +60,21 @@ export function GridCanvas({ doc, setDoc, selectedId, setSelectedId }: Props) {
   const offsetX = (wrapper.w - hostW) / 2;
   const offsetY = (wrapper.h - hostH) / 2;
 
-  const placed = doc.widgets.filter((w) => isPlacedInGrid(getCatalogEntry(w.type)));
+  const placed = useMemo(() => getPlacedWidgets(doc.widgets), [doc.widgets]);
 
   useEffect(() => {
     if (!drag) return;
+    lastDeltaRef.current = null;
     const onMove = (e: PointerEvent) => {
+      const dx = Math.round((e.clientX - drag.sx) / drag.cellW);
+      const dy = Math.round((e.clientY - drag.sy) / drag.cellH);
+      const last = lastDeltaRef.current;
+      if (last && last.dx === dx && last.dy === dy) return;
+      lastDeltaRef.current = { dx, dy };
       setDoc((d) => ({
         ...d,
         widgets: d.widgets.map((w) => {
           if (w.instanceId !== drag.id) return w;
-          const dx = Math.round((e.clientX - drag.sx) / drag.cellW);
-          const dy = Math.round((e.clientY - drag.sy) / drag.cellH);
           if (drag.kind === "move") {
             const colSpan = drag.startArea.colEnd - drag.startArea.colStart;
             const rowSpan = drag.startArea.rowEnd - drag.startArea.rowStart;
@@ -148,14 +155,10 @@ export function GridCanvas({ doc, setDoc, selectedId, setSelectedId }: Props) {
               title={getCatalogEntry(w.type)?.displayName ?? w.type}
             >
               <span className="label">{w.instanceId}<br/><small style={{ opacity: 0.7 }}>{getCatalogEntry(w.type)?.displayName ?? w.type}</small></span>
-              <div className="resize-handle rh-n"  onPointerDown={(e) => startResize(e, w, "n")} />
-              <div className="resize-handle rh-s"  onPointerDown={(e) => startResize(e, w, "s")} />
-              <div className="resize-handle rh-e"  onPointerDown={(e) => startResize(e, w, "e")} />
-              <div className="resize-handle rh-w"  onPointerDown={(e) => startResize(e, w, "w")} />
-              <div className="resize-handle rh-ne" onPointerDown={(e) => startResize(e, w, "ne")} />
-              <div className="resize-handle rh-nw" onPointerDown={(e) => startResize(e, w, "nw")} />
-              <div className="resize-handle rh-se" onPointerDown={(e) => startResize(e, w, "se")} />
-              <div className="resize-handle rh-sw" onPointerDown={(e) => startResize(e, w, "sw")} />
+              {RESIZE_EDGES.map((edge) => (
+                <div key={edge} className={`resize-handle rh-${edge}`}
+                  onPointerDown={(e) => startResize(e, w, edge)} />
+              ))}
             </div>
           );
         })}
@@ -178,4 +181,3 @@ function GridLines({ cols, rows }: { cols: number; rows: number }) {
   );
 }
 
-function clamp(n: number, lo: number, hi: number) { return Math.max(lo, Math.min(hi, n)); }

@@ -1,5 +1,5 @@
 import type { LayoutDoc } from "../model/types";
-import { colsForRows } from "../model/defaults";
+import { clamp, colsForRows } from "../model/defaults";
 
 type Props = {
   doc: LayoutDoc;
@@ -66,5 +66,3 @@ export function Toolbar({
     </div>
   );
 }
-
-function clamp(n: number, lo: number, hi: number) { return Math.max(lo, Math.min(hi, isFinite(n) ? n : lo)); }

@@ -17,15 +17,18 @@ export function App() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
 
-  // Autosave (debounced via microtask).
+  // Autosave: 300ms debounce so dragging / typing doesn't write on every event.
   useEffect(() => {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(doc)); } catch {}
+    const t = setTimeout(() => {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(doc)); } catch {}
+    }, 300);
+    return () => clearTimeout(t);
   }, [doc]);
 
   const issues = useMemo(() => validateLayout(doc), [doc]);
 
-  const updateWidget = (id: string, updater: (w: WidgetInstance) => WidgetInstance) => {
-    setDoc((d) => ({ ...d, widgets: d.widgets.map((w) => w.instanceId === id ? updater(w) : w) }));
+  const updateWidget = (id: string, patch: Partial<WidgetInstance>) => {
+    setDoc((d) => ({ ...d, widgets: d.widgets.map((w) => w.instanceId === id ? { ...w, ...patch } : w) }));
   };
   const addWidget = (type: string, position: { col: number; row: number }) => {
     setDoc((d) => {
@@ -42,7 +45,10 @@ export function App() {
     if (selectedId === id) setSelectedId(null);
   };
 
-  const selected = doc.widgets.find((w) => w.instanceId === selectedId) ?? null;
+  const selected = useMemo(
+    () => doc.widgets.find((w) => w.instanceId === selectedId) ?? null,
+    [doc.widgets, selectedId],
+  );
 
   return (
     <div className="app">
