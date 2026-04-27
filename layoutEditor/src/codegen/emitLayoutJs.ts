@@ -156,9 +156,22 @@ function emitConfig(w: WidgetInstance, entry: ReturnType<typeof getCatalogEntry>
     parts.push(`canvasID: ${jsString(w.canvasID)}`);
   }
 
+  // WidgetText "withBackground" is an editor-only flag: it expands into a
+  // rounded-rect <shape> prepended to the template (same panel used by
+  // BarometerWidget / MoonSunWidget). The flag itself is never emitted.
+  let optionValues = w.options;
+  if (entry.type === "WidgetText" && w.options.withBackground) {
+    const tpl = String(w.options.template ?? "");
+    const bg =
+      '<shape type="roundedRect" x="5%" y="5%" w="90%" h="90%"' +
+      ' radius="10%" strokeSize="2.5%" fill="#F6F6F6"/>';
+    optionValues = { ...w.options, template: tpl ? bg + "\n" + tpl : bg };
+  }
+
   // Catalog-defined options (booleans/strings/numbers/selects/textareas).
   for (const opt of entry.options) {
-    const v = w.options[opt.key];
+    if (opt.key === "withBackground") continue;
+    const v = optionValues[opt.key];
     if (v === undefined || v === null || v === "") continue;
     if (opt.key === "title" && typeof v === "string") {
       // UniBar convention: emit useDict("<key>")

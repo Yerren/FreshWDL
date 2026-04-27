@@ -85,6 +85,8 @@ export const CATALOG: CatalogEntry[] = [
         hint: "<shape>/<text> elements with {{field|filter:arg}} placeholders. See WidgetText.js." },
       { key: "aspectRatio", label: "Aspect ratio", type: "number",   default: 1.0,
         hint: "canvas height = width × aspectRatio." },
+      { key: "withBackground", label: "Rounded background", type: "boolean", default: false,
+        hint: "Draws a rounded-rect panel behind the text (matches Barometer/MoonSun look)." },
     ],
     notes: "Generic text widget. Use bindings + template to display any data or static label.",
   },

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { getCatalogEntry, isPlacedInGrid } from "../catalog";
 import { isRequiredHandlerType } from "../model/defaults";
 import type { LayoutDoc, WidgetInstance } from "../model/types";
@@ -97,6 +98,17 @@ export function Inspector({ doc, selected, updateWidget, removeWidget }: Props) 
                 </div>
               );
             }
+            if (opt.key === "aspectRatio" && opt.type === "number") {
+              return (
+                <AspectRatioInput
+                  key={opt.key}
+                  instanceId={selected.instanceId}
+                  ratio={Number(v ?? opt.default)}
+                  onChange={setOpt}
+                  hint={opt.hint}
+                />
+              );
+            }
             if (opt.type === "textarea") {
               return (
                 <div key={opt.key} title={opt.hint} style={{ margin: "6px 0" }}>
@@ -164,6 +176,50 @@ export function Inspector({ doc, selected, updateWidget, removeWidget }: Props) 
 }
 
 function int(s: string) { return Math.max(1, parseInt(s, 10) || 1); }
+
+// Aspect ratio is stored as a single number (height / width — used directly by
+// CanvasWidget.resize). The raw number is unintuitive (e.g. 16:9 = 0.5625, and
+// negatives are meaningless), so we edit it as a width × height pair and only
+// derive the ratio on commit. Local state lets the user clear or retype either
+// box without the value snapping back mid-edit.
+function AspectRatioInput(
+  { instanceId, ratio, onChange, hint }: {
+    instanceId: string;
+    ratio: number;
+    onChange: (v: number) => void;
+    hint?: string;
+  },
+) {
+  const [w, setW] = useState("1");
+  const [h, setH] = useState(String(ratio || 1));
+  // Reseed when switching to a different widget. Within the same widget we
+  // keep local state so the user-entered W/H survive across re-renders even
+  // if their ratio happens to match what we'd otherwise re-derive.
+  useEffect(() => {
+    setW("1");
+    setH(String(ratio || 1));
+  }, [instanceId]);
+
+  const commit = (nw: string, nh: string) => {
+    const wn = parseFloat(nw);
+    const hn = parseFloat(nh);
+    if (wn >= 1 && hn >= 1) onChange(hn / wn);
+  };
+  return (
+    <div className="field-row" title={hint}>
+      <label>Aspect (W × H)</label>
+      <input
+        type="number" min={1} step="any" style={{ width: 60 }}
+        value={w}
+        onChange={(e) => { setW(e.target.value); commit(e.target.value, h); }} />
+      <span style={{ color: "var(--text-dim)" }}>×</span>
+      <input
+        type="number" min={1} step="any" style={{ width: 60 }}
+        value={h}
+        onChange={(e) => { setH(e.target.value); commit(w, e.target.value); }} />
+    </div>
+  );
+}
 
 function SpecHelp() {
   return (
