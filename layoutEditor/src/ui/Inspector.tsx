@@ -53,31 +53,22 @@ export function Inspector({ doc, selected, updateWidget, removeWidget }: Props) 
 
       {isPlacedInGrid(entry) && (
         <>
-          <h3 style={{ marginTop: 14 }}>Grid area
-            {entry.aspectRatio != null && (
-              <span style={{ fontSize: 11, color: "var(--text-dim)", marginLeft: 6, textTransform: "none" }}>
-                aspect locked ({entry.aspectRatio.toFixed(3)})
-              </span>
-            )}
-          </h3>
+          <h3 style={{ marginTop: 14 }}>Grid area</h3>
           <div className="field-row">
             <label>Col start</label>
             <input type="number" value={selected.area.colStart}
-              onChange={(e) => upd({ area: lockedArea({ ...selected.area, colStart: int(e.target.value) }, entry.aspectRatio) })} />
+              onChange={(e) => upd({ area: { ...selected.area, colStart: int(e.target.value) } })} />
             <label>end</label>
             <input type="number" value={selected.area.colEnd}
-              onChange={(e) => upd({ area: lockedArea({ ...selected.area, colEnd: int(e.target.value) }, entry.aspectRatio, "col") })} />
+              onChange={(e) => upd({ area: { ...selected.area, colEnd: int(e.target.value) } })} />
           </div>
           <div className="field-row">
             <label>Row start</label>
             <input type="number" value={selected.area.rowStart}
-              onChange={(e) => upd({ area: lockedArea({ ...selected.area, rowStart: int(e.target.value) }, entry.aspectRatio) })} />
+              onChange={(e) => upd({ area: { ...selected.area, rowStart: int(e.target.value) } })} />
             <label>end</label>
-            <input type="number"
-              value={selected.area.rowEnd}
-              disabled={entry.aspectRatio != null}
-              title={entry.aspectRatio != null ? "Locked to colSpan × aspectRatio" : ""}
-              onChange={(e) => upd({ area: lockedArea({ ...selected.area, rowEnd: int(e.target.value) }, entry.aspectRatio, "row") })} />
+            <input type="number" value={selected.area.rowEnd}
+              onChange={(e) => upd({ area: { ...selected.area, rowEnd: int(e.target.value) } })} />
           </div>
         </>
       )}
@@ -173,30 +164,6 @@ export function Inspector({ doc, selected, updateWidget, removeWidget }: Props) 
 }
 
 function int(s: string) { return Math.max(1, parseInt(s, 10) || 1); }
-
-// Re-snap a grid area to a locked aspect ratio. `driven` says which axis the
-// user just edited — the other follows. For position changes (start), we
-// preserve the existing spans and only shift; for end changes, we recompute
-// the opposite span from aspectRatio.
-function lockedArea(area: import("../model/types").GridArea, aspect?: number, driven?: "col" | "row") {
-  if (aspect == null) return area;
-  const colSpan = Math.max(1, area.colEnd - area.colStart);
-  const rowSpan = Math.max(1, area.rowEnd - area.rowStart);
-  if (driven === "col") {
-    const newRowSpan = Math.max(1, Math.round(colSpan * aspect));
-    return { ...area, rowEnd: area.rowStart + newRowSpan };
-  }
-  if (driven === "row") {
-    const newColSpan = Math.max(1, Math.round(rowSpan / aspect));
-    return { ...area, colEnd: area.colStart + newColSpan };
-  }
-  // No driven axis — start moved, keep both spans, but enforce shape if drifted.
-  const newRowSpan = Math.max(1, Math.round(colSpan * aspect));
-  if (newRowSpan !== rowSpan) {
-    return { ...area, rowEnd: area.rowStart + newRowSpan };
-  }
-  return area;
-}
 
 function SpecHelp() {
   return (

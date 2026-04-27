@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { getCatalogEntry, isPlacedInGrid } from "../catalog";
 import { ASPECT_W, ASPECT_H } from "../model/defaults";
 import type { GridArea, LayoutDoc, WidgetInstance } from "../model/types";
+import { PreviewFrame } from "../preview/PreviewFrame";
 
 type Props = {
   doc: LayoutDoc;
@@ -12,9 +13,9 @@ type Props = {
 
 type DragState =
   | null
-  | { kind: "move"; id: string; sx: number; sy: number; startArea: GridArea; cell: number }
+  | { kind: "move"; id: string; sx: number; sy: number; startArea: GridArea; cellW: number; cellH: number }
   | { kind: "resize"; id: string; edge: "se" | "e" | "s"; sx: number; sy: number;
-      startArea: GridArea; cell: number; lockedAspect: number | null };
+      startArea: GridArea; cellW: number; cellH: number };
 
 export function GridCanvas({ doc, setDoc, selectedId, setSelectedId }: Props) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -46,7 +47,11 @@ export function GridCanvas({ doc, setDoc, selectedId, setSelectedId }: Props) {
     hostW = availW;
     hostH = hostW / targetRatio;
   }
-  const cell = hostW / doc.grid.cols;       // == hostH / rows because 16:9 matches grid
+  // Cells aren't necessarily square: the grid has cols ≈ rows × 16/9 but
+  // rounded to an integer (e.g. 28×16 ≠ exact 16:9), so derive each axis
+  // independently from the host size.
+  const cellW = hostW / doc.grid.cols;
+  const cellH = hostH / doc.grid.rows;
   const offsetX = (wrapper.w - hostW) / 2;
   const offsetY = (wrapper.h - hostH) / 2;
 
@@ -59,8 +64,8 @@ export function GridCanvas({ doc, setDoc, selectedId, setSelectedId }: Props) {
         ...d,
         widgets: d.widgets.map((w) => {
           if (w.instanceId !== drag.id) return w;
-          const dx = Math.round((e.clientX - drag.sx) / drag.cell);
-          const dy = Math.round((e.clientY - drag.sy) / drag.cell);
+          const dx = Math.round((e.clientX - drag.sx) / drag.cellW);
+          const dy = Math.round((e.clientY - drag.sy) / drag.cellH);
           if (drag.kind === "move") {
             const colSpan = drag.startArea.colEnd - drag.startArea.colStart;
             const rowSpan = drag.startArea.rowEnd - drag.startArea.rowStart;
@@ -73,25 +78,8 @@ export function GridCanvas({ doc, setDoc, selectedId, setSelectedId }: Props) {
           const startRowSpan = drag.startArea.rowEnd - drag.startArea.rowStart;
           let newColSpan = startColSpan;
           let newRowSpan = startRowSpan;
-          if (drag.lockedAspect != null) {
-            // Aspect-locked: pick the dominant drag axis, derive both spans
-            // from it, preserve aspectRatio = h / w.
-            const aspect = drag.lockedAspect;
-            const candidateFromCol = Math.max(1, startColSpan + dx);
-            const candidateFromRow = Math.max(1, startRowSpan + dy);
-            const areaFromCol = candidateFromCol * Math.max(1, Math.round(candidateFromCol * aspect));
-            const areaFromRow = Math.max(1, Math.round(candidateFromRow / aspect)) * candidateFromRow;
-            if (areaFromCol >= areaFromRow) {
-              newColSpan = candidateFromCol;
-              newRowSpan = Math.max(1, Math.round(newColSpan * aspect));
-            } else {
-              newRowSpan = candidateFromRow;
-              newColSpan = Math.max(1, Math.round(newRowSpan / aspect));
-            }
-          } else {
-            if (drag.edge === "e" || drag.edge === "se") newColSpan = Math.max(1, startColSpan + dx);
-            if (drag.edge === "s" || drag.edge === "se") newRowSpan = Math.max(1, startRowSpan + dy);
-          }
+          if (drag.edge === "e" || drag.edge === "se") newColSpan = Math.max(1, startColSpan + dx);
+          if (drag.edge === "s" || drag.edge === "se") newRowSpan = Math.max(1, startRowSpan + dy);
           // Clamp to grid bounds.
           newColSpan = Math.min(newColSpan, d.grid.cols - drag.startArea.colStart + 1);
           newRowSpan = Math.min(newRowSpan, d.grid.rows - drag.startArea.rowStart + 1);
@@ -121,16 +109,14 @@ export function GridCanvas({ doc, setDoc, selectedId, setSelectedId }: Props) {
     e.stopPropagation();
     setSelectedId(w.instanceId);
     setDrag({ kind: "move", id: w.instanceId, sx: e.clientX, sy: e.clientY,
-      startArea: { ...w.area }, cell });
+      startArea: { ...w.area }, cellW, cellH });
   };
   const startResize = (e: React.PointerEvent, w: WidgetInstance, edge: "se" | "e" | "s") => {
     e.preventDefault();
     e.stopPropagation();
     setSelectedId(w.instanceId);
-    const entry = getCatalogEntry(w.type);
     setDrag({ kind: "resize", id: w.instanceId, edge,
-      sx: e.clientX, sy: e.clientY, startArea: { ...w.area }, cell,
-      lockedAspect: entry?.aspectRatio ?? null });
+      sx: e.clientX, sy: e.clientY, startArea: { ...w.area }, cellW, cellH });
   };
 
   return (
@@ -138,26 +124,32 @@ export function GridCanvas({ doc, setDoc, selectedId, setSelectedId }: Props) {
       <div className="grid-host" style={{
         position: "absolute", left: offsetX, top: offsetY, width: hostW, height: hostH,
       }}>
+        <PreviewFrame
+          doc={doc}
+          overlayMode
+          style={{
+            position: "absolute", inset: 0, width: "100%", height: "100%",
+            pointerEvents: "none",
+          }}
+        />
         <GridLines cols={doc.grid.cols} rows={doc.grid.rows} />
         {placed.map((w) => {
           const a = w.area;
-          const left = (a.colStart - 1) * cell;
-          const top = (a.rowStart - 1) * cell;
-          const width  = (a.colEnd - a.colStart) * cell;
-          const height = (a.rowEnd - a.rowStart) * cell;
-          const entry = getCatalogEntry(w.type);
-          const locked = entry?.aspectRatio != null;
+          const left = (a.colStart - 1) * cellW;
+          const top = (a.rowStart - 1) * cellH;
+          const width  = (a.colEnd - a.colStart) * cellW;
+          const height = (a.rowEnd - a.rowStart) * cellH;
           return (
             <div
               key={w.instanceId}
               className={"widget-rect" + (w.instanceId === selectedId ? " selected" : "")}
               style={{ left, top, width, height }}
               onPointerDown={(e) => startMove(e, w)}
-              title={locked ? `${w.type} (aspect locked: ${entry!.aspectRatio!.toFixed(2)})` : w.type}
+              title={w.type}
             >
-              <span className="label">{w.instanceId}<br/><small style={{ opacity: 0.7 }}>{w.type.replace(/Widget$/, "")}{locked ? " 🔒" : ""}</small></span>
-              {!locked && <div className="resize-handle rh-e" onPointerDown={(e) => startResize(e, w, "e")} />}
-              {!locked && <div className="resize-handle rh-s" onPointerDown={(e) => startResize(e, w, "s")} />}
+              <span className="label">{w.instanceId}<br/><small style={{ opacity: 0.7 }}>{w.type.replace(/Widget$/, "")}</small></span>
+              <div className="resize-handle rh-e" onPointerDown={(e) => startResize(e, w, "e")} />
+              <div className="resize-handle rh-s" onPointerDown={(e) => startResize(e, w, "s")} />
               <div className="resize-handle rh-se" onPointerDown={(e) => startResize(e, w, "se")} />
             </div>
           );

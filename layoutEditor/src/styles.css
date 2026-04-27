@@ -9,8 +9,8 @@
   --accent-2: #4752c4;
   --warn: #faa61a;
   --error: #ed4245;
-  --grid-line: rgba(255, 255, 255, 0.08);
-  --grid-line-strong: rgba(255, 255, 255, 0.18);
+  --grid-line: rgba(88, 101, 242, 0.45);
+  --grid-line-strong: rgba(88, 101, 242, 0.7);
   font-family: system-ui, sans-serif;
   font-size: 13px;
   color-scheme: dark;
@@ -82,11 +82,12 @@ label { font-size: 12px; color: var(--text-dim); }
   border: 1px solid var(--border);
 }
 
-.grid-overlay { position: absolute; inset: 0; pointer-events: none; }
+.grid-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
 .grid-overlay .cell { border-right: 1px solid var(--grid-line); border-bottom: 1px solid var(--grid-line); }
 
 .widget-rect {
   position: absolute;
+  z-index: 2;
   border: 1px solid var(--accent);
   background: rgba(88, 101, 242, 0.12);
   border-radius: 3px;

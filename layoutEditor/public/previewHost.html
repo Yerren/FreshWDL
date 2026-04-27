@@ -78,6 +78,25 @@
     (function () {
       var container = null;
 
+      function applyOverlayModeStyles(on) {
+        var id = "overlayModeStyles";
+        var existing = document.getElementById(id);
+        if (existing) existing.remove();
+        if (!on) return;
+        var s = document.createElement("style");
+        s.id = id;
+        // In overlay mode the iframe is sized to the editor's grid-host
+        // (already 16:9), so we override the runtime's default sizing to fill
+        // the iframe exactly, and hide the bottom button bar / version label
+        // since the editor's bounding boxes only span the widget grid.
+        s.textContent =
+          "html, body { height: 100%; margin: 0; background: transparent !important; }" +
+          "#FWDLcontainer { width: 100% !important; height: 100% !important;" +
+          "  aspect-ratio: auto !important; margin: 0 !important; }" +
+          "#bottom, #Version { display: none !important; }";
+        document.head.appendChild(s);
+      }
+
       function applyLayout(layoutJsSource) {
         // Point the runtime at our chosen clientraw source. config.js declares
         // customBaseURL as a `var`, so we just reassign on globalThis.
@@ -90,6 +109,25 @@
         // Tear down previous app if any.
         try { if (window.app && window.app.stop) window.app.stop(); } catch (e) {}
         try { if (window.app && window.app.destroy) window.app.destroy(); } catch (e) {}
+
+        // Reset data-update bookkeeping so the next fetch dispatches the
+        // clientRaw*DataUpdate events the freshly-built widgets listen for.
+        // Without this, a rebuild (e.g. after a resize or live edit) finds
+        // arrayClientrawOld already equal to the cached arrayClientraw, marks
+        // it unchanged, and the new widgets never receive their first update —
+        // gauges and graphs stay at zero until the next iframe is mounted.
+        window.arrayClientraw = [];
+        window.arrayClientrawExtra = [];
+        window.arrayClientrawHour = [];
+        window.arrayClientrawDaily = [];
+        window.arrayClientrawOld = [];
+        window.arrayClientrawExtraOld = [];
+        window.arrayClientrawHourOld = [];
+        window.arrayClientrawDailyOld = [];
+        window.firstTime = true;
+        window.loaded = null;
+        window.doneCR = window.doneCRE = window.doneCRH = window.doneCRD = false;
+        window.attemptedCR = window.attemptedCRE = window.attemptedCRH = window.attemptedCRD = false;
 
         // Replace any existing FWDLcontainer + bottom buttons.
         var prev = document.getElementById("FWDLcontainer");
@@ -172,6 +210,7 @@
           if (typeof msg.dataUrlPrefix === "string") {
             window.PREVIEW_DATA_URL_PREFIX = msg.dataUrlPrefix;
           }
+          applyOverlayModeStyles(!!msg.overlayMode);
           applyLayout(msg.layoutJsSource);
         }
       });

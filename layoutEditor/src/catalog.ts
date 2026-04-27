@@ -43,11 +43,6 @@ export type CatalogEntry = {
   // (free-form key + spec) instead of a fixed list. Used for generic
   // widgets like WidgetText.
   dynamicBindings?: boolean;
-  // Locked aspect ratio (height / width). When set, the editor refuses to
-  // resize this widget to a different shape — only proportional scaling.
-  // Matches the widget class' prototype.aspectRatio. Omit for free-form
-  // (text widget) or non-canvas (handler) entries.
-  aspectRatio?: number;
   notes?: string;
 };
 
@@ -100,7 +95,6 @@ export const CATALOG: CatalogEntry[] = [
     category: "Widget",
     ctor: "TemperatureBarWidget",
     needsCanvas: true,
-    aspectRatio: 2.0,
     defaultEnabledKey: "temperature",
     defaultCanvasIdPrefix: "TempBar",
     defaultArea: { colSpan: 3, rowSpan: 6 },
@@ -124,7 +118,6 @@ export const CATALOG: CatalogEntry[] = [
     category: "Widget",
     ctor: "HumidityGaugeWidget",
     needsCanvas: true,
-    aspectRatio: 1.0,
     defaultEnabledKey: "humidity",
     defaultCanvasIdPrefix: "HumidityGauge",
     defaultArea: { colSpan: 4, rowSpan: 4 },
@@ -139,7 +132,6 @@ export const CATALOG: CatalogEntry[] = [
     category: "Widget",
     ctor: "BarometerWidget",
     needsCanvas: true,
-    aspectRatio: 1.0,
     defaultEnabledKey: "barometer",
     defaultCanvasIdPrefix: "Barometer",
     defaultArea: { colSpan: 4, rowSpan: 4 },
@@ -155,7 +147,6 @@ export const CATALOG: CatalogEntry[] = [
     category: "Widget",
     ctor: "WindSpeedWidget",
     needsCanvas: true,
-    aspectRatio: 1.5,
     defaultEnabledKey: "windSpeed",
     defaultCanvasIdPrefix: "WindSpeed",
     defaultArea: { colSpan: 4, rowSpan: 6 },
@@ -172,7 +163,6 @@ export const CATALOG: CatalogEntry[] = [
     category: "Widget",
     ctor: "WindGaugeWidget",
     needsCanvas: true,
-    aspectRatio: 1.0,
     defaultEnabledKey: "windDirection",
     defaultCanvasIdPrefix: "WindGauge",
     defaultArea: { colSpan: 4, rowSpan: 4 },
@@ -187,7 +177,6 @@ export const CATALOG: CatalogEntry[] = [
     category: "Widget",
     ctor: "ApparentWidget",
     needsCanvas: true,
-    aspectRatio: 17 / 30,
     defaultEnabledKey: "apparent",
     defaultCanvasIdPrefix: "Apparent",
     defaultArea: { colSpan: 6, rowSpan: 3 },
@@ -201,7 +190,6 @@ export const CATALOG: CatalogEntry[] = [
     category: "Widget",
     ctor: "UVBarWidget",
     needsCanvas: true,
-    aspectRatio: 3.0,
     defaultEnabledKey: "UV",
     defaultCanvasIdPrefix: "UVBar",
     defaultArea: { colSpan: 2, rowSpan: 6 },
@@ -215,7 +203,6 @@ export const CATALOG: CatalogEntry[] = [
     category: "Widget",
     ctor: "SolarBarWidget",
     needsCanvas: true,
-    aspectRatio: 3.0,
     defaultEnabledKey: "solar",
     defaultCanvasIdPrefix: "SolarBar",
     defaultArea: { colSpan: 2, rowSpan: 6 },
@@ -231,7 +218,6 @@ export const CATALOG: CatalogEntry[] = [
     category: "Widget",
     ctor: "MoonSunWidget",
     needsCanvas: true,
-    aspectRatio: 1.0,
     defaultEnabledKey: "moonSun",
     defaultCanvasIdPrefix: "MoonSun",
     defaultArea: { colSpan: 4, rowSpan: 4 },
@@ -251,7 +237,6 @@ export const CATALOG: CatalogEntry[] = [
     category: "Widget",
     ctor: "StatusWidget",
     needsCanvas: true,
-    aspectRatio: 0.4 / 6.19,
     defaultEnabledKey: "status",
     defaultCanvasIdPrefix: "Status",
     defaultArea: { colSpan: 16, rowSpan: 1 },
@@ -267,7 +252,6 @@ export const CATALOG: CatalogEntry[] = [
     category: "Widget",
     ctor: "UniBarWidget",
     needsCanvas: true,
-    aspectRatio: 2.5 * 3.01 / 3.0,
     defaultEnabledKey: "rainfallDay",
     defaultCanvasIdPrefix: "UniBar",
     defaultArea: { colSpan: 2, rowSpan: 5 },
@@ -284,7 +268,6 @@ export const CATALOG: CatalogEntry[] = [
     category: "Widget",
     ctor: "TitleRainfallWidget",
     needsCanvas: true,
-    aspectRatio: 0.12 / 0.99,
     defaultEnabledKey: "rainfallTitle",
     defaultCanvasIdPrefix: "TitleRainfall",
     defaultArea: { colSpan: 8, rowSpan: 1 },
@@ -297,7 +280,6 @@ export const CATALOG: CatalogEntry[] = [
     category: "Widget",
     ctor: "MainChartWidget",
     needsCanvas: true,
-    aspectRatio: 0.7,
     defaultEnabledKey: "graphHandlerTemperature",
     defaultCanvasIdPrefix: "ChartCanvas",
     defaultArea: { colSpan: 8, rowSpan: 6 },
