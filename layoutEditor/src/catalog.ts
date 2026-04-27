@@ -320,10 +320,6 @@ export const CATALOG: CatalogEntry[] = [
     ctor: "ForecastHandler",
     needsCanvas: false,
     placedInGrid: true,
-    // resize() sets the inner div to width = parentHeight × 6.19 and height
-    // = parentHeight × 0.59, so its own aspect ratio is 0.59 / 6.19. Lock
-    // the slot to match.
-    aspectRatio: 0.59 / 6.19,
     defaultEnabledKey: "forecastHandler",
     defaultCanvasIdPrefix: "",
     defaultArea: { colSpan: 12, rowSpan: 1 },

@@ -8,7 +8,6 @@ export const REQUIRED_HANDLERS: { type: string; instanceId: string }[] = [
   { type: "ModalHandler",       instanceId: "modalHandler" },
   { type: "ModalGraphHandler",  instanceId: "modalGraph" },
   { type: "RecordsHandler",     instanceId: "records" },
-  { type: "ForecastHandler",    instanceId: "forecast" },
 ];
 
 export function isRequiredHandlerType(type: string): boolean {

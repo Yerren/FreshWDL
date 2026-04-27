@@ -86,16 +86,16 @@
     ForecastHandler.prototype.resize = function () {
         if (!this.displayDiv) { return; }
 
-        var size = 1,
-            modalDivSize = 0.4,
-            ratio = 6.19,
+        var modalDivSize = 0.4,
             width = 0,
             height = 0,
             stlyeString = null,
             parentDiv = this.displayDiv.parentElement;
 
-        width = parentDiv.clientHeight * size * ratio;
-        height = parentDiv.clientHeight * size * 0.59;
+        // Fill the parent slot — the layout editor controls placement, so the
+        // text strip should occupy whatever grid area the user assigned.
+        width = parentDiv.clientWidth;
+        height = parentDiv.clientHeight;
 
         width = width.toString() + "px";
         height = height.toString() + "px";
