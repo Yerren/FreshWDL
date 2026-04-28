@@ -73,8 +73,10 @@
             this.values.dataStatus = name + " | " + useDict("statusDataAt") + ": " + time + " | " + date;
             this.blinkColour = "rgba(234, 242, 45, 0.9)";
         } else if (dataStatusIn === "Partial Error, No New Data") {
+            this.values.dataStatus = name + " | " + useDict("statusNoDataSince") + ": " + time + " | " + date;
             this.blinkColour = "rgba(234, 242, 45, 0.9)";
         } else if (dataStatusIn === "No New Data") {
+            this.values.dataStatus = name + " | " + useDict("statusNoDataSince") + ": " + time + " | " + date;
             this.blinkColour = this.blankBlinkColour;
         } else if (dataStatusIn === "Normal") {
             this.values.dataStatus = name + " | " + useDict("statusDataAt") + ": " + time + " | " + date;
