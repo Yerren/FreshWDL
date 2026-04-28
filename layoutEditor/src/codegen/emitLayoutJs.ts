@@ -65,22 +65,25 @@ function emitStyle(doc: LayoutDoc): string {
 
 // ---------------- DOM ----------------
 
+// ForecastHandler is special-cased: its resize() reads dimensions off the
+// slot's child #forecastText, so that inner div must exist before initialize().
+export function emitSlotHtml(w: WidgetInstance, indent: string = ""): string {
+  const extraClass = w.type === "MainChartWidget" ? " chartSlot" : "";
+  if (w.type === "ForecastHandler") {
+    const elementId = String(w.options.elementId ?? "forecastText");
+    return `${indent}<div data-widget="${w.instanceId}" class="widgetSlot"><div id="${elementId}" style="overflow: hidden;"></div></div>`;
+  }
+  return `${indent}<div data-widget="${w.instanceId}" class="widgetSlot${extraClass}"></div>`;
+}
+
+export function emitManifestEntrySource(w: WidgetInstance): string {
+  return emitManifestEntry(w).trim();
+}
+
 function emitDom(doc: LayoutDoc): string {
   const widgetSlots = getPlacedWidgets(doc.widgets);
 
-  const slotMarkup = widgetSlots.map((w) => {
-    // The MainChartWidget references an outer wrapping div in the existing
-    // CSS; LayoutMount handles that automatically. Slot is identical here.
-    const extraClass = w.type === "MainChartWidget" ? " chartSlot" : "";
-    if (w.type === "ForecastHandler") {
-      // ForecastHandler.resize() sizes #forecastText off its parentElement,
-      // so #forecastText must be nested inside the slot (not be the slot
-      // itself). Otherwise its parent is #FWDLcontainer and it overflows.
-      const elementId = String(w.options.elementId ?? "forecastText");
-      return `        <div data-widget="${w.instanceId}" class="widgetSlot"><div id="${elementId}" style="overflow: hidden;"></div></div>`;
-    }
-    return `        <div data-widget="${w.instanceId}" class="widgetSlot${extraClass}"></div>`;
-  }).join("\n");
+  const slotMarkup = widgetSlots.map((w) => emitSlotHtml(w, "        ")).join("\n");
 
   const buttons = emitButtons(doc.buttons);
 

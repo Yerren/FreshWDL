@@ -70,12 +70,15 @@
     // the existing window.resize listener in CanvasWidget still covers the
     // page-level case.
     LayoutMount.prototype.observe = function (registry) {
+        this._registry = registry || null;
         if (typeof ResizeObserver === "undefined" || !this._placeholders) { return; }
+        var self = this;
         var obs = new ResizeObserver(function (entries) {
+            if (!self._registry) { return; }
             for (var i = 0; i < entries.length; i++) {
                 var el = entries[i].target,
                     id = el.getAttribute("data-widget"),
-                    w = registry.get(id);
+                    w = self._registry.get(id);
                 if (w && typeof w.resize === "function") { w.resize(); }
             }
         });
@@ -83,6 +86,25 @@
             obs.observe(this._placeholders[j].placeholder);
         }
         this._observer = obs;
+    };
+
+    LayoutMount.prototype.observePlaceholder = function (el) {
+        if (!el) { return; }
+        if (this._observer) { this._observer.observe(el); }
+        if (!this._placeholders) { this._placeholders = []; }
+        this._placeholders.push({ placeholder: el, id: el.getAttribute("data-widget") });
+    };
+
+    LayoutMount.prototype.unobservePlaceholder = function (el) {
+        if (!el) { return; }
+        if (this._observer) { this._observer.unobserve(el); }
+        if (!this._placeholders) { return; }
+        for (var i = 0; i < this._placeholders.length; i++) {
+            if (this._placeholders[i].placeholder === el) {
+                this._placeholders.splice(i, 1);
+                return;
+            }
+        }
     };
 
     global.LayoutMount = LayoutMount;

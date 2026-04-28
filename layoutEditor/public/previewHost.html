@@ -203,6 +203,109 @@
 
       window.__previewHost.renderLayout = applyLayout;
 
+      // Soft-update keeps existing canvases mounted; ResizeObserver picks up
+      // slot resizes, so widgets reflow without re-init or animation reset.
+      function applySlotPlacement(el, s) {
+        if (!el || !s) { return; }
+        el.style.gridColumn = s.colStart + " / " + s.colEnd;
+        el.style.gridRow = s.rowStart + " / " + s.rowEnd;
+      }
+
+      function softRemove(id) {
+        var app = window.app;
+        if (!app) { return; }
+        var el = document.querySelector('[data-widget="' + id + '"]');
+        if (app.layoutMount && el) { app.layoutMount.unobservePlaceholder(el); }
+        if (app.registry) { app.registry.unregister(id); }
+        if (app.factory) { app.factory.removeEntry(id); }
+        if (el && el.parentNode) { el.parentNode.removeChild(el); }
+      }
+
+      function softAdd(addSpec, slotPlacement) {
+        var app = window.app;
+        if (!app) { return; }
+        var entry;
+        try {
+          // (0, eval) forces expression context (eval'd object literal needs parens)
+          // and runs in the iframe's global scope so constructors resolve by name.
+          // eslint-disable-next-line no-eval
+          entry = (0, eval)("(" + addSpec.entrySource + ")");
+        } catch (err) {
+          console.error("softAdd: failed to eval manifest entry for " + addSpec.instanceId, err);
+          return;
+        }
+        if (!entry || !entry.Ctor) { return; }
+
+        if (entry.enabledKey && typeof window.widgetList === "object" &&
+                !window.widgetList[entry.enabledKey]) {
+          window.widgetList[entry.enabledKey] = { enabled: true };
+        }
+
+        var slot = null;
+        if (addSpec.placed) {
+          var container = document.getElementById("FWDLcontainer");
+          if (!container) { return; }
+          var holder = document.createElement("div");
+          holder.innerHTML = addSpec.slotHtml;
+          slot = holder.firstElementChild;
+          if (!slot) { return; }
+          // Place before initialize() so the slot has real dimensions when
+          // the widget's first resize() runs.
+          applySlotPlacement(slot, slotPlacement);
+          container.appendChild(slot);
+          if (app.layoutMount) { app.layoutMount.injectFor(slot, entry); }
+        }
+        if (app.factory) { app.factory.addEntry(entry); app.factory.buildOne(entry); }
+        if (slot && app.layoutMount) { app.layoutMount.observePlaceholder(slot); }
+      }
+
+      function softUpdate(msg) {
+        if (msg.removeIds) {
+          for (var ri = 0; ri < msg.removeIds.length; ri++) {
+            softRemove(msg.removeIds[ri]);
+          }
+        }
+        var slotsByInstance = {};
+        if (msg.slots) {
+          for (var si = 0; si < msg.slots.length; si++) {
+            slotsByInstance[msg.slots[si].instanceId] = msg.slots[si];
+          }
+        }
+        if (msg.addEntries) {
+          for (var ai = 0; ai < msg.addEntries.length; ai++) {
+            var spec = msg.addEntries[ai];
+            softAdd(spec, slotsByInstance[spec.instanceId]);
+          }
+        }
+        var container = document.getElementById("FWDLcontainer");
+        if (container && msg.grid) {
+          container.style.gridTemplateColumns = "repeat(" + msg.grid.cols + ", 1fr)";
+          container.style.gridTemplateRows = "repeat(" + msg.grid.rows + ", 1fr)";
+        }
+        if (msg.slots) {
+          for (var i = 0; i < msg.slots.length; i++) {
+            var s = msg.slots[i];
+            applySlotPlacement(document.querySelector('[data-widget="' + s.instanceId + '"]'), s);
+          }
+        }
+        if (msg.buttons) {
+          for (var j = 0; j < msg.buttons.length; j++) {
+            var b = msg.buttons[j];
+            var btn = document.getElementById(b.id);
+            if (btn) { btn.style.display = b.visible ? "" : "none"; }
+          }
+        }
+        // DataManager only dispatches on change, so a sample-mode preview
+        // would otherwise leave new widgets at defaults forever.
+        if (msg.addEntries && msg.addEntries.length && window.loadEvents) {
+          window.dispatchEvent(window.loadEvents.clientRaw);
+          window.dispatchEvent(window.loadEvents.clientRawExtra);
+          window.dispatchEvent(window.loadEvents.clientRawDaily);
+          window.dispatchEvent(window.loadEvents.clientRawHour);
+          window.dispatchEvent(window.loadEvents.graphData);
+        }
+      }
+
       window.addEventListener("message", function (e) {
         var msg = e.data;
         if (!msg || typeof msg !== "object") return;
@@ -212,6 +315,8 @@
           }
           applyOverlayModeStyles(!!msg.overlayMode);
           applyLayout(msg.layoutJsSource);
+        } else if (msg.type === "softUpdate") {
+          softUpdate(msg);
         }
       });
 

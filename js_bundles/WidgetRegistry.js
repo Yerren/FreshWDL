@@ -21,6 +21,13 @@
         return Object.prototype.hasOwnProperty.call(this.items, id);
     };
 
+    WidgetRegistry.prototype.unregister = function (id) {
+        var w = this.items[id];
+        if (w && typeof w.destroy === "function") { w.destroy(); }
+        delete this.items[id];
+        return w || null;
+    };
+
     WidgetRegistry.prototype.getAll = function () {
         var out = [], key;
         for (key in this.items) {

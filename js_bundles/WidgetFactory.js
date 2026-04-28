@@ -24,6 +24,16 @@
         this.manifest.push(entry);
     };
 
+    WidgetFactory.prototype.removeEntry = function (id) {
+        for (var i = 0; i < this.manifest.length; i++) {
+            if (this.manifest[i] && this.manifest[i].id === id) {
+                this.manifest.splice(i, 1);
+                return true;
+            }
+        }
+        return false;
+    };
+
     WidgetFactory.prototype.setManifest = function (entries) {
         this.manifest = entries.slice();
     };

@@ -124,6 +124,17 @@
             }
             this.tooltip = null;
         }
+        // Kill orphaned tweens — covers both this.tweens (HumidityGauge) and
+        // this.tweens.X (everyone else).
+        if (this.tweens && typeof createjs !== "undefined" && createjs.Tween) {
+            createjs.Tween.removeTweens(this.tweens);
+            for (var k in this.tweens) {
+                if (Object.prototype.hasOwnProperty.call(this.tweens, k) &&
+                        this.tweens[k] && typeof this.tweens[k] === "object") {
+                    createjs.Tween.removeTweens(this.tweens[k]);
+                }
+            }
+        }
         WidgetBase.prototype.destroy.call(this);
     };
 
