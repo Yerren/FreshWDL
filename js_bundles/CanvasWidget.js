@@ -56,6 +56,7 @@
         }
         this.applyStageTransform();
         if (typeof this.updateTop === "function") { this.updateTop(); }
+        this._dirty = true;
     };
 
     // No-op by default. Widgets with stage offsets override this.
@@ -79,8 +80,25 @@
     CanvasWidget.prototype.attachFrameUpdate = function () {
         var self = this;
         var handler = function () {
+            var t = self.tweens, hasActive = false, k;
+            if (t) {
+                if (createjs.Tween.hasActiveTweens(t)) {
+                    hasActive = true;
+                } else {
+                    for (k in t) {
+                        if (Object.prototype.hasOwnProperty.call(t, k) &&
+                                t[k] && typeof t[k] === "object" &&
+                                createjs.Tween.hasActiveTweens(t[k])) {
+                            hasActive = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!hasActive && !self._dirty) { return; }
             self.updateTweens();
             self.stage.update();
+            self._dirty = false;
         };
         window.addEventListener("frameUpdate", handler);
         this._listeners.push({ event: "frameUpdate", handler: handler });

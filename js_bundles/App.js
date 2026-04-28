@@ -27,7 +27,7 @@
         this.tickerEvent = new CustomEvent("frameUpdate");
         var self = this;
         this.tickHandler = function () { window.dispatchEvent(self.tickerEvent); };
-        createjs.Ticker.setFPS(60);
+        createjs.Ticker.timingMode = createjs.Ticker.RAF;
         createjs.Ticker.addEventListener("tick", this.tickHandler);
     };
 

@@ -13,6 +13,7 @@
         this.valuesOld = {};
         this.tweens = {};
         this._listeners = [];
+        this._dirty = true;
 
         // Compile declarative data bindings if present. Typos in specs throw
         // here so they fail loudly at bootstrap rather than on first tick.
@@ -85,10 +86,15 @@
         return true;
     };
 
+    // Mark the widget as needing a redraw on the next frameUpdate. CanvasWidget's
+    // frame handler clears the flag after stage.update(); non-canvas widgets
+    // ignore it.
+    WidgetBase.prototype.markDirty = function () { this._dirty = true; };
+
     // Listen for a clientraw-related event and route it through onDataUpdate.
     WidgetBase.prototype.listenForData = function (eventName) {
         var self = this;
-        var handler = function () { self.onDataUpdate(eventName); };
+        var handler = function () { self.onDataUpdate(eventName); self._dirty = true; };
         window.addEventListener(eventName, handler);
         this._listeners.push({ event: eventName, handler: handler });
     };
@@ -101,6 +107,7 @@
                 if (typeof self.redrawForUnitChange === "function") {
                     self.redrawForUnitChange(unitType);
                 }
+                self._dirty = true;
             };
         window.addEventListener(eventName, handler);
         this._listeners.push({ event: eventName, handler: handler });
