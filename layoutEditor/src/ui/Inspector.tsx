@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { DictOrText } from "../catalog";
 import { coerceDictOrText, getCatalogEntry, isPlacedInGrid } from "../catalog";
 import { isRequiredHandlerType } from "../model/defaults";
+import { useClientrawSpecs } from "../model/clientrawSpecs";
 import { useDictKeys } from "../model/dictKeys";
 import type { GridArea, LayoutDoc, WidgetInstance } from "../model/types";
 import { IDENT_RE, validateSpec } from "../model/validation";
@@ -178,9 +179,11 @@ export function Inspector({ selected, selectionCount = 0, updateWidget, removeWi
                         <tr key={f.key} className={err ? "err" : ""}>
                           <td>{f.label}{f.required && <span style={{ color: "var(--error)" }}> *</span>}</td>
                           <td>
-                            <input value={spec}
+                            <BindingSpecInput
+                              value={spec}
                               placeholder={f.defaultSpec}
-                              onChange={(e) => upd({ bindings: { ...selected.bindings, [f.key]: e.target.value } })} />
+                              onChange={(v) => upd({ bindings: { ...selected.bindings, [f.key]: v } })}
+                            />
                             {err && <div className="err-msg">{err}</div>}
                           </td>
                         </tr>
@@ -299,7 +302,7 @@ function DynamicBindingsEditor({ selected, upd }: DynProps) {
               <tr key={k} className={err || !keyOk ? "err" : ""}>
                 <td><input defaultValue={k} onBlur={(e) => setKey(k, e.target.value)} /></td>
                 <td>
-                  <input value={spec} onChange={(e) => setSpec(k, e.target.value)} />
+                  <BindingSpecInput value={spec} onChange={(v) => setSpec(k, v)} />
                   {err && <div className="err-msg">{err}</div>}
                   {!keyOk && <div className="err-msg">invalid key</div>}
                 </td>
@@ -312,6 +315,67 @@ function DynamicBindingsEditor({ selected, upd }: DynProps) {
       <button onClick={add} style={{ marginTop: 6 }}>+ Add binding</button>
       <SpecHelp />
     </>
+  );
+}
+
+function BindingSpecInput(
+  { value, placeholder, onChange }: {
+    value: string;
+    placeholder?: string;
+    onChange: (v: string) => void;
+  },
+) {
+  const entries = useClientrawSpecs();
+  const [open, setOpen] = useState(false);
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e: MouseEvent) => {
+      if (!wrapRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, [open]);
+
+  const matches = useMemo(() => {
+    const q = value.trim().toLowerCase();
+    if (!q) return entries.slice(0, 50);
+    return entries.filter((e) =>
+      e.label.toLowerCase().includes(q) || e.spec.toLowerCase().includes(q)
+    ).slice(0, 50);
+  }, [entries, value]);
+
+  return (
+    <div ref={wrapRef} style={{ position: "relative" }}>
+      <input
+        value={value}
+        placeholder={placeholder}
+        onFocus={() => setOpen(true)}
+        onChange={(e) => { onChange(e.target.value); setOpen(true); }}
+      />
+      {open && matches.length > 0 && (
+        <div className="dict-suggest">
+          {matches.map((m) => (
+            <div
+              key={m.spec}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                onChange(m.spec);
+                setOpen(false);
+              }}
+              className="dict-suggest-item"
+              title={m.unit}
+            >
+              <div>{m.label}</div>
+              <div style={{ fontSize: "0.85em", color: "var(--text-dim)" }}>
+                {m.spec}{m.unit ? ` — ${m.unit}` : ""}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
