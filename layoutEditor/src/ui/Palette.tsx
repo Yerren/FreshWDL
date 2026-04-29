@@ -28,8 +28,6 @@ export function Palette({ onPickType }: Props) {
 
   return (
     <div className="palette">
-      <h3>Widgets</h3>
-      <div className="palette-hint">Drag onto the canvas, or click to add at top-left.</div>
       <div className="palette-grid">
         {items.map((c) => (
           <PaletteTile

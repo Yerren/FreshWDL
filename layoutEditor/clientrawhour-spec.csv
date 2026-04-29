@@ -1,0 +1,675 @@
+﻿Field #,Label,Type/Unit,Value
+0,Beginning of file,Label,12345
+1,Wind Speed Last 60 for Min 01,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+2,Wind Speed Last 60 for Min 02,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+3,Wind Speed Last 60 for Min 03,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+4,Wind Speed Last 60 for Min 04,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+5,Wind Speed Last 60 for Min 05,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+6,Wind Speed Last 60 for Min 06,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+7,Wind Speed Last 60 for Min 07,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+8,Wind Speed Last 60 for Min 08,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+9,Wind Speed Last 60 for Min 09,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+10,Wind Speed Last 60 for Min 10,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+11,Wind Speed Last 60 for Min 11,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+12,Wind Speed Last 60 for Min 12,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+13,Wind Speed Last 60 for Min 13,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+14,Wind Speed Last 60 for Min 14,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+15,Wind Speed Last 60 for Min 15,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+16,Wind Speed Last 60 for Min 16,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+17,Wind Speed Last 60 for Min 17,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+18,Wind Speed Last 60 for Min 18,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+19,Wind Speed Last 60 for Min 19,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+20,Wind Speed Last 60 for Min 20,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+21,Wind Speed Last 60 for Min 21,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+22,Wind Speed Last 60 for Min 22,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+23,Wind Speed Last 60 for Min 23,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+24,Wind Speed Last 60 for Min 24,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+25,Wind Speed Last 60 for Min 25,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+26,Wind Speed Last 60 for Min 26,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+27,Wind Speed Last 60 for Min 27,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+28,Wind Speed Last 60 for Min 28,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+29,Wind Speed Last 60 for Min 29,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+30,Wind Speed Last 60 for Min 30,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+31,Wind Speed Last 60 for Min 31,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+32,Wind Speed Last 60 for Min 32,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+33,Wind Speed Last 60 for Min 33,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+34,Wind Speed Last 60 for Min 34,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+35,Wind Speed Last 60 for Min 35,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+36,Wind Speed Last 60 for Min 36,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+37,Wind Speed Last 60 for Min 37,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+38,Wind Speed Last 60 for Min 38,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+39,Wind Speed Last 60 for Min 39,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+40,Wind Speed Last 60 for Min 40,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+41,Wind Speed Last 60 for Min 41,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+42,Wind Speed Last 60 for Min 42,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+43,Wind Speed Last 60 for Min 43,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+44,Wind Speed Last 60 for Min 44,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+45,Wind Speed Last 60 for Min 45,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+46,Wind Speed Last 60 for Min 46,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+47,Wind Speed Last 60 for Min 47,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+48,Wind Speed Last 60 for Min 48,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+49,Wind Speed Last 60 for Min 49,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+50,Wind Speed Last 60 for Min 50,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+51,Wind Speed Last 60 for Min 51,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+52,Wind Speed Last 60 for Min 52,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+53,Wind Speed Last 60 for Min 53,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+54,Wind Speed Last 60 for Min 54,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+55,Wind Speed Last 60 for Min 55,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+56,Wind Speed Last 60 for Min 56,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+57,Wind Speed Last 60 for Min 57,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+58,Wind Speed Last 60 for Min 58,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+59,Wind Speed Last 60 for Min 59,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+60,Wind Speed Last 60 for Min 60,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+61,Wind Gust Speed Last 60 for Min 01,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+62,Wind Gust Speed Last 60 for Min 02,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+63,Wind Gust Speed Last 60 for Min 03,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+64,Wind Gust Speed Last 60 for Min 04,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+65,Wind Gust Speed Last 60 for Min 05,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+66,Wind Gust Speed Last 60 for Min 06,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+67,Wind Gust Speed Last 60 for Min 07,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+68,Wind Gust Speed Last 60 for Min 08,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+69,Wind Gust Speed Last 60 for Min 09,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+70,Wind Gust Speed Last 60 for Min 10,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+71,Wind Gust Speed Last 60 for Min 11,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+72,Wind Gust Speed Last 60 for Min 12,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+73,Wind Gust Speed Last 60 for Min 13,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+74,Wind Gust Speed Last 60 for Min 14,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+75,Wind Gust Speed Last 60 for Min 15,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+76,Wind Gust Speed Last 60 for Min 16,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+77,Wind Gust Speed Last 60 for Min 17,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+78,Wind Gust Speed Last 60 for Min 18,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+79,Wind Gust Speed Last 60 for Min 19,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+80,Wind Gust Speed Last 60 for Min 20,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+81,Wind Gust Speed Last 60 for Min 21,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+82,Wind Gust Speed Last 60 for Min 22,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+83,Wind Gust Speed Last 60 for Min 23,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+84,Wind Gust Speed Last 60 for Min 24,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+85,Wind Gust Speed Last 60 for Min 25,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+86,Wind Gust Speed Last 60 for Min 26,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+87,Wind Gust Speed Last 60 for Min 27,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+88,Wind Gust Speed Last 60 for Min 28,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+89,Wind Gust Speed Last 60 for Min 29,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+90,Wind Gust Speed Last 60 for Min 30,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+91,Wind Gust Speed Last 60 for Min 31,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+92,Wind Gust Speed Last 60 for Min 32,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+93,Wind Gust Speed Last 60 for Min 33,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+94,Wind Gust Speed Last 60 for Min 34,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+95,Wind Gust Speed Last 60 for Min 35,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+96,Wind Gust Speed Last 60 for Min 36,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+97,Wind Gust Speed Last 60 for Min 37,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+98,Wind Gust Speed Last 60 for Min 38,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+99,Wind Gust Speed Last 60 for Min 39,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+100,Wind Gust Speed Last 60 for Min 40,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+101,Wind Gust Speed Last 60 for Min 41,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+102,Wind Gust Speed Last 60 for Min 42,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+103,Wind Gust Speed Last 60 for Min 43,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+104,Wind Gust Speed Last 60 for Min 44,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+105,Wind Gust Speed Last 60 for Min 45,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+106,Wind Gust Speed Last 60 for Min 46,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+107,Wind Gust Speed Last 60 for Min 47,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+108,Wind Gust Speed Last 60 for Min 48,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+109,Wind Gust Speed Last 60 for Min 49,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+110,Wind Gust Speed Last 60 for Min 50,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+111,Wind Gust Speed Last 60 for Min 51,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+112,Wind Gust Speed Last 60 for Min 52,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+113,Wind Gust Speed Last 60 for Min 53,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+114,Wind Gust Speed Last 60 for Min 54,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+115,Wind Gust Speed Last 60 for Min 55,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+116,Wind Gust Speed Last 60 for Min 56,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+117,Wind Gust Speed Last 60 for Min 57,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+118,Wind Gust Speed Last 60 for Min 58,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+119,Wind Gust Speed Last 60 for Min 59,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+120,Wind Gust Speed Last 60 for Min 60,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+121,Wind Direction Last 60 for Min 01,Compass,270° (W)
+122,Wind Direction Last 60 for Min 02,Compass,270° (W)
+123,Wind Direction Last 60 for Min 03,Compass,270° (W)
+124,Wind Direction Last 60 for Min 04,Compass,270° (W)
+125,Wind Direction Last 60 for Min 05,Compass,270° (W)
+126,Wind Direction Last 60 for Min 06,Compass,270° (W)
+127,Wind Direction Last 60 for Min 07,Compass,270° (W)
+128,Wind Direction Last 60 for Min 08,Compass,270° (W)
+129,Wind Direction Last 60 for Min 09,Compass,270° (W)
+130,Wind Direction Last 60 for Min 10,Compass,270° (W)
+131,Wind Direction Last 60 for Min 11,Compass,270° (W)
+132,Wind Direction Last 60 for Min 12,Compass,270° (W)
+133,Wind Direction Last 60 for Min 13,Compass,270° (W)
+134,Wind Direction Last 60 for Min 14,Compass,270° (W)
+135,Wind Direction Last 60 for Min 15,Compass,270° (W)
+136,Wind Direction Last 60 for Min 16,Compass,270° (W)
+137,Wind Direction Last 60 for Min 17,Compass,270° (W)
+138,Wind Direction Last 60 for Min 18,Compass,270° (W)
+139,Wind Direction Last 60 for Min 19,Compass,270° (W)
+140,Wind Direction Last 60 for Min 20,Compass,270° (W)
+141,Wind Direction Last 60 for Min 21,Compass,270° (W)
+142,Wind Direction Last 60 for Min 22,Compass,270° (W)
+143,Wind Direction Last 60 for Min 23,Compass,270° (W)
+144,Wind Direction Last 60 for Min 24,Compass,270° (W)
+145,Wind Direction Last 60 for Min 25,Compass,270° (W)
+146,Wind Direction Last 60 for Min 26,Compass,270° (W)
+147,Wind Direction Last 60 for Min 27,Compass,270° (W)
+148,Wind Direction Last 60 for Min 28,Compass,270° (W)
+149,Wind Direction Last 60 for Min 29,Compass,270° (W)
+150,Wind Direction Last 60 for Min 30,Compass,270° (W)
+151,Wind Direction Last 60 for Min 31,Compass,270° (W)
+152,Wind Direction Last 60 for Min 32,Compass,270° (W)
+153,Wind Direction Last 60 for Min 33,Compass,270° (W)
+154,Wind Direction Last 60 for Min 34,Compass,270° (W)
+155,Wind Direction Last 60 for Min 35,Compass,270° (W)
+156,Wind Direction Last 60 for Min 36,Compass,270° (W)
+157,Wind Direction Last 60 for Min 37,Compass,270° (W)
+158,Wind Direction Last 60 for Min 38,Compass,270° (W)
+159,Wind Direction Last 60 for Min 39,Compass,270° (W)
+160,Wind Direction Last 60 for Min 40,Compass,270° (W)
+161,Wind Direction Last 60 for Min 41,Compass,270° (W)
+162,Wind Direction Last 60 for Min 42,Compass,270° (W)
+163,Wind Direction Last 60 for Min 43,Compass,270° (W)
+164,Wind Direction Last 60 for Min 44,Compass,270° (W)
+165,Wind Direction Last 60 for Min 45,Compass,270° (W)
+166,Wind Direction Last 60 for Min 46,Compass,270° (W)
+167,Wind Direction Last 60 for Min 47,Compass,270° (W)
+168,Wind Direction Last 60 for Min 48,Compass,270° (W)
+169,Wind Direction Last 60 for Min 49,Compass,270° (W)
+170,Wind Direction Last 60 for Min 50,Compass,270° (W)
+171,Wind Direction Last 60 for Min 51,Compass,270° (W)
+172,Wind Direction Last 60 for Min 52,Compass,270° (W)
+173,Wind Direction Last 60 for Min 53,Compass,270° (W)
+174,Wind Direction Last 60 for Min 54,Compass,270° (W)
+175,Wind Direction Last 60 for Min 55,Compass,270° (W)
+176,Wind Direction Last 60 for Min 56,Compass,270° (W)
+177,Wind Direction Last 60 for Min 57,Compass,270° (W)
+178,Wind Direction Last 60 for Min 58,Compass,270° (W)
+179,Wind Direction Last 60 for Min 59,Compass,270° (W)
+180,Wind Direction Last 60 for Min 60,Compass,270° (W)
+181,Temp Last 60 for Min 01,Celsius,13.9°C = 57.0°F
+182,Temp Last 60 for Min 02,Celsius,13.9°C = 57.0°F
+183,Temp Last 60 for Min 03,Celsius,14.0°C = 57.2°F
+184,Temp Last 60 for Min 04,Celsius,14.0°C = 57.2°F
+185,Temp Last 60 for Min 05,Celsius,14.0°C = 57.2°F
+186,Temp Last 60 for Min 06,Celsius,14.0°C = 57.2°F
+187,Temp Last 60 for Min 07,Celsius,14.0°C = 57.2°F
+188,Temp Last 60 for Min 08,Celsius,14.1°C = 57.4°F
+189,Temp Last 60 for Min 09,Celsius,14.1°C = 57.4°F
+190,Temp Last 60 for Min 10,Celsius,14.1°C = 57.4°F
+191,Temp Last 60 for Min 11,Celsius,14.1°C = 57.4°F
+192,Temp Last 60 for Min 12,Celsius,14.2°C = 57.6°F
+193,Temp Last 60 for Min 13,Celsius,14.2°C = 57.6°F
+194,Temp Last 60 for Min 14,Celsius,14.2°C = 57.6°F
+195,Temp Last 60 for Min 15,Celsius,14.2°C = 57.6°F
+196,Temp Last 60 for Min 16,Celsius,14.3°C = 57.7°F
+197,Temp Last 60 for Min 17,Celsius,14.3°C = 57.7°F
+198,Temp Last 60 for Min 18,Celsius,14.3°C = 57.7°F
+199,Temp Last 60 for Min 19,Celsius,14.3°C = 57.7°F
+200,Temp Last 60 for Min 20,Celsius,14.3°C = 57.7°F
+201,Temp Last 60 for Min 21,Celsius,14.3°C = 57.7°F
+202,Temp Last 60 for Min 22,Celsius,14.4°C = 57.9°F
+203,Temp Last 60 for Min 23,Celsius,14.4°C = 57.9°F
+204,Temp Last 60 for Min 24,Celsius,14.4°C = 57.9°F
+205,Temp Last 60 for Min 25,Celsius,14.4°C = 57.9°F
+206,Temp Last 60 for Min 26,Celsius,14.4°C = 57.9°F
+207,Temp Last 60 for Min 27,Celsius,14.5°C = 58.1°F
+208,Temp Last 60 for Min 28,Celsius,14.5°C = 58.1°F
+209,Temp Last 60 for Min 29,Celsius,14.5°C = 58.1°F
+210,Temp Last 60 for Min 30,Celsius,14.6°C = 58.3°F
+211,Temp Last 60 for Min 31,Celsius,14.6°C = 58.3°F
+212,Temp Last 60 for Min 32,Celsius,14.6°C = 58.3°F
+213,Temp Last 60 for Min 33,Celsius,14.7°C = 58.5°F
+214,Temp Last 60 for Min 34,Celsius,14.7°C = 58.5°F
+215,Temp Last 60 for Min 35,Celsius,14.7°C = 58.5°F
+216,Temp Last 60 for Min 36,Celsius,14.8°C = 58.6°F
+217,Temp Last 60 for Min 37,Celsius,14.8°C = 58.6°F
+218,Temp Last 60 for Min 38,Celsius,14.8°C = 58.6°F
+219,Temp Last 60 for Min 39,Celsius,14.8°C = 58.6°F
+220,Temp Last 60 for Min 40,Celsius,14.8°C = 58.6°F
+221,Temp Last 60 for Min 41,Celsius,14.8°C = 58.6°F
+222,Temp Last 60 for Min 42,Celsius,14.8°C = 58.6°F
+223,Temp Last 60 for Min 43,Celsius,14.9°C = 58.8°F
+224,Temp Last 60 for Min 44,Celsius,14.9°C = 58.8°F
+225,Temp Last 60 for Min 45,Celsius,14.9°C = 58.8°F
+226,Temp Last 60 for Min 46,Celsius,14.9°C = 58.8°F
+227,Temp Last 60 for Min 47,Celsius,14.9°C = 58.8°F
+228,Temp Last 60 for Min 48,Celsius,14.9°C = 58.8°F
+229,Temp Last 60 for Min 49,Celsius,15.0°C = 59.0°F
+230,Temp Last 60 for Min 50,Celsius,15.0°C = 59.0°F
+231,Temp Last 60 for Min 51,Celsius,15.0°C = 59.0°F
+232,Temp Last 60 for Min 52,Celsius,15.0°C = 59.0°F
+233,Temp Last 60 for Min 53,Celsius,15.0°C = 59.0°F
+234,Temp Last 60 for Min 54,Celsius,15.0°C = 59.0°F
+235,Temp Last 60 for Min 55,Celsius,15.1°C = 59.2°F
+236,Temp Last 60 for Min 56,Celsius,15.1°C = 59.2°F
+237,Temp Last 60 for Min 57,Celsius,15.1°C = 59.2°F
+238,Temp Last 60 for Min 58,Celsius,15.1°C = 59.2°F
+239,Temp Last 60 for Min 59,Celsius,15.1°C = 59.2°F
+240,Temp Last 60 for Min 60,Celsius,15.1°C = 59.2°F
+241,Humidity Last 60 for Min 01,Percent,85%
+242,Humidity Last 60 for Min 02,Percent,85%
+243,Humidity Last 60 for Min 03,Percent,84%
+244,Humidity Last 60 for Min 04,Percent,84%
+245,Humidity Last 60 for Min 05,Percent,84%
+246,Humidity Last 60 for Min 06,Percent,84%
+247,Humidity Last 60 for Min 07,Percent,84%
+248,Humidity Last 60 for Min 08,Percent,84%
+249,Humidity Last 60 for Min 09,Percent,84%
+250,Humidity Last 60 for Min 10,Percent,84%
+251,Humidity Last 60 for Min 11,Percent,84%
+252,Humidity Last 60 for Min 12,Percent,84%
+253,Humidity Last 60 for Min 13,Percent,84%
+254,Humidity Last 60 for Min 14,Percent,84%
+255,Humidity Last 60 for Min 15,Percent,84%
+256,Humidity Last 60 for Min 16,Percent,84%
+257,Humidity Last 60 for Min 17,Percent,84%
+258,Humidity Last 60 for Min 18,Percent,84%
+259,Humidity Last 60 for Min 19,Percent,84%
+260,Humidity Last 60 for Min 20,Percent,83%
+261,Humidity Last 60 for Min 21,Percent,83%
+262,Humidity Last 60 for Min 22,Percent,83%
+263,Humidity Last 60 for Min 23,Percent,83%
+264,Humidity Last 60 for Min 24,Percent,83%
+265,Humidity Last 60 for Min 25,Percent,83%
+266,Humidity Last 60 for Min 26,Percent,83%
+267,Humidity Last 60 for Min 27,Percent,82%
+268,Humidity Last 60 for Min 28,Percent,82%
+269,Humidity Last 60 for Min 29,Percent,82%
+270,Humidity Last 60 for Min 30,Percent,82%
+271,Humidity Last 60 for Min 31,Percent,83%
+272,Humidity Last 60 for Min 32,Percent,83%
+273,Humidity Last 60 for Min 33,Percent,82%
+274,Humidity Last 60 for Min 34,Percent,82%
+275,Humidity Last 60 for Min 35,Percent,82%
+276,Humidity Last 60 for Min 36,Percent,83%
+277,Humidity Last 60 for Min 37,Percent,82%
+278,Humidity Last 60 for Min 38,Percent,82%
+279,Humidity Last 60 for Min 39,Percent,82%
+280,Humidity Last 60 for Min 40,Percent,82%
+281,Humidity Last 60 for Min 41,Percent,82%
+282,Humidity Last 60 for Min 42,Percent,82%
+283,Humidity Last 60 for Min 43,Percent,82%
+284,Humidity Last 60 for Min 44,Percent,82%
+285,Humidity Last 60 for Min 45,Percent,82%
+286,Humidity Last 60 for Min 46,Percent,82%
+287,Humidity Last 60 for Min 47,Percent,82%
+288,Humidity Last 60 for Min 48,Percent,82%
+289,Humidity Last 60 for Min 49,Percent,82%
+290,Humidity Last 60 for Min 50,Percent,82%
+291,Humidity Last 60 for Min 51,Percent,82%
+292,Humidity Last 60 for Min 52,Percent,82%
+293,Humidity Last 60 for Min 53,Percent,81%
+294,Humidity Last 60 for Min 54,Percent,81%
+295,Humidity Last 60 for Min 55,Percent,81%
+296,Humidity Last 60 for Min 56,Percent,81%
+297,Humidity Last 60 for Min 57,Percent,81%
+298,Humidity Last 60 for Min 58,Percent,81%
+299,Humidity Last 60 for Min 59,Percent,82%
+300,Humidity Last 60 for Min 60,Percent,81%
+301,Baro Last 60 for Min 01,hPa,1034.7 hPa = 30.55 inHg
+302,Baro Last 60 for Min 02,hPa,1034.7 hPa = 30.55 inHg
+303,Baro Last 60 for Min 03,hPa,1034.7 hPa = 30.55 inHg
+304,Baro Last 60 for Min 04,hPa,1034.7 hPa = 30.55 inHg
+305,Baro Last 60 for Min 05,hPa,1034.6 hPa = 30.55 inHg
+306,Baro Last 60 for Min 06,hPa,1034.7 hPa = 30.55 inHg
+307,Baro Last 60 for Min 07,hPa,1034.7 hPa = 30.55 inHg
+308,Baro Last 60 for Min 08,hPa,1034.7 hPa = 30.55 inHg
+309,Baro Last 60 for Min 09,hPa,1034.8 hPa = 30.56 inHg
+310,Baro Last 60 for Min 10,hPa,1034.8 hPa = 30.56 inHg
+311,Baro Last 60 for Min 11,hPa,1034.7 hPa = 30.55 inHg
+312,Baro Last 60 for Min 12,hPa,1034.8 hPa = 30.56 inHg
+313,Baro Last 60 for Min 13,hPa,1034.9 hPa = 30.56 inHg
+314,Baro Last 60 for Min 14,hPa,1034.9 hPa = 30.56 inHg
+315,Baro Last 60 for Min 15,hPa,1034.9 hPa = 30.56 inHg
+316,Baro Last 60 for Min 16,hPa,1034.9 hPa = 30.56 inHg
+317,Baro Last 60 for Min 17,hPa,1034.9 hPa = 30.56 inHg
+318,Baro Last 60 for Min 18,hPa,1034.9 hPa = 30.56 inHg
+319,Baro Last 60 for Min 19,hPa,1034.9 hPa = 30.56 inHg
+320,Baro Last 60 for Min 20,hPa,1035.0 hPa = 30.56 inHg
+321,Baro Last 60 for Min 21,hPa,1034.8 hPa = 30.56 inHg
+322,Baro Last 60 for Min 22,hPa,1034.8 hPa = 30.56 inHg
+323,Baro Last 60 for Min 23,hPa,1034.9 hPa = 30.56 inHg
+324,Baro Last 60 for Min 24,hPa,1034.9 hPa = 30.56 inHg
+325,Baro Last 60 for Min 25,hPa,1035.0 hPa = 30.56 inHg
+326,Baro Last 60 for Min 26,hPa,1035.0 hPa = 30.56 inHg
+327,Baro Last 60 for Min 27,hPa,1035.0 hPa = 30.56 inHg
+328,Baro Last 60 for Min 28,hPa,1035.1 hPa = 30.57 inHg
+329,Baro Last 60 for Min 29,hPa,1035.1 hPa = 30.57 inHg
+330,Baro Last 60 for Min 30,hPa,1035.1 hPa = 30.57 inHg
+331,Baro Last 60 for Min 31,hPa,1035.1 hPa = 30.57 inHg
+332,Baro Last 60 for Min 32,hPa,1035.1 hPa = 30.57 inHg
+333,Baro Last 60 for Min 33,hPa,1035.1 hPa = 30.57 inHg
+334,Baro Last 60 for Min 34,hPa,1035.1 hPa = 30.57 inHg
+335,Baro Last 60 for Min 35,hPa,1035.1 hPa = 30.57 inHg
+336,Baro Last 60 for Min 36,hPa,1035.1 hPa = 30.57 inHg
+337,Baro Last 60 for Min 37,hPa,1035.1 hPa = 30.57 inHg
+338,Baro Last 60 for Min 38,hPa,1035.1 hPa = 30.57 inHg
+339,Baro Last 60 for Min 39,hPa,1035.2 hPa = 30.57 inHg
+340,Baro Last 60 for Min 40,hPa,1035.1 hPa = 30.57 inHg
+341,Baro Last 60 for Min 41,hPa,1035.1 hPa = 30.57 inHg
+342,Baro Last 60 for Min 42,hPa,1035.2 hPa = 30.57 inHg
+343,Baro Last 60 for Min 43,hPa,1035.2 hPa = 30.57 inHg
+344,Baro Last 60 for Min 44,hPa,1035.2 hPa = 30.57 inHg
+345,Baro Last 60 for Min 45,hPa,1035.2 hPa = 30.57 inHg
+346,Baro Last 60 for Min 46,hPa,1035.2 hPa = 30.57 inHg
+347,Baro Last 60 for Min 47,hPa,1035.2 hPa = 30.57 inHg
+348,Baro Last 60 for Min 48,hPa,1035.2 hPa = 30.57 inHg
+349,Baro Last 60 for Min 49,hPa,1035.3 hPa = 30.57 inHg
+350,Baro Last 60 for Min 50,hPa,1035.3 hPa = 30.57 inHg
+351,Baro Last 60 for Min 51,hPa,1035.3 hPa = 30.57 inHg
+352,Baro Last 60 for Min 52,hPa,1035.3 hPa = 30.57 inHg
+353,Baro Last 60 for Min 53,hPa,1035.3 hPa = 30.57 inHg
+354,Baro Last 60 for Min 54,hPa,1035.3 hPa = 30.57 inHg
+355,Baro Last 60 for Min 55,hPa,1035.3 hPa = 30.57 inHg
+356,Baro Last 60 for Min 56,hPa,1035.3 hPa = 30.57 inHg
+357,Baro Last 60 for Min 57,hPa,1035.3 hPa = 30.57 inHg
+358,Baro Last 60 for Min 58,hPa,1035.3 hPa = 30.57 inHg
+359,Baro Last 60 for Min 59,hPa,1035.3 hPa = 30.57 inHg
+360,Baro Last 60 for Min 60,hPa,1035.4 hPa = 30.58 inHg
+361,Rain Total Last 60 for Min 01,Millimeters,0.0 mm = 0.00 in
+362,Rain Total Last 60 for Min 02,Millimeters,0.0 mm = 0.00 in
+363,Rain Total Last 60 for Min 03,Millimeters,0.0 mm = 0.00 in
+364,Rain Total Last 60 for Min 04,Millimeters,0.0 mm = 0.00 in
+365,Rain Total Last 60 for Min 05,Millimeters,0.0 mm = 0.00 in
+366,Rain Total Last 60 for Min 06,Millimeters,0.0 mm = 0.00 in
+367,Rain Total Last 60 for Min 07,Millimeters,0.0 mm = 0.00 in
+368,Rain Total Last 60 for Min 08,Millimeters,0.0 mm = 0.00 in
+369,Rain Total Last 60 for Min 09,Millimeters,0.0 mm = 0.00 in
+370,Rain Total Last 60 for Min 10,Millimeters,0.0 mm = 0.00 in
+371,Rain Total Last 60 for Min 11,Millimeters,0.0 mm = 0.00 in
+372,Rain Total Last 60 for Min 12,Millimeters,0.0 mm = 0.00 in
+373,Rain Total Last 60 for Min 13,Millimeters,0.0 mm = 0.00 in
+374,Rain Total Last 60 for Min 14,Millimeters,0.0 mm = 0.00 in
+375,Rain Total Last 60 for Min 15,Millimeters,0.0 mm = 0.00 in
+376,Rain Total Last 60 for Min 16,Millimeters,0.0 mm = 0.00 in
+377,Rain Total Last 60 for Min 17,Millimeters,0.0 mm = 0.00 in
+378,Rain Total Last 60 for Min 18,Millimeters,0.0 mm = 0.00 in
+379,Rain Total Last 60 for Min 19,Millimeters,0.0 mm = 0.00 in
+380,Rain Total Last 60 for Min 20,Millimeters,0.0 mm = 0.00 in
+381,Rain Total Last 60 for Min 21,Millimeters,0.0 mm = 0.00 in
+382,Rain Total Last 60 for Min 22,Millimeters,0.0 mm = 0.00 in
+383,Rain Total Last 60 for Min 23,Millimeters,0.0 mm = 0.00 in
+384,Rain Total Last 60 for Min 24,Millimeters,0.0 mm = 0.00 in
+385,Rain Total Last 60 for Min 25,Millimeters,0.0 mm = 0.00 in
+386,Rain Total Last 60 for Min 26,Millimeters,0.0 mm = 0.00 in
+387,Rain Total Last 60 for Min 27,Millimeters,0.0 mm = 0.00 in
+388,Rain Total Last 60 for Min 28,Millimeters,0.0 mm = 0.00 in
+389,Rain Total Last 60 for Min 29,Millimeters,0.0 mm = 0.00 in
+390,Rain Total Last 60 for Min 30,Millimeters,0.0 mm = 0.00 in
+391,Rain Total Last 60 for Min 31,Millimeters,0.0 mm = 0.00 in
+392,Rain Total Last 60 for Min 32,Millimeters,0.0 mm = 0.00 in
+393,Rain Total Last 60 for Min 33,Millimeters,0.0 mm = 0.00 in
+394,Rain Total Last 60 for Min 34,Millimeters,0.0 mm = 0.00 in
+395,Rain Total Last 60 for Min 35,Millimeters,0.0 mm = 0.00 in
+396,Rain Total Last 60 for Min 36,Millimeters,0.0 mm = 0.00 in
+397,Rain Total Last 60 for Min 37,Millimeters,0.0 mm = 0.00 in
+398,Rain Total Last 60 for Min 38,Millimeters,0.0 mm = 0.00 in
+399,Rain Total Last 60 for Min 39,Millimeters,0.0 mm = 0.00 in
+400,Rain Total Last 60 for Min 40,Millimeters,0.0 mm = 0.00 in
+401,Rain Total Last 60 for Min 41,Millimeters,0.0 mm = 0.00 in
+402,Rain Total Last 60 for Min 42,Millimeters,0.0 mm = 0.00 in
+403,Rain Total Last 60 for Min 43,Millimeters,0.0 mm = 0.00 in
+404,Rain Total Last 60 for Min 44,Millimeters,0.0 mm = 0.00 in
+405,Rain Total Last 60 for Min 45,Millimeters,0.0 mm = 0.00 in
+406,Rain Total Last 60 for Min 46,Millimeters,0.0 mm = 0.00 in
+407,Rain Total Last 60 for Min 47,Millimeters,0.0 mm = 0.00 in
+408,Rain Total Last 60 for Min 48,Millimeters,0.0 mm = 0.00 in
+409,Rain Total Last 60 for Min 49,Millimeters,0.0 mm = 0.00 in
+410,Rain Total Last 60 for Min 50,Millimeters,0.0 mm = 0.00 in
+411,Rain Total Last 60 for Min 51,Millimeters,0.0 mm = 0.00 in
+412,Rain Total Last 60 for Min 52,Millimeters,0.0 mm = 0.00 in
+413,Rain Total Last 60 for Min 53,Millimeters,0.0 mm = 0.00 in
+414,Rain Total Last 60 for Min 54,Millimeters,0.0 mm = 0.00 in
+415,Rain Total Last 60 for Min 55,Millimeters,0.0 mm = 0.00 in
+416,Rain Total Last 60 for Min 56,Millimeters,0.0 mm = 0.00 in
+417,Rain Total Last 60 for Min 57,Millimeters,0.0 mm = 0.00 in
+418,Rain Total Last 60 for Min 58,Millimeters,0.0 mm = 0.00 in
+419,Rain Total Last 60 for Min 59,Millimeters,0.0 mm = 0.00 in
+420,Rain Total Last 60 for Min 60,Millimeters,0.0 mm = 0.00 in
+421,Solar (W/m2) Last 60 for Min 01,Number,28
+422,Solar (W/m2) Last 60 for Min 02,Number,30
+423,Solar (W/m2) Last 60 for Min 03,Number,33
+424,Solar (W/m2) Last 60 for Min 04,Number,35
+425,Solar (W/m2) Last 60 for Min 05,Number,37
+426,Solar (W/m2) Last 60 for Min 06,Number,40
+427,Solar (W/m2) Last 60 for Min 07,Number,47
+428,Solar (W/m2) Last 60 for Min 08,Number,49
+429,Solar (W/m2) Last 60 for Min 09,Number,53
+430,Solar (W/m2) Last 60 for Min 10,Number,53
+431,Solar (W/m2) Last 60 for Min 11,Number,54
+432,Solar (W/m2) Last 60 for Min 12,Number,54
+433,Solar (W/m2) Last 60 for Min 13,Number,56
+434,Solar (W/m2) Last 60 for Min 14,Number,56
+435,Solar (W/m2) Last 60 for Min 15,Number,54
+436,Solar (W/m2) Last 60 for Min 16,Number,56
+437,Solar (W/m2) Last 60 for Min 17,Number,60
+438,Solar (W/m2) Last 60 for Min 18,Number,63
+439,Solar (W/m2) Last 60 for Min 19,Number,65
+440,Solar (W/m2) Last 60 for Min 20,Number,67
+441,Solar (W/m2) Last 60 for Min 21,Number,69
+442,Solar (W/m2) Last 60 for Min 22,Number,70
+443,Solar (W/m2) Last 60 for Min 23,Number,70
+444,Solar (W/m2) Last 60 for Min 24,Number,72
+445,Solar (W/m2) Last 60 for Min 25,Number,77
+446,Solar (W/m2) Last 60 for Min 26,Number,81
+447,Solar (W/m2) Last 60 for Min 27,Number,83
+448,Solar (W/m2) Last 60 for Min 28,Number,86
+449,Solar (W/m2) Last 60 for Min 29,Number,90
+450,Solar (W/m2) Last 60 for Min 30,Number,95
+451,Solar (W/m2) Last 60 for Min 31,Number,97
+452,Solar (W/m2) Last 60 for Min 32,Number,100
+453,Solar (W/m2) Last 60 for Min 33,Number,102
+454,Solar (W/m2) Last 60 for Min 34,Number,102
+455,Solar (W/m2) Last 60 for Min 35,Number,102
+456,Solar (W/m2) Last 60 for Min 36,Number,90
+457,Solar (W/m2) Last 60 for Min 37,Number,81
+458,Solar (W/m2) Last 60 for Min 38,Number,74
+459,Solar (W/m2) Last 60 for Min 39,Number,72
+460,Solar (W/m2) Last 60 for Min 40,Number,72
+461,Solar (W/m2) Last 60 for Min 41,Number,72
+462,Solar (W/m2) Last 60 for Min 42,Number,74
+463,Solar (W/m2) Last 60 for Min 43,Number,74
+464,Solar (W/m2) Last 60 for Min 44,Number,72
+465,Solar (W/m2) Last 60 for Min 45,Number,72
+466,Solar (W/m2) Last 60 for Min 46,Number,70
+467,Solar (W/m2) Last 60 for Min 47,Number,70
+468,Solar (W/m2) Last 60 for Min 48,Number,74
+469,Solar (W/m2) Last 60 for Min 49,Number,77
+470,Solar (W/m2) Last 60 for Min 50,Number,84
+471,Solar (W/m2) Last 60 for Min 51,Number,88
+472,Solar (W/m2) Last 60 for Min 52,Number,93
+473,Solar (W/m2) Last 60 for Min 53,Number,95
+474,Solar (W/m2) Last 60 for Min 54,Number,95
+475,Solar (W/m2) Last 60 for Min 55,Number,95
+476,Solar (W/m2) Last 60 for Min 56,Number,93
+477,Solar (W/m2) Last 60 for Min 57,Number,91
+478,Solar (W/m2) Last 60 for Min 58,Number,90
+479,Solar (W/m2) Last 60 for Min 59,Number,90
+480,Solar (W/m2) Last 60 for Min 60,Number,88
+481,Solar 23 hrs 45 min ago,Number,338
+482,Solar 23 hrs 30 min ago,Number,387
+483,Solar 23 hrs 15 min ago,Number,436
+484,Solar 23 hrs 00 min ago,Number,483
+485,Solar 22 hrs 45 min ago,Number,524
+486,Solar 22 hrs 30 min ago,Number,554
+487,Solar 22 hrs 15 min ago,Number,536
+488,Solar 22 hrs 00 min ago,Number,608
+489,Solar 21 hrs 45 min ago,Number,629
+490,Solar 21 hrs 30 min ago,Number,645
+491,Solar 21 hrs 15 min ago,Number,659
+492,Solar 21 hrs 00 min ago,Number,663
+493,Solar 20 hrs 45 min ago,Number,668
+494,Solar 20 hrs 30 min ago,Number,670
+495,Solar 20 hrs 15 min ago,Number,666
+496,Solar 20 hrs 00 min ago,Number,656
+497,Solar 19 hrs 45 min ago,Number,645
+498,Solar 19 hrs 30 min ago,Number,624
+499,Solar 19 hrs 15 min ago,Number,608
+500,Solar 19 hrs 00 min ago,Number,580
+501,Solar 18 hrs 45 min ago,Number,547
+502,Solar 18 hrs 30 min ago,Number,520
+503,Solar 18 hrs 15 min ago,Number,490
+504,Solar 18 hrs 00 min ago,Number,350
+505,Solar 17 hrs 45 min ago,Number,367
+506,Solar 17 hrs 30 min ago,Number,360
+507,Solar 17 hrs 15 min ago,Number,313
+508,Solar 17 hrs 00 min ago,Number,267
+509,Solar 16 hrs 45 min ago,Number,223
+510,Solar 16 hrs 30 min ago,Number,171
+511,Solar 16 hrs 15 min ago,Number,114
+512,Solar 16 hrs 00 min ago,Number,65
+513,Solar 15 hrs 45 min ago,Number,12
+514,Solar 15 hrs 30 min ago,Number,7
+515,Solar 15 hrs 15 min ago,Number,0
+516,Solar 15 hrs 00 min ago,Number,0
+517,Solar 14 hrs 45 min ago,Number,0
+518,Solar 14 hrs 30 min ago,Number,0
+519,Solar 14 hrs 15 min ago,Number,0
+520,Solar 14 hrs 00 min ago,Number,0
+521,Solar 13 hrs 45 min ago,Number,0
+522,Solar 13 hrs 30 min ago,Number,0
+523,Solar 13 hrs 15 min ago,Number,0
+524,Solar 13 hrs 00 min ago,Number,0
+525,Solar 12 hrs 45 min ago,Number,0
+526,Solar 12 hrs 30 min ago,Number,0
+527,Solar 12 hrs 15 min ago,Number,0
+528,Solar 12 hrs 00 min ago,Number,0
+529,Solar 11 hrs 45 min ago,Number,0
+530,Solar 11 hrs 30 min ago,Number,0
+531,Solar 11 hrs 15 min ago,Number,0
+532,Solar 11 hrs 00 min ago,Number,0
+533,Solar 10 hrs 45 min ago,Number,0
+534,Solar 10 hrs 30 min ago,Number,0
+535,Solar 10 hrs 15 min ago,Number,0
+536,Solar 10 hrs 00 min ago,Number,0
+537,Solar 09 hrs 45 min ago,Number,0
+538,Solar 09 hrs 30 min ago,Number,0
+539,Solar 09 hrs 15 min ago,Number,0
+540,Solar 09 hrs 00 min ago,Number,0
+541,Solar 08 hrs 45 min ago,Number,0
+542,Solar 08 hrs 30 min ago,Number,0
+543,Solar 08 hrs 15 min ago,Number,0
+544,Solar 08 hrs 00 min ago,Number,0
+545,Solar 07 hrs 45 min ago,Number,0
+546,Solar 07 hrs 30 min ago,Number,0
+547,Solar 07 hrs 15 min ago,Number,0
+548,Solar 07 hrs 00 min ago,Number,0
+549,Solar 06 hrs 45 min ago,Number,0
+550,Solar 06 hrs 30 min ago,Number,0
+551,Solar 06 hrs 15 min ago,Number,0
+552,Solar 06 hrs 00 min ago,Number,0
+553,Solar 05 hrs 45 min ago,Number,0
+554,Solar 05 hrs 30 min ago,Number,0
+555,Solar 05 hrs 15 min ago,Number,0
+556,Solar 05 hrs 00 min ago,Number,0
+557,Solar 04 hrs 45 min ago,Number,0
+558,Solar 04 hrs 30 min ago,Number,0
+559,Solar 04 hrs 15 min ago,Number,0
+560,Solar 04 hrs 00 min ago,Number,0
+561,Solar 03 hrs 45 min ago,Number,0
+562,Solar 03 hrs 30 min ago,Number,0
+563,Solar 03 hrs 15 min ago,Number,0
+564,Solar 03 hrs 00 min ago,Number,0
+565,Solar 02 hrs 45 min ago,Number,0
+566,Solar 02 hrs 30 min ago,Number,0
+567,Solar 02 hrs 15 min ago,Number,0
+568,Solar 02 hrs 00 min ago,Number,0
+569,Solar 01 hrs 45 min ago,Number,0
+570,Solar 01 hrs 30 min ago,Number,9
+571,Solar 01 hrs 15 min ago,Number,23
+572,Solar 01 hrs 00 min ago,Number,25
+573,Solar 00 hrs 45 min ago,Number,54
+574,Solar 00 hrs 30 min ago,Number,95
+575,Solar 00 hrs 15 min ago,Number,72
+576,Solar 00 hrs 00 min ago,Number,88
+577,UV Index 23 hrs 45 min ago,Number,0.8
+578,UV Index 23 hrs 30 min ago,Number,1
+579,UV Index 23 hrs 15 min ago,Number,1.2
+580,UV Index 23 hrs 00 min ago,Number,1.4
+581,UV Index 22 hrs 45 min ago,Number,1.6
+582,UV Index 22 hrs 30 min ago,Number,1.9
+583,UV Index 22 hrs 15 min ago,Number,1.9
+584,UV Index 22 hrs 00 min ago,Number,2.2
+585,UV Index 21 hrs 45 min ago,Number,2.5
+586,UV Index 21 hrs 30 min ago,Number,2.7
+587,UV Index 21 hrs 15 min ago,Number,2.9
+588,UV Index 21 hrs 00 min ago,Number,2.9
+589,UV Index 20 hrs 45 min ago,Number,3
+590,UV Index 20 hrs 30 min ago,Number,3.1
+591,UV Index 20 hrs 15 min ago,Number,3
+592,UV Index 20 hrs 00 min ago,Number,2.9
+593,UV Index 19 hrs 45 min ago,Number,2.7
+594,UV Index 19 hrs 30 min ago,Number,2.6
+595,UV Index 19 hrs 15 min ago,Number,2.5
+596,UV Index 19 hrs 00 min ago,Number,2.3
+597,UV Index 18 hrs 45 min ago,Number,2.1
+598,UV Index 18 hrs 30 min ago,Number,1.6
+599,UV Index 18 hrs 15 min ago,Number,1.6
+600,UV Index 18 hrs 00 min ago,Number,1.5
+601,UV Index 17 hrs 45 min ago,Number,1.3
+602,UV Index 17 hrs 30 min ago,Number,1.1
+603,UV Index 17 hrs 15 min ago,Number,1
+604,UV Index 17 hrs 00 min ago,Number,0.8
+605,UV Index 16 hrs 45 min ago,Number,0.7
+606,UV Index 16 hrs 30 min ago,Number,0.5
+607,UV Index 16 hrs 15 min ago,Number,0
+608,UV Index 16 hrs 00 min ago,Number,0
+609,UV Index 15 hrs 45 min ago,Number,0
+610,UV Index 15 hrs 30 min ago,Number,0
+611,UV Index 15 hrs 15 min ago,Number,0
+612,UV Index 15 hrs 00 min ago,Number,0
+613,UV Index 14 hrs 45 min ago,Number,0
+614,UV Index 14 hrs 30 min ago,Number,0
+615,UV Index 14 hrs 15 min ago,Number,0
+616,UV Index 14 hrs 00 min ago,Number,0
+617,UV Index 13 hrs 45 min ago,Number,0
+618,UV Index 13 hrs 30 min ago,Number,0
+619,UV Index 13 hrs 15 min ago,Number,0
+620,UV Index 13 hrs 00 min ago,Number,0
+621,UV Index 12 hrs 45 min ago,Number,0
+622,UV Index 12 hrs 30 min ago,Number,0
+623,UV Index 12 hrs 15 min ago,Number,0
+624,UV Index 12 hrs 00 min ago,Number,0
+625,UV Index 11 hrs 45 min ago,Number,0
+626,UV Index 11 hrs 30 min ago,Number,0
+627,UV Index 11 hrs 15 min ago,Number,0
+628,UV Index 11 hrs 00 min ago,Number,0
+629,UV Index 10 hrs 45 min ago,Number,0
+630,UV Index 10 hrs 30 min ago,Number,0
+631,UV Index 10 hrs 15 min ago,Number,0
+632,UV Index 10 hrs 00 min ago,Number,0
+633,UV Index 09 hrs 45 min ago,Number,0
+634,UV Index 09 hrs 30 min ago,Number,0
+635,UV Index 09 hrs 15 min ago,Number,0
+636,UV Index 09 hrs 00 min ago,Number,0
+637,UV Index 08 hrs 45 min ago,Number,0
+638,UV Index 08 hrs 30 min ago,Number,0
+639,UV Index 08 hrs 15 min ago,Number,0
+640,UV Index 08 hrs 00 min ago,Number,0
+641,UV Index 07 hrs 45 min ago,Number,0
+642,UV Index 07 hrs 30 min ago,Number,0
+643,UV Index 07 hrs 15 min ago,Number,0
+644,UV Index 07 hrs 00 min ago,Number,0
+645,UV Index 06 hrs 45 min ago,Number,0
+646,UV Index 06 hrs 30 min ago,Number,0
+647,UV Index 06 hrs 15 min ago,Number,0
+648,UV Index 06 hrs 00 min ago,Number,0
+649,UV Index 05 hrs 45 min ago,Number,0
+650,UV Index 05 hrs 30 min ago,Number,0
+651,UV Index 05 hrs 15 min ago,Number,0
+652,UV Index 05 hrs 00 min ago,Number,0
+653,UV Index 04 hrs 45 min ago,Number,0
+654,UV Index 04 hrs 30 min ago,Number,0
+655,UV Index 04 hrs 15 min ago,Number,0
+656,UV Index 04 hrs 00 min ago,Number,0
+657,UV Index 03 hrs 45 min ago,Number,0
+658,UV Index 03 hrs 30 min ago,Number,0
+659,UV Index 03 hrs 15 min ago,Number,0
+660,UV Index 03 hrs 00 min ago,Number,0
+661,UV Index 02 hrs 45 min ago,Number,0
+662,UV Index 02 hrs 30 min ago,Number,0
+663,UV Index 02 hrs 15 min ago,Number,0
+664,UV Index 02 hrs 00 min ago,Number,0
+665,UV Index 01 hrs 45 min ago,Number,0
+666,UV Index 01 hrs 30 min ago,Number,0
+667,UV Index 01 hrs 15 min ago,Number,0
+668,UV Index 01 hrs 00 min ago,Number,0
+669,UV Index 00 hrs 45 min ago,Number,0
+670,UV Index 00 hrs 30 min ago,Number,0
+671,UV Index 00 hrs 15 min ago,Number,0
+672,UV Index 00 hrs 00 min ago,Number,0.5
+673,WD Version - End of file,Label (Example: !!H10.37S!! ),!!H10.37S!!

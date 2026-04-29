@@ -14,18 +14,21 @@ type Props = {
   removeWidget: (id: string) => void;
 };
 
-export function Inspector({ doc, selected, selectionCount = 0, updateWidget, removeWidget }: Props) {
+export function Inspector({ selected, selectionCount = 0, updateWidget, removeWidget }: Props) {
   if (!selected) {
     return (
       <div className="inspector">
-        <h3>Inspector</h3>
-        <div className="empty-hint" style={{ padding: 0 }}>
-          {selectionCount > 1
-            ? `${selectionCount} widgets selected. Drag to move them as a group, or press Delete to remove.`
-            : "Select a widget on the canvas to edit its properties. Shift-click to select multiple."}
+        <div className="inspector-empty">
+          <div className="inspector-empty-icon">◇</div>
+          <div className="inspector-empty-title">
+            {selectionCount > 1 ? `${selectionCount} widgets selected` : "Nothing selected"}
+          </div>
+          <div className="inspector-empty-hint">
+            {selectionCount > 1
+              ? "Drag to move them as a group, or press Delete to remove."
+              : "Pick a widget on the canvas to edit its settings. Shift-click to select multiple."}
+          </div>
         </div>
-        <h3 style={{ marginTop: 18 }}>Page buttons (#bottom)</h3>
-        <ButtonsEditor doc={doc} updateWidget={updateWidget} />
       </div>
     );
   }
@@ -37,59 +40,24 @@ export function Inspector({ doc, selected, selectionCount = 0, updateWidget, rem
   const setAreaField = (k: keyof GridArea, v: string) =>
     upd({ area: { ...selected.area, [k]: int(v) } });
 
+  const hasOptions = entry.options.length > 0;
+  const hasBindingsUI = entry.dynamicBindings || entry.bindings.length > 0;
+
   return (
     <div className="inspector">
-      <h3>{entry.displayName}</h3>
-
-      <div className="field-row">
-        <label>Instance id</label>
-        <input value={selected.instanceId}
-          onChange={(e) => upd({ instanceId: e.target.value })} />
+      <div className="inspector-header">
+        <div className="inspector-title">{entry.displayName}</div>
+        <div className="inspector-subtitle">{selected.instanceId}</div>
       </div>
-      <div className="field-row">
-        <label>Enabled key</label>
-        <input value={selected.enabledKey}
-          onChange={(e) => upd({ enabledKey: e.target.value })} />
-      </div>
-      {entry.needsCanvas && (
-        <div className="field-row">
-          <label>Canvas id</label>
-          <input value={selected.canvasID}
-            onChange={(e) => upd({ canvasID: e.target.value })} />
-        </div>
-      )}
 
-      {isPlacedInGrid(entry) && (
-        <>
-          <h3 style={{ marginTop: 14 }}>Grid area</h3>
-          <div className="field-row">
-            <label>Col start</label>
-            <input type="number" value={selected.area.colStart}
-              onChange={(e) => setAreaField("colStart", e.target.value)} />
-            <label>end</label>
-            <input type="number" value={selected.area.colEnd}
-              onChange={(e) => setAreaField("colEnd", e.target.value)} />
-          </div>
-          <div className="field-row">
-            <label>Row start</label>
-            <input type="number" value={selected.area.rowStart}
-              onChange={(e) => setAreaField("rowStart", e.target.value)} />
-            <label>end</label>
-            <input type="number" value={selected.area.rowEnd}
-              onChange={(e) => setAreaField("rowEnd", e.target.value)} />
-          </div>
-        </>
-      )}
-
-      {entry.options.length > 0 && (
-        <>
-          <h3 style={{ marginTop: 14 }}>Options</h3>
+      {hasOptions && (
+        <div className="card">
           {entry.options.map((opt) => {
             const v = selected.options[opt.key];
             const setOpt = (val: unknown) => upd({ options: { ...selected.options, [opt.key]: val } });
             if (opt.type === "boolean") {
               return (
-                <div key={opt.key} className="field-row">
+                <div key={opt.key} className="field-row" title={opt.hint}>
                   <label>{opt.label}</label>
                   <input type="checkbox" checked={!!v} onChange={(e) => setOpt(e.target.checked)} />
                 </div>
@@ -97,7 +65,7 @@ export function Inspector({ doc, selected, selectionCount = 0, updateWidget, rem
             }
             if (opt.type === "select") {
               return (
-                <div key={opt.key} className="field-row">
+                <div key={opt.key} className="field-row" title={opt.hint}>
                   <label>{opt.label}</label>
                   <select value={String(v ?? opt.default)} onChange={(e) => setOpt(e.target.value)}>
                     {opt.options.map((o) => <option key={o} value={o}>{o}</option>)}
@@ -130,16 +98,13 @@ export function Inspector({ doc, selected, selectionCount = 0, updateWidget, rem
             }
             if (opt.type === "textarea") {
               return (
-                <div key={opt.key} title={opt.hint} style={{ margin: "6px 0" }}>
-                  <label style={{ display: "block", marginBottom: 3 }}>{opt.label}</label>
+                <div key={opt.key} title={opt.hint} className="textarea-field">
+                  <label>{opt.label}</label>
                   <textarea
                     rows={opt.rows ?? 6}
-                    style={{ width: "100%", fontFamily: "ui-monospace,monospace", fontSize: 11,
-                             background: "var(--panel)", color: "var(--text)",
-                             border: "1px solid var(--border)", borderRadius: 3, padding: 4 }}
                     value={String(v ?? "")}
                     onChange={(e) => setOpt(e.target.value)} />
-                  {opt.hint && <div style={{ fontSize: 11, color: "var(--text-dim)" }}>{opt.hint}</div>}
+                  {opt.hint && <div className="hint">{opt.hint}</div>}
                 </div>
               );
             }
@@ -153,41 +118,86 @@ export function Inspector({ doc, selected, selectionCount = 0, updateWidget, rem
               </div>
             );
           })}
-        </>
+        </div>
       )}
 
-      {entry.dynamicBindings ? (
-        <DynamicBindingsEditor selected={selected} upd={upd} />
-      ) : entry.bindings.length > 0 && (
-        <>
-          <h3 style={{ marginTop: 14 }}>Bindings</h3>
-          <table className="bindings-table">
-            <thead><tr><th>Field</th><th>Spec</th></tr></thead>
-            <tbody>
-              {entry.bindings.map((f) => {
-                const spec = selected.bindings[f.key] ?? "";
-                const err = spec ? validateSpec(spec) : (f.required ? "required" : null);
-                return (
-                  <tr key={f.key} className={err ? "err" : ""}>
-                    <td>{f.label}{f.required && <span style={{ color: "var(--error)" }}> *</span>}</td>
-                    <td>
-                      <input value={spec}
-                        placeholder={f.defaultSpec}
-                        onChange={(e) => upd({ bindings: { ...selected.bindings, [f.key]: e.target.value } })} />
-                      {err && <div style={{ color: "var(--error)", fontSize: 11 }}>{err}</div>}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          <SpecHelp />
-        </>
-      )}
+      <details className="advanced">
+        <summary>Advanced</summary>
+        <div className="card">
+          <div className="field-row">
+            <label>Instance id</label>
+            <input value={selected.instanceId}
+              onChange={(e) => upd({ instanceId: e.target.value })} />
+          </div>
+          <div className="field-row">
+            <label>Enabled key</label>
+            <input value={selected.enabledKey}
+              onChange={(e) => upd({ enabledKey: e.target.value })} />
+          </div>
+          {entry.needsCanvas && (
+            <div className="field-row">
+              <label>Canvas id</label>
+              <input value={selected.canvasID}
+                onChange={(e) => upd({ canvasID: e.target.value })} />
+            </div>
+          )}
+          {isPlacedInGrid(entry) && (
+            <>
+              <div className="field-row">
+                <label>Col start / end</label>
+                <input type="number" value={selected.area.colStart}
+                  onChange={(e) => setAreaField("colStart", e.target.value)} />
+                <input type="number" value={selected.area.colEnd}
+                  onChange={(e) => setAreaField("colEnd", e.target.value)} />
+              </div>
+              <div className="field-row">
+                <label>Row start / end</label>
+                <input type="number" value={selected.area.rowStart}
+                  onChange={(e) => setAreaField("rowStart", e.target.value)} />
+                <input type="number" value={selected.area.rowEnd}
+                  onChange={(e) => setAreaField("rowEnd", e.target.value)} />
+              </div>
+            </>
+          )}
+        </div>
+
+        {hasBindingsUI && (
+          <div className="card">
+            <div className="card-heading">Data bindings</div>
+            {entry.dynamicBindings ? (
+              <DynamicBindingsEditor selected={selected} upd={upd} />
+            ) : (
+              <>
+                <table className="bindings-table">
+                  <thead><tr><th>Field</th><th>Spec</th></tr></thead>
+                  <tbody>
+                    {entry.bindings.map((f) => {
+                      const spec = selected.bindings[f.key] ?? "";
+                      const err = spec ? validateSpec(spec) : (f.required ? "required" : null);
+                      return (
+                        <tr key={f.key} className={err ? "err" : ""}>
+                          <td>{f.label}{f.required && <span style={{ color: "var(--error)" }}> *</span>}</td>
+                          <td>
+                            <input value={spec}
+                              placeholder={f.defaultSpec}
+                              onChange={(e) => upd({ bindings: { ...selected.bindings, [f.key]: e.target.value } })} />
+                            {err && <div className="err-msg">{err}</div>}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+                <SpecHelp />
+              </>
+            )}
+          </div>
+        )}
+      </details>
 
       {!isRequiredHandlerType(selected.type) && (
-        <div style={{ marginTop: 16, display: "flex", gap: 6 }}>
-          <button onClick={() => removeWidget(selected.instanceId)}>Delete widget</button>
+        <div className="inspector-footer">
+          <button className="danger" onClick={() => removeWidget(selected.instanceId)}>Delete widget</button>
         </div>
       )}
     </div>
@@ -211,9 +221,6 @@ function AspectRatioInput(
 ) {
   const [w, setW] = useState("1");
   const [h, setH] = useState(String(ratio || 1));
-  // Reseed when switching to a different widget. Within the same widget we
-  // keep local state so the user-entered W/H survive across re-renders even
-  // if their ratio happens to match what we'd otherwise re-derive.
   useEffect(() => {
     setW("1");
     setH(String(ratio || 1));
@@ -242,7 +249,7 @@ function AspectRatioInput(
 
 function SpecHelp() {
   return (
-    <details style={{ marginTop: 6, color: "var(--text-dim)", fontSize: 11 }}>
+    <details className="spec-help">
       <summary>Spec syntax</summary>
       <code>clientraw[N]</code>, <code>clientrawExtra[N]</code>, <code>clientrawHour[N]</code>, <code>clientrawDaily[N]</code>,
       {" "}<code>extraInput(N)[K]</code>, <code>widgetListInput:KEY[K]</code>, <code>const:VALUE</code>, <code>dict:KEY</code>, <code>fn:NAME</code>
@@ -277,7 +284,6 @@ function DynamicBindingsEditor({ selected, upd }: DynProps) {
   };
   return (
     <>
-      <h3 style={{ marginTop: 14 }}>Bindings (template fields)</h3>
       <table className="bindings-table">
         <thead><tr><th style={{ width: "30%" }}>Key</th><th>Spec</th><th style={{ width: 30 }}></th></tr></thead>
         <tbody>
@@ -294,8 +300,8 @@ function DynamicBindingsEditor({ selected, upd }: DynProps) {
                 <td><input defaultValue={k} onBlur={(e) => setKey(k, e.target.value)} /></td>
                 <td>
                   <input value={spec} onChange={(e) => setSpec(k, e.target.value)} />
-                  {err && <div style={{ color: "var(--error)", fontSize: 11 }}>{err}</div>}
-                  {!keyOk && <div style={{ color: "var(--error)", fontSize: 11 }}>invalid key</div>}
+                  {err && <div className="err-msg">{err}</div>}
+                  {!keyOk && <div className="err-msg">invalid key</div>}
                 </td>
                 <td><button onClick={() => remove(k)} title="Remove">×</button></td>
               </tr>
@@ -303,7 +309,7 @@ function DynamicBindingsEditor({ selected, upd }: DynProps) {
           })}
         </tbody>
       </table>
-      <button onClick={add} style={{ marginTop: 4 }}>+ Add binding</button>
+      <button onClick={add} style={{ marginTop: 6 }}>+ Add binding</button>
       <SpecHelp />
     </>
   );
@@ -322,12 +328,10 @@ function DictOrTextInput(
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement | null>(null);
 
-  // Re-seed the search box when the underlying value changes (widget switch).
   useEffect(() => {
     if (value.mode === "dict") setQuery(value.value);
   }, [value.mode, value.value]);
 
-  // Close the suggestion list on outside click.
   useEffect(() => {
     if (!open) return;
     const onDoc = (e: MouseEvent) => {
@@ -344,8 +348,8 @@ function DictOrTextInput(
   }, [keys, query]);
 
   return (
-    <div title={hint} style={{ margin: "6px 0" }}>
-      <div className="field-row" style={{ marginBottom: 2 }}>
+    <div title={hint} className="dict-or-text">
+      <div className="field-row">
         <label>{label}</label>
         <select
           value={value.mode}
@@ -370,11 +374,7 @@ function DictOrTextInput(
             onBlur={() => onChange({ mode: "dict", value: query })}
           />
           {open && matches.length > 0 && (
-            <div style={{
-              position: "absolute", top: "100%", left: 0, right: 0, zIndex: 10,
-              background: "var(--panel-2)", border: "1px solid var(--border)",
-              borderRadius: 3, maxHeight: 180, overflowY: "auto", fontSize: 12,
-            }}>
+            <div className="dict-suggest">
               {matches.map((k) => (
                 <div
                   key={k}
@@ -384,9 +384,7 @@ function DictOrTextInput(
                     onChange({ mode: "dict", value: k });
                     setOpen(false);
                   }}
-                  style={{ padding: "3px 6px", cursor: "pointer" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "#3a3c42")}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                  className="dict-suggest-item"
                 >
                   {k}
                 </div>
@@ -401,23 +399,7 @@ function DictOrTextInput(
           onChange={(e) => onChange({ mode: "text", value: e.target.value })}
         />
       )}
-      {hint && <div style={{ fontSize: 11, color: "var(--text-dim)" }}>{hint}</div>}
-    </div>
-  );
-}
-
-function ButtonsEditor({ doc, updateWidget }: Pick<Props, "doc" | "updateWidget">) {
-  // Note: button visibility lives on doc.buttons, not on a widget. We need a
-  // setDoc-like callback. Since Inspector receives updateWidget only, we'll
-  // wire button changes through a window event handled in App. Simpler: read
-  // doc.buttons here and emit a custom event the parent listens to.
-  // For now, expose a small read-only summary; toggling lives in the toolbar
-  // in a future iteration.
-  return (
-    <div style={{ fontSize: 12, color: "var(--text-dim)" }}>
-      {doc.buttons.map((b) => (
-        <div key={b.id}>{b.id}: {b.visible ? "visible" : "hidden"}</div>
-      ))}
+      {hint && <div className="hint">{hint}</div>}
     </div>
   );
 }

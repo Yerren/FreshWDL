@@ -1,0 +1,444 @@
+﻿Field #,Label,Type/Unit,Value
+0,Beginning of file,Label,12345
+1,Hi-Temp Month 01,Celsius,25.1°C = 77.2°F
+2,Hi-Temp Month 02,Celsius,21.8°C = 71.2°F
+3,Hi-Temp Month 03,Celsius,16.4°C = 61.5°F
+4,Hi-Temp Month 04,Celsius,22.3°C = 72.1°F
+5,Hi-Temp Month 05,Celsius,22.9°C = 73.2°F
+6,Hi-Temp Month 06,Celsius,22.2°C = 72.0°F
+7,Hi-Temp Month 07,Celsius,21.9°C = 71.4°F
+8,Hi-Temp Month 08,Celsius,22.8°C = 73.0°F
+9,Hi-Temp Month 09,Celsius,18.6°C = 65.5°F
+10,Hi-Temp Month 10,Celsius,25.9°C = 78.6°F
+11,Hi-Temp Month 11,Celsius,23.9°C = 75.0°F
+12,Hi-Temp Month 12,Celsius,24.3°C = 75.7°F
+13,Hi-Temp Month 13,Celsius,23.6°C = 74.5°F
+14,Hi-Temp Month 14,Celsius,18.4°C = 65.1°F
+15,Hi-Temp Month 15,Celsius,20.1°C = 68.2°F
+16,Hi-Temp Month 16,Celsius,19.3°C = 66.7°F
+17,Hi-Temp Month 17,Celsius,22.5°C = 72.5°F
+18,Hi-Temp Month 18,Celsius,18.2°C = 64.8°F
+19,Hi-Temp Month 19,Celsius,17.7°C = 63.9°F
+20,Hi-Temp Month 20,Celsius,17.9°C = 64.2°F
+21,Hi-Temp Month 21,Celsius,17.4°C = 63.3°F
+22,Hi-Temp Month 22,Celsius,18.4°C = 65.1°F
+23,Hi-Temp Month 23,Celsius,16.8°C = 62.2°F
+24,Hi-Temp Month 24,Celsius,16.9°C = 62.4°F
+25,Hi-Temp Month 25,Celsius,16.3°C = 61.3°F
+26,Hi-Temp Month 26,Celsius,19.6°C = 67.3°F
+27,Hi-Temp Month 27,Celsius,18.7°C = 65.7°F
+28,Hi-Temp Month 28,Celsius,20.9°C = 69.6°F
+29,Hi-Temp Month 29,Celsius,18.7°C = 65.7°F
+30,Hi-Temp Month 30,Celsius,20.2°C = 68.4°F
+31,Hi-Temp Month 31,Celsius,21.8°C = 71.2°F
+32,Lo-Temp Month 01,Celsius,12.9°C = 55.2°F
+33,Lo-Temp Month 02,Celsius,11.4°C = 52.5°F
+34,Lo-Temp Month 03,Celsius,11.2°C = 52.2°F
+35,Lo-Temp Month 04,Celsius,9.7°C = 49.5°F
+36,Lo-Temp Month 05,Celsius,9.6°C = 49.3°F
+37,Lo-Temp Month 06,Celsius,14.7°C = 58.5°F
+38,Lo-Temp Month 07,Celsius,13.6°C = 56.5°F
+39,Lo-Temp Month 08,Celsius,15.4°C = 59.7°F
+40,Lo-Temp Month 09,Celsius,14.9°C = 58.8°F
+41,Lo-Temp Month 10,Celsius,13.0°C = 55.4°F
+42,Lo-Temp Month 11,Celsius,12.0°C = 53.6°F
+43,Lo-Temp Month 12,Celsius,9.8°C = 49.6°F
+44,Lo-Temp Month 13,Celsius,10.3°C = 50.5°F
+45,Lo-Temp Month 14,Celsius,13.2°C = 55.8°F
+46,Lo-Temp Month 15,Celsius,12.8°C = 55.0°F
+47,Lo-Temp Month 16,Celsius,9.4°C = 48.9°F
+48,Lo-Temp Month 17,Celsius,7.8°C = 46.0°F
+49,Lo-Temp Month 18,Celsius,8.8°C = 47.8°F
+50,Lo-Temp Month 19,Celsius,7.6°C = 45.7°F
+51,Lo-Temp Month 20,Celsius,11.1°C = 52.0°F
+52,Lo-Temp Month 21,Celsius,10.7°C = 51.3°F
+53,Lo-Temp Month 22,Celsius,12.1°C = 53.8°F
+54,Lo-Temp Month 23,Celsius,10.1°C = 50.2°F
+55,Lo-Temp Month 24,Celsius,7.1°C = 44.8°F
+56,Lo-Temp Month 25,Celsius,6.1°C = 43.0°F
+57,Lo-Temp Month 26,Celsius,6.7°C = 44.1°F
+58,Lo-Temp Month 27,Celsius,7.6°C = 45.7°F
+59,Lo-Temp Month 28,Celsius,8.2°C = 46.8°F
+60,Lo-Temp Month 29,Celsius,9.7°C = 49.5°F
+61,Lo-Temp Month 30,Celsius,9.3°C = 48.7°F
+62,Lo-Temp Month 31,Celsius,8.9°C = 48.0°F
+63,Rain Month 01,Millimeters,1.2 mm = 0.05 in
+64,Rain Month 02,Millimeters,1.2 mm = 0.05 in
+65,Rain Month 03,Millimeters,1.2 mm = 0.05 in
+66,Rain Month 04,Millimeters,1.4 mm = 0.06 in
+67,Rain Month 05,Millimeters,0.2 mm = 0.01 in
+68,Rain Month 06,Millimeters,0.0 mm = 0.00 in
+69,Rain Month 07,Millimeters,4.4 mm = 0.17 in
+70,Rain Month 08,Millimeters,0.0 mm = 0.00 in
+71,Rain Month 09,Millimeters,5.6 mm = 0.22 in
+72,Rain Month 10,Millimeters,3.0 mm = 0.12 in
+73,Rain Month 11,Millimeters,0.2 mm = 0.01 in
+74,Rain Month 12,Millimeters,0.0 mm = 0.00 in
+75,Rain Month 13,Millimeters,0.4 mm = 0.02 in
+76,Rain Month 14,Millimeters,16.0 mm = 0.63 in
+77,Rain Month 15,Millimeters,3.6 mm = 0.14 in
+78,Rain Month 16,Millimeters,1.6 mm = 0.06 in
+79,Rain Month 17,Millimeters,2.4 mm = 0.09 in
+80,Rain Month 18,Millimeters,2.0 mm = 0.08 in
+81,Rain Month 19,Millimeters,3.2 mm = 0.13 in
+82,Rain Month 20,Millimeters,16.0 mm = 0.63 in
+83,Rain Month 21,Millimeters,10.8 mm = 0.43 in
+84,Rain Month 22,Millimeters,0.0 mm = 0.00 in
+85,Rain Month 23,Millimeters,0.0 mm = 0.00 in
+86,Rain Month 24,Millimeters,0.0 mm = 0.00 in
+87,Rain Month 25,Millimeters,0.0 mm = 0.00 in
+88,Rain Month 26,Millimeters,0.0 mm = 0.00 in
+89,Rain Month 27,Millimeters,0.0 mm = 0.00 in
+90,Rain Month 28,Millimeters,0.2 mm = 0.01 in
+91,Rain Month 29,Millimeters,0.0 mm = 0.00 in
+92,Rain Month 30,Millimeters,0.2 mm = 0.01 in
+93,Rain Month 31,Millimeters,0.2 mm = 0.01 in
+94,Baro Month 01,hPa,1009.3 hPa = 29.80 inHg
+95,Baro Month 02,hPa,1024.1 hPa = 30.24 inHg
+96,Baro Month 03,hPa,1031.3 hPa = 30.45 inHg
+97,Baro Month 04,hPa,1032.5 hPa = 30.49 inHg
+98,Baro Month 05,hPa,1026.7 hPa = 30.32 inHg
+99,Baro Month 06,hPa,1024.5 hPa = 30.25 inHg
+100,Baro Month 07,hPa,1025.6 hPa = 30.29 inHg
+101,Baro Month 08,hPa,1021.9 hPa = 30.18 inHg
+102,Baro Month 09,hPa,1016.0 hPa = 30.00 inHg
+103,Baro Month 10,hPa,1015.3 hPa = 29.98 inHg
+104,Baro Month 11,hPa,1018.2 hPa = 30.07 inHg
+105,Baro Month 12,hPa,1020.3 hPa = 30.13 inHg
+106,Baro Month 13,hPa,1011.3 hPa = 29.86 inHg
+107,Baro Month 14,hPa,997.6 hPa = 29.46 inHg
+108,Baro Month 15,hPa,1001.8 hPa = 29.58 inHg
+109,Baro Month 16,hPa,998.9 hPa = 29.50 inHg
+110,Baro Month 17,hPa,999.9 hPa = 29.53 inHg
+111,Baro Month 18,hPa,1010.4 hPa = 29.84 inHg
+112,Baro Month 19,hPa,1005.3 hPa = 29.69 inHg
+113,Baro Month 20,hPa,1001.8 hPa = 29.58 inHg
+114,Baro Month 21,hPa,1000.7 hPa = 29.55 inHg
+115,Baro Month 22,hPa,1007.2 hPa = 29.74 inHg
+116,Baro Month 23,hPa,1016.0 hPa = 30.00 inHg
+117,Baro Month 24,hPa,1025.3 hPa = 30.28 inHg
+118,Baro Month 25,hPa,1029.2 hPa = 30.39 inHg
+119,Baro Month 26,hPa,1027.6 hPa = 30.35 inHg
+120,Baro Month 27,hPa,1023.9 hPa = 30.24 inHg
+121,Baro Month 28,hPa,1019.2 hPa = 30.10 inHg
+122,Baro Month 29,hPa,1024.5 hPa = 30.25 inHg
+123,Baro Month 30,hPa,1026.6 hPa = 30.32 inHg
+124,Baro Month 31,hPa,1027.5 hPa = 30.34 inHg
+125,Wind Month 01,Knots,0.1 kts = 0.1 mph = 0.2 km/h = 0.1 m/s
+126,Wind Month 02,Knots,1.1 kts = 1.3 mph = 2.0 km/h = 0.6 m/s
+127,Wind Month 03,Knots,0.3 kts = 0.3 mph = 0.6 km/h = 0.1 m/s
+128,Wind Month 04,Knots,0.4 kts = 0.5 mph = 0.7 km/h = 0.2 m/s
+129,Wind Month 05,Knots,4.0 kts = 4.6 mph = 7.4 km/h = 2.1 m/s
+130,Wind Month 06,Knots,2.9 kts = 3.3 mph = 5.4 km/h = 1.5 m/s
+131,Wind Month 07,Knots,0.1 kts = 0.1 mph = 0.2 km/h = 0.1 m/s
+132,Wind Month 08,Knots,0.2 kts = 0.2 mph = 0.4 km/h = 0.1 m/s
+133,Wind Month 09,Knots,0.2 kts = 0.2 mph = 0.4 km/h = 0.1 m/s
+134,Wind Month 10,Knots,0.5 kts = 0.6 mph = 0.9 km/h = 0.3 m/s
+135,Wind Month 11,Knots,3.6 kts = 4.2 mph = 6.7 km/h = 1.9 m/s
+136,Wind Month 12,Knots,0.0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+137,Wind Month 13,Knots,0.0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+138,Wind Month 14,Knots,0.2 kts = 0.2 mph = 0.4 km/h = 0.1 m/s
+139,Wind Month 15,Knots,6.8 kts = 7.8 mph = 12.6 km/h = 3.5 m/s
+140,Wind Month 16,Knots,4.7 kts = 5.4 mph = 8.7 km/h = 2.4 m/s
+141,Wind Month 17,Knots,4.6 kts = 5.3 mph = 8.5 km/h = 2.4 m/s
+142,Wind Month 18,Knots,5.4 kts = 6.2 mph = 10.0 km/h = 2.8 m/s
+143,Wind Month 19,Knots,7.3 kts = 8.4 mph = 13.5 km/h = 3.8 m/s
+144,Wind Month 20,Knots,5.6 kts = 6.5 mph = 10.4 km/h = 2.9 m/s
+145,Wind Month 21,Knots,0.4 kts = 0.5 mph = 0.7 km/h = 0.2 m/s
+146,Wind Month 22,Knots,0.6 kts = 0.7 mph = 1.1 km/h = 0.3 m/s
+147,Wind Month 23,Knots,0.1 kts = 0.1 mph = 0.2 km/h = 0.1 m/s
+148,Wind Month 24,Knots,0.6 kts = 0.7 mph = 1.1 km/h = 0.3 m/s
+149,Wind Month 25,Knots,0.4 kts = 0.5 mph = 0.7 km/h = 0.2 m/s
+150,Wind Month 26,Knots,0.1 kts = 0.1 mph = 0.2 km/h = 0.1 m/s
+151,Wind Month 27,Knots,0.1 kts = 0.1 mph = 0.2 km/h = 0.1 m/s
+152,Wind Month 28,Knots,0.2 kts = 0.2 mph = 0.4 km/h = 0.1 m/s
+153,Wind Month 29,Knots,0.6 kts = 0.7 mph = 1.1 km/h = 0.3 m/s
+154,Wind Month 30,Knots,0.1 kts = 0.1 mph = 0.2 km/h = 0.1 m/s
+155,Wind Month 31,Knots,3.8 kts = 4.4 mph = 7.0 km/h = 2.0 m/s
+156,Wind Dir Month 01,Compass,67.5° (ENE)
+157,Wind Dir Month 02,Compass,180.0° (S)
+158,Wind Dir Month 03,Compass,315.0° (NW)
+159,Wind Dir Month 04,Compass,67.5° (ENE)
+160,Wind Dir Month 05,Compass,341.9° (NNW)
+161,Wind Dir Month 06,Compass,202.5° (SSW)
+162,Wind Dir Month 07,Compass,202.5° (SSW)
+163,Wind Dir Month 08,Compass,99.0° (E)
+164,Wind Dir Month 09,Compass,270.0° (W)
+165,Wind Dir Month 10,Compass,180.0° (S)
+166,Wind Dir Month 11,Compass,94.4° (E)
+167,Wind Dir Month 12,Compass,292.5° (WNW)
+168,Wind Dir Month 13,Compass,292.5° (WNW)
+169,Wind Dir Month 14,Compass,337.5° (NNW)
+170,Wind Dir Month 15,Compass,222.6° (SW)
+171,Wind Dir Month 16,Compass,135.0° (SE)
+172,Wind Dir Month 17,Compass,5.1° (N)
+173,Wind Dir Month 18,Compass,135.0° (SE)
+174,Wind Dir Month 19,Compass,79.6° (E)
+175,Wind Dir Month 20,Compass,247.5° (WSW)
+176,Wind Dir Month 21,Compass,248.0° (WSW)
+177,Wind Dir Month 22,Compass,161.1° (SSE)
+178,Wind Dir Month 23,Compass,22.5° (NNE)
+179,Wind Dir Month 24,Compass,112.5° (ESE)
+180,Wind Dir Month 25,Compass,22.5° (NNE)
+181,Wind Dir Month 26,Compass,22.5° (NNE)
+182,Wind Dir Month 27,Compass,22.5° (NNE)
+183,Wind Dir Month 28,Compass,22.5° (NNE)
+184,Wind Dir Month 29,Compass,292.5° (WNW)
+185,Wind Dir Month 30,Compass,292.5° (WNW)
+186,Wind Dir Month 31,Compass,98.8° (E)
+187,Rain Month Total 01,Millimeters,118.4 mm = 4.66 in
+188,Rain Month Total 02,Millimeters,161.4 mm = 6.35 in
+189,Rain Month Total 03,Millimeters,143.0 mm = 5.63 in
+190,Rain Month Total 04,Millimeters,297.2 mm = 11.70 in
+191,Rain Month Total 05,Millimeters,205.2 mm = 8.08 in
+192,Rain Month Total 06,Millimeters,293.4 mm = 11.55 in
+193,Rain Month Total 07,Millimeters,267.6 mm = 10.54 in
+194,Rain Month Total 08,Millimeters,59.8 mm = 2.35 in
+195,Rain Month Total 09,Millimeters,165.8 mm = 6.53 in
+196,Rain Month Total 10,Millimeters,256.2 mm = 10.09 in
+197,Rain Month Total 11,Millimeters,144.2 mm = 5.68 in
+198,Rain Month Total 12,Millimeters,87.8 mm = 3.46 in
+199,Humidity Amount Month 01,Percent,82.00%
+200,Humidity Amount Month 02,Percent,88.00%
+201,Humidity Amount Month 03,Percent,94.00%
+202,Humidity Amount Month 04,Percent,89.00%
+203,Humidity Amount Month 05,Percent,81.00%
+204,Humidity Amount Month 06,Percent,88.00%
+205,Humidity Amount Month 07,Percent,78.00%
+206,Humidity Amount Month 08,Percent,77.00%
+207,Humidity Amount Month 09,Percent,95.00%
+208,Humidity Amount Month 10,Percent,89.00%
+209,Humidity Amount Month 11,Percent,80.00%
+210,Humidity Amount Month 12,Percent,82.00%
+211,Humidity Amount Month 13,Percent,84.00%
+212,Humidity Amount Month 14,Percent,91.00%
+213,Humidity Amount Month 15,Percent,78.00%
+214,Humidity Amount Month 16,Percent,92.00%
+215,Humidity Amount Month 17,Percent,87.00%
+216,Humidity Amount Month 18,Percent,81.00%
+217,Humidity Amount Month 19,Percent,85.00%
+218,Humidity Amount Month 20,Percent,95.00%
+219,Humidity Amount Month 21,Percent,85.00%
+220,Humidity Amount Month 22,Percent,52.00%
+221,Humidity Amount Month 23,Percent,69.00%
+222,Humidity Amount Month 24,Percent,83.00%
+223,Humidity Amount Month 25,Percent,88.00%
+224,Humidity Amount Month 26,Percent,91.00%
+225,Humidity Amount Month 27,Percent,94.00%
+226,Humidity Amount Month 28,Percent,80.00%
+227,Humidity Amount Month 29,Percent,90.00%
+228,Humidity Amount Month 30,Percent,94.00%
+229,Humidity Amount Month 31,Percent,69.00%
+230,Hour,Time,9
+231,Minute,Time,10
+232,Day,Time,30
+233,Temp Day 1 #1,Celsius,8.3°C = 46.9°F
+234,Temp Day 1 #2,Celsius,7.4°C = 45.3°F
+235,Temp Day 1 #3,Celsius,15.8°C = 60.4°F
+236,Temp Day 1 #4,Celsius,12.1°C = 53.8°F
+237,Temp Day 2 #1,Celsius,9.6°C = 49.3°F
+238,Temp Day 2 #2,Celsius,7.9°C = 46.2°F
+239,Temp Day 2 #3,Celsius,17.8°C = 64.0°F
+240,Temp Day 2 #4,Celsius,12.8°C = 55.0°F
+241,Temp Day 3 #1,Celsius,9.8°C = 49.6°F
+242,Temp Day 3 #2,Celsius,8.5°C = 47.3°F
+243,Temp Day 3 #3,Celsius,16.9°C = 62.4°F
+244,Temp Day 3 #4,Celsius,15.4°C = 59.7°F
+245,Temp Day 4 #1,Celsius,11.1°C = 52.0°F
+246,Temp Day 4 #2,Celsius,10.7°C = 51.3°F
+247,Temp Day 4 #3,Celsius,17.9°C = 64.2°F
+248,Temp Day 4 #4,Celsius,13.8°C = 56.8°F
+249,Temp Day 5 #1,Celsius,11.5°C = 52.7°F
+250,Temp Day 5 #2,Celsius,9.7°C = 49.5°F
+251,Temp Day 5 #3,Celsius,17.1°C = 62.8°F
+252,Temp Day 5 #4,Celsius,13.9°C = 57.0°F
+253,Temp Day 6 #1,Celsius,11.1°C = 52.0°F
+254,Temp Day 6 #2,Celsius,9.4°C = 48.9°F
+255,Temp Day 6 #3,Celsius,19.2°C = 66.6°F
+256,Temp Day 6 #4,Celsius,17.1°C = 62.8°F
+257,Temp Day 7 #1,Celsius,15.6°C = 60.1°F
+258,Temp Day 7 #2,Celsius,13.6°C = 56.5°F
+259,Temp Day 7 #3,Celsius,15.5°C = 59.9°F
+260,Temp Day 7 #4,Celsius,15.5°C = 59.9°F
+261,Baro Day 1 #1,hPa,1029.2 hPa = 30.39 inHg
+262,Baro Day 1 #2,hPa,1028.7 hPa = 30.38 inHg
+263,Baro Day 1 #3,hPa,1028.2 hPa = 30.36 inHg
+264,Baro Day 1 #4,hPa,1026.2 hPa = 30.30 inHg
+265,Baro Day 2 #1,hPa,1027.6 hPa = 30.35 inHg
+266,Baro Day 2 #2,hPa,1026.0 hPa = 30.30 inHg
+267,Baro Day 2 #3,hPa,1025.3 hPa = 30.28 inHg
+268,Baro Day 2 #4,hPa,1023.9 hPa = 30.24 inHg
+269,Baro Day 3 #1,hPa,1023.9 hPa = 30.24 inHg
+270,Baro Day 3 #2,hPa,1021.5 hPa = 30.16 inHg
+271,Baro Day 3 #3,hPa,1019.2 hPa = 30.10 inHg
+272,Baro Day 3 #4,hPa,1017.0 hPa = 30.03 inHg
+273,Baro Day 4 #1,hPa,1019.2 hPa = 30.10 inHg
+274,Baro Day 4 #2,hPa,1019.7 hPa = 30.11 inHg
+275,Baro Day 4 #3,hPa,1021.9 hPa = 30.18 inHg
+276,Baro Day 4 #4,hPa,1022.2 hPa = 30.19 inHg
+277,Baro Day 5 #1,hPa,1024.5 hPa = 30.25 inHg
+278,Baro Day 5 #2,hPa,1024.6 hPa = 30.26 inHg
+279,Baro Day 5 #3,hPa,1025.7 hPa = 30.29 inHg
+280,Baro Day 5 #4,hPa,1024.8 hPa = 30.26 inHg
+281,Baro Day 6 #1,hPa,1026.6 hPa = 30.32 inHg
+282,Baro Day 6 #2,hPa,1026.7 hPa = 30.32 inHg
+283,Baro Day 6 #3,hPa,1026.3 hPa = 30.31 inHg
+284,Baro Day 6 #4,hPa,1024.7 hPa = 30.26 inHg
+285,Baro Day 7 #1,hPa,1027.5 hPa = 30.34 inHg
+286,Baro Day 7 #2,hPa,1032.9 hPa = 30.50 inHg
+287,Baro Day 7 #3,hPa,1035.5 hPa = 30.58 inHg
+288,Baro Day 7 #4,hPa,1035.5 hPa = 30.58 inHg
+289,Humidity Day 1 #1,Percent,88%
+290,Humidity Day 1 #2,Percent,89%
+291,Humidity Day 1 #3,Percent,67%
+292,Humidity Day 1 #4,Percent,84%
+293,Humidity Day 2 #1,Percent,91%
+294,Humidity Day 2 #2,Percent,93%
+295,Humidity Day 2 #3,Percent,73%
+296,Humidity Day 2 #4,Percent,86%
+297,Humidity Day 3 #1,Percent,94%
+298,Humidity Day 3 #2,Percent,94%
+299,Humidity Day 3 #3,Percent,78%
+300,Humidity Day 3 #4,Percent,83%
+301,Humidity Day 4 #1,Percent,80%
+302,Humidity Day 4 #2,Percent,79%
+303,Humidity Day 4 #3,Percent,74%
+304,Humidity Day 4 #4,Percent,85%
+305,Humidity Day 5 #1,Percent,90%
+306,Humidity Day 5 #2,Percent,92%
+307,Humidity Day 5 #3,Percent,80%
+308,Humidity Day 5 #4,Percent,87%
+309,Humidity Day 6 #1,Percent,94%
+310,Humidity Day 6 #2,Percent,95%
+311,Humidity Day 6 #3,Percent,75%
+312,Humidity Day 6 #4,Percent,70%
+313,Humidity Day 7 #1,Percent,69%
+314,Humidity Day 7 #2,Percent,85%
+315,Humidity Day 7 #3,Percent,81%
+316,Humidity Day 7 #4,Percent,81%
+317,Wind Dir Day 1 #1,Compass,337° (NNW)
+318,Wind Dir Day 1 #2,Compass,337° (NNW)
+319,Wind Dir Day 1 #3,Compass,337° (NNW)
+320,Wind Dir Day 1 #4,Compass,337° (NNW)
+321,Wind Dir Day 2 #1,Compass,337° (NNW)
+322,Wind Dir Day 2 #2,Compass,337° (NNW)
+323,Wind Dir Day 2 #3,Compass,337° (NNW)
+324,Wind Dir Day 2 #4,Compass,337° (NNW)
+325,Wind Dir Day 3 #1,Compass,337° (NNW)
+326,Wind Dir Day 3 #2,Compass,337° (NNW)
+327,Wind Dir Day 3 #3,Compass,337° (NNW)
+328,Wind Dir Day 3 #4,Compass,337° (NNW)
+329,Wind Dir Day 4 #1,Compass,337° (NNW)
+330,Wind Dir Day 4 #2,Compass,337° (NNW)
+331,Wind Dir Day 4 #3,Compass,337° (NNW)
+332,Wind Dir Day 4 #4,Compass,333° (NNW)
+333,Wind Dir Day 5 #1,Compass,333° (NNW)
+334,Wind Dir Day 5 #2,Compass,333° (NNW)
+335,Wind Dir Day 5 #3,Compass,333° (NNW)
+336,Wind Dir Day 5 #4,Compass,333° (NNW)
+337,Wind Dir Day 6 #1,Compass,333° (NNW)
+338,Wind Dir Day 6 #2,Compass,333° (NNW)
+339,Wind Dir Day 6 #3,Compass,333° (NNW)
+340,Wind Dir Day 6 #4,Compass,292° (WNW)
+341,Wind Dir Day 7 #1,Compass,275° (W)
+342,Wind Dir Day 7 #2,Compass,269° (W)
+343,Wind Dir Day 7 #3,Compass,270° (W)
+344,Wind Dir Day 7 #4,Compass,270° (W)
+345,Wind Speed Day 1 #1,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+346,Wind Speed Day 1 #2,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+347,Wind Speed Day 1 #3,Knots,1 kts = 1.1 mph = 1.9 km/h = 0.5 m/s
+348,Wind Speed Day 1 #4,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+349,Wind Speed Day 2 #1,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+350,Wind Speed Day 2 #2,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+351,Wind Speed Day 2 #3,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+352,Wind Speed Day 2 #4,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+353,Wind Speed Day 3 #1,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+354,Wind Speed Day 3 #2,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+355,Wind Speed Day 3 #3,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+356,Wind Speed Day 3 #4,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+357,Wind Speed Day 4 #1,Knots,1 kts = 1.1 mph = 1.9 km/h = 0.5 m/s
+358,Wind Speed Day 4 #2,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+359,Wind Speed Day 4 #3,Knots,1 kts = 1.1 mph = 1.9 km/h = 0.5 m/s
+360,Wind Speed Day 4 #4,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+361,Wind Speed Day 5 #1,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+362,Wind Speed Day 5 #2,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+363,Wind Speed Day 5 #3,Knots,2 kts = 2.3 mph = 3.7 km/h = 1.0 m/s
+364,Wind Speed Day 5 #4,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+365,Wind Speed Day 6 #1,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+366,Wind Speed Day 6 #2,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+367,Wind Speed Day 6 #3,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+368,Wind Speed Day 6 #4,Knots,12 kts = 13.8 mph = 22.2 km/h = 6.2 m/s
+369,Wind Speed Day 7 #1,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+370,Wind Speed Day 7 #2,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+371,Wind Speed Day 7 #3,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+372,Wind Speed Day 7 #4,Knots,0 kts = 0.0 mph = 0.0 km/h = 0.0 m/s
+373,Solar Day 1 #1,Number,0
+374,Solar Day 1 #2,Number,0
+375,Solar Day 1 #3,Number,703
+376,Solar Day 1 #4,Number,0
+377,Solar Day 2 #1,Number,0
+378,Solar Day 2 #2,Number,0
+379,Solar Day 2 #3,Number,696
+380,Solar Day 2 #4,Number,0
+381,Solar Day 3 #1,Number,0
+382,Solar Day 3 #2,Number,0
+383,Solar Day 3 #3,Number,686
+384,Solar Day 3 #4,Number,0
+385,Solar Day 4 #1,Number,0
+386,Solar Day 4 #2,Number,0
+387,Solar Day 4 #3,Number,671
+388,Solar Day 4 #4,Number,0
+389,Solar Day 5 #1,Number,0
+390,Solar Day 5 #2,Number,0
+391,Solar Day 5 #3,Number,666
+392,Solar Day 5 #4,Number,0
+393,Solar Day 6 #1,Number,0
+394,Solar Day 6 #2,Number,0
+395,Solar Day 6 #3,Number,668
+396,Solar Day 6 #4,Number,0
+397,Solar Day 7 #1,Number,0
+398,Solar Day 7 #2,Number,0
+399,Solar Day 7 #3,Number,97
+400,Solar Day 7 #4,Number,97
+401,UV Day 1 #1,Number,0
+402,UV Day 1 #2,Number,0
+403,UV Day 1 #3,Number,3.1
+404,UV Day 1 #4,Number,0
+405,UV Day 2 #1,Number,0
+406,UV Day 2 #2,Number,0
+407,UV Day 2 #3,Number,3.3
+408,UV Day 2 #4,Number,0
+409,UV Day 3 #1,Number,0
+410,UV Day 3 #2,Number,0
+411,UV Day 3 #3,Number,3
+412,UV Day 3 #4,Number,0
+413,UV Day 4 #1,Number,0
+414,UV Day 4 #2,Number,0
+415,UV Day 4 #3,Number,2.8
+416,UV Day 4 #4,Number,0
+417,UV Day 5 #1,Number,0
+418,UV Day 5 #2,Number,0
+419,UV Day 5 #3,Number,2.8
+420,UV Day 5 #4,Number,0
+421,UV Day 6 #1,Number,0
+422,UV Day 6 #2,Number,0
+423,UV Day 6 #3,Number,3
+424,UV Day 6 #4,Number,0
+425,UV Day 7 #1,Number,0
+426,UV Day 7 #2,Number,0
+427,UV Day 7 #3,Number,0.5
+428,UV Day 7 #4,Number,0.5
+429,Last years Rain total to Dec (from rain season start),Millimeters,306.0 mm = 12.05 in
+430,"Average rain for Jan, and then for the other months (mm)",Millimeters,141.5 mm = 5.57 in
+431,Average rain for Feb,Millimeters,104.8 mm = 4.13 in
+432,Average rain for Mar,Millimeters,64.3 mm = 2.53 in
+433,Average rain for Apr,Millimeters,205.7 mm = 8.10 in
+434,Average rain for May,Millimeters,117.7 mm = 4.63 in
+435,Average rain for Jun,Millimeters,257.0 mm = 10.12 in
+436,Average rain for Jul,Millimeters,204.7 mm = 8.06 in
+437,Average rain for Aug,Millimeters,152.9 mm = 6.02 in
+438,Average rain for Sep,Millimeters,129.3 mm = 5.09 in
+439,Average rain for Oct,Millimeters,218.9 mm = 8.62 in
+440,Average rain for Nov,Millimeters,117.5 mm = 4.63 in
+441,Average rain for Dec,Millimeters,132.6 mm = 5.22 in
+442,WD Version - End of file,Label (Example: !!D10.37S60!! ),!!D10.37S149!!
