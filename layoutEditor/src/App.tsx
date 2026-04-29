@@ -1,6 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { LayoutDoc, WidgetInstance } from "./model/types";
-import { emptyLayout, ensureRequiredHandlers, isRequiredHandlerType, newInstance, colsForRows } from "./model/defaults";
+import {
+  emptyLayout,
+  ensureRequiredHandlers,
+  isRequiredHandlerType,
+  newInstance,
+  freshInstanceId,
+  freshCanvasId,
+  colsForRows,
+  clamp,
+} from "./model/defaults";
+import { getCatalogEntry, isPlacedInGrid } from "./catalog";
 import { validateLayout } from "./model/validation";
 import { emitLayoutJs } from "./codegen/emitLayoutJs";
 import { Toolbar } from "./ui/Toolbar";
@@ -14,10 +24,10 @@ const STORAGE_KEY = "freshwdl.layoutEditor.doc.v1";
 
 export function App() {
   const [doc, setDoc] = useState<LayoutDoc>(() => loadFromStorage() ?? emptyLayout());
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(() => new Set());
+  const [clipboard, setClipboard] = useState<WidgetInstance[]>([]);
   const [previewOpen, setPreviewOpen] = useState(false);
 
-  // Autosave: 300ms debounce so dragging / typing doesn't write on every event.
   useEffect(() => {
     const t = setTimeout(() => {
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(doc)); } catch {}
@@ -36,19 +46,104 @@ export function App() {
       return { ...d, widgets: [...d.widgets, inst] };
     });
   };
-  const removeWidget = (id: string) => {
-    setDoc((d) => {
-      const target = d.widgets.find((w) => w.instanceId === id);
-      if (target && isRequiredHandlerType(target.type)) return d;
-      return { ...d, widgets: d.widgets.filter((w) => w.instanceId !== id) };
+  const removeWidgets = (ids: Iterable<string>) => {
+    const idSet = new Set(ids);
+    setDoc((d) => ({
+      ...d,
+      widgets: d.widgets.filter((w) => !idSet.has(w.instanceId) || isRequiredHandlerType(w.type)),
+    }));
+    setSelectedIds((prev) => {
+      let changed = false;
+      const next = new Set(prev);
+      for (const id of idSet) if (next.delete(id)) changed = true;
+      return changed ? next : prev;
     });
-    if (selectedId === id) setSelectedId(null);
+  };
+  const removeWidget = (id: string) => removeWidgets([id]);
+
+  const copySelected = () => {
+    const selectedWidgets = doc.widgets.filter((w) => selectedIds.has(w.instanceId) && !isRequiredHandlerType(w.type));
+    if (selectedWidgets.length === 0) return;
+    setClipboard(selectedWidgets.map((w) => structuredClone(w)));
+  };
+  const pasteClipboard = () => {
+    if (clipboard.length === 0) return;
+    const newIds: string[] = [];
+    setDoc((d) => {
+      const widgets = [...d.widgets];
+      for (const src of clipboard) {
+        const entry = getCatalogEntry(src.type);
+        if (!entry) continue;
+        const colSpan = src.area.colEnd - src.area.colStart;
+        const rowSpan = src.area.rowEnd - src.area.rowStart;
+        const cs = clamp(src.area.colStart + 1, 1, d.grid.cols - colSpan + 1);
+        const rs = clamp(src.area.rowStart + 1, 1, d.grid.rows - rowSpan + 1);
+        const inst: WidgetInstance = {
+          ...structuredClone(src),
+          instanceId: freshInstanceId(src.type, widgets),
+          area: { colStart: cs, colEnd: cs + colSpan, rowStart: rs, rowEnd: rs + rowSpan },
+          canvasID: entry.needsCanvas ? freshCanvasId(entry.defaultCanvasIdPrefix, widgets) : src.canvasID,
+        };
+        widgets.push(inst);
+        newIds.push(inst.instanceId);
+      }
+      return { ...d, widgets };
+    });
+    if (newIds.length > 0) setSelectedIds(new Set(newIds));
   };
 
+  // Stable keydown handler: read latest state via refs so the listener doesn't
+  // re-attach on every doc edit.
+  const handlersRef = useRef({ removeWidgets, copySelected, pasteClipboard, doc, selectedIds });
+  handlersRef.current = { removeWidgets, copySelected, pasteClipboard, doc, selectedIds };
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement | null;
+      const tag = t?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (t && t.isContentEditable)) return;
+      const h = handlersRef.current;
+      const mod = e.ctrlKey || e.metaKey;
+      const k = e.key.toLowerCase();
+      if ((e.key === "Delete" || e.key === "Backspace") && h.selectedIds.size > 0) {
+        e.preventDefault(); h.removeWidgets(h.selectedIds);
+      } else if (mod && k === "c") {
+        e.preventDefault(); h.copySelected();
+      } else if (mod && k === "v") {
+        e.preventDefault(); h.pasteClipboard();
+      } else if (mod && k === "a") {
+        e.preventDefault();
+        const allPlaced = h.doc.widgets.filter((w) => isPlacedInGrid(getCatalogEntry(w.type)));
+        setSelectedIds(new Set(allPlaced.map((w) => w.instanceId)));
+      } else if (e.key === "Escape") {
+        setSelectedIds((prev) => prev.size === 0 ? prev : new Set());
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   const selected = useMemo(
-    () => doc.widgets.find((w) => w.instanceId === selectedId) ?? null,
-    [doc.widgets, selectedId],
+    () => (selectedIds.size === 1
+      ? (doc.widgets.find((w) => selectedIds.has(w.instanceId)) ?? null)
+      : null),
+    [doc.widgets, selectedIds],
   );
+
+  const dropFromPalette = (type: string, position: { col: number; row: number }) => {
+    const entry = getCatalogEntry(type);
+    if (!entry) return;
+    let newId = "";
+    setDoc((d) => {
+      const colSpan = Math.max(1, entry.defaultArea.colSpan);
+      const rowSpan = Math.max(1, entry.defaultArea.rowSpan);
+      const cs = clamp(position.col, 1, d.grid.cols - colSpan + 1);
+      const rs = clamp(position.row, 1, d.grid.rows - rowSpan + 1);
+      const inst = newInstance(type, d, { col: cs, row: rs });
+      newId = inst.instanceId;
+      return { ...d, widgets: [...d.widgets, inst] };
+    });
+    if (newId) setSelectedIds(new Set([newId]));
+  };
 
   return (
     <div className="app">
@@ -69,12 +164,14 @@ export function App() {
         : <GridCanvas
             doc={doc}
             setDoc={setDoc}
-            selectedId={selectedId}
-            setSelectedId={setSelectedId}
+            selectedIds={selectedIds}
+            setSelectedIds={setSelectedIds}
+            onDropPaletteType={dropFromPalette}
           />}
       <Inspector
         doc={doc}
         selected={selected}
+        selectionCount={selectedIds.size}
         updateWidget={updateWidget}
         removeWidget={removeWidget}
       />
@@ -89,7 +186,6 @@ function loadFromStorage(): LayoutDoc | null {
     if (!raw) return null;
     const parsed = JSON.parse(raw) as LayoutDoc;
     if (parsed && parsed.version === 1 && Array.isArray(parsed.widgets)) {
-      // Force 16:9 grid — older layouts may have square or asymmetric values.
       const rows = parsed.grid.rows;
       parsed.grid = { cols: colsForRows(rows), rows };
       parsed.widgets = ensureRequiredHandlers(parsed.widgets);

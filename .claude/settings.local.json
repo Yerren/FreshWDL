@@ -19,7 +19,11 @@
       "Bash(grep -nE \"^\\\\s{4}[a-zA-Z]+\\\\s*:\\\\s*\\\\{$\" \"C:/Users/Yerren/Documents/GitHub/FreshWDL/js_bundles/Globals.js\")",
       "Read(//c//**)",
       "Bash(echo \"exit=$?\")",
-      "Bash(awk '{for\\(i=1;i<=NF;i++\\) printf \"%d: %s\\\\n\", i-1, $i}' clientraw.txt)"
+      "Bash(awk '{for\\(i=1;i<=NF;i++\\) printf \"%d: %s\\\\n\", i-1, $i}' clientraw.txt)",
+      "Bash(npm run *)",
+      "Bash(kill %1)",
+      "Bash(pkill -f \"vite\")",
+      "PowerShell($env:TEMP)"
     ]
   }
 }

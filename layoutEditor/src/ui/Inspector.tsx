@@ -9,17 +9,20 @@ import { IDENT_RE, validateSpec } from "../model/validation";
 type Props = {
   doc: LayoutDoc;
   selected: WidgetInstance | null;
+  selectionCount?: number;
   updateWidget: (id: string, patch: Partial<WidgetInstance>) => void;
   removeWidget: (id: string) => void;
 };
 
-export function Inspector({ doc, selected, updateWidget, removeWidget }: Props) {
+export function Inspector({ doc, selected, selectionCount = 0, updateWidget, removeWidget }: Props) {
   if (!selected) {
     return (
       <div className="inspector">
         <h3>Inspector</h3>
         <div className="empty-hint" style={{ padding: 0 }}>
-          Select a widget on the canvas to edit its properties.
+          {selectionCount > 1
+            ? `${selectionCount} widgets selected. Drag to move them as a group, or press Delete to remove.`
+            : "Select a widget on the canvas to edit its properties. Shift-click to select multiple."}
         </div>
         <h3 style={{ marginTop: 18 }}>Page buttons (#bottom)</h3>
         <ButtonsEditor doc={doc} updateWidget={updateWidget} />
