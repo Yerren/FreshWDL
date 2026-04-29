@@ -1,7 +1,7 @@
 import type { ValidationIssue } from "../model/validation";
 
 export function LogPanel({ issues }: { issues: ValidationIssue[] }) {
-  if (issues.length === 0) return <div className="log">No issues.</div>;
+  if (issues.length === 0) return null;
   return (
     <div className="log">
       {issues.map((it, i) => (
