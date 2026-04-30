@@ -112,22 +112,8 @@
 
         // Reset data-update bookkeeping so the next fetch dispatches the
         // clientRaw*DataUpdate events the freshly-built widgets listen for.
-        // Without this, a rebuild (e.g. after a resize or live edit) finds
-        // arrayClientrawOld already equal to the cached arrayClientraw, marks
-        // it unchanged, and the new widgets never receive their first update —
-        // gauges and graphs stay at zero until the next iframe is mounted.
-        window.arrayClientraw = [];
-        window.arrayClientrawExtra = [];
-        window.arrayClientrawHour = [];
-        window.arrayClientrawDaily = [];
-        window.arrayClientrawOld = [];
-        window.arrayClientrawExtraOld = [];
-        window.arrayClientrawHourOld = [];
-        window.arrayClientrawDailyOld = [];
-        window.firstTime = true;
-        window.loaded = null;
-        window.doneCR = window.doneCRE = window.doneCRH = window.doneCRD = false;
-        window.attemptedCR = window.attemptedCRE = window.attemptedCRH = window.attemptedCRD = false;
+        // The reset list lives in DataManager.resetState — add new state there.
+        DataManager.resetState(window);
 
         // Replace any existing FWDLcontainer + bottom buttons.
         var prev = document.getElementById("FWDLcontainer");

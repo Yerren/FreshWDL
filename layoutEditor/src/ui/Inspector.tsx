@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { DictOrText } from "../catalog";
-import { coerceDictOrText, getCatalogEntry, isPlacedInGrid } from "../catalog";
+import { coerceDictOrText, getCatalogEntry, isPlacedInGrid, WIDGET_TEXT_BACKGROUND_SHAPE } from "../catalog";
 import { isRequiredHandlerType } from "../model/defaults";
 import { useClientrawSpecs } from "../model/clientrawSpecs";
 import { useDictKeys } from "../model/dictKeys";
@@ -98,6 +98,7 @@ export function Inspector({ selected, selectionCount = 0, updateWidget, removeWi
               );
             }
             if (opt.type === "textarea") {
+              const isTextTemplate = entry.type === "WidgetText" && opt.key === "template";
               return (
                 <div key={opt.key} title={opt.hint} className="textarea-field">
                   <label>{opt.label}</label>
@@ -105,6 +106,12 @@ export function Inspector({ selected, selectionCount = 0, updateWidget, removeWi
                     rows={opt.rows ?? 6}
                     value={String(v ?? "")}
                     onChange={(e) => setOpt(e.target.value)} />
+                  {isTextTemplate && (
+                    <button style={{ marginTop: 4 }} onClick={() => {
+                      const tpl = String(v ?? "");
+                      setOpt(tpl ? WIDGET_TEXT_BACKGROUND_SHAPE + "\n" + tpl : WIDGET_TEXT_BACKGROUND_SHAPE);
+                    }}>Prepend rounded background</button>
+                  )}
                   {opt.hint && <div className="hint">{opt.hint}</div>}
                 </div>
               );

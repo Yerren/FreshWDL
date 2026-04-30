@@ -4,8 +4,6 @@
 import { coerceDictOrText, getCatalogEntry, getPlacedWidgets } from "../catalog";
 import type { ButtonConfig, LayoutDoc, WidgetInstance } from "../model/types";
 
-const cr = (i: number) => `clientraw[${i}]`;
-
 export function emitLayoutJs(doc: LayoutDoc): string {
   const styleBlock = emitStyle(doc);
   const domBlock = emitDom(doc);
@@ -150,22 +148,9 @@ function emitConfig(w: WidgetInstance, entry: ReturnType<typeof getCatalogEntry>
     parts.push(`canvasID: ${jsString(w.canvasID)}`);
   }
 
-  // WidgetText "withBackground" is an editor-only flag: it expands into a
-  // rounded-rect <shape> prepended to the template (same panel used by
-  // BarometerWidget / MoonSunWidget). The flag itself is never emitted.
-  let optionValues = w.options;
-  if (entry.type === "WidgetText" && w.options.withBackground) {
-    const tpl = String(w.options.template ?? "");
-    const bg =
-      '<shape type="roundedRect" x="5%" y="5%" w="90%" h="90%"' +
-      ' radius="10%" strokeSize="2.5%" fill="#F6F6F6"/>';
-    optionValues = { ...w.options, template: tpl ? bg + "\n" + tpl : bg };
-  }
-
   // Catalog-defined options (booleans/strings/numbers/selects/textareas).
   for (const opt of entry.options) {
-    if (opt.key === "withBackground") continue;
-    const v = optionValues[opt.key];
+    const v = w.options[opt.key];
     if (v === undefined || v === null || v === "") continue;
     if (opt.type === "dictOrText") {
       // Dict mode → emit useDict("<key>"); literal mode → plain string.
@@ -184,13 +169,13 @@ function emitConfig(w: WidgetInstance, entry: ReturnType<typeof getCatalogEntry>
     else parts.push(`${opt.key}: ${jsString(String(v))}`);
   }
 
-  // windChill auto-switch boilerplate. Triggered by withAutoSwitch=true on a
-  // TemperatureBarWidget. Emits the canonical dataFn + titleSource +
-  // tooltipSource + autoSwitchBindings used by the existing layout.
-  const isAutoSwitch = entry.type === "TemperatureBarWidget" && w.options.withAutoSwitch === true;
+  // Per-type codegen hook (e.g. windChill auto-switch boilerplate).
+  const extra = entry.emitExtraConfig?.(w);
+  const suppressBindings = !!extra?.suppressBindings;
+  if (extra?.parts.length) parts.push(...extra.parts);
 
-  // Bindings (or dataFn replacement for auto-switch).
-  if (!isAutoSwitch) {
+  // Bindings block (suppressed when the hook takes over, e.g. auto-switch).
+  if (!suppressBindings) {
     const keys = entry.dynamicBindings
       ? Object.keys(w.bindings)
       : entry.bindings.map((f) => f.key);
@@ -203,28 +188,6 @@ function emitConfig(w: WidgetInstance, entry: ReturnType<typeof getCatalogEntry>
     if (bparts.length) {
       parts.push(`bindings: { ${bparts.join(", ")} }`);
     }
-  }
-
-  if (isAutoSwitch) {
-    parts.push(`titleSource: { mode: "dict", modeMap: { windchill: "windchillTitle", heatIndex: "heatIndexTitle" } }`);
-    parts.push(`tooltipSource: { mode: "dict", modeMap: { windchill: "windchillDescription", heatIndex: "heatIndexDescription" } }`);
-    parts.push(`dataFn: function () {
-                var isWC = (widgetList.windChill.mode === "windchill");
-                return [
-                    isWC ? arrayClientraw[44] : arrayClientraw[112],
-                    isWC ? arrayClientraw[77] : arrayClientraw[110],
-                    isWC ? arrayClientraw[78] : arrayClientraw[111]
-                ];
-            }`);
-    parts.push(`autoSwitchBindings: {
-                realTemp: ${jsString(cr(4))},
-                realMax:  ${jsString(cr(47))},
-                realMin:  ${jsString(cr(46))},
-                chillMax: ${jsString(cr(78))},
-                chillMin: ${jsString(cr(77))},
-                heatMax:  ${jsString(cr(111))},
-                heatMin:  ${jsString(cr(110))}
-            }`);
   }
 
   if (parts.length === 0) return "{}";

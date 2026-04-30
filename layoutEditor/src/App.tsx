@@ -12,7 +12,7 @@ import {
   DEFAULT_GRID,
 } from "./model/defaults";
 import { DEFAULT_BUTTONS } from "./model/types";
-import { getCatalogEntry, isPlacedInGrid } from "./catalog";
+import { getCatalogEntry, isPlacedInGrid, WIDGET_TEXT_BACKGROUND_SHAPE } from "./catalog";
 import { validateLayout } from "./model/validation";
 import { emitLayoutJs } from "./codegen/emitLayoutJs";
 import { Toolbar } from "./ui/Toolbar";
@@ -186,6 +186,21 @@ export function App() {
   );
 }
 
+// Converts legacy editor-only flags into their current representation.
+// withBackground: true → prepend shape literal to template, remove the flag.
+function migrateWidgets(widgets: WidgetInstance[]): WidgetInstance[] {
+  return widgets.map((w) => {
+    if (w.type === "WidgetText" && w.options.withBackground) {
+      const tpl = String(w.options.template ?? "");
+      const options: Record<string, unknown> = { ...w.options };
+      delete options.withBackground;
+      options.template = tpl ? WIDGET_TEXT_BACKGROUND_SHAPE + "\n" + tpl : WIDGET_TEXT_BACKGROUND_SHAPE;
+      return { ...w, options };
+    }
+    return w;
+  });
+}
+
 function loadFromStorage(): LayoutDoc | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -198,7 +213,7 @@ function loadFromStorage(): LayoutDoc | null {
       if (!parsed.preview || typeof parsed.preview.source !== "string" || typeof parsed.preview.liveUrlPrefix !== "string") {
         parsed.preview = { source: "sample", liveUrlPrefix: "/" };
       }
-      parsed.widgets = ensureRequiredHandlers(parsed.widgets);
+      parsed.widgets = migrateWidgets(ensureRequiredHandlers(parsed.widgets));
       return parsed;
     }
   } catch {}
@@ -227,7 +242,7 @@ function importJson(setDoc: Dispatch<SetStateAction<LayoutDoc>>) {
       try {
         const parsed = JSON.parse(txt) as LayoutDoc;
         if (parsed.version !== 1) throw new Error("Unsupported layout version");
-        parsed.widgets = ensureRequiredHandlers(parsed.widgets);
+        parsed.widgets = migrateWidgets(ensureRequiredHandlers(parsed.widgets));
         setDoc(parsed);
       } catch (e) {
         alert("Failed to load JSON: " + (e as Error).message);

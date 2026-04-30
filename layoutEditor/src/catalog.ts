@@ -1,3 +1,5 @@
+import type { WidgetInstance } from "./model/types";
+
 // Widget catalog — the editor's knowledge of every widget type that the
 // FreshWDL runtime can construct. Each entry lets the editor:
 //   1) populate the palette,
@@ -48,7 +50,14 @@ export type CatalogEntry = {
   // widgets like WidgetText.
   dynamicBindings?: boolean;
   notes?: string;
+  // Hook for type-specific codegen additions. Returns extra config parts to
+  // emit and whether to suppress the normal bindings block.
+  emitExtraConfig?(w: WidgetInstance): { parts: string[]; suppressBindings: boolean };
 };
+
+// Shape string used by the "Prepend rounded background" button in the inspector.
+export const WIDGET_TEXT_BACKGROUND_SHAPE =
+  '<shape type="roundedRect" x="5%" y="5%" w="90%" h="90%" radius="10%" strokeSize="2.5%" fill="#F6F6F6"/>';
 
 const cr   = (i: number) => `clientraw[${i}]`;
 const crE  = (i: number) => `clientrawExtra[${i}]`;
@@ -90,8 +99,6 @@ export const CATALOG: CatalogEntry[] = [
         hint: "<shape>/<text> elements with {{field|filter:arg}} placeholders. See WidgetText.js." },
       { key: "aspectRatio", label: "Aspect ratio", type: "number",   default: 1.0,
         hint: "canvas height = width × aspectRatio." },
-      { key: "withBackground", label: "Rounded background", type: "boolean", default: false,
-        hint: "Draws a rounded-rect panel behind the text (matches Barometer/MoonSun look)." },
     ],
     notes: "Generic text widget. Use bindings + template to display any data or static label.",
   },
@@ -123,6 +130,33 @@ export const CATALOG: CatalogEntry[] = [
       { key: "modeKey",         label: "Mode key",       type: "string",  default: "" },
       { key: "titleSuffix",     label: "Title suffix",   type: "string",  default: "" },
     ],
+    emitExtraConfig(w: WidgetInstance) {
+      if (w.options.withAutoSwitch !== true) return { parts: [], suppressBindings: false };
+      return {
+        suppressBindings: true,
+        parts: [
+          `titleSource: { mode: "dict", modeMap: { windchill: "windchillTitle", heatIndex: "heatIndexTitle" } }`,
+          `tooltipSource: { mode: "dict", modeMap: { windchill: "windchillDescription", heatIndex: "heatIndexDescription" } }`,
+          `dataFn: function () {
+                var isWC = (widgetList.windChill.mode === "windchill");
+                return [
+                    isWC ? arrayClientraw[44] : arrayClientraw[112],
+                    isWC ? arrayClientraw[77] : arrayClientraw[110],
+                    isWC ? arrayClientraw[78] : arrayClientraw[111]
+                ];
+            }`,
+          `autoSwitchBindings: {
+                realTemp: "clientraw[4]",
+                realMax:  "clientraw[47]",
+                realMin:  "clientraw[46]",
+                chillMax: "clientraw[78]",
+                chillMin: "clientraw[77]",
+                heatMax:  "clientraw[111]",
+                heatMin:  "clientraw[110]"
+            }`,
+        ],
+      };
+    },
   },
   {
     type: "HumidityGaugeWidget",

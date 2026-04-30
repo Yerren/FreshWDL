@@ -23,7 +23,8 @@
       "Bash(npm run *)",
       "Bash(kill %1)",
       "Bash(pkill -f \"vite\")",
-      "PowerShell($env:TEMP)"
+      "PowerShell($env:TEMP)",
+      "Bash(npx playwright *)"
     ]
   }
 }

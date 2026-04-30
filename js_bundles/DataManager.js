@@ -191,4 +191,21 @@
     };
 
     global.DataManager = DataManager;
+
+    // Authoritative list of globals to clear between preview renders.
+    // Add new state here when extending DataManager, not in previewHost.html.
+    DataManager.resetState = function (g) {
+        g.arrayClientraw = [];
+        g.arrayClientrawExtra = [];
+        g.arrayClientrawHour = [];
+        g.arrayClientrawDaily = [];
+        g.arrayClientrawOld = [];
+        g.arrayClientrawExtraOld = [];
+        g.arrayClientrawHourOld = [];
+        g.arrayClientrawDailyOld = [];
+        g.firstTime = true;
+        g.loaded = null;
+        g.doneCR = g.doneCRE = g.doneCRH = g.doneCRD = false;
+        g.attemptedCR = g.attemptedCRE = g.attemptedCRH = g.attemptedCRD = false;
+    };
 })(typeof window !== "undefined" ? window : this);
