@@ -231,13 +231,11 @@ function AspectRatioInput(
 ) {
   const [w, setW] = useState("1");
   const [h, setH] = useState(String(ratio || 1));
-  const [inputErr, setInputErr] = useState(false);
   const lastCommittedRef = useRef(ratio);
   useEffect(() => {
     if (ratio !== lastCommittedRef.current) {
       setW("1");
       setH(String(ratio || 1));
-      setInputErr(false);
       lastCommittedRef.current = ratio;
     }
   }, [ratio, instanceId]);
@@ -246,13 +244,11 @@ function AspectRatioInput(
     const wn = parseFloat(nw);
     const hn = parseFloat(nh);
     if (wn > 0 && hn > 0) {
-      setInputErr(false);
       lastCommittedRef.current = hn / wn;
       onChange(hn / wn);
-    } else {
-      setInputErr(true);
     }
   };
+  const inputErr = !(parseFloat(w) > 0 && parseFloat(h) > 0);
   return (
     <>
       <div className="field-row" title={hint}>
@@ -288,7 +284,7 @@ type DynProps = {
 };
 function DynamicBindingsEditor({ selected, upd }: DynProps) {
   const entries = Object.entries(selected.bindings);
-  const allKeys = Object.keys(selected.bindings);
+  const allKeys = new Set(entries.map(([k]) => k));
   const setKey = (oldKey: string, newKey: string) => {
     if (newKey === oldKey) return;
     if (newKey in selected.bindings) return;
@@ -324,7 +320,7 @@ function DynamicBindingsEditor({ selected, upd }: DynProps) {
             const keyOk = IDENT_RE.test(k);
             return (
               <tr key={k} className={err || !keyOk ? "err" : ""}>
-                <td><BindingKeyInput k={k} allKeys={allKeys} onCommit={(nk) => setKey(k, nk)} /></td>
+                <td><BindingKeyInput currentKey={k} allKeys={allKeys} onCommit={(newKey) => setKey(k, newKey)} /></td>
                 <td>
                   <BindingSpecInput value={spec} onChange={(v) => setSpec(k, v)} />
                   {err && <div className="err-msg">{err}</div>}
@@ -342,18 +338,24 @@ function DynamicBindingsEditor({ selected, upd }: DynProps) {
   );
 }
 
-function BindingKeyInput({ k, allKeys, onCommit }: { k: string; allKeys: string[]; onCommit: (nk: string) => void }) {
-  const [draft, setDraft] = useState(k);
-  useEffect(() => setDraft(k), [k]);
-  const collision = draft !== k && allKeys.includes(draft);
+function BindingKeyInput(
+  { currentKey, allKeys, onCommit }: {
+    currentKey: string;
+    allKeys: Set<string>;
+    onCommit: (newKey: string) => void;
+  },
+) {
+  const [draft, setDraft] = useState(currentKey);
+  useEffect(() => setDraft(currentKey), [currentKey]);
+  const collision = draft !== currentKey && allKeys.has(draft);
   return (
     <>
       <input
         value={draft}
         onChange={(e) => setDraft(e.target.value)}
         onBlur={() => {
-          if (collision || !IDENT_RE.test(draft)) { setDraft(k); return; }
-          if (draft !== k) onCommit(draft);
+          if (collision || !IDENT_RE.test(draft)) { setDraft(currentKey); return; }
+          if (draft !== currentKey) onCommit(draft);
         }}
       />
       {collision && <div className="err-msg">key already exists</div>}

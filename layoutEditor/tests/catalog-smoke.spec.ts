@@ -5,7 +5,7 @@
 // test will fail with a "has no canvas" warning for the affected widget id.
 
 import { test, expect } from "@playwright/test";
-import { CATALOG } from "../src/catalog";
+import { CATALOG, getCatalogEntry } from "../src/catalog";
 import { emptyLayout, newInstance, colsForRows } from "../src/model/defaults";
 import type { LayoutDoc } from "../src/model/types";
 
@@ -33,7 +33,7 @@ test("all catalog widget types initialize without error in preview", async ({ pa
   const layout = buildSmokeLayout();
 
   const placedWidgets = layout.widgets.filter((w) => {
-    const e = CATALOG.find((c) => c.type === w.type);
+    const e = getCatalogEntry(w.type);
     return e && (e.needsCanvas || e.placedInGrid);
   });
 
@@ -76,17 +76,15 @@ test("all catalog widget types initialize without error in preview", async ({ pa
       if (!m) return true;
       const w = layout.widgets.find((wi) => wi.instanceId === m[1]);
       if (!w) return true;
-      return CATALOG.find((e) => e.type === w.type)?.needsCanvas === true;
+      return getCatalogEntry(w.type)?.needsCanvas === true;
     });
   expect(unexpectedNoCanvas, "canvas-needing widgets with no canvas").toHaveLength(0);
 
-  // Every widget that does have a canvas must have nonzero dimensions.
+  // Every widget that does have a canvas must have nonzero width and height.
   for (const line of previewLogs) {
     const m = line.match(/canvas=(\d+)x(\d+)/);
     if (!m) continue;
-    expect(
-      parseInt(m[1]) * parseInt(m[2]),
-      `zero-size canvas: ${line}`,
-    ).toBeGreaterThan(0);
+    expect(parseInt(m[1]), `canvas width is zero: ${line}`).toBeGreaterThan(0);
+    expect(parseInt(m[2]), `canvas height is zero: ${line}`).toBeGreaterThan(0);
   }
 });

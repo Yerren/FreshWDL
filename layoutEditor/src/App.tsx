@@ -10,6 +10,7 @@ import {
   colsForRows,
   clamp,
   DEFAULT_GRID,
+  DEFAULT_PREVIEW,
 } from "./model/defaults";
 import { DEFAULT_BUTTONS } from "./model/types";
 import { getCatalogEntry, isPlacedInGrid, WIDGET_TEXT_BACKGROUND_SHAPE } from "./catalog";
@@ -186,16 +187,12 @@ export function App() {
   );
 }
 
-// Converts legacy editor-only flags into their current representation.
-// withBackground: true → prepend shape literal to template, remove the flag.
 function migrateWidgets(widgets: WidgetInstance[]): WidgetInstance[] {
   return widgets.map((w) => {
     if (w.type === "WidgetText" && w.options.withBackground) {
       const tpl = String(w.options.template ?? "");
-      const options: Record<string, unknown> = { ...w.options };
-      delete options.withBackground;
-      options.template = tpl ? WIDGET_TEXT_BACKGROUND_SHAPE + "\n" + tpl : WIDGET_TEXT_BACKGROUND_SHAPE;
-      return { ...w, options };
+      const { withBackground: _, ...rest } = w.options as Record<string, unknown>;
+      return { ...w, options: { ...rest, template: tpl ? WIDGET_TEXT_BACKGROUND_SHAPE + "\n" + tpl : WIDGET_TEXT_BACKGROUND_SHAPE } };
     }
     return w;
   });
@@ -211,7 +208,7 @@ function loadFromStorage(): LayoutDoc | null {
       parsed.grid = { cols: colsForRows(rows), rows };
       if (!Array.isArray(parsed.buttons)) parsed.buttons = [...DEFAULT_BUTTONS];
       if (!parsed.preview || typeof parsed.preview.source !== "string" || typeof parsed.preview.liveUrlPrefix !== "string") {
-        parsed.preview = { source: "sample", liveUrlPrefix: "/" };
+        parsed.preview = { ...DEFAULT_PREVIEW };
       }
       parsed.widgets = migrateWidgets(ensureRequiredHandlers(parsed.widgets));
       return parsed;

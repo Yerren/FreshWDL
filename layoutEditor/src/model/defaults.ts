@@ -37,6 +37,7 @@ export function colsForRows(rows: number): number {
   return Math.max(2, Math.round(rows * ASPECT_W / ASPECT_H));
 }
 export const DEFAULT_GRID = { cols: colsForRows(14), rows: 14 };
+export const DEFAULT_PREVIEW = { source: "sample" as const, liveUrlPrefix: "/" };
 
 export function emptyLayout(): LayoutDoc {
   return {
@@ -44,7 +45,7 @@ export function emptyLayout(): LayoutDoc {
     grid: { ...DEFAULT_GRID },
     widgets: buildRequiredHandlers(),
     buttons: [...DEFAULT_BUTTONS],
-    preview: { source: "sample", liveUrlPrefix: "/" },
+    preview: { ...DEFAULT_PREVIEW },
   };
 }
 
