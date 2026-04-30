@@ -1,9 +1,10 @@
+import type { Dispatch, SetStateAction } from "react";
 import type { LayoutDoc } from "../model/types";
 import { clamp, colsForRows } from "../model/defaults";
 
 type Props = {
   doc: LayoutDoc;
-  setDoc: (updater: (d: LayoutDoc) => LayoutDoc) => void;
+  setDoc: Dispatch<SetStateAction<LayoutDoc>>;
   previewOpen: boolean;
   togglePreview: () => void;
   onExport: () => void;

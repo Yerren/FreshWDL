@@ -18,9 +18,10 @@ export function loadDictKeys(): Promise<string[]> {
       let m: RegExpExecArray | null;
       while ((m = re.exec(src))) keys.push(m[1]);
       cache = Array.from(new Set(keys)).sort();
+      pending = null;
       return cache;
     })
-    .catch(() => (cache = []));
+    .catch(() => { pending = null; return [] as string[]; });
   return pending;
 }
 

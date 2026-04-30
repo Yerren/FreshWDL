@@ -1,6 +1,6 @@
 import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
-import { resolve, join, extname } from "path";
+import { resolve, join, extname, sep } from "path";
 import { createReadStream, statSync } from "fs";
 
 const REPO_ROOT = resolve(__dirname, "..");
@@ -26,8 +26,9 @@ function serveRuntime(): Plugin {
     configureServer(server) {
       server.middlewares.use("/runtime", (req, res, next) => {
         const url = (req.url ?? "/").split("?")[0];
-        if (url.includes("..")) return next();
-        const filePath = join(REPO_ROOT, decodeURIComponent(url));
+        const decoded = decodeURIComponent(url);
+        const filePath = resolve(join(REPO_ROOT, decoded));
+        if (filePath !== REPO_ROOT && !filePath.startsWith(REPO_ROOT + sep)) return next();
         try {
           const st = statSync(filePath);
           if (!st.isFile()) return next();

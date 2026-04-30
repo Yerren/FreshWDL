@@ -224,29 +224,44 @@ function AspectRatioInput(
 ) {
   const [w, setW] = useState("1");
   const [h, setH] = useState(String(ratio || 1));
+  const [inputErr, setInputErr] = useState(false);
+  const lastCommittedRef = useRef(ratio);
   useEffect(() => {
-    setW("1");
-    setH(String(ratio || 1));
-  }, [instanceId]);
+    if (ratio !== lastCommittedRef.current) {
+      setW("1");
+      setH(String(ratio || 1));
+      setInputErr(false);
+      lastCommittedRef.current = ratio;
+    }
+  }, [ratio, instanceId]);
 
   const commit = (nw: string, nh: string) => {
     const wn = parseFloat(nw);
     const hn = parseFloat(nh);
-    if (wn >= 1 && hn >= 1) onChange(hn / wn);
+    if (wn > 0 && hn > 0) {
+      setInputErr(false);
+      lastCommittedRef.current = hn / wn;
+      onChange(hn / wn);
+    } else {
+      setInputErr(true);
+    }
   };
   return (
-    <div className="field-row" title={hint}>
-      <label>Aspect (W × H)</label>
-      <input
-        type="number" min={1} step="any" style={{ width: 60 }}
-        value={w}
-        onChange={(e) => { setW(e.target.value); commit(e.target.value, h); }} />
-      <span style={{ color: "var(--text-dim)" }}>×</span>
-      <input
-        type="number" min={1} step="any" style={{ width: 60 }}
-        value={h}
-        onChange={(e) => { setH(e.target.value); commit(w, e.target.value); }} />
-    </div>
+    <>
+      <div className="field-row" title={hint}>
+        <label>Aspect (W × H)</label>
+        <input
+          type="number" min={0.01} step="any" style={{ width: 60 }}
+          value={w}
+          onChange={(e) => { setW(e.target.value); commit(e.target.value, h); }} />
+        <span style={{ color: "var(--text-dim)" }}>×</span>
+        <input
+          type="number" min={0.01} step="any" style={{ width: 60 }}
+          value={h}
+          onChange={(e) => { setH(e.target.value); commit(w, e.target.value); }} />
+      </div>
+      {inputErr && <div className="err-msg">enter positive numbers</div>}
+    </>
   );
 }
 
@@ -266,8 +281,10 @@ type DynProps = {
 };
 function DynamicBindingsEditor({ selected, upd }: DynProps) {
   const entries = Object.entries(selected.bindings);
+  const allKeys = Object.keys(selected.bindings);
   const setKey = (oldKey: string, newKey: string) => {
     if (newKey === oldKey) return;
+    if (newKey in selected.bindings) return;
     const next: Record<string, string> = {};
     for (const [k, v] of entries) next[k === oldKey ? newKey : k] = v;
     upd({ bindings: next });
@@ -300,7 +317,7 @@ function DynamicBindingsEditor({ selected, upd }: DynProps) {
             const keyOk = IDENT_RE.test(k);
             return (
               <tr key={k} className={err || !keyOk ? "err" : ""}>
-                <td><input defaultValue={k} onBlur={(e) => setKey(k, e.target.value)} /></td>
+                <td><BindingKeyInput k={k} allKeys={allKeys} onCommit={(nk) => setKey(k, nk)} /></td>
                 <td>
                   <BindingSpecInput value={spec} onChange={(v) => setSpec(k, v)} />
                   {err && <div className="err-msg">{err}</div>}
@@ -314,6 +331,25 @@ function DynamicBindingsEditor({ selected, upd }: DynProps) {
       </table>
       <button onClick={add} style={{ marginTop: 6 }}>+ Add binding</button>
       <SpecHelp />
+    </>
+  );
+}
+
+function BindingKeyInput({ k, allKeys, onCommit }: { k: string; allKeys: string[]; onCommit: (nk: string) => void }) {
+  const [draft, setDraft] = useState(k);
+  useEffect(() => setDraft(k), [k]);
+  const collision = draft !== k && allKeys.includes(draft);
+  return (
+    <>
+      <input
+        value={draft}
+        onChange={(e) => setDraft(e.target.value)}
+        onBlur={() => {
+          if (collision || !IDENT_RE.test(draft)) { setDraft(k); return; }
+          if (draft !== k) onCommit(draft);
+        }}
+      />
+      {collision && <div className="err-msg">key already exists</div>}
     </>
   );
 }

@@ -86,8 +86,8 @@ export function loadClientrawSpecs(): Promise<ClientrawSpecEntry[]> {
     } catch {
       return [];
     }
-  })).then((arrs) => (cache = arrs.flat()))
-     .catch(() => (cache = []));
+  })).then((arrs) => { cache = arrs.flat(); pending = null; return cache; })
+     .catch(() => { pending = null; return [] as ClientrawSpecEntry[]; });
   return pending;
 }
 

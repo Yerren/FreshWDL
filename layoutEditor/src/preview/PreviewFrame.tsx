@@ -14,13 +14,33 @@ type SoftPlan = {
   addEntries: Array<{ instanceId: string; slotHtml: string; entrySource: string; placed: boolean }>;
 };
 
+function shallowStringMapEqual(a: Record<string, string>, b: Record<string, string>): boolean {
+  const ka = Object.keys(a), kb = Object.keys(b);
+  if (ka.length !== kb.length) return false;
+  for (const k of ka) if (a[k] !== b[k]) return false;
+  return true;
+}
+
+function deepEqual(a: unknown, b: unknown): boolean {
+  if (a === b) return true;
+  if (typeof a !== typeof b) return false;
+  if (a && b && typeof a === "object") {
+    const ao = a as Record<string, unknown>, bo = b as Record<string, unknown>;
+    const ka = Object.keys(ao), kb = Object.keys(bo);
+    if (ka.length !== kb.length) return false;
+    for (const k of ka) if (!deepEqual(ao[k], bo[k])) return false;
+    return true;
+  }
+  return false;
+}
+
 function widgetUnchanged(p: WidgetInstance, n: WidgetInstance): boolean {
   if (p.type !== n.type) return false;
   if (p.enabledKey !== n.enabledKey) return false;
   if (p.canvasID !== n.canvasID) return false;
   if (p.titleDictKey !== n.titleDictKey) return false;
-  if (p.bindings !== n.bindings && JSON.stringify(p.bindings) !== JSON.stringify(n.bindings)) return false;
-  if (p.options !== n.options && JSON.stringify(p.options) !== JSON.stringify(n.options)) return false;
+  if (p.bindings !== n.bindings && !shallowStringMapEqual(p.bindings, n.bindings)) return false;
+  if (p.options !== n.options && !deepEqual(p.options, n.options)) return false;
   return true;
 }
 

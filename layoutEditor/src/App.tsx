@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import type { LayoutDoc, WidgetInstance } from "./model/types";
 import {
   emptyLayout,
@@ -9,7 +9,9 @@ import {
   freshCanvasId,
   colsForRows,
   clamp,
+  DEFAULT_GRID,
 } from "./model/defaults";
+import { DEFAULT_BUTTONS } from "./model/types";
 import { getCatalogEntry, isPlacedInGrid } from "./catalog";
 import { validateLayout } from "./model/validation";
 import { emitLayoutJs } from "./codegen/emitLayoutJs";
@@ -47,16 +49,18 @@ export function App() {
     });
   };
   const removeWidgets = (ids: Iterable<string>) => {
-    const idSet = new Set(ids);
-    setDoc((d) => ({
-      ...d,
-      widgets: d.widgets.filter((w) => !idSet.has(w.instanceId) || isRequiredHandlerType(w.type)),
-    }));
+    const idSet = new Set<string>();
+    const byId = new Map(doc.widgets.map((w) => [w.instanceId, w]));
+    for (const id of ids) {
+      const w = byId.get(id);
+      if (w && !isRequiredHandlerType(w.type)) idSet.add(id);
+    }
+    if (idSet.size === 0) return;
+    setDoc((d) => ({ ...d, widgets: d.widgets.filter((w) => !idSet.has(w.instanceId)) }));
     setSelectedIds((prev) => {
-      let changed = false;
       const next = new Set(prev);
-      for (const id of idSet) if (next.delete(id)) changed = true;
-      return changed ? next : prev;
+      for (const id of idSet) next.delete(id);
+      return next.size === prev.size ? prev : next;
     });
   };
   const removeWidget = (id: string) => removeWidgets([id]);
@@ -95,7 +99,9 @@ export function App() {
   // Stable keydown handler: read latest state via refs so the listener doesn't
   // re-attach on every doc edit.
   const handlersRef = useRef({ removeWidgets, copySelected, pasteClipboard, doc, selectedIds });
-  handlersRef.current = { removeWidgets, copySelected, pasteClipboard, doc, selectedIds };
+  useEffect(() => {
+    handlersRef.current = { removeWidgets, copySelected, pasteClipboard, doc, selectedIds };
+  });
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement | null;
@@ -186,8 +192,12 @@ function loadFromStorage(): LayoutDoc | null {
     if (!raw) return null;
     const parsed = JSON.parse(raw) as LayoutDoc;
     if (parsed && parsed.version === 1 && Array.isArray(parsed.widgets)) {
-      const rows = parsed.grid.rows;
+      const rows = (parsed.grid && typeof parsed.grid.rows === "number") ? parsed.grid.rows : DEFAULT_GRID.rows;
       parsed.grid = { cols: colsForRows(rows), rows };
+      if (!Array.isArray(parsed.buttons)) parsed.buttons = [...DEFAULT_BUTTONS];
+      if (!parsed.preview || typeof parsed.preview.source !== "string" || typeof parsed.preview.liveUrlPrefix !== "string") {
+        parsed.preview = { source: "sample", liveUrlPrefix: "/" };
+      }
       parsed.widgets = ensureRequiredHandlers(parsed.widgets);
       return parsed;
     }
@@ -206,7 +216,7 @@ function downloadFile(name: string, contents: string) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-function importJson(setDoc: (d: LayoutDoc) => void) {
+function importJson(setDoc: Dispatch<SetStateAction<LayoutDoc>>) {
   const input = document.createElement("input");
   input.type = "file";
   input.accept = ".json,application/json";
