@@ -1,0 +1,3 @@
+[submodule "layoutEditor"]
+	path = layoutEditor
+	url = https://github.com/Yerren/FreshWDL-Layout-Editor.git
