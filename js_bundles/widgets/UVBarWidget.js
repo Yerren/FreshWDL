@@ -40,7 +40,7 @@
     UVBarWidget.prototype.draw = function (uniIn) {
         if (!this.hasChanged({ uniIn: uniIn })) { return; }
         this.values.uniIn = formatDataToUnit(Number(uniIn), this.unitsIn);
-        this.values.uniOut = this.values.uniIn.map(0, 16, 0, 1);
+        this.values.uniOut = mapRange(this.values.uniIn, 0, 16, 0, 1);
         createjs.Tween.get(this.tweens.barFill, { override: true })
             .to({ h: this.values.uniOut }, 2000, createjs.Ease.quartInOut);
         this.refreshLabels();

@@ -13,6 +13,7 @@
         config = config || {};
         this.intervalMs = config.intervalMs || 5000;
         this.intervals = { cr: null, cre: null, crh: null, crd: null };
+        this._activeRequests = [];
 
         if (typeof global.arrayClientraw === "undefined") { global.arrayClientraw = []; }
         if (typeof global.arrayClientrawExtra === "undefined") { global.arrayClientrawExtra = []; }
@@ -62,6 +63,7 @@
         }
         xhttpVar.open("GET", url, true);
         xhttpVar.setRequestHeader("Cache-Control", "no-cache");
+        this._activeRequests.push(xhttpVar);
         xhttpVar.send();
         return xhttpVar;
     };
@@ -81,6 +83,8 @@
             xhttp = this.loadArray(url);
         xhttp.onreadystatechange = function () {
             if (xhttp.readyState !== 4) { return; }
+            var idx = self._activeRequests.indexOf(xhttp);
+            if (idx !== -1) { self._activeRequests.splice(idx, 1); }
             if (xhttp.status === 200) {
                 global[flags.error] = false;
                 global[arrayKey] = xhttp.responseText.toString().split(" ");
@@ -183,7 +187,9 @@
     };
 
     DataManager.prototype.stop = function () {
-        if (this.intervals.cr) { clearInterval(this.intervals.cr); }
+        this._activeRequests.forEach(function (r) { r.abort(); });
+        this._activeRequests = [];
+        if (this.intervals.cr)  { clearInterval(this.intervals.cr); }
         if (this.intervals.cre) { clearInterval(this.intervals.cre); }
         if (this.intervals.crh) { clearInterval(this.intervals.crh); }
         if (this.intervals.crd) { clearInterval(this.intervals.crd); }

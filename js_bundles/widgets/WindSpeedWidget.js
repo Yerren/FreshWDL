@@ -98,10 +98,10 @@
             c.maxSpeed -= ldt - 1;
         }
 
-        v.speedOut         = v.speedIn.map(c.minSpeed, c.maxSpeed, 0, 1);
-        v.gustOut          = v.gustIn.map(c.minSpeed, c.maxSpeed, 0, 1);
-        v.windHighSpeedOut = v.windHighSpeedIn.map(c.minSpeed, c.maxSpeed, 1, 0);
-        v.gustHighSpeedOut = v.gustHighSpeedIn.map(c.minSpeed, c.maxSpeed, 1, 0);
+        v.speedOut         = mapRange(v.speedIn,         c.minSpeed, c.maxSpeed, 0, 1);
+        v.gustOut          = mapRange(v.gustIn,          c.minSpeed, c.maxSpeed, 0, 1);
+        v.windHighSpeedOut = mapRange(v.windHighSpeedIn, c.minSpeed, c.maxSpeed, 1, 0);
+        v.gustHighSpeedOut = mapRange(v.gustHighSpeedIn, c.minSpeed, c.maxSpeed, 1, 0);
     };
 
     WindSpeedWidget.prototype.draw = function (speedIn, gustIn, windHighSpeedIn, gustHighSpeedIn, unitChange) {

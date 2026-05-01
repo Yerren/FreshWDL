@@ -80,7 +80,7 @@
 
             this.values.trend = parseInt(trend);
             this.values.humidityIn = parseFloat(humidityIn);
-            this.values.humidityOut = this.values.humidityIn.map(0, 100, -halfAngleDeg, halfAngleDeg);
+            this.values.humidityOut = mapRange(this.values.humidityIn, 0, 100, -halfAngleDeg, halfAngleDeg);
             createjs.Tween.get(this.tweens, { override: true })
                 .to({ r: this.values.humidityOut }, 2000, createjs.Ease.quartInOut);
 

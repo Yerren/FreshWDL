@@ -4,9 +4,9 @@
 // Load after Globals.js and before any widget scripts.
 
 // Map a number from one range to another (used throughout widgets).
-Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
-    return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-};
+function mapRange(value, in_min, in_max, out_min, out_max) {
+    return (value - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
 
 // Array equality, credit Tomas Zato @ stackoverflow.com/questions/7837456
 if (Array.prototype.equals) {
@@ -92,6 +92,10 @@ function shiftArrayFtL(arrayIn) {
 
 // Reads one record entry (value + datetime) from arrayClientrawExtra.
 function processRecord(startingIndex) {
+    if (arrayClientrawExtra.length < startingIndex + 6) {
+        console.warn("processRecord: index out of bounds at", startingIndex);
+        return ["---", moment.invalid()];
+    }
     var value = arrayClientrawExtra[startingIndex],
         input = "";
     input += arrayClientrawExtra[startingIndex + 1].toString() + ":";
@@ -125,10 +129,26 @@ function processRecordsData(dictIn, startingIndex, startingIndex2) {
     dictIn[useDict("recordsLowDewPoint")]       = processRecord(startingIndex2 + 75).concat(["temp"]);
 }
 
+// Minimum array lengths required by processGraphData — derived from the highest
+// fixed index read in each source file (CRE[700], CRH[421+59], CRD[401+27]).
+var MIN_CRE = 701, MIN_CRH = 482, MIN_CRD = 430;
+
 // Builds graphDict from the four clientraw arrays. Called by DataManager on each
 // data update via global.processGraphData().
 function processGraphData() {
     var i, p, q, pMax;
+
+    if (arrayClientrawExtra.length  < MIN_CRE ||
+        arrayClientrawHour.length   < MIN_CRH ||
+        arrayClientrawDaily.length  < MIN_CRD) {
+        console.warn("processGraphData: source arrays too short, skipping update.",
+            "CRE:", arrayClientrawExtra.length, "/", MIN_CRE,
+            "CRH:", arrayClientrawHour.length,  "/", MIN_CRH,
+            "CRD:", arrayClientrawDaily.length, "/", MIN_CRD);
+        return;
+    }
+
+    try {
 
     graphDict["timestampHour"]        = [];
     graphDict["timestampDay"]         = [];
@@ -259,5 +279,9 @@ function processGraphData() {
         graphDict["uvQuarterDays28"].push(arrayClientrawDaily[401 + i]);
         graphDict["timestampQuarterDay"].push(moment(
             arrayClientrawDaily[232] + ":00:00", "DD:HH:mm").subtract(168 - (i * 6), "hours"));
+    }
+
+    } catch (e) {
+        console.error("processGraphData failed:", e);
     }
 }

@@ -160,17 +160,6 @@ document.write('\
             config: {}
         },
         {
-            id: "modal",
-            Ctor: ModalHandler,
-            enabledKey: "modalHandler",
-            config: {}
-        },
-        {
-            id: "buttons2",
-            Ctor: ButtonsHandler,
-            config: {}
-        },
-        {
             id: "mainChart",
             Ctor: MainChartWidget,
             enabledKey: "graphHandlerTemperature",

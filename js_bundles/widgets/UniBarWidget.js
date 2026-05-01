@@ -66,7 +66,7 @@
         var v = this.values, c = this.constants;
         v.uniIn = formatDataToUnit(v.uniIn, this.unitsIn);
         this.autoRescaleMax(v.uniIn);
-        v.uniOut = v.uniIn.map(c.minUni, c.maxUni, 0, 1);
+        v.uniOut = mapRange(v.uniIn, c.minUni, c.maxUni, 0, 1);
     };
 
     UniBarWidget.prototype.draw = function (uniIn, unitChange) {

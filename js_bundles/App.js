@@ -45,6 +45,11 @@
     };
 
     App.prototype.start = function () {
+        var seen = {};
+        this.manifest.forEach(function (entry) {
+            if (seen[entry.id]) { throw new Error("Duplicate manifest id: " + entry.id); }
+            seen[entry.id] = true;
+        });
         this.pruneDisabledGraphs();
         if (typeof global.initialiseLayout === "function") {
             global.initialiseLayout();

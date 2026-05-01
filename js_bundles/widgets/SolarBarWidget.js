@@ -92,10 +92,10 @@
         if (this.mode === "Watt") {
             v.uniIn = formatDataToUnit(v.uniIn, this.unitsIn);
             this.autoRescaleMax(v.uniIn);
-            v.uniOut = v.uniIn.map(c.minUni, c.maxUni, 0, 1);
+            v.uniOut = mapRange(v.uniIn, c.minUni, c.maxUni, 0, 1);
         } else {
             v.percentIn = formatDataToUnit(v.percentIn, this.unitsIn);
-            v.percentOut = v.percentIn.map(0, 100, 0, 1);
+            v.percentOut = mapRange(v.percentIn, 0, 100, 0, 1);
         }
     };
 

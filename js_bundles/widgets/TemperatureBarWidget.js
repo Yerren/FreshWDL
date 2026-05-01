@@ -196,9 +196,9 @@
                (v.highTempIn <= c.maxTemp - (ldt - 1) && c.maxTemp > c.maxTempDEFAULT) &&
                (v.lowTempIn  <= c.maxTemp - (ldt - 1) && c.maxTemp > c.maxTempDEFAULT)) { c.maxTemp -= ldt - 1; }
 
-        v.tempOut     = v.tempIn.map(c.minTemp, c.maxTemp, 0.1, 0.98);
-        v.highTempOut = v.highTempIn.map(c.minTemp, c.maxTemp, 1.04, 0.17);
-        v.lowTempOut  = v.lowTempIn.map(c.minTemp, c.maxTemp, 1.04, 0.17);
+        v.tempOut     = mapRange(v.tempIn,     c.minTemp, c.maxTemp, 0.1,  0.98);
+        v.highTempOut = mapRange(v.highTempIn, c.minTemp, c.maxTemp, 1.04, 0.17);
+        v.lowTempOut  = mapRange(v.lowTempIn,  c.minTemp, c.maxTemp, 1.04, 0.17);
     };
 
     TemperatureBarWidget.prototype.draw = function (tempIn, highTempIn, lowTempIn, trend, unitChange) {
