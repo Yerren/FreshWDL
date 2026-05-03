@@ -2150,7 +2150,8 @@ var widgetList = {
     rainfallYear: {enabled: true},
     UV: {enabled: true},
     windDirection: {enabled: true},
-    windSpeed: {enabled: true}
+    windSpeed: {enabled: true},
+    windSpeedGauge: {enabled: true}
 },
     graphList = {
     barometer: {enabled: true},

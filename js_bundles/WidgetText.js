@@ -235,6 +235,15 @@
     function WidgetText(config) {
         config = config || {};
         config.canvasID = config.canvasID || config.elementId;
+        // Default to all four data events so WidgetText used directly (e.g. from
+        // the layout editor) re-renders when any clientraw array updates. Subclasses
+        // override by setting config.events before calling WidgetText.call().
+        config.events = config.events || [
+            "clientRawDataUpdate",
+            "clientRawExtraDataUpdate",
+            "clientRawHourDataUpdate",
+            "clientRawDailyDataUpdate"
+        ];
         CanvasWidget.call(this, config);
 
         this._templateSrc = config.template || "";
