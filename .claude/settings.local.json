@@ -52,7 +52,12 @@
       "Bash(Select-Object -First 30)",
       "Bash(Get-ChildItem -Path . -Recurse -File)",
       "Bash(Select-Object -First 50)",
-      "Bash(Format-List FullName)"
+      "Bash(Format-List FullName)",
+      "Bash(Select-Object -Property FullName, PSIsContainer)",
+      "Bash(ConvertTo-Json)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Yerren\\\\Documents\\\\GitHub\\\\FreshWDL\" -Recurse -File -Include \"*wind*\", \"*gauge*\", \"*speed*\")",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Sort-Object)"
     ]
   }
 }

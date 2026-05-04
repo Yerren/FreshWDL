@@ -1,14 +1,14 @@
 /*jslint plusplus: true, sloppy: true, indent: 4 */
 // WindSpeedGaugeWidget: speedometer-style arc gauge for wind speed and gust.
-// Main speed pointer (narrow black needle) + small gust triangle at the outer
-// edge (same proportions as the avg-direction pointer in WindGaugeWidget) +
-// optional Beaufort scale label. Tick scale auto-adjusts like UniBarWidget.
+// Up to two main needle arrows (green = speed, purple = gust) and two small
+// outer-edge triangle max markers (green = speedMax, purple = gustMax).
+// Tick scale auto-adjusts like UniBarWidget.
 //
 // Config options:
 //   withBeaufort  – show Beaufort scale text below gauge (default true)
 //   title         – override display title
 //
-// Bindings: speed, gust
+// Bindings: speed (required), gust, speedMax, gustMax
 
 (function (global) {
     function WindSpeedGaugeWidget(config) {
@@ -29,8 +29,12 @@
         this.innerDotCommand = null;
         this.pointer = null;
         this.pointerGust = null;
+        this.pointerSpeedMax = null;
+        this.pointerGustMax = null;
         this.pointerCommand = null;
         this.pointerGustCommand = null;
+        this.pointerSpeedMaxCommand = null;
+        this.pointerGustMaxCommand = null;
         this.botLine = null;
         this.botLineStrokeCommand = null;
         this.botLineStartCommand = null;
@@ -48,13 +52,20 @@
         };
 
         this.setupVars = {};
-        this.tweens = { r: { r: 0 }, gust: { gust: 0 } };
+        this.tweens = {
+            r:        { r:        0 },
+            gust:     { gust:     0 },
+            speedMax: { speedMax: 0 },
+            gustMax:  { gustMax:  0 }
+        };
         this.values = {
             speedIn: 0, speedOut: 0, speedOriginal: 0,
-            gustIn: 0,  gustOut: 0,
+            gustIn:  0, gustOut:  0,
+            speedMaxIn: 0, speedMaxOut: 0,
+            gustMaxIn:  0, gustMaxOut:  0,
             unitsIn: "wind"
         };
-        this.valuesOld = { speedIn: 0, gustIn: 0 };
+        this.valuesOld = { speedIn: 0, gustIn: 0, speedMaxIn: 0, gustMaxIn: 0 };
     }
     WidgetBase.inherit(WindSpeedGaugeWidget, WidgetGauge);
 
@@ -70,12 +81,13 @@
         this.botLineStartCommand = bot.startCommand;
         this.botLineEndCommand = bot.endCommand;
 
-        // Gust triangle drawn first so it sits behind the speed pointer.
+        // Gust needle behind speed needle.
         var gustPtr = this.createTrianglePointer({ fill: "rgb(" + colour.windGust + ")" });
         this.pointerGust = gustPtr.shape;
         this.pointerGustCommand = gustPtr.commands;
+        this.pointerGust.visible = false;
 
-        var ptr = this.createTrianglePointer({ fill: "black" });
+        var ptr = this.createTrianglePointer({ fill: "rgb(" + colour.wind + ")" });
         this.pointer = ptr.shape;
         this.pointerCommand = ptr.commands;
 
@@ -94,6 +106,17 @@
 
         this.createLabels(this.largeDashTotal, { align: "center" });
         this.createDashes(this.largeDashTotal * 2);
+
+        // Max markers added after dashes so they render in front of the tick marks.
+        var speedMaxPtr = this.createTrianglePointer({ fill: "rgb(" + colour.wind + ")" });
+        this.pointerSpeedMax = speedMaxPtr.shape;
+        this.pointerSpeedMaxCommand = speedMaxPtr.commands;
+        this.pointerSpeedMax.visible = false;
+
+        var gustMaxPtr = this.createTrianglePointer({ fill: "rgb(" + colour.windGust + ")" });
+        this.pointerGustMax = gustMaxPtr.shape;
+        this.pointerGustMaxCommand = gustMaxPtr.commands;
+        this.pointerGustMax.visible = false;
 
         if (this.config.withBeaufort !== false) {
             this.textBeaufort = this.createText(" ");
@@ -125,48 +148,68 @@
     WindSpeedGaugeWidget.prototype.formatInput = function () {
         var v = this.values, c = this.constants, sv = this.setupVars,
             halfAngleDeg = sv.halfAngleDeg || 120;
-        v.speedIn = formatDataToUnit(v.speedIn, v.unitsIn);
-        v.gustIn  = formatDataToUnit(v.gustIn,  v.unitsIn);
-        this._autoRescaleMax(Math.max(v.speedIn, v.gustIn));
-        v.speedOut = mapRange(v.speedIn, c.minSpeed, c.maxSpeed, -halfAngleDeg, halfAngleDeg);
-        v.gustOut  = mapRange(v.gustIn,  c.minSpeed, c.maxSpeed, -halfAngleDeg, halfAngleDeg);
+        v.speedIn    = formatDataToUnit(v.speedIn,    v.unitsIn);
+        v.gustIn     = formatDataToUnit(v.gustIn,     v.unitsIn);
+        v.speedMaxIn = formatDataToUnit(v.speedMaxIn, v.unitsIn);
+        v.gustMaxIn  = formatDataToUnit(v.gustMaxIn,  v.unitsIn);
+        this._autoRescaleMax(Math.max(v.speedIn, v.gustIn, v.speedMaxIn, v.gustMaxIn));
+        v.speedOut    = mapRange(v.speedIn,    c.minSpeed, c.maxSpeed, -halfAngleDeg, halfAngleDeg);
+        v.gustOut     = mapRange(v.gustIn,     c.minSpeed, c.maxSpeed, -halfAngleDeg, halfAngleDeg);
+        v.speedMaxOut = mapRange(v.speedMaxIn, c.minSpeed, c.maxSpeed, -halfAngleDeg, halfAngleDeg);
+        v.gustMaxOut  = mapRange(v.gustMaxIn,  c.minSpeed, c.maxSpeed, -halfAngleDeg, halfAngleDeg);
     };
 
-    WindSpeedGaugeWidget.prototype.draw = function (speedIn, gustIn, unitChange) {
+    WindSpeedGaugeWidget.prototype.draw = function (speedIn, gustIn, speedMaxIn, gustMaxIn, unitChange) {
         unitChange = unitChange || false;
-        if (String(this.valuesOld.speedIn) !== String(speedIn) ||
-                String(this.valuesOld.gustIn)  !== String(gustIn)  ||
+        var v = this.values;
+        if (String(this.valuesOld.speedIn)    !== String(speedIn)    ||
+                String(this.valuesOld.gustIn)     !== String(gustIn)     ||
+                String(this.valuesOld.speedMaxIn) !== String(speedMaxIn) ||
+                String(this.valuesOld.gustMaxIn)  !== String(gustMaxIn)  ||
                 unitChange === true) {
 
-            this.values.speedOriginal = parseFloat(speedIn);
-            this.values.speedIn = parseFloat(speedIn);
-            this.values.gustIn  = parseFloat(gustIn);
+            v.speedOriginal = parseFloat(speedIn);
+            v.speedIn       = parseFloat(speedIn)    || 0;
+            v.gustIn        = parseFloat(gustIn)     || 0;
+            v.speedMaxIn    = parseFloat(speedMaxIn) || 0;
+            v.gustMaxIn     = parseFloat(gustMaxIn)  || 0;
+
+            this.pointerGust.visible     = gustIn     != null && gustIn     !== "";
+            this.pointerSpeedMax.visible = speedMaxIn != null && speedMaxIn !== "";
+            this.pointerGustMax.visible  = gustMaxIn  != null && gustMaxIn  !== "";
+
             this.formatInput();
 
-            createjs.Tween.get(this.tweens.r,    { override: true }).to({ r:    this.values.speedOut }, 2000, createjs.Ease.quartInOut);
-            createjs.Tween.get(this.tweens.gust, { override: true }).to({ gust: this.values.gustOut  }, 2000, createjs.Ease.quartInOut);
+            createjs.Tween.get(this.tweens.r,        { override: true }).to({ r:        v.speedOut    }, 2000, createjs.Ease.quartInOut);
+            createjs.Tween.get(this.tweens.gust,     { override: true }).to({ gust:     v.gustOut     }, 2000, createjs.Ease.quartInOut);
+            createjs.Tween.get(this.tweens.speedMax, { override: true }).to({ speedMax: v.speedMaxOut }, 2000, createjs.Ease.quartInOut);
+            createjs.Tween.get(this.tweens.gustMax,  { override: true }).to({ gustMax:  v.gustMaxOut  }, 2000, createjs.Ease.quartInOut);
 
             var unitStr = (typeof units !== "undefined" && typeof currentUnits !== "undefined")
-                ? units[this.values.unitsIn][currentUnits[this.values.unitsIn]][1].toString()
+                ? units[v.unitsIn][currentUnits[v.unitsIn]][1].toString()
                 : "";
-            this.textDisplay.text = this.values.speedIn.toString() + unitStr;
+            this.textDisplay.text = v.speedIn.toString() + unitStr;
 
             if (this.textBeaufort && typeof calculateBeaufort === "function") {
-                var b = calculateBeaufort(this.values.speedOriginal);
+                var b = calculateBeaufort(v.speedOriginal);
                 var grad = this._beaufortGradient(b);
                 var bTitle = typeof useDict === "function" ? useDict("beaufortScaleTitle") : "Beaufort";
                 this.textBeaufort.text  = bTitle + ": " + b.toString();
                 this.textBeaufort.color = "rgb(" + grad[0] + "," + grad[1] + "," + grad[2] + ")";
             }
 
-            this.valuesOld.speedIn = speedIn;
-            this.valuesOld.gustIn  = gustIn;
+            this.valuesOld.speedIn    = speedIn;
+            this.valuesOld.gustIn     = gustIn;
+            this.valuesOld.speedMaxIn = speedMaxIn;
+            this.valuesOld.gustMaxIn  = gustMaxIn;
         }
     };
 
     WindSpeedGaugeWidget.prototype.updateTweens = function () {
-        this.pointer.rotation     = this.tweens.r.r;
-        this.pointerGust.rotation = this.tweens.gust.gust;
+        this.pointer.rotation         = this.tweens.r.r;
+        this.pointerGust.rotation     = this.tweens.gust.gust;
+        this.pointerSpeedMax.rotation = this.tweens.speedMax.speedMax;
+        this.pointerGustMax.rotation  = this.tweens.gustMax.gustMax;
         for (var i = 0; i < this.largeDashTotal; i++) {
             this.label[i].text = Math.round(
                 this.constants.maxSpeed * i / (this.largeDashTotal - 1)
@@ -191,23 +234,22 @@
         sv.posOuterCircle  = { x: c.width / 2, y: c.height / 2 };
         sv.posInnerCircle  = { x: c.width / 2, y: c.height / 2 };
 
-        // Speed pointer: narrow needle, same proportions as humidity gauge.
+        // Speed and gust needles share the same narrow-needle geometry.
         sv.posPointer = {
             xT: c.width / 2,           yT: c.height * (1 / 5),
             xL: c.width * (97 / 200),  yL: c.height * (3 / 5),
             xR: c.width * (103 / 200), yR: c.height * (3 / 5)
         };
-        // Gust triangle: same proportions as avg pointer in WindGaugeWidget.
-        // Tip is at the outer-circle edge; base sits 1/7 of the radius inward;
-        // width is 1/3 of the radius (matching WindGaugeWidget's 90/110 split
-        // scaled to this gauge's larger circle).
-        sv.posPointerGust = {
+
+        // Max markers: small triangle at the outer edge, noticeably narrower
+        // than the needle base so they read as reference marks not live arrows.
+        sv.posPointerMax = {
             xT: c.width / 2,
             yT: c.height / 2 - sv.outerCircleRad,
-            xL: c.width / 2 - sv.outerCircleRad / 6,
-            yL: c.height / 2 - sv.outerCircleRad * (6 / 7),
-            xR: c.width / 2 + sv.outerCircleRad / 6,
-            yR: c.height / 2 - sv.outerCircleRad * (6 / 7)
+            xL: c.width / 2 - sv.outerCircleRad / 10,
+            yL: c.height / 2 - sv.outerCircleRad * (11 / 12),
+            xR: c.width / 2 + sv.outerCircleRad / 10,
+            yR: c.height / 2 - sv.outerCircleRad * (11 / 12)
         };
 
         sv.posBotLine = {
@@ -263,6 +305,7 @@
             this.textBeaufort.font = "bold " + sv.beaufortSize + "px arial";
         }
 
+        // Speed needle (green).
         this.pointerCommand.tip.x   = sv.posPointer.xT;
         this.pointerCommand.tip.y   = sv.posPointer.yT;
         this.pointerCommand.lBase.x = sv.posPointer.xL;
@@ -274,16 +317,41 @@
         this.pointer.x    = c.width / 2;
         this.pointer.y    = c.height / 2;
 
-        this.pointerGustCommand.tip.x   = sv.posPointerGust.xT;
-        this.pointerGustCommand.tip.y   = sv.posPointerGust.yT;
-        this.pointerGustCommand.lBase.x = sv.posPointerGust.xL;
-        this.pointerGustCommand.lBase.y = sv.posPointerGust.yL;
-        this.pointerGustCommand.rBase.x = sv.posPointerGust.xR;
-        this.pointerGustCommand.rBase.y = sv.posPointerGust.yR;
+        // Gust needle (purple) – same shape as speed needle.
+        this.pointerGustCommand.tip.x   = sv.posPointer.xT;
+        this.pointerGustCommand.tip.y   = sv.posPointer.yT;
+        this.pointerGustCommand.lBase.x = sv.posPointer.xL;
+        this.pointerGustCommand.lBase.y = sv.posPointer.yL;
+        this.pointerGustCommand.rBase.x = sv.posPointer.xR;
+        this.pointerGustCommand.rBase.y = sv.posPointer.yR;
         this.pointerGust.regX = c.width / 2;
         this.pointerGust.regY = c.height / 2;
         this.pointerGust.x    = c.width / 2;
         this.pointerGust.y    = c.height / 2;
+
+        // Speed max marker (green small triangle).
+        this.pointerSpeedMaxCommand.tip.x   = sv.posPointerMax.xT;
+        this.pointerSpeedMaxCommand.tip.y   = sv.posPointerMax.yT;
+        this.pointerSpeedMaxCommand.lBase.x = sv.posPointerMax.xL;
+        this.pointerSpeedMaxCommand.lBase.y = sv.posPointerMax.yL;
+        this.pointerSpeedMaxCommand.rBase.x = sv.posPointerMax.xR;
+        this.pointerSpeedMaxCommand.rBase.y = sv.posPointerMax.yR;
+        this.pointerSpeedMax.regX = c.width / 2;
+        this.pointerSpeedMax.regY = c.height / 2;
+        this.pointerSpeedMax.x    = c.width / 2;
+        this.pointerSpeedMax.y    = c.height / 2;
+
+        // Gust max marker (purple small triangle).
+        this.pointerGustMaxCommand.tip.x   = sv.posPointerMax.xT;
+        this.pointerGustMaxCommand.tip.y   = sv.posPointerMax.yT;
+        this.pointerGustMaxCommand.lBase.x = sv.posPointerMax.xL;
+        this.pointerGustMaxCommand.lBase.y = sv.posPointerMax.yL;
+        this.pointerGustMaxCommand.rBase.x = sv.posPointerMax.xR;
+        this.pointerGustMaxCommand.rBase.y = sv.posPointerMax.yR;
+        this.pointerGustMax.regX = c.width / 2;
+        this.pointerGustMax.regY = c.height / 2;
+        this.pointerGustMax.x    = c.width / 2;
+        this.pointerGustMax.y    = c.height / 2;
 
         if (!this._maskShape) {
             this._maskShape = new createjs.Shape();
@@ -317,12 +385,12 @@
 
     WindSpeedGaugeWidget.prototype.onDataUpdate = function () {
         var v = this.readBindings();
-        this.draw(v.speed, v.gust);
+        this.draw(v.speed, v.gust, v.speedMax, v.gustMax);
     };
 
     WindSpeedGaugeWidget.prototype.redrawForUnitChange = function () {
         var v = this.readBindings();
-        this.draw(v.speed, v.gust, true);
+        this.draw(v.speed, v.gust, v.speedMax, v.gustMax, true);
     };
 
     global.WindSpeedGaugeWidget = WindSpeedGaugeWidget;
