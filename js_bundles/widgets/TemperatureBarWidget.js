@@ -42,10 +42,12 @@
         this.botStrokeCommand = null;
         this.highMarker = null;
         this.highMarkerStrokeCommand = null;
+        this.highMarkerStrokeColorCommand = null;
         this.highMarkerStartCommand = null;
         this.highMarkerEndCommand = null;
         this.lowMarker = null;
         this.lowMarkerStrokeCommand = null;
+        this.lowMarkerStrokeColorCommand = null;
         this.lowMarkerStartCommand = null;
         this.lowMarkerEndCommand = null;
         this.textDisplay = null;
@@ -382,15 +384,15 @@
                 this.arrow.middleLineEndCommand.y   = sv.posArrow.y * arrowBot;
             } else {
                 this.arrow.middleLine.visible = false;
-                this.arrow.pointerLine.graphics._stroke.style = "rgb(255, 221, 37)";
+                this.arrow.pointerLineStrokeColorCommand.style = "rgb(255, 221, 37)";
             }
 
             if (trend > 0) {
-                this.arrow.pointerLine.graphics._stroke.style = "rgb(" + colour.temp + ")";
-                this.arrow.middleLine.graphics._stroke.style  = "rgb(" + colour.temp + ")";
+                this.arrow.pointerLineStrokeColorCommand.style = "rgb(" + this.getColour("temp") + ")";
+                this.arrow.middleLineStrokeColorCommand.style  = "rgb(" + this.getColour("temp") + ")";
             } else if (trend < 0) {
-                this.arrow.pointerLine.graphics._stroke.style = "rgb(" + colour.tempLow + ")";
-                this.arrow.middleLine.graphics._stroke.style  = "rgb(" + colour.tempLow + ")";
+                this.arrow.pointerLineStrokeColorCommand.style = "rgb(" + this.getColour("tempLow") + ")";
+                this.arrow.middleLineStrokeColorCommand.style  = "rgb(" + this.getColour("tempLow") + ")";
             }
 
             this.arrow.pointerLineStrokeCommand.width = sv.arrowStroke;
@@ -401,6 +403,24 @@
             this.arrow.pointerLineEndCommand.x   = sv.posArrow.x * arrowBot;
             this.arrow.pointerLineEndCommand.y   = sv.posArrow.y;
         }
+    };
+
+    TemperatureBarWidget.prototype.recolour = function () {
+        var tempCol    = "rgb(" + this.getColour("temp") + ")",
+            tempLowCol = "rgb(" + this.getColour("tempLow") + ")";
+        if (this.highMarkerStrokeColorCommand) { this.highMarkerStrokeColorCommand.style = tempCol; }
+        if (this.lowMarkerStrokeColorCommand)  { this.lowMarkerStrokeColorCommand.style  = tempLowCol; }
+        if (this.highDisplay) { this.highDisplay.color = tempCol; }
+        if (this.lowDisplay)  { this.lowDisplay.color  = tempLowCol; }
+        if (this.arrow) {
+            var trend = this.values.trend,
+                arrowCol = trend > 0 ? tempCol : trend < 0 ? tempLowCol : null;
+            if (arrowCol) {
+                this.arrow.middleLineStrokeColorCommand.style  = arrowCol;
+                this.arrow.pointerLineStrokeColorCommand.style = arrowCol;
+            }
+        }
+        this._dirty = true;
     };
 
     TemperatureBarWidget.prototype.aspectRatio = 2.0;
@@ -443,21 +463,23 @@
         this.textDisplay = this.createText("");
         this.textTitle   = this.createText(this.resolveTitle());
 
-        var hi = this.createLine({ stroke: "rgb(" + colour.temp + ")", addToStage: false });
+        var hi = this.createLine({ stroke: "rgb(" + this.getColour("temp") + ")", addToStage: false });
         this.highMarker = hi.shape;
         this.highMarkerStrokeCommand = hi.strokeCommand;
+        this.highMarkerStrokeColorCommand = hi.strokeColorCommand;
         this.highMarkerStartCommand  = hi.startCommand;
         this.highMarkerEndCommand    = hi.endCommand;
 
-        var lo = this.createLine({ stroke: "rgb(" + colour.tempLow + ")", addToStage: false });
+        var lo = this.createLine({ stroke: "rgb(" + this.getColour("tempLow") + ")", addToStage: false });
         this.lowMarker = lo.shape;
         this.lowMarkerStrokeCommand = lo.strokeCommand;
+        this.lowMarkerStrokeColorCommand = lo.strokeColorCommand;
         this.lowMarkerStartCommand  = lo.startCommand;
         this.lowMarkerEndCommand    = lo.endCommand;
 
-        this.highDisplay = this.createText("", { align: "left", color: "rgb(" + colour.temp + ")" });
+        this.highDisplay = this.createText("", { align: "left", color: "rgb(" + this.getColour("temp") + ")" });
         this.stage.removeChild(this.highDisplay);
-        this.lowDisplay = this.createText("", { align: "left", color: "rgb(" + colour.tempLow + ")" });
+        this.lowDisplay = this.createText("", { align: "left", color: "rgb(" + this.getColour("tempLow") + ")" });
         this.stage.removeChild(this.lowDisplay);
 
         if (wl && wl.highLowEnabled) {
@@ -468,7 +490,7 @@
         }
 
         if (this.config.withArrow) {
-            this.arrow = this.createTrendArrow({ color: "rgb(" + colour.temp + ")" });
+            this.arrow = this.createTrendArrow({ color: "rgb(" + this.getColour("temp") + ")" });
         }
     };
 

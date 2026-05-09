@@ -20,9 +20,9 @@
     // and sets shape.regX/regY + shape.rotation to spin it.
     WidgetGauge.prototype.createTrianglePointer = function (opts) {
         opts = opts || {};
-        var shape = new createjs.Shape();
+        var shape = new createjs.Shape(),
+            fillColorCmd = shape.graphics.beginFill(opts.fill || "black").command;
         shape.snapToPixel = true;
-        shape.graphics.beginFill(opts.fill || "black");
         shape.graphics.setStrokeStyle(opts.strokeWidth || 10);
         var commands = {
             tip:   shape.graphics.moveTo(10, 0).command,
@@ -31,7 +31,7 @@
         };
         shape.graphics.closePath();
         this.stage.addChild(shape);
-        return { shape: shape, commands: commands };
+        return { shape: shape, commands: commands, fillColorCommand: fillColorCmd };
     };
 
     // Lay out radial dashes and labels around a center. Two wrap modes:

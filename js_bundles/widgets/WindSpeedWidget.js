@@ -272,6 +272,16 @@
         this.updateTweens();
     };
 
+    WindSpeedWidget.prototype.recolour = function () {
+        var windCol     = "rgb(" + this.getColour("wind") + ")",
+            windGustCol = "rgb(" + this.getColour("windGust") + ")";
+        if (this.rectFillLeftFillColorCommand)     { this.rectFillLeftFillColorCommand.style     = windCol;     }
+        if (this.windHighMarkerStrokeColorCommand) { this.windHighMarkerStrokeColorCommand.style = windCol;     }
+        if (this.rectFillRightFillColorCommand)    { this.rectFillRightFillColorCommand.style    = windGustCol; }
+        if (this.gustHighMarkerStrokeColorCommand) { this.gustHighMarkerStrokeColorCommand.style = windGustCol; }
+        this._dirty = true;
+    };
+
     WindSpeedWidget.prototype.aspectRatio = 1.5;
 
     WindSpeedWidget.prototype.applyStageTransform = function () {
@@ -294,26 +304,30 @@
         this.createDashes(ldt * 2);
 
         var fillLeft = this.createRect({
-            fill: "rgb(" + colour.wind + ")", stroke: false
+            fill: "rgb(" + this.getColour("wind") + ")", stroke: false
         });
         this.rectFillLeft = fillLeft.shape;
         this.rectFillLeftCommand = fillLeft.rectCommand;
+        this.rectFillLeftFillColorCommand = fillLeft.fillColorCommand;
 
         var fillRight = this.createRect({
-            fill: "rgb(" + colour.windGust + ")", stroke: false
+            fill: "rgb(" + this.getColour("windGust") + ")", stroke: false
         });
         this.rectFillRight = fillRight.shape;
         this.rectFillRightCommand = fillRight.rectCommand;
+        this.rectFillRightFillColorCommand = fillRight.fillColorCommand;
 
-        var windHi = this.createLine({ stroke: "rgb(" + colour.wind + ")" });
+        var windHi = this.createLine({ stroke: "rgb(" + this.getColour("wind") + ")" });
         this.windHighMarker = windHi.shape;
         this.windHighMarkerStrokeCommand = windHi.strokeCommand;
+        this.windHighMarkerStrokeColorCommand = windHi.strokeColorCommand;
         this.windHighMarkerStartCommand  = windHi.startCommand;
         this.windHighMarkerEndCommand    = windHi.endCommand;
 
-        var gustHi = this.createLine({ stroke: "rgb(" + colour.windGust + ")" });
+        var gustHi = this.createLine({ stroke: "rgb(" + this.getColour("windGust") + ")" });
         this.gustHighMarker = gustHi.shape;
         this.gustHighMarkerStrokeCommand = gustHi.strokeCommand;
+        this.gustHighMarkerStrokeColorCommand = gustHi.strokeColorCommand;
         this.gustHighMarkerStartCommand  = gustHi.startCommand;
         this.gustHighMarkerEndCommand    = gustHi.endCommand;
 

@@ -52,6 +52,7 @@
     WidgetBase.prototype.draw = function () {};
     WidgetBase.prototype.onDataUpdate = function (eventName) {};
     WidgetBase.prototype.resize = function () {};
+    WidgetBase.prototype.recolour = function () {};
 
     // Resolve all compiled bindings and return { field: value, ... }.
     // Widgets call this in onDataUpdate() instead of reaching into the
@@ -84,6 +85,12 @@
             }
         }
         return true;
+    };
+
+    WidgetBase.prototype.getColour = function (key) {
+        var overrides = this.config && this.config.colours;
+        if (overrides && overrides[key]) { return overrides[key]; }
+        return colour[key];
     };
 
     // Mark the widget as needing a redraw on the next frameUpdate. CanvasWidget's

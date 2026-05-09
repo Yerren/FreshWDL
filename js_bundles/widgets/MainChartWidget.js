@@ -39,6 +39,12 @@
         }
     };
 
+    MainChartWidget.prototype.recolour = function () {
+        if (this.defaultBase && this.defaultRange) {
+            this.configureGraph(this.defaultBase, this.defaultRange);
+        }
+    };
+
     MainChartWidget.prototype.drawChart = function () {
         var xAxis;
         if (this.graphType === "bar") {
@@ -139,7 +145,7 @@
             }
         }
 
-        var datasetStyle = WidgetBase.extend({}, graphStyles[style]),
+        var datasetStyle = WidgetBase.extend({}, makeGraphStyle(style, this.config.colours)),
             unitLabel = baseIn.label.toString() + " (" +
                 units[baseIn.unit.toString()][currentUnits[baseIn.unit.toString()]][1].toString() + ")";
         datasetStyle.label = unitLabel;

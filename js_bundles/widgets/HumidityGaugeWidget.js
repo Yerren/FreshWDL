@@ -54,9 +54,10 @@
         this.innerCircle = inner.shape;
         this.innerCircleCommand = inner.circleCommand;
 
-        var dot = this.createCircle({ fill: "rgb(" + colour.humidity + ")" });
+        var dot = this.createCircle({ fill: "rgb(" + this.getColour("humidity") + ")" });
         this.innerDot = dot.shape;
         this.innerDotCommand = dot.circleCommand;
+        this.innerDotFillColorCommand = dot.fillColorCommand;
 
         this.textDisplay = this.createText(" ");
         this.textTitle = this.createText(this.config.title || (useDict("humidityTitle") + " (%)"));
@@ -68,7 +69,17 @@
 
         this.createDashes(this.largeDashTotal * 2);
 
-        this.arrow = this.createTrendArrow({ color: "rgb(" + colour.humidity + ")" });
+        this.arrow = this.createTrendArrow({ color: "rgb(" + this.getColour("humidity") + ")" });
+    };
+
+    HumidityGaugeWidget.prototype.recolour = function () {
+        var col = "rgb(" + this.getColour("humidity") + ")";
+        if (this.innerDotFillColorCommand) { this.innerDotFillColorCommand.style = col; }
+        if (this.arrow) {
+            this.arrow.middleLineStrokeColorCommand.style  = col;
+            this.arrow.pointerLineStrokeColorCommand.style = col;
+        }
+        this._dirty = true;
     };
 
     HumidityGaugeWidget.prototype.draw = function (humidityIn, trend, unitChange) {

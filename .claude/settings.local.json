@@ -57,7 +57,11 @@
       "Bash(ConvertTo-Json)",
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Yerren\\\\Documents\\\\GitHub\\\\FreshWDL\" -Recurse -File -Include \"*wind*\", \"*gauge*\", \"*speed*\")",
       "Bash(Select-Object -ExpandProperty FullName)",
-      "Bash(Sort-Object)"
+      "Bash(Sort-Object)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Yerren\\\\Documents\\\\GitHub\\\\FreshWDL\" -Recurse -Directory | Where-Object { $_.Name -eq \"layoutEditor\" })",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Yerren\\\\Documents\\\\GitHub\\\\FreshWDL\" -Force)",
+      "Bash(Select-Object Name, FullName)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Yerren\\\\Documents\\\\GitHub\\\\FreshWDL\\\\layoutEditor\" -Force | Where-Object { -not $_.Name.StartsWith\\('node_modules'\\) } | Format-Table -AutoSize)"
     ]
   }
 }

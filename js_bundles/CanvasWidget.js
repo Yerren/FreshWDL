@@ -213,14 +213,17 @@
     // Outlined rect shape. Returns { shape, strokeCommand, rectCommand }.
     CanvasWidget.prototype.createRect = function (opts) {
         opts = opts || {};
-        var shape = new createjs.Shape();
+        var shape = new createjs.Shape(),
+            strokeColorCmd = null,
+            fillColorCmd = null;
         shape.snapToPixel = true;
-        if (opts.stroke !== false) { shape.graphics.beginStroke(opts.stroke || "black"); }
-        if (opts.fill) { shape.graphics.beginFill(opts.fill); }
+        if (opts.stroke !== false) { strokeColorCmd = shape.graphics.beginStroke(opts.stroke || "black").command; }
+        if (opts.fill) { fillColorCmd = shape.graphics.beginFill(opts.fill).command; }
         var strokeCmd = shape.graphics.setStrokeStyle(0).command,
             rectCmd   = shape.graphics.drawRect(0, 0, 0, 0).command;
         this.stage.addChild(shape);
-        return { shape: shape, strokeCommand: strokeCmd, rectCommand: rectCmd };
+        return { shape: shape, strokeCommand: strokeCmd, rectCommand: rectCmd,
+                 strokeColorCommand: strokeColorCmd, fillColorCommand: fillColorCmd };
     };
 
     // Circle shape. Returns { shape, strokeCommand (or null), circleCommand }.
@@ -266,12 +269,13 @@
         opts = opts || {};
         var shape = new createjs.Shape();
         shape.snapToPixel = true;
-        shape.graphics.beginStroke(opts.stroke || "black");
+        var strokeColorCmd = shape.graphics.beginStroke(opts.stroke || "black").command;
         var strokeCmd = shape.graphics.setStrokeStyle(opts.width || 0).command,
             startCmd = shape.graphics.moveTo(0, 0).command,
             endCmd   = shape.graphics.lineTo(0, 0).command;
         if (opts.addToStage !== false) { this.stage.addChild(shape); }
-        return { shape: shape, strokeCommand: strokeCmd, startCommand: startCmd, endCommand: endCmd };
+        return { shape: shape, strokeCommand: strokeCmd, startCommand: startCmd, endCommand: endCmd,
+                 strokeColorCommand: strokeColorCmd };
     };
 
     // Build the two-shape trend-arrow (vertical bar + chevron) used by
@@ -284,7 +288,7 @@
             pointer = new createjs.Shape(),
             out = {};
         middle.snapToPixel = true;
-        middle.graphics.beginStroke(color);
+        out.middleLineStrokeColorCommand = middle.graphics.beginStroke(color).command;
         out.middleLine = middle;
         out.middleLineStrokeCommand = middle.graphics.setStrokeStyle(10).command;
         out.middleLineStrokeCommand.caps = "round";
@@ -293,7 +297,7 @@
         this.stage.addChild(middle);
 
         pointer.snapToPixel = true;
-        pointer.graphics.beginStroke(color);
+        out.pointerLineStrokeColorCommand = pointer.graphics.beginStroke(color).command;
         out.pointerLine = pointer;
         out.pointerLineStrokeCommand = pointer.graphics.setStrokeStyle(10).command;
         out.pointerLineStrokeCommand.caps = "round";

@@ -1676,17 +1676,27 @@ function useDict(wordIn) {
 //Sets GLOBAL variables
 //Customizables
 var globalFontFamily = "Arial", //The font used throughout the page
-    colour = {
+    colour = (function (defaults, overrides) {
+        var k;
+        if (overrides) {
+            for (k in overrides) {
+                if (Object.prototype.hasOwnProperty.call(overrides, k)) {
+                    defaults[k] = overrides[k];
+                }
+            }
+        }
+        return defaults;
+    }({
         barometer: "40, 104, 206",
-        rainfall: "0, 71, 183",
-        wind: "23, 145, 27",
-        windGust: "188, 0, 255",
-        humidity: "16, 217, 244",
-        solar: "245, 193, 18",
-        temp: "209, 32, 32",
-        tempLow: "0, 50, 200",
-        uv: "234, 242, 45"
-    },
+        rainfall:  "0, 71, 183",
+        wind:      "23, 145, 27",
+        windGust:  "188, 0, 255",
+        humidity:  "16, 217, 244",
+        solar:     "245, 193, 18",
+        temp:      "209, 32, 32",
+        tempLow:   "0, 50, 200",
+        uv:        "234, 242, 45"
+    }, typeof themeColours !== "undefined" ? themeColours : null)),
     graphStyles = { //The Styles for each graph
         barometer: {
             label: null,
@@ -1796,6 +1806,38 @@ var globalFontFamily = "Arial", //The font used throughout the page
         }
     },
     graphDict = {};
+
+var GRAPH_STYLE_COLOUR_KEY = {
+    barometer:    "barometer",
+    rainfallLine: "rainfall",
+    rainfallBar:  "rainfall",
+    wind:         "wind",
+    windGust:     "windGust",
+    humidity:     "humidity",
+    solar:        "solar",
+    tempHigh:     "temp",
+    tempLow:      "tempLow",
+    uv:           "uv"
+};
+
+function makeGraphStyle(styleKey, colourOverrides) {
+    var colourKey = GRAPH_STYLE_COLOUR_KEY[styleKey],
+        base = graphStyles[styleKey],
+        c;
+    if (!colourKey) { return base; }
+    c = (colourOverrides && colourOverrides[colourKey]) || colour[colourKey];
+    return {
+        label: null,
+        data: null,
+        fill: base ? base.fill : false,
+        backgroundColor:            "rgba(" + c + ", 0.4)",
+        borderColor:                "rgba(" + c + ", 0.8)",
+        pointBorderColor:           "rgba(" + c + ", 0.6)",
+        pointBackgroundColor:       "rgba(" + c + ", 0.6)",
+        pointHoverBackgroundColor:  "rgba(" + c + ", 0.6)",
+        pointHoverBorderColor:      "rgba(" + c + ", 0.6)"
+    };
+}
 
 //All graphs (to be included in drop down modal menu) and their properties
 var globalGraphs = {

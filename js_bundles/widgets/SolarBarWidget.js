@@ -19,6 +19,7 @@
         this.rectFillTop = null;
         this.rectCommand = null;
         this.rectFillCommand = null;
+        this.rectFillFillColorCommand = null;
         this.topStrokeCommand = null;
         this.textDisplay = null;
         this.textPercentage = null;
@@ -67,11 +68,12 @@
         }
 
         var fill = this.createRect({
-            fill: "rgb(" + colour[this.unitsIn.toString()].toString() + ")",
+            fill: "rgb(" + this.getColour(this.unitsIn) + ")",
             stroke: false
         });
         this.rectFillTop = fill.shape;
         this.rectFillCommand = fill.rectCommand;
+        this.rectFillFillColorCommand = fill.fillColorCommand;
 
         this.textDisplay = this.createText("");
 

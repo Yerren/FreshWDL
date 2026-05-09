@@ -172,5 +172,12 @@
         this.rectFillCommand.w = sv.barFillWidth;
     };
 
+    WidgetBar.prototype.recolour = function () {
+        if (this.rectFillFillColorCommand) {
+            this.rectFillFillColorCommand.style = "rgb(" + this.getColour(this.unitsIn) + ")";
+        }
+        this._dirty = true;
+    };
+
     global.WidgetBar = WidgetBar;
 })(typeof window !== "undefined" ? window : this);

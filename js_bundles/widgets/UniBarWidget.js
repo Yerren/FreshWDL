@@ -20,6 +20,7 @@
         this.rectFillTop = null;
         this.rectCommand = null;
         this.rectFillCommand = null;
+        this.rectFillFillColorCommand = null;
         this.topStrokeCommand = null;
         this.textDisplay = null;
         this.textTitle = null;
@@ -148,11 +149,12 @@
         this.createDashes(ldt * 10);
 
         var fill = this.createRect({
-            fill: "rgba(" + colour[this.unitsIn].toString() + ", 0.6)",
+            fill: "rgb(" + this.getColour(this.unitsIn) + ")",
             stroke: false
         });
         this.rectFillTop = fill.shape;
         this.rectFillCommand = fill.rectCommand;
+        this.rectFillFillColorCommand = fill.fillColorCommand;
 
         this.createLabels(ldt);
 

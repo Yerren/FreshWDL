@@ -39,4 +39,15 @@ var clientRawName = "clientraw.txt", //The names of your clientraw files
         windDir: {enabled: true},
         windSpeed: {enabled: true},
         rainfall: {enabled: true}
+    },
+    themeColours = {
+        barometer: "40, 104, 206",
+        rainfall:  "0, 71, 183",
+        wind:      "23, 145, 27",
+        windGust:  "188, 0, 255",
+        humidity:  "16, 217, 244",
+        solar:     "245, 193, 18",
+        temp:      "209, 32, 32",
+        tempLow:   "0, 50, 200",
+        uv:        "234, 242, 45"
     };

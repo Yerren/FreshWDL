@@ -82,22 +82,25 @@
         this.botLineEndCommand = bot.endCommand;
 
         // Gust needle behind speed needle.
-        var gustPtr = this.createTrianglePointer({ fill: "rgb(" + colour.windGust + ")" });
+        var gustPtr = this.createTrianglePointer({ fill: "rgb(" + this.getColour("windGust") + ")" });
         this.pointerGust = gustPtr.shape;
         this.pointerGustCommand = gustPtr.commands;
+        this.pointerGustFillColorCommand = gustPtr.fillColorCommand;
         this.pointerGust.visible = false;
 
-        var ptr = this.createTrianglePointer({ fill: "rgb(" + colour.wind + ")" });
+        var ptr = this.createTrianglePointer({ fill: "rgb(" + this.getColour("wind") + ")" });
         this.pointer = ptr.shape;
         this.pointerCommand = ptr.commands;
+        this.pointerFillColorCommand = ptr.fillColorCommand;
 
         var inner = this.createCircle({ fill: "black" });
         this.innerCircle = inner.shape;
         this.innerCircleCommand = inner.circleCommand;
 
-        var dot = this.createCircle({ fill: "rgb(" + colour.wind + ")" });
+        var dot = this.createCircle({ fill: "rgb(" + this.getColour("wind") + ")" });
         this.innerDot = dot.shape;
         this.innerDotCommand = dot.circleCommand;
+        this.innerDotFillColorCommand = dot.fillColorCommand;
 
         this.textDisplay = this.createText(" ");
         this.textTitle = this.createText(
@@ -108,14 +111,16 @@
         this.createDashes(this.largeDashTotal * 2);
 
         // Max markers added after dashes so they render in front of the tick marks.
-        var speedMaxPtr = this.createTrianglePointer({ fill: "rgb(" + colour.wind + ")" });
+        var speedMaxPtr = this.createTrianglePointer({ fill: "rgb(" + this.getColour("wind") + ")" });
         this.pointerSpeedMax = speedMaxPtr.shape;
         this.pointerSpeedMaxCommand = speedMaxPtr.commands;
+        this.pointerSpeedMaxFillColorCommand = speedMaxPtr.fillColorCommand;
         this.pointerSpeedMax.visible = false;
 
-        var gustMaxPtr = this.createTrianglePointer({ fill: "rgb(" + colour.windGust + ")" });
+        var gustMaxPtr = this.createTrianglePointer({ fill: "rgb(" + this.getColour("windGust") + ")" });
         this.pointerGustMax = gustMaxPtr.shape;
         this.pointerGustMaxCommand = gustMaxPtr.commands;
+        this.pointerGustMaxFillColorCommand = gustMaxPtr.fillColorCommand;
         this.pointerGustMax.visible = false;
 
         if (this.config.withBeaufort !== false) {
@@ -375,6 +380,17 @@
             labelRadius: sv.labelCentreRad,
             labelFontSize: sv.textSize
         });
+    };
+
+    WindSpeedGaugeWidget.prototype.recolour = function () {
+        var windCol     = "rgb(" + this.getColour("wind") + ")",
+            windGustCol = "rgb(" + this.getColour("windGust") + ")";
+        if (this.pointerFillColorCommand)         { this.pointerFillColorCommand.style         = windCol;     }
+        if (this.pointerSpeedMaxFillColorCommand) { this.pointerSpeedMaxFillColorCommand.style = windCol;     }
+        if (this.innerDotFillColorCommand)        { this.innerDotFillColorCommand.style        = windCol;     }
+        if (this.pointerGustFillColorCommand)     { this.pointerGustFillColorCommand.style     = windGustCol; }
+        if (this.pointerGustMaxFillColorCommand)  { this.pointerGustMaxFillColorCommand.style  = windGustCol; }
+        this._dirty = true;
     };
 
     WindSpeedGaugeWidget.prototype.aspectRatio = 1.1;

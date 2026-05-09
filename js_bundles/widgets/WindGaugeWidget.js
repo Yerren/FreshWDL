@@ -194,9 +194,10 @@
         this.outerCircleStrokeCommand = outer.strokeCommand;
         this.outerCircleCommand       = outer.circleCommand;
 
-        var avgPtr = this.createTrianglePointer({ fill: "rgb(" + colour.wind + ")" });
+        var avgPtr = this.createTrianglePointer({ fill: "rgb(" + this.getColour("wind") + ")" });
         this.pointerAvg = avgPtr.shape;
         this.pointerAvgCommand = avgPtr.commands;
+        this.pointerAvgFillColorCommand = avgPtr.fillColorCommand;
 
         var mainPtr = this.createTrianglePointer({ fill: "black" });
         this.pointer = mainPtr.shape;
@@ -206,12 +207,13 @@
         this.innerCircle = inner.shape;
         this.innerCircleCommand = inner.circleCommand;
 
-        var dot = this.createCircle({ fill: "rgb(" + colour.wind + ")" });
+        var dot = this.createCircle({ fill: "rgb(" + this.getColour("wind") + ")" });
         this.innerDot = dot.shape;
         this.innerDotCommand = dot.circleCommand;
+        this.innerDotFillColorCommand = dot.fillColorCommand;
 
         this.textDisplay = this.createText("0\xB0");
-        this.avgDisplay  = this.createText("0\xB0", { color: "rgb(" + colour.wind + ")" });
+        this.avgDisplay  = this.createText("0\xB0", { color: "rgb(" + this.getColour("wind") + ")" });
 
         this.createLabels(ldt, { align: "center" });
         for (i = 0; i < ldt; i++) {
@@ -219,6 +221,14 @@
         }
 
         this.createDashes(ldt * 2);
+    };
+
+    WindGaugeWidget.prototype.recolour = function () {
+        var col = "rgb(" + this.getColour("wind") + ")";
+        if (this.pointerAvgFillColorCommand) { this.pointerAvgFillColorCommand.style = col; }
+        if (this.innerDotFillColorCommand)   { this.innerDotFillColorCommand.style   = col; }
+        if (this.avgDisplay) { this.avgDisplay.color = col; }
+        this._dirty = true;
     };
 
     global.WindGaugeWidget = WindGaugeWidget;
