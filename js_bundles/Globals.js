@@ -1693,9 +1693,10 @@ var globalFontFamily = "Arial", //The font used throughout the page
         windGust:  "188, 0, 255",
         humidity:  "16, 217, 244",
         solar:     "245, 193, 18",
-        temp:      "209, 32, 32",
-        tempLow:   "0, 50, 200",
-        uv:        "234, 242, 45"
+        temp:        "209, 32, 32",
+        tempLow:     "0, 50, 200",
+        tempCurrent: "255, 221, 37",
+        uv:          "234, 242, 45"
     }, typeof themeColours !== "undefined" ? themeColours : null)),
     graphStyles = { //The Styles for each graph
         barometer: {

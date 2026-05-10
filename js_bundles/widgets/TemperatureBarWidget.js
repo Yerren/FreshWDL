@@ -36,8 +36,10 @@
         this.roundBotFill = null;
         this.rectCommand = null;
         this.rectFillCommand = null;
+        this.rectFillColorCommand = null;
         this.circCommand = null;
         this.circFillCommand = null;
+        this.circFillColorCommand = null;
         this.topStrokeCommand = null;
         this.botStrokeCommand = null;
         this.highMarker = null;
@@ -376,23 +378,18 @@
                 trend    = this.values.trend;
 
             if (trend !== 0) {
+                var trendCol = "rgb(" + this.getColour(trend > 0 ? "temp" : "tempLow") + ")";
                 this.arrow.middleLine.visible = true;
                 this.arrow.middleLineStrokeCommand.width = sv.arrowStroke;
                 this.arrow.middleLineStartCommand.x = sv.posArrow.x;
                 this.arrow.middleLineStartCommand.y = sv.posArrow.y * arrowTop;
                 this.arrow.middleLineEndCommand.x   = sv.posArrow.x;
                 this.arrow.middleLineEndCommand.y   = sv.posArrow.y * arrowBot;
+                this.arrow.pointerLineStrokeColorCommand.style = trendCol;
+                this.arrow.middleLineStrokeColorCommand.style  = trendCol;
             } else {
                 this.arrow.middleLine.visible = false;
-                this.arrow.pointerLineStrokeColorCommand.style = "rgb(255, 221, 37)";
-            }
-
-            if (trend > 0) {
-                this.arrow.pointerLineStrokeColorCommand.style = "rgb(" + this.getColour("temp") + ")";
-                this.arrow.middleLineStrokeColorCommand.style  = "rgb(" + this.getColour("temp") + ")";
-            } else if (trend < 0) {
-                this.arrow.pointerLineStrokeColorCommand.style = "rgb(" + this.getColour("tempLow") + ")";
-                this.arrow.middleLineStrokeColorCommand.style  = "rgb(" + this.getColour("tempLow") + ")";
+                this.arrow.pointerLineStrokeColorCommand.style = "rgb(" + this.getColour("tempCurrent") + ")";
             }
 
             this.arrow.pointerLineStrokeCommand.width = sv.arrowStroke;
@@ -406,12 +403,15 @@
     };
 
     TemperatureBarWidget.prototype.recolour = function () {
-        var tempCol    = "rgb(" + this.getColour("temp") + ")",
-            tempLowCol = "rgb(" + this.getColour("tempLow") + ")";
+        var tempCol        = "rgb(" + this.getColour("temp") + ")",
+            tempLowCol     = "rgb(" + this.getColour("tempLow") + ")",
+            tempCurrentCol = "rgb(" + this.getColour("tempCurrent") + ")";
         if (this.highMarkerStrokeColorCommand) { this.highMarkerStrokeColorCommand.style = tempCol; }
         if (this.lowMarkerStrokeColorCommand)  { this.lowMarkerStrokeColorCommand.style  = tempLowCol; }
         if (this.highDisplay) { this.highDisplay.color = tempCol; }
         if (this.lowDisplay)  { this.lowDisplay.color  = tempLowCol; }
+        if (this.circFillColorCommand) { this.circFillColorCommand.style = tempCurrentCol; }
+        if (this.rectFillColorCommand) { this.rectFillColorCommand.style = tempCurrentCol; }
         if (this.arrow) {
             var trend = this.values.trend,
                 arrowCol = trend > 0 ? tempCol : trend < 0 ? tempLowCol : null;
@@ -450,13 +450,17 @@
 
         this.createDashes(ldt * 10);
 
-        var botFill = this.createCircle({ fill: "rgb(255, 221, 37)" });
+        var fillCol = "rgb(" + this.getColour("tempCurrent") + ")";
+
+        var botFill = this.createCircle({ fill: fillCol });
         this.roundBotFill = botFill.shape;
         this.circFillCommand = botFill.circleCommand;
+        this.circFillColorCommand = botFill.fillColorCommand;
 
-        var topFill = this.createRoundedBar({ fill: "rgb(255, 221, 37)", stroke: false });
+        var topFill = this.createRoundedBar({ fill: fillCol, stroke: false });
         this.roundRectFillTop = topFill.shape;
         this.rectFillCommand = topFill.rectCommand;
+        this.rectFillColorCommand = topFill.fillColorCommand;
 
         this.createLabels(ldt);
 

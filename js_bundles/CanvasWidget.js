@@ -197,17 +197,18 @@
         }
     };
 
-    // Outlined rounded-rect shape. Returns { shape, strokeCommand, rectCommand }.
+    // Outlined rounded-rect shape. Returns { shape, strokeCommand, rectCommand, fillColorCommand }.
     CanvasWidget.prototype.createRoundedBar = function (opts) {
         opts = opts || {};
-        var shape = new createjs.Shape();
+        var shape = new createjs.Shape(),
+            fillColorCmd = null;
         shape.snapToPixel = true;
         if (opts.stroke !== false) { shape.graphics.beginStroke(opts.stroke || "black"); }
-        if (opts.fill) { shape.graphics.beginFill(opts.fill); }
+        if (opts.fill) { fillColorCmd = shape.graphics.beginFill(opts.fill).command; }
         var strokeCmd = shape.graphics.setStrokeStyle(0).command,
             rectCmd   = shape.graphics.drawRoundRect(0, 0, 0, 0, 0).command;
         this.stage.addChild(shape);
-        return { shape: shape, strokeCommand: strokeCmd, rectCommand: rectCmd };
+        return { shape: shape, strokeCommand: strokeCmd, rectCommand: rectCmd, fillColorCommand: fillColorCmd };
     };
 
     // Outlined rect shape. Returns { shape, strokeCommand, rectCommand }.

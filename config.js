@@ -47,7 +47,8 @@ var clientRawName = "clientraw.txt", //The names of your clientraw files
         windGust:  "188, 0, 255",
         humidity:  "16, 217, 244",
         solar:     "245, 193, 18",
-        temp:      "209, 32, 32",
-        tempLow:   "0, 50, 200",
+        temp:        "209, 32, 32",
+        tempLow:     "0, 50, 200",
+        tempCurrent: "255, 221, 37",
         uv:        "234, 242, 45"
     };
