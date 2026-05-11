@@ -16,6 +16,9 @@
     WidgetBase.inherit(ModalHandler, DomHandler);
 
     ModalHandler.prototype.openModal = function (val1, val2, menuValue) {
+        if (!this.graphHandler && global.app) {
+            this.graphHandler = global.app.registry.get("modalGraph");
+        }
         if (this.selectMenu) { this.selectMenu.value = menuValue; }
         if (this.modal) { this.modal.style.display = "block"; }
         if (this.graphHandler) {
@@ -100,6 +103,9 @@
 
         // Expose global for inline onchange="graphChange(this)" in UpperContent.js
         global.graphChange = function (obj) {
+            if (!self.graphHandler && global.app) {
+                self.graphHandler = global.app.registry.get("modalGraph");
+            }
             var inputs = self.graphInputs[obj.value];
             if (inputs && self.graphHandler) {
                 self.graphHandler.configureGraph(inputs[0], inputs[1]);
