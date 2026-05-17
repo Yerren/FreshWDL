@@ -58,12 +58,23 @@
         if (el) { el.style.display = "none"; }
     };
 
+    // Missing global / missing token = legacy export, no check applied.
+    WidgetFactory.prototype.passesLicenseCheck = function (entry) {
+        if (typeof window === "undefined") { return true; }
+        var check = window.__FWDL_CHECK__;
+        if (typeof check !== "function") { return true; }
+        var token = entry.config && entry.config.licenseToken;
+        if (!token) { return true; }
+        return check(entry.id, token) === true;
+    };
+
     WidgetFactory.prototype.buildOne = function (entry) {
         if (!entry || !entry.Ctor) { return null; }
         if (!this.isEnabled(entry)) {
             this.hideDisabled(entry);
             return null;
         }
+        if (!this.passesLicenseCheck(entry)) { return null; }
         var src = entry.config || {}, config = {}, key;
         for (key in src) {
             if (Object.prototype.hasOwnProperty.call(src, key)) { config[key] = src[key]; }

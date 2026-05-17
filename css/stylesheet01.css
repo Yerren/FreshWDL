@@ -21,6 +21,15 @@ head, body {
     font-size: 1.8vmin;
     padding: 0;
 }
+/* ButtonWidget grid-placed buttons */
+.fwdl-btn { display: block; width: 100%; height: 100%; align-self: stretch; cursor: pointer; box-sizing: border-box; font-family: inherit; }
+.fwdl-btn:hover { filter: brightness(0.88); }
+.fwdl-btn:active { filter: brightness(0.72); }
+.fwdl-btn--pill { border: none; border-radius: 2em; padding: 0 8%; }
+.fwdl-btn--flat { background: transparent; border: 2px solid rgba(0,0,0,0.6); border-radius: 4px; letter-spacing: 0.05em; text-transform: uppercase; padding: 0 4%; }
+.fwdl-btn--flat:hover { filter: none; background: rgba(0,0,0,0.12); }
+.fwdl-btn--flat:active { filter: none; background: rgba(0,0,0,0.25); }
+
 /* Layout-specific sizing (regions, .widgetContainer, .widgetSlot, per-widget
    slot dimensions) lives in the active layout file (e.g. Layout.js). Only
    styling that's shared across any layout belongs in this stylesheet. */

@@ -105,7 +105,9 @@
         this.selectMenu      = document.getElementById("selectMenuRecords");
 
         this.headerText.innerHTML = useDict("buttonLabelRecords");
-        this.button.innerHTML     = useDict("buttonLabelRecords");
+        if (this.button) {
+            this.button.innerHTML = useDict("buttonLabelRecords");
+        }
 
         var option1 = document.createElement("option"),
             option2 = document.createElement("option"),
@@ -132,10 +134,12 @@
         window.addEventListener("click", outsideClickHandler);
         this._listeners.push({ event: "click", handler: outsideClickHandler });
 
-        this.button.addEventListener("click", function () {
-            self.modal.style.display = "block";
-            self.resize();
-        }, false);
+        if (this.button) {
+            this.button.addEventListener("click", function () {
+                self.modal.style.display = "block";
+                self.resize();
+            }, false);
+        }
 
         // Expose global for inline onchange handler in InnerContent.js
         global.changeCurrentOptionRe01 = function (optionNum) {
