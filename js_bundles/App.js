@@ -54,18 +54,25 @@
         if (typeof global.initialiseLayout === "function") {
             global.initialiseLayout();
         }
-        if (this.layoutMount) {
-            this.layoutMount.mount(this.manifest);
-        }
-        this.factory.buildAll();
-        if (this.layoutMount) {
-            this.layoutMount.observe(this.registry);
-        }
-        if (this.runTicker) { this.initializeTicker(); }
-        if (this.runDataManager) {
-            global.loaded = true;
-            this.dataManager.start();
-        }
+
+        // Gate mount/buildAll on the license; failure paints into
+        // #FWDLcontainer and skips construction entirely.
+        var self = this;
+        return this.factory.beginLicenseCheck().then(function (state) {
+            if (!state || !state.ok) { return; }
+            if (self.layoutMount) {
+                self.layoutMount.mount(self.manifest);
+            }
+            self.factory.buildAll();
+            if (self.layoutMount) {
+                self.layoutMount.observe(self.registry);
+            }
+            if (self.runTicker) { self.initializeTicker(); }
+            if (self.runDataManager) {
+                global.loaded = true;
+                self.dataManager.start();
+            }
+        });
     };
 
     App.prototype.stop = function () {
