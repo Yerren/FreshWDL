@@ -9,16 +9,8 @@
 //   - enabledKey: the key inside widgetList / graphList that gates creation
 //   - enabledIn: "widgetList" (default) or "graphList"
 //   - canvasID: canvas element id for enabled-false fallback (hides the canvas)
-//
-// Licensing: LICENSE_PUBLIC_JWK below is the trust anchor for premium-export
-// domain-locking. The matching private key signs window.__FWDL_LICENSE_BUNDLE__
-// in each premium export; beginLicenseCheck verifies it, App.start awaits the
-// result, and passesLicenseCheck gates buildOne. Stripping the bundle but
-// leaving licenseTokens in the manifest fails closed via requiresLicense.
 
 (function (global) {
-    // Rotate via worker/scripts/genLicenseKeyPair.mjs (writes the matching
-    // half into the worker secret LICENSE_SIGNING_PRIVATE_JWK).
     var LICENSE_PUBLIC_JWK = {
         kty: "EC",
         crv: "P-256",
