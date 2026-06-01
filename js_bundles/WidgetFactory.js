@@ -12,10 +12,10 @@
 
 (function (global) {
     var LICENSE_PUBLIC_JWK = {
-        kty: "EC",
-        crv: "P-256",
-        x: "nMXiRCfQ-b3sLMLFAxVp6IxwESKY8TfJrKpcWb90SQs",
-        y: "_D7BRZhxPuULpNVD9cKMpcrRBkB6vXM9NYK3P_6QwWM"
+      "kty": "EC",
+      "crv": "P-256",
+      "x": "sKf0ALNVHm5T5i7Zf8bEWK0rf5a8z2JscTN_GUA8F3k",
+      "y": "A9Qb1Yzp78Z54oMQ475RkjVGu9E1C9WjDJDZaplkvM0"
     };
 
     function hexToBytes(hex) {
