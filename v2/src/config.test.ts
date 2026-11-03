@@ -14,7 +14,7 @@ describe('configuration', () => {
     const config = mergeConfig({
       stationName: 'My station',
       siteName: 'My brand',
-      siteUrl: 'https://example.com/',
+      siteUrl: 'https://example.com/', // taste-skill-ignore: the reserved example domain, correct in a unit test
       dataMode: 'live',
       baseUrl: 'https://weather.example/data/',
       feedFiles: { current: 'raw.txt' },
@@ -23,7 +23,7 @@ describe('configuration', () => {
     expect(config).toMatchObject({
       stationName: 'My station',
       siteName: 'My brand',
-      siteUrl: 'https://example.com/',
+      siteUrl: 'https://example.com/', // taste-skill-ignore: the reserved example domain, correct in a unit test
       dataMode: 'live',
       baseUrl: 'https://weather.example/data/',
       feedFiles: { current: 'raw.txt' },

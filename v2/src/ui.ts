@@ -6,16 +6,21 @@ import type {
   TemperatureUnit,
   ThemeMode,
   UnitPreferences,
+  WeatherData,
   WeatherRecord,
   WindUnit,
 } from './domain'
 import { translator, type MessageKey } from './i18n'
-import { pressure, rainfall, temperature, wind } from './units'
+import { percent, pressure, rainfall, temperature, wind } from './units'
 import type { AppStore } from './store'
-import { ChartManager } from './charts'
+import { drawSeries, drawSkyStrip, type SeriesView } from './charts'
 import { relativeTime } from './time'
 
-type FormatResult = ReturnType<typeof temperature>
+type Translate = (key: MessageKey) => string
+type FormattedValue = ReturnType<typeof temperature>
+type SeriesKey = keyof WeatherData['history']
+
+const svgNamespace = 'http://www.w3.org/2000/svg'
 
 function element<K extends keyof HTMLElementTagNameMap>(
   tag: K,
@@ -28,137 +33,167 @@ function element<K extends keyof HTMLElementTagNameMap>(
   return node
 }
 
-function icon(name: 'temperature' | 'wind' | 'humidity' | 'pressure' | 'rain' | 'sun' | 'settings'): string {
-  const paths = {
-    temperature: '<path d="M12 3a3 3 0 0 0-3 3v7.2a5 5 0 1 0 6 0V6a3 3 0 0 0-3-3Zm1 11.4a3 3 0 1 1-2 0V6a1 1 0 0 1 2 0Z"/>',
-    wind: '<path d="M4 8h9a2 2 0 1 0-2-2M4 12h14a2 2 0 1 1-2 2M4 16h7"/>',
-    humidity: '<path d="M12 2s6 7 6 12a6 6 0 0 1-12 0c0-5 6-12 6-12Zm-3 12a3 3 0 0 0 3 3"/>',
-    pressure: '<circle cx="12" cy="12" r="8"/><path d="m12 12 4-3M7 16h10"/>',
-    rain: '<path d="M7 15a4 4 0 1 1 1-7 5 5 0 0 1 9 2 3 3 0 0 1 0 6H7Zm1 3-1 2m5-2-1 2m5-2-1 2"/>',
-    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2m-3-7-2 2M7 17l-2 2m0-14 2 2m10 10 2 2"/>',
-    settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/>',
-  }
-  return `<svg viewBox="0 0 24 24" aria-hidden="true">${paths[name]}</svg>`
+function shape(tag: string, attributes: Record<string, string | number>, parent: SVGElement): SVGElement {
+  const node = document.createElementNS(svgNamespace, tag)
+  for (const [name, value] of Object.entries(attributes)) node.setAttribute(name, String(value))
+  parent.append(node)
+  return node
 }
 
-function valueText(result: FormatResult): string {
-  return `${result.value} ${result.unit}`
-}
-
-function sparkline(points: HistoryPoint[], accent: string): SVGSVGElement {
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('class', 'metric__sparkline')
-  svg.setAttribute('viewBox', '0 0 100 40')
-  svg.setAttribute('preserveAspectRatio', 'none')
-  svg.setAttribute('aria-hidden', 'true')
-  const values = points.map((point) => point.value)
-  const minimum = Math.min(...values)
-  const range = Math.max(Math.max(...values) - minimum, 1)
-  const coordinates = values.map((value, index) => {
-    const x = (index / Math.max(values.length - 1, 1)) * 100
-    const y = 36 - ((value - minimum) / range) * 28
-    return `${x.toFixed(2)},${y.toFixed(2)}`
-  })
-  const area = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
-  area.setAttribute('points', `0,40 ${coordinates.join(' ')} 100,40`)
-  area.setAttribute('fill', accent)
-  area.setAttribute('opacity', '0.12')
-  const line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline')
-  line.setAttribute('points', coordinates.join(' '))
-  line.setAttribute('fill', 'none')
-  line.setAttribute('stroke', accent)
-  line.setAttribute('stroke-width', '1.8')
-  line.setAttribute('vector-effect', 'non-scaling-stroke')
-  svg.append(area, line)
-  return svg
-}
-
-function compass(degrees: number, direction: string, compact = false): HTMLElement {
-  const wrapper = element('div', compact ? 'compass compass--compact' : 'compass')
-  wrapper.setAttribute('aria-label', `${direction}, ${degrees.toFixed(0)} degrees`)
-  wrapper.innerHTML = `
-    <span class="compass__mark compass__mark--north">N</span>
-    <span class="compass__mark compass__mark--east">E</span>
-    <span class="compass__mark compass__mark--south">S</span>
-    <span class="compass__mark compass__mark--west">W</span>
-    <span class="compass__needle" aria-hidden="true"></span>
-    <span class="compass__center"></span>
-  `
-  const needle = wrapper.querySelector<HTMLElement>('.compass__needle')
-  if (needle) needle.style.transform = `translateX(-50%) rotate(${degrees}deg)`
+function figure(value: FormattedValue): HTMLElement {
+  const wrapper = element('span')
+  wrapper.append(value.value)
+  if (value.unit) wrapper.append(element('small', '', value.unit))
   return wrapper
 }
 
-function moonPhase(age: number): { symbol: string; label: string } {
-  const phases = [
-    ['●', 'New moon'],
-    ['◔', 'Waxing crescent'],
-    ['◐', 'First quarter'],
-    ['◕', 'Waxing gibbous'],
-    ['○', 'Full moon'],
-    ['◕', 'Waning gibbous'],
-    ['◑', 'Last quarter'],
-    ['◔', 'Waning crescent'],
-  ] as const
-  const index = Math.round((((age % 29.53) + 29.53) % 29.53) / 29.53 * 8) % 8
-  const phase = phases[index]
-  return { symbol: phase[0], label: phase[1] }
+function valueText(value: FormattedValue): string {
+  return value.unit ? `${value.value} ${value.unit}` : value.value
 }
 
-function minutes(time: string): number {
-  const [hours = 0, minute = 0] = time.split(':').map(Number)
-  return hours * 60 + minute
+function minutesOf(time: string): number | null {
+  const match = /^(\d{1,2}):(\d{2})/.exec(time.trim())
+  if (!match) return null
+  return Number(match[1]) * 60 + Number(match[2])
 }
 
-function daylight(sunrise: string, sunset: string): string {
-  const duration = Math.max(minutes(sunset) - minutes(sunrise), 0)
-  return `${Math.floor(duration / 60)}h ${duration % 60}m`
+function duration(from: number, to: number): string {
+  const total = to >= from ? to - from : to + 1440 - from
+  return `${Math.floor(total / 60)} h ${String(total % 60).padStart(2, '0')} min`
 }
 
-function celestialVisual(age: number, illumination: string): HTMLElement {
-  const phase = moonPhase(age)
-  const visual = element('div', 'celestial')
-  const sun = element('span', 'celestial__sun')
-  sun.setAttribute('aria-hidden', 'true')
-  const moon = element('span', 'celestial__moon', phase.symbol)
-  moon.setAttribute('aria-hidden', 'true')
-  const copy = element('span', 'celestial__copy')
-  copy.append(
-    element('strong', '', phase.label),
-    element('small', '', `${illumination} illuminated`),
-  )
-  visual.append(sun, moon, copy)
-  visual.setAttribute('aria-label', `${phase.label}, ${illumination} illuminated`)
-  return visual
+function span(from: string, to: string): string {
+  const start = minutesOf(from)
+  const end = minutesOf(to)
+  return start !== null && end !== null ? duration(start, end) : '—'
 }
 
-function metric(
-  title: string,
-  value: FormatResult | string,
-  symbol: Parameters<typeof icon>[0],
-  details: [string, string][] = [],
-  history?: HistoryPoint[],
-  accent = '#0f766e',
-  extraVisual?: HTMLElement,
-): HTMLElement {
-  const card = element('article', 'metric card')
-  card.style.setProperty('--metric-accent', accent)
-  const heading = element('div', 'metric__heading')
-  const iconNode = element('span', 'metric__icon')
-  iconNode.innerHTML = icon(symbol)
-  heading.append(iconNode, element('h2', '', title))
-  card.append(heading)
-  card.append(element('p', 'metric__value', typeof value === 'string' ? value : valueText(value)))
-  if (extraVisual) card.append(extraVisual)
-  if (details.length) {
-    const list = element('dl', 'metric__details')
-    for (const [label, detail] of details) {
-      list.append(element('dt', '', label), element('dd', '', detail))
-    }
-    card.append(list)
+/** The station writes its forecast in lower case; the screen states it as a sentence. */
+function sentence(text: string): string {
+  return text ? text.charAt(0).toUpperCase() + text.slice(1) : text
+}
+
+/* The station's own instrument, drawn from the live bearing. */
+function windRose(degrees: number, direction: string): SVGElement {
+  const root = document.createElementNS(svgNamespace, 'svg')
+  root.setAttribute('viewBox', '0 0 100 100')
+  root.setAttribute('role', 'img')
+  root.setAttribute('aria-label', `${direction}, ${degrees.toFixed(0)} degrees`)
+  shape('circle', { class: 'rose__ring', cx: 50, cy: 50, r: 32 }, root)
+  for (let bearing = 0; bearing < 360; bearing += 45) {
+    const angle = (bearing * Math.PI) / 180
+    const long = bearing % 90 === 0
+    const inner = long ? 24 : 28
+    shape(
+      'line',
+      {
+        class: 'rose__tick',
+        x1: 50 + Math.sin(angle) * inner,
+        y1: 50 - Math.cos(angle) * inner,
+        x2: 50 + Math.sin(angle) * 32,
+        y2: 50 - Math.cos(angle) * 32,
+      },
+      root,
+    )
   }
-  if (history?.length) card.append(sparkline(history, accent))
-  return card
+  const marks: [string, number, number][] = [
+    ['N', 50, 13],
+    ['E', 94, 54],
+    ['S', 50, 97],
+    ['W', 6, 54],
+  ]
+  for (const [label, x, y] of marks) {
+    const node = shape('text', { class: 'rose__mark', x, y }, root)
+    node.textContent = label
+  }
+  const needle = shape('g', { transform: `rotate(${degrees.toFixed(1)} 50 50)` }, root)
+  shape('polygon', { class: 'rose__needle', points: '50,18 44.5,56 55.5,56' }, needle)
+  shape('circle', { class: 'rose__hub', cx: 50, cy: 50, r: 4 }, root)
+  return root
+}
+
+function moonGlyph(age: number, label: string): SVGElement {
+  const phase = (((age % 29.53) + 29.53) % 29.53) / 29.53
+  const root = document.createElementNS(svgNamespace, 'svg')
+  root.setAttribute('viewBox', '0 0 26 26')
+  root.setAttribute('role', 'img')
+  root.setAttribute('aria-label', label)
+  const radius = 12
+  shape('circle', { class: 'moon__disc', cx: 13, cy: 13, r: radius }, root)
+  const waxing = phase < 0.5
+  const terminator = Math.max(Math.abs(Math.cos(2 * Math.PI * phase)) * radius, 0.01)
+  const bulging = Math.cos(2 * Math.PI * phase) > 0
+  const outerSweep = waxing ? 1 : 0
+  const innerSweep = waxing ? (bulging ? 0 : 1) : bulging ? 1 : 0
+  shape(
+    'path',
+    {
+      class: 'moon__lit',
+      d:
+        `M 13 ${13 - radius} A ${radius} ${radius} 0 0 ${outerSweep} 13 ${13 + radius}` +
+        ` A ${terminator.toFixed(2)} ${radius} 0 0 ${innerSweep} 13 ${13 - radius} Z`,
+    },
+    root,
+  )
+  return root
+}
+
+/* The bearing drawn small, the same pointer as the rail's rose. */
+function bearingArrow(degrees: number): SVGElement {
+  const root = document.createElementNS(svgNamespace, 'svg')
+  root.setAttribute('class', 'kpi__mark')
+  root.setAttribute('viewBox', '0 0 24 24')
+  root.setAttribute('aria-hidden', 'true')
+  const needle = shape('g', { transform: `rotate(${degrees.toFixed(1)} 12 12)` }, root)
+  shape('path', { d: 'M12 2.5 19 21 12 16.6 5 21Z' }, needle)
+  return root
+}
+
+/** Converts a raw station reading into the reader's unit and keeps the formatting with it. */
+function adapter(format: (value: number) => FormattedValue): {
+  unit: string
+  convert: (value: number) => number
+  label: (value: number) => string
+  tick: (value: number) => string
+} {
+  const sample = format(0)
+  const digits = (sample.value.split('.')[1] ?? '').length
+  return {
+    unit: sample.unit,
+    convert: (value) => Number(format(value).value),
+    label: (value) => (sample.unit ? `${value.toFixed(digits)} ${sample.unit}` : value.toFixed(digits)),
+    tick: (value) => value.toFixed(Math.min(digits, 1)),
+  }
+}
+
+function seriesAdapters(units: UnitPreferences): Record<SeriesKey, ReturnType<typeof adapter>> {
+  return {
+    temperature: adapter((value) => temperature(value, units.temperature)),
+    pressure: adapter((value) => pressure(value, units.pressure)),
+    windSpeed: adapter((value) => wind(value, units.wind)),
+    rainfall: adapter((value) => rainfall(value, units.rainfall)),
+    humidity: adapter(percent),
+    solar: adapter((value) => ({ value: value.toFixed(0), unit: 'W/m²' })),
+    uv: adapter((value) => ({ value: value.toFixed(1), unit: '' })),
+    windDirection: adapter((value) => ({ value: value.toFixed(0), unit: '°' })),
+  }
+}
+
+function hasReadings(points: HistoryPoint[]): boolean {
+  return points.some((point) => Number.isFinite(point.value))
+}
+
+function recordValue(record: WeatherRecord, units: UnitPreferences): string {
+  const formatted = {
+    temperature: () => temperature(record.value, units.temperature),
+    pressure: () => pressure(record.value, units.pressure),
+    wind: () => wind(record.value, units.wind),
+    rainfall: () => rainfall(record.value, units.rainfall),
+    humidity: () => percent(record.value),
+    solar: () => ({ value: record.value.toFixed(0), unit: 'W/m²' }),
+    uv: () => ({ value: record.value.toFixed(1), unit: '' }),
+  }[record.unit]()
+  return valueText(formatted)
 }
 
 function option(value: string, label: string, selected: boolean): HTMLOptionElement {
@@ -168,56 +203,27 @@ function option(value: string, label: string, selected: boolean): HTMLOptionElem
   return node
 }
 
-function settingSelect<K extends keyof UnitPreferences>(
+function field<Value extends string>(
   label: string,
-  key: K,
-  values: readonly UnitPreferences[K][],
-  selected: UnitPreferences[K],
+  values: readonly Value[],
+  labels: readonly string[],
+  selected: Value,
+  dataset: Record<string, string>,
 ): HTMLLabelElement {
-  const wrapper = element('label', 'setting')
+  const wrapper = element('label', 'field')
   wrapper.append(element('span', '', label))
   const select = element('select')
-  select.dataset.unit = key
-  for (const value of values) select.append(option(value, value, value === selected))
+  Object.assign(select.dataset, dataset)
+  values.forEach((value, index) => select.append(option(value, labels[index] ?? value, value === selected)))
   wrapper.append(select)
   return wrapper
-}
-
-function themeSelect(
-  selected: ThemeMode,
-  t: (key: MessageKey) => string,
-): HTMLLabelElement {
-  const wrapper = element('label', 'setting')
-  wrapper.append(element('span', '', t('theme')))
-  const select = element('select')
-  select.dataset.theme = 'true'
-  select.append(
-    option('system', t('system'), selected === 'system'),
-    option('light', t('light'), selected === 'light'),
-    option('dark', t('dark'), selected === 'dark'),
-  )
-  wrapper.append(select)
-  return wrapper
-}
-
-function recordValue(record: WeatherRecord, units: UnitPreferences): string {
-  const formatted = {
-    temperature: () => temperature(record.value, units.temperature),
-    pressure: () => pressure(record.value, units.pressure),
-    wind: () => wind(record.value, units.wind),
-    rainfall: () => rainfall(record.value, units.rainfall),
-    humidity: () => ({ value: record.value.toFixed(1), unit: '' }),
-    solar: () => ({ value: record.value.toFixed(0), unit: 'W/m²' }),
-    uv: () => ({ value: record.value.toFixed(1), unit: '' }),
-  }[record.unit]()
-  return valueText(formatted)
 }
 
 export class AppView {
   readonly #root: HTMLElement
   readonly #store: AppStore
-  readonly #charts = new ChartManager()
   readonly #retry: () => void
+  #series: SeriesKey = 'temperature'
 
   constructor(root: HTMLElement, store: AppStore, retry: () => void) {
     this.#root = root
@@ -225,189 +231,33 @@ export class AppView {
     this.#retry = retry
     this.#store.addEventListener('change', () => this.render())
     window.setInterval(() => this.#updateFreshness(), 15_000)
+    window.addEventListener('scroll', () => this.#updateScroll(), { passive: true })
   }
 
   render(): void {
     const openDialog = this.#root.querySelector<HTMLDialogElement>('dialog[open]')?.dataset.dialog
-    this.#charts.destroy()
-    this.#root.replaceChildren()
     const state = this.#store.state
     const t = translator(state.config.locale)
     document.documentElement.lang = state.config.locale
     document.title = state.config.stationName
 
-    this.#root.append(this.#header(state, t))
-
-    if (!state.data) {
-      const status = element('main', 'empty-state')
-      if (state.status === 'error') {
-        status.append(element('h1', '', t('dataError')), element('p', '', state.error ?? ''))
-        const retry = element('button', 'button button--primary', t('retry'))
-        retry.addEventListener('click', this.#retry)
-        status.append(retry)
-      } else {
-        const spinner = element('span', 'spinner')
-        spinner.setAttribute('aria-hidden', 'true')
-        status.append(spinner, element('p', '', 'Collecting weather data…'))
-      }
-      this.#root.append(status)
-      return
-    }
-
-    const data = state.data
-    const main = element('main', 'dashboard')
-    if (state.status === 'stale') {
-      const warning = element('div', 'status-banner')
-      warning.setAttribute('role', 'status')
-      warning.append(
-        element('strong', '', t('dataStale')),
-        element('span', '', state.error ?? ''),
-      )
-      main.append(warning)
-    }
-
-    const hero = element('section', 'hero card')
-    const heroCopy = element('div')
-    heroCopy.append(
-      element('p', 'eyebrow', t('currentConditions')),
-      element('h1', '', state.config.stationName),
-      element('p', 'hero__condition', data.forecast || data.condition),
-    )
-    const heroFacts = element('div', 'hero__facts')
-    const heroWind = wind(data.windSpeed, state.units.wind)
-    const factValues: [string, string][] = [
-      [t('wind'), valueText(heroWind)],
-      [t('windDirection'), `${data.windDirectionText} · ${data.windDirection.toFixed(0)}°`],
-      [t('humidity'), `${data.humidity.toFixed(0)}%`],
-    ]
-    for (const [label, value] of factValues) {
-      const fact = element('div', 'hero__fact')
-      fact.append(element('span', '', label), element('strong', '', value))
-      heroFacts.append(fact)
-    }
-    heroCopy.append(heroFacts)
-    const heroTemp = element('div', 'hero__temperature')
-    const currentTemperature = temperature(data.temperature, state.units.temperature)
-    heroTemp.append(
-      element('strong', '', `${currentTemperature.value}°`),
-      element('span', '', currentTemperature.unit.replace('°', '')),
-    )
-    const heroVisual = element('div', 'hero__visual')
-    heroVisual.append(compass(data.windDirection, data.windDirectionText), heroTemp)
-    hero.append(heroCopy, heroVisual)
-    main.append(hero)
-
-    const grid = element('section', 'metrics')
-    grid.setAttribute('aria-label', t('currentConditions'))
-    grid.append(
-      metric(
-        t('temperature'),
-        currentTemperature,
-        'temperature',
-        [
-          [t('low'), valueText(temperature(data.temperatureLow, state.units.temperature))],
-          [t('high'), valueText(temperature(data.temperatureHigh, state.units.temperature))],
-          [t('apparent'), valueText(temperature(data.apparentTemperature, state.units.temperature))],
-        ],
-        data.history.temperature,
-        '#ef6c57',
-      ),
-      metric(
-        t('wind'),
-        wind(data.windSpeed, state.units.wind),
-        'wind',
-        [
-          ['Gust', valueText(wind(data.windGust, state.units.wind))],
-          [t('windDirection'), `${data.windDirectionText} ${data.windDirection.toFixed(0)}°`],
-          [t('windChill'), valueText(temperature(data.windChill, state.units.temperature))],
-        ],
-        data.history.windSpeed,
-        '#0f8f83',
-        compass(data.windDirection, data.windDirectionText, true),
-      ),
-      metric(
-        t('humidity'),
-        { value: data.humidity.toFixed(0), unit: '%' },
-        'humidity',
-        [],
-        data.history.humidity,
-        '#0891b2',
-      ),
-      metric(
-        t('pressure'),
-        pressure(data.pressure, state.units.pressure),
-        'pressure',
-        [['Trend', valueText(pressure(data.pressureTrend, state.units.pressure))]],
-        data.history.pressure,
-        '#6256b3',
-      ),
-      metric(
-        t('rain'),
-        rainfall(data.rainDay, state.units.rainfall),
-        'rain',
-        [
-          [t('rainRate'), valueText(rainfall(data.rainRate, state.units.rainfall))],
-          [t('rainMonth'), valueText(rainfall(data.rainMonth, state.units.rainfall))],
-          [t('rainYear'), valueText(rainfall(data.rainYear, state.units.rainfall))],
-        ],
-        data.history.rainfall,
-        '#3182ce',
-      ),
-    )
-    if (state.config.widgets.solar || state.config.widgets.uv) {
-      const details: [string, string][] = []
-      if (state.config.widgets.uv) details.push([t('uv'), data.uv.toFixed(1)])
-      grid.append(
-        metric(
-          t('solar'),
-          state.config.widgets.solar ? `${data.solar.toFixed(0)} W/m²` : `${data.uv.toFixed(1)}`,
-          'sun',
-          details,
-          data.history.solar,
-          '#d97706',
-        ),
-      )
-    }
-    grid.append(
-      metric(
-        t('sunAndMoon'),
-        daylight(data.sunrise, data.sunset),
-        'sun',
-        [
-          [t('sunrise'), data.sunrise],
-          [t('sunset'), data.sunset],
-          [t('moonrise'), data.moonrise],
-          [t('moonset'), data.moonset],
-        ],
-        undefined,
-        '#d97706',
-        celestialVisual(data.moonAge, data.moonPhase),
-      ),
-    )
-    main.append(grid, this.#chartsSection(state, t), this.#actions(state, t))
-    this.#root.append(main)
-
-    requestAnimationFrame(() => this.#charts.render(data, state.units))
+    this.#root.replaceChildren(this.#topbar(state, t), this.#column(state, t))
+    this.#updateScroll()
     if (openDialog) {
       this.#root.querySelector<HTMLDialogElement>(`dialog[data-dialog="${openDialog}"]`)?.showModal()
     }
   }
 
-  #updateFreshness(): void {
-    const timestamp = this.#store.state.lastSuccessfulUpdate
-    const output = this.#root.querySelector<HTMLTimeElement>('.freshness__time')
-    if (!timestamp || !output) return
-    output.textContent = relativeTime(timestamp, this.#store.state.config.locale)
-  }
-
-  #header(state: Readonly<AppState>, t: (key: MessageKey) => string): HTMLElement {
-    const header = element('header', 'site-header')
+  #topbar(state: Readonly<AppState>, t: Translate): HTMLElement {
+    const bar = element('header', 'topbar')
+    const inner = element('div', 'topbar__inner')
     const brand = element('a', 'brand', state.config.siteName)
     brand.href = state.config.siteUrl
-    const tools = element('div', 'header-tools')
-    const update = element('p', 'freshness')
-    update.append(`${t('lastUpdated')} `)
-    const relative = element('time', 'freshness__time')
+
+    const cluster = element('div', 'topbar__cluster')
+    const stamp = element('p', 'stamp')
+    stamp.append(`${t('lastUpdated')} `)
+    const relative = element('time', 'stamp__time')
     if (state.lastSuccessfulUpdate) {
       relative.dateTime = state.lastSuccessfulUpdate.toISOString()
       relative.title = new Intl.DateTimeFormat(state.config.locale, {
@@ -418,117 +268,448 @@ export class AppView {
     } else {
       relative.textContent = '—'
     }
-    update.append(relative)
-    const settingsButton = element('button', 'icon-button')
-    settingsButton.type = 'button'
-    settingsButton.setAttribute('aria-label', t('settings'))
-    settingsButton.innerHTML = icon('settings')
-    const settingsDialog = this.#settingsDialog(state, t)
-    settingsButton.addEventListener('click', () => settingsDialog.showModal())
-    tools.append(update, settingsButton)
-    header.append(brand, tools, settingsDialog)
-    return header
+    stamp.append(relative)
+
+    const settings = element('button', 'icon-button')
+    settings.type = 'button'
+    settings.setAttribute('aria-label', t('settings'))
+    settings.innerHTML =
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/>' +
+      '<path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg>'
+    const dialog = this.#settingsDialog(state, t)
+    settings.addEventListener('click', () => dialog.showModal())
+
+    cluster.append(stamp, settings)
+    inner.append(brand, cluster)
+    bar.append(inner, dialog)
+    return bar
   }
 
-  #chartsSection(state: Readonly<AppState>, t: (key: MessageKey) => string): HTMLElement {
-    const section = element('section', 'section')
-    section.append(element('h2', 'section__title', t('graphs')))
-    const grid = element('div', 'chart-grid')
-    const charts = [
-      ['temperature', t('temperature'), state.config.graphs.temperature],
-      ['pressure', t('pressure'), state.config.graphs.barometer],
-      ['windSpeed', t('wind'), state.config.graphs.windSpeed],
-      ['rainfall', t('rain'), state.config.graphs.rainfall],
-      ['humidity', t('humidity'), state.config.graphs.humidity],
-      ['solar', t('solar'), state.config.graphs.solar],
-      ['uv', t('uv'), state.config.graphs.uv],
-      ['windDirection', `${t('wind')} °`, state.config.graphs.windDirection],
-    ] as const
-    for (const [name, label, enabled] of charts) {
-      if (!enabled) continue
-      const figure = element('figure', 'chart-card card')
-      figure.append(element('figcaption', '', label))
-      const wrapper = element('div', 'chart')
-      const canvas = element('canvas')
-      canvas.dataset.chart = name
-      canvas.setAttribute('aria-label', `${label}, 24 hour history`)
-      canvas.setAttribute('role', 'img')
-      wrapper.append(canvas)
-      figure.append(wrapper)
-      grid.append(figure)
+  #column(state: Readonly<AppState>, t: Translate): HTMLElement {
+    const column = element('main', 'column')
+    const data = state.data
+
+    const titleRow = element('div', 'title-row')
+    const heading = element('div')
+    heading.append(element('h1', '', state.config.stationName))
+    const subline = data ? data.forecast || data.condition : ''
+    if (subline) heading.append(element('p', 'finding', sentence(subline)))
+    titleRow.append(heading)
+
+    if (data) {
+      const records = element('button', 'btn btn--primary', t('records'))
+      records.type = 'button'
+      const dialog = this.#recordsDialog(state, t)
+      records.addEventListener('click', () => dialog.showModal())
+      titleRow.append(records, dialog)
     }
-    section.append(grid)
-    return section
+    column.append(titleRow)
+
+    if (!data) {
+      column.append(this.#firstRun(state, t))
+      return column
+    }
+
+    if (state.status === 'stale' || state.status === 'error') {
+      column.append(this.#staleNotice(state, t))
+    }
+
+    const grid = element('div', 'grid')
+    const main = element('div', 'main-col')
+    main.append(this.#kpis(state, data, t), this.#chartCard(state, data, t), this.#todayCard(state, data, t))
+    const rail = element('div', 'rail')
+    rail.append(this.#windCard(state, data, t), this.#skyCard(data, t))
+    grid.append(main, rail)
+    column.append(grid)
+    return column
   }
 
-  #actions(state: Readonly<AppState>, t: (key: MessageKey) => string): HTMLElement {
-    const actions = element('section', 'actions')
-    const recordsButton = element('button', 'button', t('records'))
-    actions.append(recordsButton)
-    const recordsDialog = this.#recordsDialog(state, t)
-    recordsButton.addEventListener('click', () => recordsDialog.showModal())
-    actions.append(recordsDialog)
-    return actions
+  #firstRun(state: Readonly<AppState>, t: Translate): HTMLElement {
+    const panel = element('section', 'panel first-run')
+    const body = element('div')
+    if (state.status === 'error') {
+      body.append(element('h2', '', t('dataError')), element('p', '', state.error ?? ''))
+      const retry = element('button', 'btn', t('retry'))
+      retry.type = 'button'
+      retry.style.marginTop = '14px'
+      retry.addEventListener('click', this.#retry)
+      body.append(retry)
+    } else {
+      body.append(element('h2', '', t('loadingData')))
+      const bar = element('p', 'skeleton')
+      bar.style.height = '10px'
+      bar.style.width = '180px'
+      bar.style.marginTop = '12px'
+      body.append(bar)
+    }
+    panel.append(body)
+    return panel
   }
 
-  #recordsDialog(state: Readonly<AppState>, t: (key: MessageKey) => string): HTMLDialogElement {
+  #staleNotice(state: Readonly<AppState>, t: Translate): HTMLElement {
+    const notice = element('div', 'notice')
+    notice.setAttribute('role', 'status')
+    const copy = element('p')
+    copy.append(element('strong', '', t('dataStale')), ` ${state.error ?? ''}`)
+    const retry = element('button', 'link-button', t('retry'))
+    retry.type = 'button'
+    retry.addEventListener('click', this.#retry)
+    notice.append(copy, retry)
+    return notice
+  }
+
+  /* One container split by rules. The cells are also the chart's tabs. */
+  #kpis(state: Readonly<AppState>, data: WeatherData, t: Translate): HTMLElement {
+    const strip = element('div', 'kpis')
+    strip.setAttribute('role', 'tablist')
+    strip.setAttribute('aria-label', t('currentConditions'))
+    const units = state.units
+    const temperatures = data.history.temperature.map((point) => point.value)
+    const humidities = data.history.humidity.map((point) => point.value)
+    const low = temperatures.length ? Math.min(...temperatures) : data.temperatureLow
+    const high = temperatures.length ? Math.max(...temperatures) : data.temperatureHigh
+    const trend = pressure(data.pressureTrend, units.pressure)
+
+    const cells: [SeriesKey, string, FormattedValue, string, SVGElement?][] = [
+      [
+        'temperature',
+        t('temperature'),
+        temperature(data.temperature, units.temperature),
+        `${t('high')} ${valueText(temperature(high, units.temperature))} · ${t('low')} ${valueText(temperature(low, units.temperature))}`,
+      ],
+      [
+        'windSpeed',
+        t('wind'),
+        wind(data.windSpeed, units.wind),
+        `${t('gust')} ${valueText(wind(data.windGust, units.wind))} · ${data.windDirectionText} ${data.windDirection.toFixed(0)}°`,
+        bearingArrow(data.windDirection),
+      ],
+      [
+        'humidity',
+        t('humidity'),
+        percent(data.humidity),
+        humidities.length
+          ? `${t('last24Hours')} ${Math.min(...humidities).toFixed(0)}–${Math.max(...humidities).toFixed(0)} %`
+          : `${t('apparent')} ${valueText(temperature(data.apparentTemperature, units.temperature))}`,
+      ],
+      [
+        'pressure',
+        t('pressure'),
+        pressure(data.pressure, units.pressure),
+        `${t('trend')} ${data.pressureTrend >= 0 ? '+' : '−'}${trend.value.replace('-', '')} ${trend.unit}`,
+      ],
+    ]
+
+    for (const [key, label, value, caption, mark] of cells) {
+      const selected = key === this.#series
+      const cell = element('button', selected ? 'kpi kpi--lead' : 'kpi')
+      cell.type = 'button'
+      cell.setAttribute('role', 'tab')
+      cell.setAttribute('aria-selected', String(selected))
+      const amount = element('p', 'kpi__value')
+      amount.append(figure(value))
+      if (mark) amount.append(mark)
+      cell.append(element('p', 'kpi__label', label), amount, element('p', 'kpi__caption', caption))
+      cell.addEventListener('click', () => this.#selectSeries(key))
+      strip.append(cell)
+    }
+    return strip
+  }
+
+  #availableSeries(state: Readonly<AppState>, t: Translate): [SeriesKey, string][] {
+    const graphs = state.config.graphs
+    const all: [SeriesKey, string, boolean][] = [
+      ['temperature', t('temperature'), graphs.temperature],
+      ['windSpeed', t('wind'), graphs.windSpeed],
+      ['humidity', t('humidity'), graphs.humidity],
+      ['pressure', t('pressure'), graphs.barometer],
+      ['rainfall', t('rain'), graphs.rainfall],
+      ['solar', t('solar'), graphs.solar && state.config.widgets.solar],
+      ['uv', t('uv'), graphs.uv && state.config.widgets.uv],
+      ['windDirection', `${t('wind')} · ${t('windDirection')}`, graphs.windDirection],
+    ]
+    return all.filter(([, , enabled]) => enabled).map(([key, label]) => [key, label])
+  }
+
+  #chartCard(state: Readonly<AppState>, data: WeatherData, t: Translate): HTMLElement {
+    const available = this.#availableSeries(state, t)
+    if (available.length && !available.some(([key]) => key === this.#series)) {
+      this.#series = available[0]![0]
+    }
+    const key = this.#series
+    const units = seriesAdapters(state.units)[key]
+    const label = available.find(([name]) => name === key)?.[1] ?? t('graphs')
+
+    const panel = element('section', 'panel chart-card')
+    const header = element('header')
+    const heading = element('div')
+    heading.append(element('h2', '', label))
+    heading.append(element('p', 'meta', units.unit ? `${t('last24Hours')} · ${units.unit}` : t('last24Hours')))
+    header.append(heading)
+
+    if (available.length > 1) {
+      const picker = element('select', 'select')
+      picker.setAttribute('aria-label', t('series'))
+      for (const [name, text] of available) picker.append(option(name, text, name === key))
+      picker.addEventListener('change', () => this.#selectSeries(picker.value as SeriesKey))
+      header.append(picker)
+    }
+    panel.append(header)
+
+    const points = data.history[key]
+    if (!hasReadings(points)) {
+      panel.append(element('p', 'empty', t('noReadings')))
+      return panel
+    }
+
+    const target = element('div', 'chart')
+    panel.append(target)
+    const view: SeriesView = {
+      name: label,
+      points: points.map((point) => ({ label: point.label, value: units.convert(point.value) })),
+      format: units.label,
+      kind: key === 'rainfall' ? 'bars' : 'line',
+      min: key === 'humidity' || key === 'windDirection' ? 0 : undefined,
+      yTicks: key === 'windDirection' ? [0, 90, 180, 270, 360] : undefined,
+    }
+    requestAnimationFrame(() => drawSeries(target, view))
+    return panel
+  }
+
+  #todayCard(state: Readonly<AppState>, data: WeatherData, t: Translate): HTMLElement {
+    const units = state.units
+    const panel = element('section', 'panel')
+    const header = element('header')
+    header.append(element('h2', '', t('today')), element('p', 'meta', data.stationDate))
+    panel.append(header)
+
+    const rows: [string, FormattedValue][] = [
+      [t('high'), temperature(data.temperatureHigh, units.temperature)],
+      [t('low'), temperature(data.temperatureLow, units.temperature)],
+      [t('apparent'), temperature(data.apparentTemperature, units.temperature)],
+      [t('windChill'), temperature(data.windChill, units.temperature)],
+      [t('gust'), wind(data.windGust, units.wind)],
+      [t('rainDay'), rainfall(data.rainDay, units.rainfall)],
+      [t('rainRate'), rainfall(data.rainRate, units.rainfall)],
+      [t('rainMonth'), rainfall(data.rainMonth, units.rainfall)],
+      [t('rainYear'), rainfall(data.rainYear, units.rainfall)],
+    ]
+    if (state.config.widgets.solar) rows.push([t('solar'), { value: data.solar.toFixed(0), unit: 'W/m²' }])
+    if (state.config.widgets.uv) rows.push([t('uv'), { value: data.uv.toFixed(1), unit: '' }])
+
+    const list = element('div', 'kv-split')
+    const half = Math.ceil(rows.length / 2)
+    for (const group of [rows.slice(0, half), rows.slice(half)]) {
+      const column = element('div', 'kv')
+      for (const [label, value] of group) {
+        const row = element('div', 'kv__row')
+        const amount = element('p', 'kv__value')
+        amount.append(figure(value))
+        row.append(element('p', 'kv__label', label), amount)
+        column.append(row)
+      }
+      list.append(column)
+    }
+    panel.append(list)
+    return panel
+  }
+
+  #railBlock(heading: string): { block: HTMLElement; panel: HTMLElement } {
+    const block = element('section', 'rail__block')
+    block.append(element('h2', '', heading))
+    const panel = element('div', 'panel')
+    block.append(panel)
+    return { block, panel }
+  }
+
+  #windCard(state: Readonly<AppState>, data: WeatherData, t: Translate): HTMLElement {
+    const { block, panel } = this.#railBlock(t('wind'))
+    const row = element('div', 'rose')
+    row.append(windRose(data.windDirection, data.windDirectionText))
+    const readout = element('div', 'rose__readout')
+    const speed = element('p', 'rose__value')
+    speed.append(figure(wind(data.windSpeed, state.units.wind)))
+    readout.append(
+      speed,
+      element('p', 'rose__sub', `${data.windDirectionText} · ${data.windDirection.toFixed(0)}°`),
+      element('p', 'rose__sub', `${t('gust')} ${valueText(wind(data.windGust, state.units.wind))}`),
+      element('p', 'rose__sub', `${t('windChill')} ${valueText(temperature(data.windChill, state.units.temperature))}`),
+    )
+    row.append(readout)
+    panel.append(row)
+    return block
+  }
+
+  /* The signature element: one day on one axis, the sun's hours and the moon's. */
+  #skyCard(data: WeatherData, t: Translate): HTMLElement {
+    const { block, panel } = this.#railBlock(t('sunAndMoon'))
+    const illumination = Number.parseFloat(data.moonPhase)
+    const lit = Number.isFinite(illumination) ? `${illumination.toFixed(0)} %` : data.moonPhase
+    const strip = element('div')
+    const rows = [
+      {
+        label: t('daylight'),
+        value: span(data.sunrise, data.sunset),
+        note: `${data.sunrise} – ${data.sunset}`,
+        at: data.sunrise,
+        compare: data.sunset,
+      },
+      {
+        label: t('moon'),
+        value: span(data.moonrise, data.moonset),
+        note: `${data.moonrise} – ${data.moonset}`,
+        at: data.moonrise,
+        compare: data.moonset,
+      },
+    ]
+    panel.append(strip)
+    requestAnimationFrame(() => {
+      const legend = drawSkyStrip(strip, rows, {
+        open: '00:00',
+        close: '24:00',
+        step: 240,
+        todayLabel: t('rise'),
+        compareLabel: t('set'),
+      })
+      if (legend) strip.append(legend)
+    })
+
+    const moon = element('div', 'sky__moon')
+    const phaseLabel = `${lit} ${t('illuminated')}`
+    moon.append(moonGlyph(data.moonAge, phaseLabel), element('p', '', phaseLabel))
+    panel.append(moon)
+    return block
+  }
+
+  #selectSeries(key: SeriesKey): void {
+    if (this.#series === key) return
+    this.#series = key
+    this.render()
+  }
+
+  #updateScroll(): void {
+    const bar = this.#root.querySelector<HTMLElement>('.topbar')
+    if (bar) bar.dataset.scrolled = String(window.scrollY > 2)
+  }
+
+  #updateFreshness(): void {
+    const timestamp = this.#store.state.lastSuccessfulUpdate
+    const output = this.#root.querySelector<HTMLTimeElement>('.stamp__time')
+    if (!timestamp || !output) return
+    output.textContent = relativeTime(timestamp, this.#store.state.config.locale)
+  }
+
+  #dialog(name: string, title: string, t: Translate): { dialog: HTMLDialogElement; body: HTMLElement } {
     const dialog = element('dialog', 'dialog')
-    dialog.dataset.dialog = 'records'
-    const title = element('h2', '', t('records'))
-    const close = element('button', 'button button--icon', '×')
+    dialog.dataset.dialog = name
+    const head = element('div', 'dialog__head')
+    const close = element('button', 'icon-button')
+    close.type = 'button'
     close.setAttribute('aria-label', t('close'))
+    close.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>'
     close.addEventListener('click', () => dialog.close())
-    const header = element('header', 'dialog__header')
-    header.append(title, close)
-    const tabs = element('div', 'record-groups')
+    head.append(element('h2', '', title), close)
+    const body = element('div', 'dialog__body')
+    dialog.append(head, body)
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close()
+    })
+    return { dialog, body }
+  }
+
+  #recordsDialog(state: Readonly<AppState>, t: Translate): HTMLDialogElement {
+    const { dialog, body } = this.#dialog('records', t('records'), t)
     const groups = [
       [t('recordsMonth'), state.data?.records.month ?? []],
       [t('recordsYear'), state.data?.records.year ?? []],
       [t('recordsAllTime'), state.data?.records.allTime ?? []],
     ] as const
-    for (const [label, records] of groups) {
-      const details = element('details', 'record-group')
-      if (label === t('recordsMonth')) details.open = true
-      details.append(element('summary', '', label))
-      const list = element('dl', 'records')
+
+    const tabs = element('div', 'tabs')
+    const panels = groups.map(([, records]) => {
+      const list = element('div', 'kv')
+      if (!records.length) list.append(element('p', 'empty', t('noReadings')))
       for (const record of records) {
-        const value = element('dd')
-        value.append(
-          element('strong', '', recordValue(record, state.units)),
-          element('small', '', record.occurredAt ?? ''),
-        )
-        list.append(element('dt', '', record.label), value)
+        const row = element('div', 'kv__row')
+        const value = element('p', 'kv__value')
+        value.append(recordValue(record, state.units))
+        if (record.occurredAt) value.append(element('small', 'kv__when', record.occurredAt))
+        row.append(element('p', 'kv__label', record.label), value)
+        list.append(row)
       }
-      details.append(list)
-      tabs.append(details)
-    }
-    dialog.append(header, tabs)
-    dialog.addEventListener('click', (event) => {
-      if (event.target === dialog) dialog.close()
+      return list
     })
+
+    const show = (index: number): void => {
+      panels.forEach((panel, position) => {
+        panel.hidden = position !== index
+      })
+      tabs.querySelectorAll('button').forEach((button, position) => {
+        button.setAttribute('aria-selected', String(position === index))
+      })
+    }
+    groups.forEach(([label], index) => {
+      const button = element('button', '', label)
+      button.type = 'button'
+      button.setAttribute('role', 'tab')
+      button.addEventListener('click', () => show(index))
+      tabs.append(button)
+    })
+    body.append(tabs, ...panels)
+    show(0)
     return dialog
   }
 
-  #settingsDialog(state: Readonly<AppState>, t: (key: MessageKey) => string): HTMLDialogElement {
-    const dialog = element('dialog', 'dialog dialog--small')
-    dialog.dataset.dialog = 'settings'
-    const header = element('header', 'dialog__header')
-    const close = element('button', 'button button--icon', '×')
-    close.setAttribute('aria-label', t('close'))
-    close.addEventListener('click', () => dialog.close())
-    header.append(element('h2', '', t('settings')), close)
-    const form = element('form', 'settings')
-    const appearanceHeading = element('h3', 'settings__heading', t('appearance'))
-    const unitsHeading = element('h3', 'settings__heading', t('units'))
-    form.append(
-      appearanceHeading,
-      themeSelect(state.theme, t),
-      unitsHeading,
-      settingSelect(t('temperature'), 'temperature', ['celsius', 'fahrenheit'] satisfies TemperatureUnit[], state.units.temperature),
-      settingSelect(t('pressure'), 'pressure', ['hPa', 'mmHg', 'kPa', 'inHg', 'mb'] satisfies PressureUnit[], state.units.pressure),
-      settingSelect(t('wind'), 'wind', ['ms', 'kmh', 'mph', 'kts', 'B'] satisfies WindUnit[], state.units.wind),
-      settingSelect(t('rain'), 'rainfall', ['mm', 'inch'] satisfies RainUnit[], state.units.rainfall),
+  #settingsDialog(state: Readonly<AppState>, t: Translate): HTMLDialogElement {
+    const { dialog, body } = this.#dialog('settings', t('settings'), t)
+
+    const appearance = element('div', 'dialog__section')
+    appearance.append(element('h3', '', t('appearance')))
+    appearance.append(
+      field(
+        t('theme'),
+        ['system', 'light', 'dark'] satisfies ThemeMode[],
+        [t('system'), t('light'), t('dark')],
+        state.theme,
+        { theme: 'true' },
+      ),
     )
+
+    const units = element('div', 'dialog__section')
+    units.append(element('h3', '', t('units')))
+    units.append(
+      field(
+        t('temperature'),
+        ['celsius', 'fahrenheit'] satisfies TemperatureUnit[],
+        ['°C', '°F'],
+        state.units.temperature,
+        { unit: 'temperature' },
+      ),
+      field(
+        t('pressure'),
+        ['hPa', 'mmHg', 'kPa', 'inHg', 'mb'] satisfies PressureUnit[],
+        ['hPa', 'mmHg', 'kPa', 'inHg', 'mb'],
+        state.units.pressure,
+        { unit: 'pressure' },
+      ),
+      field(
+        t('wind'),
+        ['ms', 'kmh', 'mph', 'kts', 'B'] satisfies WindUnit[],
+        ['m/s', 'km/h', 'mph', 'kt', 'Bft'],
+        state.units.wind,
+        { unit: 'wind' },
+      ),
+      field(
+        t('rain'),
+        ['mm', 'inch'] satisfies RainUnit[],
+        ['mm', 'in'],
+        state.units.rainfall,
+        { unit: 'rainfall' },
+      ),
+    )
+
+    const form = element('form')
+    form.append(appearance, units)
     form.addEventListener('change', (event) => {
       const select = event.target
       if (!(select instanceof HTMLSelectElement)) return
@@ -537,13 +718,9 @@ export class AppView {
         return
       }
       if (!select.dataset.unit) return
-      const unit = select.dataset.unit as keyof UnitPreferences
-      this.#store.setUnit(unit, select.value as never)
+      this.#store.setUnit(select.dataset.unit as keyof UnitPreferences, select.value as never)
     })
-    dialog.append(header, form)
-    dialog.addEventListener('click', (event) => {
-      if (event.target === dialog) dialog.close()
-    })
+    body.append(form)
     return dialog
   }
 }

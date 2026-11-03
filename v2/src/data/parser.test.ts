@@ -39,6 +39,43 @@ describe('Weather Display parser', () => {
     expect(weather.moonAge).toBeGreaterThanOrEqual(0)
   })
 
+  it('stamps the reading with the station clock, not the fetch', async () => {
+    const feeds = await bundle()
+    const current = [...feeds.current]
+    const received = new Date(2026, 10, 3, 14, 0, 0)
+    current[29] = '13'
+    current[30] = '45'
+    current[31] = '30'
+    const weather = parseFeeds({ ...feeds, current, receivedAt: received })
+    expect(weather.updatedAt).toEqual(new Date(2026, 10, 3, 13, 45, 30))
+    expect(weather.stationTime).toBe('13:45:30')
+  })
+
+  it('reads a clock far ahead of the fetch as the previous day', async () => {
+    const feeds = await bundle()
+    const current = [...feeds.current]
+    const received = new Date(2026, 10, 3, 0, 5, 0)
+    current[29] = '23'
+    current[30] = '58'
+    current[31] = '00'
+    const weather = parseFeeds({ ...feeds, current, receivedAt: received })
+    expect(weather.updatedAt).toEqual(new Date(2026, 10, 2, 23, 58, 0))
+  })
+
+  it('falls back to the fetch when the station clock runs ahead or is unusable', async () => {
+    const feeds = await bundle()
+    const received = new Date(2026, 10, 3, 14, 0, 0)
+    const ahead = [...feeds.current]
+    ahead[29] = '15'
+    ahead[30] = '00'
+    ahead[31] = '00'
+    expect(parseFeeds({ ...feeds, current: ahead, receivedAt: received }).updatedAt).toEqual(received)
+
+    const broken = [...feeds.current]
+    broken[29] = '--'
+    expect(parseFeeds({ ...feeds, current: broken, receivedAt: received }).updatedAt).toEqual(received)
+  })
+
   it('rejects a truncated feed with field context', async () => {
     const feeds = await bundle()
     expect(() => parseFeeds({ ...feeds, current: ['12345'] })).toThrow(

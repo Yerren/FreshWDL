@@ -59,6 +59,27 @@ function extraHistory(
 
 type RecordUnit = WeatherRecord['unit']
 
+/**
+ * The feed stamps a reading with the station's clock (fields 29-31) but no date and no
+ * timezone, so the time of day is placed on the day the feed was fetched. A stamp far
+ * ahead of the fetch belongs to the previous day (23:58 read just after midnight); a
+ * stamp a little ahead is the station's clock running fast, or standing in another
+ * timezone, and is read as "now" rather than as a day of staleness.
+ */
+function stationTimestamp(values: readonly string[], receivedAt: Date): Date {
+  const parts = [29, 30, 31].map((index) => Number.parseInt(values[index] ?? '', 10))
+  if (parts.some((part) => !Number.isFinite(part))) return receivedAt
+  const [hours = 0, minutes = 0, seconds = 0] = parts
+  if (hours > 23 || minutes > 59 || seconds > 59) return receivedAt
+
+  const stamp = new Date(receivedAt)
+  stamp.setHours(hours, minutes, seconds, 0)
+  const ahead = stamp.getTime() - receivedAt.getTime()
+  if (ahead > 14 * 60 * 60 * 1000) stamp.setDate(stamp.getDate() - 1)
+  else if (ahead > 0) return receivedAt
+  return stamp
+}
+
 function recordAt(
   values: readonly string[],
   index: number,
@@ -110,7 +131,7 @@ export function parseFeeds(bundle: FeedBundle): WeatherData {
   const extra = bundle.extra
 
   return {
-    updatedAt: bundle.receivedAt,
+    updatedAt: stationTimestamp(current, bundle.receivedAt),
     stationTime: `${textAt(current, 29)}:${textAt(current, 30)}:${textAt(current, 31)}`,
     stationDate: textAt(current, 74),
     forecast: textAt(extra, 531),
