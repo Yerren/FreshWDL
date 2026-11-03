@@ -1,45 +1,69 @@
 # FreshWDL
 
-FreshWDL is a lightweight, pure JavaScript alternative to WDL (which runs on Flash).
-This allows for users to access it from nearly any device and platform.
+FreshWDL v2 is a mobile-first, static Weather Display dashboard built with Vanilla TypeScript and Vite. It reads the original Weather Display files directly in the browser:
 
-## FreshWDL v2
+- `clientraw.txt`
+- `clientrawextra.txt`
+- `clientrawhour.txt`
+- `clientrawdaily.txt`
 
-A new mobile-first version is available in [`v2/`](./v2/README.md). It is an independent Vanilla TypeScript application that keeps the original Weather Display `clientraw*.txt` contract, adds typed parsing and automated tests, and produces a self-contained static build with locally bundled dependencies.
+The feeds remain raw, space-delimited text files. No server-side conversion, API, or preprocessing step is required.
 
-The legacy application in the repository root remains unchanged and can continue to be deployed as before.
+## Development
 
-Currently it is still simple, offering little customisability, but with interest and support will be able to go a long way!
+```sh
+npm install
+npm run dev
+```
 
-See it in action at: https://www.hackfarm.co.nz/FreshWDL/FreshWDL.html
+The checked-in configuration uses unchanged raw feed snapshots in `public/fixtures/`, captured from the Varmestua station. This makes local development and tests deterministic and network-independent.
 
+## Validation
 
-## Setup
+```sh
+npm test
+npm run typecheck
+npm run build
+npm run preview
+```
 
-1. Go to: http://www.weather-display.com/files.php, and download the FreshWDL files.
-2. (If needed) Adjust the config.js file in any text editor, changing the 'clientraw' file names to match the names you use. You can also change the default units here. If you need, it is also possible to set the path to where your 'clientraw' files are uploaded (see part 4).
-3. (Optional) You can rename the html page to anything you wish. 
-4. Upload both the html page and the config.js file to the same location on your server. If you set a custom path to your clientraw files in config.js, you can upload them anywhere. Otherwise, they must be in the same place your clientraw files are uploaded to.
+The production bundle is written to `dist/` and contains all application code and dependencies. It does not load JavaScript or CSS from a CDN.
 
-You should now be good to go! Simply navigate to the html page in any web browser to see your new FreshWDL page up and running!
+## Live weather configuration
 
-## Language
-- **To set the language:** set the **lang** field in your config file to one of: en (English), nl (Dutch), da (Danish), ro (Romanian), fr (French), gr (Greek), it (Italian), es (Spanish), nb (Norwegian), bg (Bulgarian), cs (Czech), fi (Finnish), si (Slovenian), de (German), pt (Portuguese), sv (Swedish), ca (Catalan), or hr (Croatian).
-- If you want to help translate the system into your language, please don't hesitate to get in touch. (It takes less than an hour to fully translate into a new language!)
-- A great thanks goes out to those who have helped so far!
+Edit `public/freshwdl.config.json` before building:
 
-## Troubleshooting
-#### (24 Hour) Graphs having strange straight line portions for 12 hours spans:
-- Caused by the clientraw files uploading in 12 hour format. Download the newest version of WD to fix this issue.
+```json
+{
+  "stationName": "My weather station",
+  "siteName": "My weather station",
+  "siteUrl": "./",
+  "locale": "en",
+  "dataMode": "live",
+  "baseUrl": "./",
+  "feedFiles": {
+    "current": "clientraw.txt",
+    "extra": "clientrawextra.txt",
+    "hourly": "clientrawhour.txt",
+    "daily": "clientrawdaily.txt"
+  }
+}
+```
 
-#### "Data Currently Unavailable" showing on loading screen:
-- This can happen briefly if there is a 'hiccup' on the server, and should normally go away quickly.
-- If you have just set up your FreshWDL page, and the "Data Currently Unavailable" message persists, it is most likely because either the names of the clientraw files or the custom path to the clientraw files in config.js are not correct or, if no custom path was set, the html page and config.js have not been uploaded to where the clientraw files are uploaded to.
+With `baseUrl` set to `./`, place the built v2 and the four files in the same directory, as with the original FreshWDL. A different same-origin path or absolute URL can also be used. Cross-origin URLs require the feed host to return appropriate CORS headers.
 
-## Getting In Touch
-If you want to suggest a feature or report a bug, either go to the "Issues" tab and enter the details in there, or email me at yerren@renerica.com. Any feedback is welcome.
+Other configuration fields control the refresh interval, request timeout, initial units, widget visibility, and graph visibility. Every graph left enabled appears in the chart card's series picker; the card shows one series at a time. `siteName` sets the brand text in the top-left corner and `siteUrl` its link target; `stationName` sets the browser tab title and the page heading. The top-right settings menu stores user-selected units and the system/light/dark appearance preference in the browser.
 
-## Donate
-If this project has helped you out, or if you simply want to support its continued development, please consider donating :)
+The "Updated" stamp counts from the station's own clock in `clientraw.txt` (fields 29-31), not from the moment the file was fetched, so a station that has stopped writing is visible as such. The feed carries a time of day without a date or timezone, so the time is placed on the day of the fetch; a clock far ahead of the fetch is read as the previous day, and one slightly ahead is treated as clock drift.
 
-<a href='https://ko-fi.com/G2G6SUREK' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi5.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+## Design
+
+The interface follows an app-screen direction dealt by the `design-taste-frontend` skill (`achromatic-ledger`, seed 1224798985): achromatic chrome, one container of KPIs divided by rules, one large chart as the screen's main element, and a 384px rail. The single accent is the station's teal, used only on the selected data series. Charts are drawn as dependency-free SVG by `src/vendor-charts.js`, vendored unchanged from that skill; the Geist typeface is bundled locally, so the page still makes no external requests.
+
+## Static deployment
+
+1. Run `npm run build`.
+2. Upload the contents of `dist/` to any static web host.
+3. For live mode, make the four raw `clientraw*.txt` files available at the configured base URL.
+
+The build uses relative asset URLs, so it can be hosted at a domain root or in a subdirectory.
