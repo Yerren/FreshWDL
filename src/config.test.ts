@@ -5,7 +5,10 @@ describe('configuration', () => {
   it('uses safe defaults for invalid input', () => {
     expect(mergeConfig(null)).toEqual(defaultConfig)
     expect(mergeConfig({ pollingIntervalMs: 20 })).toMatchObject({
-      pollingIntervalMs: 5000,
+      pollingIntervalMs: 30000,
+    })
+    expect(mergeConfig({ pollingIntervalMs: 60_000 })).toMatchObject({
+      pollingIntervalMs: 60_000,
     })
     expect(mergeConfig({ siteName: '   ' })).toMatchObject({ siteName: 'FreshWDL' })
   })

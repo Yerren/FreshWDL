@@ -12,7 +12,7 @@
     "hourly": "clientrawhour.txt",
     "daily": "clientrawdaily.txt"
   },
-  "pollingIntervalMs": 5000,
+  "pollingIntervalMs": 30000,
   "requestTimeoutMs": 8000,
   "staleAfterMs": 30000,
   "units": {

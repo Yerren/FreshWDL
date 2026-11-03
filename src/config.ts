@@ -27,7 +27,7 @@ export const defaultConfig: AppConfig = {
     hourly: 'clientrawhour.txt',
     daily: 'clientrawdaily.txt',
   },
-  pollingIntervalMs: 5_000,
+  pollingIntervalMs: 30_000,
   requestTimeoutMs: 8_000,
   staleAfterMs: 30_000,
   units: defaultUnits,

@@ -38,6 +38,14 @@ function applyTheme(theme: ThemeMode): void {
   document.documentElement.style.colorScheme = theme === 'system' ? 'light dark' : theme
 }
 
+function sameWeatherContent(left: WeatherData, right: WeatherData): boolean {
+  const serialize = (data: WeatherData): string | undefined =>
+    JSON.stringify(data, (key, value: unknown) =>
+      key === 'updatedAt' || key === 'stationTime' ? undefined : value,
+    )
+  return serialize(left) === serialize(right)
+}
+
 export class AppStore extends EventTarget {
   #state: AppState
 
@@ -60,10 +68,19 @@ export class AppStore extends EventTarget {
   }
 
   loading(): void {
-    this.#set({ status: this.#state.data ? 'stale' : 'loading', error: null })
+    if (this.#state.data) return
+    if (this.#state.status !== 'loading' || this.#state.error !== null) {
+      this.#set({ status: 'loading', error: null })
+    }
   }
 
   updated(data: WeatherData): void {
+    if (this.#state.data && sameWeatherContent(this.#state.data, data)) {
+      if (this.#state.status !== 'ready' || this.#state.error !== null) {
+        this.#set({ status: 'ready', error: null })
+      }
+      return
+    }
     this.#set({
       data,
       status: 'ready',
