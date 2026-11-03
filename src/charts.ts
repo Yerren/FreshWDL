@@ -21,27 +21,9 @@ interface BarOptions {
   height?: number | (() => number)
 }
 
-interface StripRow {
-  label: string
-  value?: string
-  note?: string
-  at?: string
-  compare?: string
-}
-
-interface StripOptions {
-  open: string
-  close: string
-  step?: number
-  todayLabel?: string
-  compareLabel?: string
-  legend?: HTMLElement | null
-}
-
 interface ChartsApi {
   line(el: HTMLElement, options: LineOptions): { legend: HTMLElement | null }
   bars(el: HTMLElement, options: BarOptions): void
-  timeStrip(el: HTMLElement, rows: StripRow[], options: StripOptions): { legend: HTMLElement | null }
   ticks(min: number, max: number, count?: number): number[]
 }
 
@@ -86,8 +68,4 @@ export function drawSeries(target: HTMLElement, view: SeriesView): void {
     yTicks: view.yTicks,
     endLabel: true,
   })
-}
-
-export function drawSkyStrip(target: HTMLElement, rows: StripRow[], options: StripOptions): HTMLElement | null {
-  return window.Charts.timeStrip(target, rows, options).legend
 }

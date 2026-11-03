@@ -261,8 +261,29 @@ a { color: inherit; text-decoration: none; }
 .rose__value small { margin-left: 3px; color: var(--muted); font-size: .55em; font-weight: 400; }
 .rose__sub { color: var(--muted); font-size: var(--fs-small); }
 
-.sky__moon { display: flex; align-items: center; gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--rule); color: var(--muted); font-size: var(--fs-small); }
-.sky__moon svg { width: 26px; height: 26px; flex: none; }
+/* Sun and moon: one 24-hour axis, a lane for each, the filled span is the time above the
+   horizon, and one line marks the reading's own time across both lanes. */
+.sky { display: grid; gap: 0 12px; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: 20px 28px 28px 22px; }
+.sky__name { grid-column: 1; color: var(--muted); line-height: 28px; }
+.sky__name:first-child { grid-row: 2; }
+.sky__name:nth-child(2) { grid-row: 3; }
+.sky__plot { position: relative; display: grid; grid-column: 2; grid-row: 1 / -1; grid-template-rows: subgrid; }
+.sky__lane { position: relative; }
+.sky__lane:first-child { grid-row: 2; }
+.sky__lane:nth-child(2) { grid-row: 3; }
+.sky__lane::before, .sky__up { position: absolute; top: 9px; height: 10px; border-radius: 2px; }
+.sky__lane::before { right: 0; left: 0; background: var(--raised); content: ''; }
+.sky__lane--sun .sky__up { background: var(--ink); }
+.sky__lane--moon .sky__up { background: var(--chart-2); }
+.sky__now { position: absolute; top: 0; bottom: 22px; left: var(--at); }
+.sky__now::before { position: absolute; top: 20px; bottom: 0; left: -3px; width: 6px; border-inline: 2px solid var(--surface); background: var(--text); background-clip: padding-box; content: ''; }
+.sky__now-label { position: absolute; top: 0; left: 0; font-size: var(--fs-small); font-variant-numeric: tabular-nums; font-weight: 500; line-height: 16px; white-space: nowrap; transform: translateX(calc(var(--at) * -1)); }
+.sky__axis { position: relative; grid-row: 4; color: var(--faint); font-size: var(--fs-small); font-variant-numeric: tabular-nums; }
+.sky__axis span { position: absolute; top: 4px; left: var(--at); transform: translateX(calc(var(--at) * -1)); }
+.sky__facts { margin-top: 12px; }
+.sky__facts .kv__row { align-items: center; }
+.sky__phase { display: inline-flex; align-items: center; gap: 8px; }
+.sky__phase svg { width: 18px; height: 18px; flex: none; }
 .moon__disc { fill: var(--raised); }
 .moon__lit { fill: var(--ink); }
 

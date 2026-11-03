@@ -13,8 +13,9 @@ import type {
 import { translator, type MessageKey } from './i18n'
 import { percent, pressure, rainfall, temperature, wind } from './units'
 import type { AppStore } from './store'
-import { drawSeries, drawSkyStrip, type SeriesView } from './charts'
+import { drawSeries, type SeriesView } from './charts'
 import { relativeTime } from './time'
+import { bodyState, clock, formatDuration, minutesOf, minutesUntil, moonState, upSpans, type MoonState } from './sky'
 
 type Translate = (key: MessageKey) => string
 type FormattedValue = ReturnType<typeof temperature>
@@ -49,23 +50,6 @@ function figure(value: FormattedValue): HTMLElement {
 
 function valueText(value: FormattedValue): string {
   return value.unit ? `${value.value} ${value.unit}` : value.value
-}
-
-function minutesOf(time: string): number | null {
-  const match = /^(\d{1,2}):(\d{2})/.exec(time.trim())
-  if (!match) return null
-  return Number(match[1]) * 60 + Number(match[2])
-}
-
-function duration(from: number, to: number): string {
-  const total = to >= from ? to - from : to + 1440 - from
-  return `${Math.floor(total / 60)} h ${String(total % 60).padStart(2, '0')} min`
-}
-
-function span(from: string, to: string): string {
-  const start = minutesOf(from)
-  const end = minutesOf(to)
-  return start !== null && end !== null ? duration(start, end) : '—'
 }
 
 /** The station writes its forecast in lower case; the screen states it as a sentence. */
@@ -112,19 +96,17 @@ function windRose(degrees: number, direction: string): SVGElement {
   return root
 }
 
-function moonGlyph(age: number, label: string): SVGElement {
-  const phase = (((age % 29.53) + 29.53) % 29.53) / 29.53
+/* The disc as seen from the northern hemisphere: lit on the right while waxing. */
+function moonGlyph(moon: MoonState): SVGElement {
   const root = document.createElementNS(svgNamespace, 'svg')
   root.setAttribute('viewBox', '0 0 26 26')
-  root.setAttribute('role', 'img')
-  root.setAttribute('aria-label', label)
+  root.setAttribute('aria-hidden', 'true')
   const radius = 12
   shape('circle', { class: 'moon__disc', cx: 13, cy: 13, r: radius }, root)
-  const waxing = phase < 0.5
-  const terminator = Math.max(Math.abs(Math.cos(2 * Math.PI * phase)) * radius, 0.01)
-  const bulging = Math.cos(2 * Math.PI * phase) > 0
-  const outerSweep = waxing ? 1 : 0
-  const innerSweep = waxing ? (bulging ? 0 : 1) : bulging ? 1 : 0
+  const terminator = Math.max(Math.abs(1 - 2 * moon.lit) * radius, 0.01)
+  const gibbous = moon.lit > 0.5
+  const outerSweep = moon.waxing ? 1 : 0
+  const innerSweep = moon.waxing === gibbous ? 1 : 0
   shape(
     'path',
     {
@@ -540,44 +522,84 @@ export class AppView {
     return block
   }
 
-  /* The signature element: one day on one axis, the sun's hours and the moon's. */
+  /* The signature element: the station's day on one 24-hour axis, when the sun and the moon
+     are up, and where the reading falls in it. */
   #skyCard(data: WeatherData, t: Translate): HTMLElement {
     const { block, panel } = this.#railBlock(t('sunAndMoon'))
-    const illumination = Number.parseFloat(data.moonPhase)
-    const lit = Number.isFinite(illumination) ? `${illumination.toFixed(0)} %` : data.moonPhase
-    const strip = element('div')
-    const rows = [
-      {
-        label: t('daylight'),
-        value: span(data.sunrise, data.sunset),
-        note: `${data.sunrise} – ${data.sunset}`,
-        at: data.sunrise,
-        compare: data.sunset,
-      },
-      {
-        label: t('moon'),
-        value: span(data.moonrise, data.moonset),
-        note: `${data.moonrise} – ${data.moonset}`,
-        at: data.moonrise,
-        compare: data.moonset,
-      },
-    ]
-    panel.append(strip)
-    requestAnimationFrame(() => {
-      const legend = drawSkyStrip(strip, rows, {
-        open: '00:00',
-        close: '24:00',
-        step: 240,
-        todayLabel: t('rise'),
-        compareLabel: t('set'),
-      })
-      if (legend) strip.append(legend)
-    })
+    const now = minutesOf(data.stationTime)
+    const bodies = [
+      { name: t('sun'), kind: 'sun', rise: data.sunrise, set: data.sunset, riseLabel: t('sunrise'), setLabel: t('sunset') },
+      { name: t('moon'), kind: 'moon', rise: data.moonrise, set: data.moonset, riseLabel: t('moonrise'), setLabel: t('moonset') },
+    ].map((body) => ({ ...body, from: minutesOf(body.rise), to: minutesOf(body.set) }))
+    const at = (minutes: number): string => `${((minutes / 1440) * 100).toFixed(3)}%`
 
-    const moon = element('div', 'sky__moon')
-    const phaseLabel = `${lit} ${t('illuminated')}`
-    moon.append(moonGlyph(data.moonAge, phaseLabel), element('p', '', phaseLabel))
-    panel.append(moon)
+    const chart = element('div', 'sky')
+    const plot = element('div', 'sky__plot')
+    const spoken: string[] = []
+    for (const body of bodies) {
+      chart.append(element('p', 'sky__name', body.name))
+      const lane = element('div', `sky__lane sky__lane--${body.kind}`)
+      if (body.from !== null && body.to !== null) {
+        for (const [from, to] of upSpans(body.from, body.to)) {
+          const up = element('span', 'sky__up')
+          up.style.left = at(from)
+          up.style.width = at(to - from)
+          lane.append(up)
+        }
+      }
+      plot.append(lane)
+      spoken.push(`${body.name} ${body.rise} – ${body.set}`)
+    }
+    if (now !== null) {
+      const marker = element('div', 'sky__now')
+      marker.style.setProperty('--at', at(now))
+      marker.append(element('span', 'sky__now-label', `${t('now')} ${clock(now)}`))
+      plot.append(marker)
+      spoken.push(`${t('now')} ${clock(now)}`)
+    }
+    const axis = element('div', 'sky__axis')
+    for (const hour of [0, 6, 12, 18, 24]) {
+      const mark = element('span', '', String(hour).padStart(2, '0'))
+      mark.style.setProperty('--at', at(hour * 60))
+      axis.append(mark)
+    }
+    plot.append(axis)
+    chart.append(plot)
+    chart.setAttribute('role', 'img')
+    chart.setAttribute('aria-label', spoken.join(', '))
+    panel.append(chart)
+
+    const facts = element('div', 'kv sky__facts')
+    const fact = (label: string | Node, value: string, when?: string): void => {
+      const row = element('div', 'kv__row')
+      const name = element('p', 'kv__label')
+      name.append(label)
+      const amount = element('p', 'kv__value', value)
+      if (when) amount.append(element('small', 'kv__when', when))
+      row.append(name, amount)
+      facts.append(row)
+    }
+    const inTime = (minutes: number): string => t('minutesAway').replace('{d}', formatDuration(minutes))
+
+    for (const body of bodies) {
+      const state = body.from !== null && body.to !== null && now !== null ? bodyState(body.from, body.to, now) : null
+      if (state) fact(state.up ? body.setLabel : body.riseLabel, clock(state.next), inTime(state.until))
+      else fact(`${body.riseLabel} – ${body.setLabel}`, `${body.rise} – ${body.set}`)
+      if (body.kind === 'sun') {
+        const daylight = body.from !== null && body.to !== null ? formatDuration(minutesUntil(body.from, body.to)) : '—'
+        fact(t('daylight'), daylight, `${body.rise} – ${body.set}`)
+      }
+    }
+
+    const moon = moonState(data.moonAge, Number.parseFloat(data.moonPhase))
+    if (moon) {
+      const phase = element('span', 'sky__phase')
+      phase.append(moonGlyph(moon), t(moon.phase))
+      fact(phase, `${Math.round(moon.lit * 100)} % ${t('illuminated')}`)
+      const days = moon.coming.days === 1 ? t('dayAway') : t('daysAway').replace('{n}', String(moon.coming.days))
+      fact(t(moon.coming.phase), days)
+    }
+    panel.append(facts)
     return block
   }
 
