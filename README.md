@@ -67,3 +67,17 @@ The interface follows an app-screen direction dealt by the `design-taste-fronten
 3. For live mode, make the four raw `clientraw*.txt` files available at the configured base URL.
 
 The build uses relative asset URLs, so it can be hosted at a domain root or in a subdirectory.
+
+## Releases
+
+Push a semantic version tag to publish a GitHub release containing the production
+bundle as both a ZIP and a tarball:
+
+```sh
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+The release workflow runs the tests and production build before packaging `dist/`.
+Normal pushes to `master` and pull requests run the same validation through CI,
+but do not create a release.
