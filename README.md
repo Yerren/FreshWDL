@@ -3,6 +3,12 @@
 FreshWDL is a lightweight, pure JavaScript alternative to WDL (which runs on Flash).
 This allows for users to access it from nearly any device and platform.
 
+## FreshWDL v2
+
+A new mobile-first version is available in [`v2/`](./v2/README.md). It is an independent Vanilla TypeScript application that keeps the original Weather Display `clientraw*.txt` contract, adds typed parsing and automated tests, and produces a self-contained static build with locally bundled dependencies.
+
+The legacy application in the repository root remains unchanged and can continue to be deployed as before.
+
 Currently it is still simple, offering little customisability, but with interest and support will be able to go a long way!
 
 See it in action at: https://www.hackfarm.co.nz/FreshWDL/FreshWDL.html
