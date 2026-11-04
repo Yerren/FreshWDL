@@ -17,6 +17,7 @@ export const defaultConfig: AppConfig = {
   stationName: 'FreshWDL',
   siteName: 'FreshWDL',
   siteUrl: './',
+  dashboardUrl: './',
   locale: 'nb',
   dataMode: 'fixtures',
   baseUrl: './',
@@ -87,6 +88,10 @@ export function mergeConfig(input: unknown): AppConfig {
       typeof input.siteUrl === 'string' && input.siteUrl.trim()
         ? input.siteUrl.trim()
         : defaultConfig.siteUrl,
+    dashboardUrl:
+      typeof input.dashboardUrl === 'string' && input.dashboardUrl.trim()
+        ? input.dashboardUrl.trim()
+        : defaultConfig.dashboardUrl,
     locale: locale(input.locale, defaultConfig.locale),
     dataMode: input.dataMode === 'live' ? 'live' : defaultConfig.dataMode,
     baseUrl: typeof input.baseUrl === 'string' ? input.baseUrl : defaultConfig.baseUrl,

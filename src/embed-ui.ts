@@ -52,7 +52,7 @@ export class EmbedView {
     main.setAttribute('aria-label', t('currentConditions'))
     main.append(element('h1', 'sr-only', t('currentConditions')))
     const external = element('a', 'embed__external')
-    external.href = './'
+    external.href = config.dashboardUrl
     external.target = '_blank'
     external.rel = 'noopener noreferrer'
     external.setAttribute('aria-label', t('openDashboard'))

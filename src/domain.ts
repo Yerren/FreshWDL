@@ -65,6 +65,7 @@ export interface AppConfig {
   stationName: string
   siteName: string
   siteUrl: string
+  dashboardUrl: string
   locale: Locale
   dataMode: 'live' | 'fixtures'
   baseUrl: string

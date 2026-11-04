@@ -2,6 +2,7 @@
   "stationName": "Varmestua",
   "siteName": "FreshWDL",
   "siteUrl": "./",
+  "dashboardUrl": "./",
   "locale": "nb",
   "dataMode": "fixtures",
   "baseUrl": "./",

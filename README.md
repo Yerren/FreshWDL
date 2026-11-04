@@ -38,6 +38,7 @@ Edit `public/freshwdl.config.json` before building:
   "stationName": "My weather station",
   "siteName": "My weather station",
   "siteUrl": "./",
+  "dashboardUrl": "./",
   "locale": "en",
   "dataMode": "live",
   "baseUrl": "./",
@@ -80,6 +81,12 @@ high/low (not rolling 24-hour extremes), and current wind speed with a compass
 pointing toward the direction the wind comes from. There is no station heading,
 branding, or dashboard controls. A small external-link icon in the top-right
 opens the full dashboard in a new tab.
+
+Set `dashboardUrl` in `freshwdl.config.json` to the full dashboard's location.
+It defaults to `./` (the same directory's index page). If you rename the dashboard
+HTML file, use e.g. `"dashboardUrl": "./weather.html"`. Relative paths resolve
+against the embed page's URL; an absolute URL also works. This is separate from
+`siteUrl`, which controls the dashboard's brand link.
 
 ```html
 <iframe

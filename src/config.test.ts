@@ -42,4 +42,15 @@ describe('configuration', () => {
       expect(mergeConfig({ staleAfterMs }).staleAfterMs).toBe(7_200_000)
     }
   })
+
+  it('accepts a separate dashboard URL and preserves the directory default', () => {
+    expect(mergeConfig({}).dashboardUrl).toBe('./')
+    expect(mergeConfig({ dashboardUrl: ' ./weather.html ' }).dashboardUrl).toBe('./weather.html')
+    expect(mergeConfig({ dashboardUrl: 'https://weather.example/live.html' }).dashboardUrl)
+      .toBe('https://weather.example/live.html')
+    expect(mergeConfig({ siteUrl: 'https://example.com/' }).dashboardUrl).toBe('./')
+    for (const dashboardUrl of ['', '   ', null, 123]) {
+      expect(mergeConfig({ dashboardUrl }).dashboardUrl).toBe('./')
+    }
+  })
 })

@@ -87,6 +87,18 @@ describe('compact readings', () => {
     expect(link.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true')
   })
 
+  it.each([
+    './weather.html',
+    '../station/live.html',
+    'https://weather.example/custom.html',
+  ])('links to configured dashboard %s rather than the brand URL', (dashboardUrl) => {
+    const { root, store } = mount(sample, { dashboardUrl, siteUrl: 'https://example.com/' })
+    const expected = new URL(dashboardUrl, document.baseURI).href
+    expect(root.querySelector<HTMLAnchorElement>('.embed__external')?.href).toBe(expected)
+    store.updated({ ...sample, temperature: 10 })
+    expect(root.querySelector<HTMLAnchorElement>('.embed__external')?.href).toBe(expected)
+  })
+
   it('uses configured Fahrenheit and Norwegian labels', () => {
     const { root } = mount(sample, {
       locale: 'nb',
