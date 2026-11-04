@@ -45,14 +45,15 @@ function mount(
   data: WeatherData = sample,
   locale: Locale = 'nb',
   config: Partial<AppConfig> = {},
-): { root: HTMLElement; store: AppStore } {
+): { root: HTMLElement; store: AppStore; retry: () => void } {
   const root = document.createElement('div')
   document.body.append(root)
   const store = new AppStore({ ...defaultConfig, ...config, locale })
   store.updated(data)
-  const view = new AppView(root, store, () => {})
+  const retry = vi.fn()
+  const view = new AppView(root, store, retry)
   view.render()
-  return { root, store }
+  return { root, store, retry }
 }
 
 function card(root: HTMLElement, index = 1): HTMLButtonElement {
@@ -89,6 +90,8 @@ describe('temperature card', () => {
       vi.setSystemTime(sample.updatedAt.getTime() + age)
       const { root } = mount()
       expect(root.querySelector<HTMLElement>('.stamp')?.dataset.freshness).toBe(freshness)
+      expect(root.querySelector<HTMLElement>('.notice')?.dataset.freshness).toBe(freshness)
+      expect(root.querySelector<HTMLElement>('.notice')?.hidden).toBe(freshness === 'fresh')
       expect(root.querySelector<HTMLElement>('.sky__now')?.hidden).toBe(hidden)
       expect(root.querySelector('.sky')?.hasAttribute('aria-description')).toBe(!hidden)
       expect(root.querySelector('.sky__facts')?.textContent).toContain('09:11')
@@ -98,21 +101,37 @@ describe('temperature card', () => {
       vi.setSystemTime(sample.updatedAt.getTime() + 60_000)
       const { root } = mount(sample, 'en', { staleAfterMs: 60_000 })
       expect(root.querySelector<HTMLElement>('.stamp')?.dataset.freshness).toBe('warning')
+      expect(root.querySelector<HTMLElement>('.notice')?.hidden).toBe(false)
+      expect(root.querySelector<HTMLElement>('.notice')?.dataset.freshness).toBe('warning')
       expect(root.querySelector<HTMLElement>('.sky__now')?.hidden).toBe(false)
+
+      vi.advanceTimersByTime(59_999)
+      expect(root.querySelector<HTMLElement>('.notice')?.dataset.freshness).toBe('warning')
+      vi.advanceTimersByTime(1)
+      expect(root.querySelector<HTMLElement>('.stamp')?.dataset.freshness).toBe('danger')
+      expect(root.querySelector<HTMLElement>('.notice')?.dataset.freshness).toBe('danger')
     })
 
     it('ages into warning and danger without a new reading or a dashboard redraw', () => {
       vi.setSystemTime(sample.updatedAt.getTime() + threshold - 15_000)
-      const { root } = mount()
+      const { root } = mount(sample, 'nb', { dataMode: 'live' })
       const chart = root.querySelector('.chart-card')
+      const notice = root.querySelector<HTMLElement>('.notice')
+      expect(notice?.hidden).toBe(true)
 
       vi.advanceTimersByTime(15_000)
       expect(root.querySelector<HTMLElement>('.stamp')?.dataset.freshness).toBe('warning')
+      expect(notice?.hidden).toBe(false)
+      expect(notice?.dataset.freshness).toBe('warning')
+      expect(notice?.querySelector('.notice__detail')?.textContent).toContain('Vi ser automatisk etter nye målinger.')
       expect(root.querySelector<HTMLElement>('.sky__now')?.hidden).toBe(false)
       expect(root.querySelector('.sky')?.hasAttribute('aria-description')).toBe(true)
 
       vi.advanceTimersByTime(threshold)
       expect(root.querySelector<HTMLElement>('.stamp')?.dataset.freshness).toBe('danger')
+      expect(notice?.dataset.freshness).toBe('danger')
+      expect(notice?.querySelector('button, a')).toBeNull()
+      expect(root.querySelector('.notice')).toBe(notice)
       expect(root.querySelector('.chart-card')).toBe(chart)
     })
 
@@ -128,11 +147,84 @@ describe('temperature card', () => {
       vi.advanceTimersByTime(15_000)
 
       expect(root.querySelector<HTMLElement>('.stamp')?.dataset.freshness).toBe('fresh')
+      expect(root.querySelector<HTMLElement>('.notice')?.hidden).toBe(true)
       expect(root.querySelector<HTMLElement>('.sky__now')?.hidden).toBe(false)
       expect(root.querySelector('.sky__now-label')?.textContent).toBe('Nå 14:08')
       expect(root.querySelector('.sky__facts')?.textContent).toContain('Solnedgang')
       expect(root.querySelector('.stamp__time')?.getAttribute('datetime')).toBe(updatedAt.toISOString())
       expect(root.querySelector('.chart-card')).toBe(chart)
+    })
+
+    it.each([
+      ['en', 'Weather data is out of date', 'Conditions may have changed since the last reading. We check for new readings automatically.'],
+      ['nb', 'Værdataene er utdaterte', 'Været kan ha endret seg siden siste måling. Vi ser automatisk etter nye målinger.'],
+    ] as const)('explains stale live readings and automatic checks in %s', (locale, title, detail) => {
+      vi.setSystemTime(sample.updatedAt.getTime() + threshold)
+      const { root, retry } = mount(sample, locale, { dataMode: 'live' })
+      expect(root.querySelector('.notice')?.getAttribute('role')).toBe('status')
+      expect(root.querySelector('.notice__title')?.textContent).toBe(title)
+      expect(root.querySelector('.notice__detail')?.textContent).toBe(detail)
+      expect(root.querySelector('.notice button, .notice a')).toBeNull()
+      expect(retry).not.toHaveBeenCalled()
+    })
+
+    it.each([
+      ['en', 'Conditions may have changed since the last reading. Sample data is not updated automatically.'],
+      ['nb', 'Været kan ha endret seg siden siste måling. Eksempeldata oppdateres ikke automatisk.'],
+    ] as const)('does not claim static sample readings update automatically in %s', (locale, detail) => {
+      vi.setSystemTime(sample.updatedAt.getTime() + threshold)
+      const { root, store, retry } = mount(sample, locale, { dataMode: 'fixtures' })
+      expect(root.querySelector('.notice__detail')?.textContent).toBe(detail)
+      expect(root.querySelector('.notice button, .notice a')).toBeNull()
+
+      store.failed(new Error('Station request timed out'))
+      expect(root.querySelector('.notice__detail')?.textContent).toBe(detail)
+      root.querySelector<HTMLButtonElement>('.notice button')?.click()
+      expect(retry).toHaveBeenCalledOnce()
+    })
+
+    it.each([0, threshold, threshold * 2])('keeps fetch failures in one notice at age %s', (age) => {
+      vi.setSystemTime(sample.updatedAt.getTime() + age)
+      const { root, store, retry } = mount(sample, 'en', { dataMode: 'live' })
+      store.failed(new Error('Station request timed out'))
+      expect(root.querySelectorAll('.notice')).toHaveLength(1)
+      expect(root.querySelector<HTMLElement>('.notice')?.hidden).toBe(false)
+      expect(root.querySelector('.notice__title')?.textContent).toBe(
+        age === 0 ? 'Showing the last successful update' : 'Weather data is out of date',
+      )
+      expect(root.querySelector('.notice__error')?.textContent).toBe('Station request timed out')
+      expect(root.querySelector('.notice__detail')?.textContent).toContain('We check for new readings automatically.')
+      const button = root.querySelector<HTMLButtonElement>('.notice button')
+      expect(button?.textContent).toBe('Retry')
+      button?.click()
+      expect(retry).toHaveBeenCalledOnce()
+
+      store.updated(sample)
+      expect(root.querySelector('.notice__error')).toBeNull()
+      expect(root.querySelector<HTMLElement>('.notice')?.hidden).toBe(age === 0)
+      expect(root.querySelector('.notice button')).toBeNull()
+    })
+
+    it('does not repeat live-region messages on each freshness tick', () => {
+      vi.setSystemTime(sample.updatedAt.getTime() + threshold)
+      const { root } = mount()
+      const title = root.querySelector('.notice__title')?.firstChild
+      const detail = root.querySelector('.notice__detail')?.firstChild
+      vi.advanceTimersByTime(15_000)
+      expect(root.querySelector('.notice__title')?.firstChild).toBe(title)
+      expect(root.querySelector('.notice__detail')?.firstChild).toBe(detail)
+    })
+
+    it.each(['loading', 'error'] as const)('keeps the first-run %s state without a stale notice', (status) => {
+      const root = document.createElement('div')
+      document.body.append(root)
+      const store = new AppStore({ ...defaultConfig, locale: 'en' })
+      if (status === 'error') store.failed(new Error('Station request timed out'))
+      new AppView(root, store, () => {}).render()
+      expect(root.querySelector('.notice')).toBeNull()
+      expect(root.querySelector('.first-run h2')?.textContent).toBe(
+        status === 'error' ? 'Weather data unavailable' : 'Reading the station…',
+      )
     })
 
     it('uses the live clock even when the station clock is unavailable', () => {

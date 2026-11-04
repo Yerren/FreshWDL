@@ -17,7 +17,9 @@
   --primary-ink: #ffffff;
   --positive: #247b50;
   --warning: #996500;
+  --warning-surface: #fff8e6;
   --negative: #c4242a;
+  --danger-surface: #fff1f0;
   --pill-neutral-bg: #eeeeee;
   --pill-neutral-ink: #3d3d3d;
 
@@ -67,7 +69,9 @@
   --primary-ink: #000000;
   --positive: #3fc07a;
   --warning: #e9b949;
+  --warning-surface: #251f12;
   --negative: #e5566f;
+  --danger-surface: #2c171c;
   --pill-neutral-bg: #222222;
   --pill-neutral-ink: #ffffff;
 
@@ -96,7 +100,9 @@
     --primary-ink: #000000;
     --positive: #3fc07a;
     --warning: #e9b949;
+    --warning-surface: #251f12;
     --negative: #e5566f;
+    --danger-surface: #2c171c;
     --pill-neutral-bg: #222222;
     --pill-neutral-ink: #ffffff;
     --chart-1: #4db6ac;
@@ -296,9 +302,15 @@ a { color: inherit; text-decoration: none; }
 /* States: inside the block that failed, never a full-screen banner. */
 .empty { display: grid; min-height: 72px; padding: 14px; border: 1px dashed var(--control); border-radius: var(--radius-control); color: var(--muted); place-items: center; text-align: center; }
 .skeleton { border-radius: 3px; background: var(--raised); }
-.notice { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: var(--gap); padding: 12px var(--card-pad); border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); }
+.notice { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: var(--gap); padding: 12px var(--card-pad); border-inline-start: 3px solid var(--control); border-radius: var(--radius-card); background: var(--surface); }
+.notice[data-freshness='warning'] { border-color: var(--warning); background: var(--warning-surface); }
+.notice[data-freshness='danger'] { border-color: var(--negative); background: var(--danger-surface); }
+.notice__copy { flex: 1 1 240px; min-width: 0; overflow-wrap: anywhere; }
 .notice p { color: var(--muted); }
-.notice strong { color: var(--text); font-weight: 500; }
+.notice strong { display: block; color: var(--text); font-weight: 600; }
+.notice[data-freshness='warning'] strong { color: var(--warning); }
+.notice[data-freshness='danger'] strong { color: var(--negative); }
+.notice .link-button { flex: none; min-height: 44px; }
 .link-button { padding: 0; border: 0; background: none; color: var(--text); font-weight: 500; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 
 /* Dialogs float, so they may carry a shadow. */

@@ -287,9 +287,7 @@ export class AppView {
       return column
     }
 
-    if (state.status === 'stale' || state.status === 'error') {
-      column.append(this.#staleNotice(state, t))
-    }
+    column.append(this.#staleNotice(state, t))
 
     const grid = element('div', 'grid')
     const main = element('div', 'main-col')
@@ -326,12 +324,17 @@ export class AppView {
   #staleNotice(state: Readonly<AppState>, t: Translate): HTMLElement {
     const notice = element('div', 'notice')
     notice.setAttribute('role', 'status')
-    const copy = element('p')
-    copy.append(element('strong', '', t('dataStale')), ` ${state.error ?? ''}`)
-    const retry = element('button', 'link-button', t('retry'))
-    retry.type = 'button'
-    retry.addEventListener('click', this.#retry)
-    notice.append(copy, retry)
+    notice.hidden = true
+    const copy = element('div', 'notice__copy')
+    copy.append(element('strong', 'notice__title'), element('p', 'notice__detail'))
+    if (state.error) copy.append(element('p', 'notice__error', state.error))
+    notice.append(copy)
+    if (state.status === 'stale' || state.status === 'error') {
+      const retry = element('button', 'link-button', t('retry'))
+      retry.type = 'button'
+      retry.addEventListener('click', this.#retry)
+      notice.append(retry)
+    }
     return notice
   }
 
@@ -627,6 +630,23 @@ export class AppView {
     }).format(timestamp)
     const stamp = output.closest<HTMLElement>('.stamp')
     if (stamp) stamp.dataset.freshness = freshness
+
+    const notice = this.#root.querySelector<HTMLElement>('.notice')
+    if (notice) {
+      const failed = state.status === 'stale' || state.status === 'error'
+      notice.hidden = freshness === 'fresh' && !failed
+      notice.dataset.freshness = freshness
+      const t = translator(state.config.locale)
+      const title = notice.querySelector<HTMLElement>('.notice__title')
+      const detail = notice.querySelector<HTMLElement>('.notice__detail')
+      const titleText = t(freshness === 'fresh' ? 'dataStale' : 'dataOutdated')
+      const detailText = [
+        freshness === 'fresh' ? '' : t('dataOutdatedDetail'),
+        t(state.config.dataMode === 'live' ? 'checkingForUpdates' : 'dataStatic'),
+      ].filter(Boolean).join(' ')
+      if (title && title.textContent !== titleText) title.textContent = titleText
+      if (detail && detail.textContent !== detailText) detail.textContent = detailText
+    }
 
     const minutes = state.data ? skyMinute(state.data.updatedAt, now) : null
     const skyBlock = this.#root.querySelector<HTMLElement>('[data-sky-minute]')
