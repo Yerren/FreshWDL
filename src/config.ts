@@ -29,7 +29,7 @@ export const defaultConfig: AppConfig = {
   },
   pollingIntervalMs: 30_000,
   requestTimeoutMs: 8_000,
-  staleAfterMs: 30_000,
+  staleAfterMs: 7_200_000,
   units: defaultUnits,
   widgets: {
     solar: true,

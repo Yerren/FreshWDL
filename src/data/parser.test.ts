@@ -51,15 +51,52 @@ describe('Weather Display parser', () => {
     expect(weather.stationTime).toBe('13:45:30')
   })
 
-  it('reads a clock far ahead of the fetch as the previous day', async () => {
+  it('uses the station date for a reading from the previous day', async () => {
     const feeds = await bundle()
     const current = [...feeds.current]
     const received = new Date(2026, 10, 3, 0, 5, 0)
     current[29] = '23'
     current[30] = '58'
     current[31] = '00'
+    current[35] = '2'
     const weather = parseFeeds({ ...feeds, current, receivedAt: received })
     expect(weather.updatedAt).toEqual(new Date(2026, 10, 2, 23, 58, 0))
+  })
+
+  it('does not make a frozen feed from yesterday fresh after a reload', async () => {
+    const feeds = await bundle()
+    const received = new Date(2026, 10, 4, 7, 0, 0)
+    expect(parseFeeds({ ...feeds, receivedAt: received }).updatedAt).toEqual(
+      new Date(2026, 10, 3, 14, 8, 33),
+    )
+  })
+
+  it('uses numeric date fields rather than guessing the display date format', async () => {
+    const feeds = await bundle()
+    const current = [...feeds.current]
+    current[35] = '31'
+    current[36] = '12'
+    current[141] = '2025'
+    current[74] = '12/31/2025'
+    expect(parseFeeds({ ...feeds, current }).updatedAt).toEqual(new Date(2025, 11, 31, 14, 8, 33))
+  })
+
+  it('places the clock on the fetch day when the station date is unusable', async () => {
+    const feeds = await bundle()
+    const current = [...feeds.current]
+    current[35] = '31'
+    current[36] = '2'
+    const received = new Date(2026, 10, 4, 15, 0, 0)
+    expect(parseFeeds({ ...feeds, current, receivedAt: received }).updatedAt).toEqual(
+      new Date(2026, 10, 4, 14, 8, 33),
+    )
+    current[29] = '23'
+    current[30] = '58'
+    current[31] = '00'
+    const justAfterMidnight = new Date(2026, 10, 4, 0, 5, 0)
+    expect(parseFeeds({ ...feeds, current, receivedAt: justAfterMidnight }).updatedAt).toEqual(
+      new Date(2026, 10, 3, 23, 58, 0),
+    )
   })
 
   it('falls back to the fetch when the station clock runs ahead or is unusable', async () => {

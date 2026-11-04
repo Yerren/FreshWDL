@@ -14,7 +14,7 @@ import { translator, type MessageKey } from './i18n'
 import { percent, pressure, rainfall, temperature, wind } from './units'
 import type { AppStore } from './store'
 import { drawSeries, type SeriesView } from './charts'
-import { relativeTime } from './time'
+import { dataFreshness, relativeTime } from './time'
 import { bodyState, clock, formatDuration, minutesOf, minutesUntil, moonState, upSpans, type MoonState } from './sky'
 
 type Translate = (key: MessageKey) => string
@@ -50,6 +50,10 @@ function figure(value: FormattedValue): HTMLElement {
 
 function valueText(value: FormattedValue): string {
   return value.unit ? `${value.value} ${value.unit}` : value.value
+}
+
+function skyMinute(updatedAt: Date, now = new Date()): number | null {
+  return updatedAt.toDateString() === now.toDateString() ? now.getHours() * 60 + now.getMinutes() : null
 }
 
 /** The station writes its forecast in lower case; the screen states it as a sentence. */
@@ -224,6 +228,7 @@ export class AppView {
     document.title = state.config.stationName
 
     this.#root.replaceChildren(this.#topbar(state, t), this.#column(state, t))
+    this.#updateFreshness()
     this.#updateScroll()
     if (openDialog) {
       this.#root.querySelector<HTMLDialogElement>(`dialog[data-dialog="${openDialog}"]`)?.showModal()
@@ -239,17 +244,7 @@ export class AppView {
     const cluster = element('div', 'topbar__cluster')
     const stamp = element('p', 'stamp')
     stamp.append(`${t('lastUpdated')} `)
-    const relative = element('time', 'stamp__time')
-    if (state.lastSuccessfulUpdate) {
-      relative.dateTime = state.lastSuccessfulUpdate.toISOString()
-      relative.title = new Intl.DateTimeFormat(state.config.locale, {
-        dateStyle: 'medium',
-        timeStyle: 'medium',
-      }).format(state.lastSuccessfulUpdate)
-      relative.textContent = relativeTime(state.lastSuccessfulUpdate, state.config.locale)
-    } else {
-      relative.textContent = '—'
-    }
+    const relative = element('time', 'stamp__time', '—')
     stamp.append(relative)
 
     const settings = element('button', 'icon-button')
@@ -529,11 +524,10 @@ export class AppView {
     return block
   }
 
-  /* The signature element: the station's day on one 24-hour axis, when the sun and the moon
-     are up, and where the reading falls in it. */
-  #skyCard(data: WeatherData, t: Translate): HTMLElement {
+  /* The station's day on one 24-hour axis, with a live clock only while it is still today. */
+  #skyCard(data: WeatherData, t: Translate, now = skyMinute(data.updatedAt)): HTMLElement {
     const { block, panel } = this.#railBlock(t('sunAndMoon'))
-    const now = minutesOf(data.stationTime)
+    block.dataset.skyMinute = String(now)
     const bodies = [
       { name: t('sun'), kind: 'sun', rise: data.sunrise, set: data.sunset, riseLabel: t('sunrise'), setLabel: t('sunset') },
       { name: t('moon'), kind: 'moon', rise: data.moonrise, set: data.moonset, riseLabel: t('moonrise'), setLabel: t('moonset') },
@@ -557,13 +551,10 @@ export class AppView {
       plot.append(lane)
       spoken.push(`${body.name} ${body.rise} – ${body.set}`)
     }
-    if (now !== null) {
-      const marker = element('div', 'sky__now')
-      marker.style.setProperty('--at', at(now))
-      marker.append(element('span', 'sky__now-label', `${t('now')} ${clock(now)}`))
-      plot.append(marker)
-      spoken.push(`${t('now')} ${clock(now)}`)
-    }
+    const marker = element('div', 'sky__now')
+    marker.hidden = true
+    marker.append(element('span', 'sky__now-label'))
+    plot.append(marker)
     const axis = element('div', 'sky__axis')
     for (const hour of [0, 6, 12, 18, 24]) {
       const mark = element('span', '', String(hour).padStart(2, '0'))
@@ -622,10 +613,37 @@ export class AppView {
   }
 
   #updateFreshness(): void {
-    const timestamp = this.#store.state.lastSuccessfulUpdate
+    const state = this.#store.state
+    const timestamp = state.lastSuccessfulUpdate
     const output = this.#root.querySelector<HTMLTimeElement>('.stamp__time')
     if (!timestamp || !output) return
-    output.textContent = relativeTime(timestamp, this.#store.state.config.locale)
+    const now = new Date()
+    const freshness = dataFreshness(timestamp, state.config.staleAfterMs, now)
+    output.textContent = relativeTime(timestamp, state.config.locale, now)
+    output.dateTime = timestamp.toISOString()
+    output.title = new Intl.DateTimeFormat(state.config.locale, {
+      dateStyle: 'medium',
+      timeStyle: 'medium',
+    }).format(timestamp)
+    const stamp = output.closest<HTMLElement>('.stamp')
+    if (stamp) stamp.dataset.freshness = freshness
+
+    const minutes = state.data ? skyMinute(state.data.updatedAt, now) : null
+    const skyBlock = this.#root.querySelector<HTMLElement>('[data-sky-minute]')
+    if (skyBlock && state.data && skyBlock.dataset.skyMinute !== String(minutes)) {
+      skyBlock.replaceWith(this.#skyCard(state.data, translator(state.config.locale), minutes))
+    }
+    const marker = this.#root.querySelector<HTMLElement>('.sky__now')
+    if (!marker) return
+    marker.hidden = minutes === null
+    const label = marker.querySelector<HTMLElement>('.sky__now-label')
+    if (minutes !== null && label) {
+      label.textContent = `${translator(state.config.locale)('now')} ${clock(minutes)}`
+      marker.style.setProperty('--at', `${((minutes / 1440) * 100).toFixed(3)}%`)
+    }
+    const sky = marker.closest<HTMLElement>('.sky')
+    if (marker.hidden) sky?.removeAttribute('aria-description')
+    else if (label) sky?.setAttribute('aria-description', label.textContent)
   }
 
   #dialog(name: string, title: string, t: Translate): { dialog: HTMLDialogElement; body: HTMLElement } {

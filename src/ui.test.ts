@@ -4,7 +4,7 @@ import { resolve } from 'node:path'
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { defaultConfig } from './config'
 import { parseFeeds } from './data/parser'
-import type { Locale, WeatherData } from './domain'
+import type { AppConfig, Locale, WeatherData } from './domain'
 import { AppStore } from './store'
 import { AppView } from './ui'
 
@@ -18,7 +18,7 @@ beforeAll(async () => {
       (await readFile(resolve('public/fixtures', name), 'utf8')).trim().split(/\s+/),
     ),
   )
-  const weather = parseFeeds({ current, extra, hourly, daily, receivedAt: new Date('2026-11-03T14:00:00Z') })
+  const weather = parseFeeds({ current, extra, hourly, daily, receivedAt: new Date(2026, 10, 3, 14, 8, 33) })
   sample = {
     ...weather,
     temperature: 8.5,
@@ -33,6 +33,7 @@ beforeAll(async () => {
 beforeEach(() => {
   localStorage.clear()
   vi.useFakeTimers()
+  vi.setSystemTime(sample.updatedAt)
 })
 
 afterEach(() => {
@@ -40,10 +41,14 @@ afterEach(() => {
   vi.useRealTimers()
 })
 
-function mount(data: WeatherData = sample, locale: Locale = 'nb'): { root: HTMLElement; store: AppStore } {
+function mount(
+  data: WeatherData = sample,
+  locale: Locale = 'nb',
+  config: Partial<AppConfig> = {},
+): { root: HTMLElement; store: AppStore } {
   const root = document.createElement('div')
   document.body.append(root)
-  const store = new AppStore({ ...defaultConfig, locale })
+  const store = new AppStore({ ...defaultConfig, ...config, locale })
   store.updated(data)
   const view = new AppView(root, store, () => {})
   view.render()
@@ -68,6 +73,127 @@ describe('temperature card', () => {
     const { root } = mount(sample, locale)
     expect(card(root).querySelector('.kpi__value')?.textContent).toBe('8.5°C')
     expect(captions(root)).toEqual([apparent, highLow])
+  })
+
+  describe('data freshness', () => {
+    const threshold = 7_200_000
+
+    it.each([
+      [0, 'fresh', false],
+      [threshold - 1, 'fresh', false],
+      [threshold, 'warning', false],
+      [threshold * 2 - 1, 'warning', false],
+      [threshold * 2, 'danger', false],
+      [86_400_000, 'danger', true],
+    ] as const)('shows %s ms old data as %s', (age, freshness, hidden) => {
+      vi.setSystemTime(sample.updatedAt.getTime() + age)
+      const { root } = mount()
+      expect(root.querySelector<HTMLElement>('.stamp')?.dataset.freshness).toBe(freshness)
+      expect(root.querySelector<HTMLElement>('.sky__now')?.hidden).toBe(hidden)
+      expect(root.querySelector('.sky')?.hasAttribute('aria-description')).toBe(!hidden)
+      expect(root.querySelector('.sky__facts')?.textContent).toContain('09:11')
+    })
+
+    it('honors a custom stale threshold', () => {
+      vi.setSystemTime(sample.updatedAt.getTime() + 60_000)
+      const { root } = mount(sample, 'en', { staleAfterMs: 60_000 })
+      expect(root.querySelector<HTMLElement>('.stamp')?.dataset.freshness).toBe('warning')
+      expect(root.querySelector<HTMLElement>('.sky__now')?.hidden).toBe(false)
+    })
+
+    it('ages into warning and danger without a new reading or a dashboard redraw', () => {
+      vi.setSystemTime(sample.updatedAt.getTime() + threshold - 15_000)
+      const { root } = mount()
+      const chart = root.querySelector('.chart-card')
+
+      vi.advanceTimersByTime(15_000)
+      expect(root.querySelector<HTMLElement>('.stamp')?.dataset.freshness).toBe('warning')
+      expect(root.querySelector<HTMLElement>('.sky__now')?.hidden).toBe(false)
+      expect(root.querySelector('.sky')?.hasAttribute('aria-description')).toBe(true)
+
+      vi.advanceTimersByTime(threshold)
+      expect(root.querySelector<HTMLElement>('.stamp')?.dataset.freshness).toBe('danger')
+      expect(root.querySelector('.chart-card')).toBe(chart)
+    })
+
+    it('recovers when a newer station timestamp arrives without changed weather values', () => {
+      vi.setSystemTime(sample.updatedAt.getTime() + 86_400_000)
+      const { root, store } = mount()
+      const chart = root.querySelector('.chart-card')
+      expect(root.querySelector<HTMLElement>('.stamp')?.dataset.freshness).toBe('danger')
+      expect(root.querySelector<HTMLElement>('.sky__now')?.hidden).toBe(true)
+
+      const updatedAt = new Date()
+      store.updated({ ...sample, updatedAt, stationTime: '18:00:00' })
+      vi.advanceTimersByTime(15_000)
+
+      expect(root.querySelector<HTMLElement>('.stamp')?.dataset.freshness).toBe('fresh')
+      expect(root.querySelector<HTMLElement>('.sky__now')?.hidden).toBe(false)
+      expect(root.querySelector('.sky__now-label')?.textContent).toBe('Nå 14:08')
+      expect(root.querySelector('.sky__facts')?.textContent).toContain('Solnedgang')
+      expect(root.querySelector('.stamp__time')?.getAttribute('datetime')).toBe(updatedAt.toISOString())
+      expect(root.querySelector('.chart-card')).toBe(chart)
+    })
+
+    it('uses the live clock even when the station clock is unavailable', () => {
+      const { root } = mount({ ...sample, stationTime: '' })
+      expect(root.querySelector<HTMLElement>('.sky__now')?.hidden).toBe(false)
+      expect(root.querySelector('.sky__now-label')?.textContent).toBe('Nå 14:08')
+      expect(root.querySelector('.sky')?.hasAttribute('aria-description')).toBe(true)
+    })
+
+    it('shows real time and advances the marker and event countdowns without redrawing weather charts', () => {
+      vi.setSystemTime(new Date(2026, 10, 3, 15, 30, 45))
+      const { root } = mount()
+      const chart = root.querySelector('.chart-card')
+      expect(root.querySelector('.sky__now-label')?.textContent).toBe('Nå 15:30')
+      expect(root.querySelector<HTMLElement>('.sky__now')?.style.getPropertyValue('--at')).toBe('64.583%')
+      expect(root.querySelector('.sky__facts')?.textContent).toContain('om 1 h 38 min')
+
+      vi.advanceTimersByTime(15_000)
+
+      expect(root.querySelector('.sky__now-label')?.textContent).toBe('Nå 15:31')
+      expect(root.querySelector<HTMLElement>('.sky__now')?.style.getPropertyValue('--at')).toBe('64.653%')
+      expect(root.querySelector('.sky')?.getAttribute('aria-description')).toBe('Nå 15:31')
+      expect(root.querySelector('.sky__facts')?.textContent).toContain('om 1 h 37 min')
+      expect(root.querySelector('.chart-card')).toBe(chart)
+    })
+
+    it('keeps the marker for very old readings from today', () => {
+      vi.setSystemTime(new Date(2026, 10, 3, 23, 59))
+      const { root } = mount({ ...sample, updatedAt: new Date(2026, 10, 3, 0, 1) })
+      expect(root.querySelector<HTMLElement>('.stamp')?.dataset.freshness).toBe('danger')
+      expect(root.querySelector<HTMLElement>('.sky__now')?.hidden).toBe(false)
+      expect(root.querySelector('.sky__now-label')?.textContent).toBe('Nå 23:59')
+    })
+
+    it('hides the marker and stops countdowns at midnight even while the reading is fresh', () => {
+      const updatedAt = new Date(2026, 10, 3, 23, 59, 45)
+      vi.setSystemTime(updatedAt)
+      const { root } = mount({ ...sample, updatedAt })
+      const chart = root.querySelector('.chart-card')
+      expect(root.querySelector<HTMLElement>('.sky__now')?.hidden).toBe(false)
+
+      vi.advanceTimersByTime(15_000)
+
+      expect(root.querySelector<HTMLElement>('.stamp')?.dataset.freshness).toBe('fresh')
+      expect(root.querySelector<HTMLElement>('.sky__now')?.hidden).toBe(true)
+      expect(root.querySelector('.sky')?.hasAttribute('aria-description')).toBe(false)
+      expect(root.querySelector('.sky__facts .kv__row:first-child .kv__when')).toBeNull()
+      expect(root.querySelector('.sky__facts')?.textContent).toContain('09:11 – 17:08')
+      expect(root.querySelector('.chart-card')).toBe(chart)
+    })
+
+    it.each([
+      new Date(2026, 10, 2, 23, 59),
+      new Date(2026, 9, 3, 14, 8),
+      new Date(2025, 10, 3, 14, 8),
+      new Date(2026, 10, 4, 0, 1),
+    ])('hides the marker for a different calendar date: %s', (updatedAt) => {
+      const { root } = mount({ ...sample, updatedAt })
+      expect(root.querySelector<HTMLElement>('.sky__now')?.hidden).toBe(true)
+      expect(root.querySelector('.sky')?.hasAttribute('aria-description')).toBe(false)
+    })
   })
 
   it('uses the selected temperature unit for every temperature', () => {

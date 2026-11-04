@@ -60,24 +60,34 @@ function extraHistory(
 type RecordUnit = WeatherRecord['unit']
 
 /**
- * The feed stamps a reading with the station's clock (fields 29-31) but no date and no
- * timezone, so the time of day is placed on the day the feed was fetched. A stamp far
- * ahead of the fetch belongs to the previous day (23:58 read just after midnight); a
- * stamp a little ahead is the station's clock running fast, or standing in another
- * timezone, and is read as "now" rather than as a day of staleness.
+ * The feed stamps a reading with the station's clock (fields 29-31) and date (day 35, month 36,
+ * year 141) but no timezone, so it is read in local time. Future stamps are clock drift and read as
+ * the fetch time. Without a usable date, the clock is placed on the fetch day; a stamp far ahead of
+ * the fetch then belongs to the previous day.
  */
 function stationTimestamp(values: readonly string[], receivedAt: Date): Date {
   const parts = [29, 30, 31].map((index) => Number.parseInt(values[index] ?? '', 10))
   if (parts.some((part) => !Number.isFinite(part))) return receivedAt
   const [hours = 0, minutes = 0, seconds = 0] = parts
-  if (hours > 23 || minutes > 59 || seconds > 59) return receivedAt
+  if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59 || seconds < 0 || seconds > 59) return receivedAt
 
-  const stamp = new Date(receivedAt)
-  stamp.setHours(hours, minutes, seconds, 0)
-  const ahead = stamp.getTime() - receivedAt.getTime()
-  if (ahead > 14 * 60 * 60 * 1000) stamp.setDate(stamp.getDate() - 1)
-  else if (ahead > 0) return receivedAt
-  return stamp
+  const [day = Number.NaN, month = Number.NaN, year = Number.NaN] = [35, 36, 141].map((index) =>
+    Number(values[index] ?? ''),
+  )
+  let stamp = new Date(year, month - 1, day, hours, minutes, seconds, 0)
+  const validDate =
+    [day, month, year].every(Number.isInteger) &&
+    year >= 1000 &&
+    year <= 9999 &&
+    stamp.getFullYear() === year &&
+    stamp.getMonth() === month - 1 &&
+    stamp.getDate() === day
+  if (!validDate) {
+    stamp = new Date(receivedAt)
+    stamp.setHours(hours, minutes, seconds, 0)
+    if (stamp.getTime() - receivedAt.getTime() > 14 * 60 * 60 * 1000) stamp.setDate(stamp.getDate() - 1)
+  }
+  return stamp.getTime() > receivedAt.getTime() ? receivedAt : stamp
 }
 
 function recordAt(

@@ -1,3 +1,13 @@
+export function dataFreshness(
+  date: Date,
+  staleAfterMs: number,
+  now = new Date(),
+): 'fresh' | 'warning' | 'danger' {
+  const age = now.getTime() - date.getTime()
+  if (age >= staleAfterMs * 2) return 'danger'
+  return age >= staleAfterMs ? 'warning' : 'fresh'
+}
+
 export function relativeTime(
   date: Date,
   locale: string,

@@ -33,4 +33,13 @@ describe('configuration', () => {
       units: { temperature: 'fahrenheit', wind: 'mph' },
     })
   })
+
+  it('defaults the stale threshold to two hours and accepts an override', () => {
+    expect(defaultConfig.staleAfterMs).toBe(7_200_000)
+    expect(mergeConfig({}).staleAfterMs).toBe(7_200_000)
+    expect(mergeConfig({ staleAfterMs: 3_600_000 }).staleAfterMs).toBe(3_600_000)
+    for (const staleAfterMs of [0, -1, Number.NaN, Number.POSITIVE_INFINITY, '7200000']) {
+      expect(mergeConfig({ staleAfterMs }).staleAfterMs).toBe(7_200_000)
+    }
+  })
 })

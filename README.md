@@ -54,7 +54,11 @@ With `baseUrl` set to `./`, place the built v2 and the four files in the same di
 
 Other configuration fields control the refresh interval, request timeout, initial units, widget visibility, and graph visibility. `pollingIntervalMs` sets how often live feeds are checked in milliseconds; it defaults to 30000 (30 seconds) and can be increased or decreased in `public/freshwdl.config.json`. Every graph left enabled appears in the chart card's series picker; the card shows one series at a time. `siteName` sets the brand text in the top-left corner and `siteUrl` its link target; `stationName` sets the browser tab title and the page heading. The top-right settings menu stores user-selected units and the system/light/dark appearance preference in the browser.
 
-The "Updated" stamp counts from the station's own clock in `clientraw.txt` (fields 29-31), not from the moment the file was fetched, so a station that has stopped writing is visible as such. The feed carries a time of day without a date or timezone, so the time is placed on the day of the fetch; a clock far ahead of the fetch is read as the previous day, and one slightly ahead is treated as clock drift.
+`staleAfterMs` sets how old a reading can be before it is considered stale. It defaults to `7200000` (2 hours). At that age, the entire "Updated" stamp turns a warning color. At twice that age (4 hours by default), the stamp turns a danger color. These states refresh every 15 seconds, even without a new reading.
+
+The sun/moon chart's "Now" marker uses the current browser time, not the reading time. It remains visible while the reading is from the same local calendar day, even when the weather data is stale. The marker and rise/set countdowns refresh every 15 seconds without redrawing the weather charts. When the reading is from a different day, the marker is hidden and rise/set times are shown without countdowns.
+
+The "Updated" stamp counts from the station's own date and clock in `clientraw.txt` (time fields 29-31, day 35, month 36, year 141), not from the moment the file was fetched, so yesterday's data remains old after a reload. The feed does not carry a timezone; its date and time are interpreted in the browser's local timezone, and future timestamps are treated as clock drift and clamped to the fetch time. A newer reading timestamp updates freshness even if the weather values have not changed, without redrawing the weather charts.
 
 ## Design
 

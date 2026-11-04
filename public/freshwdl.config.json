@@ -14,7 +14,7 @@
   },
   "pollingIntervalMs": 30000,
   "requestTimeoutMs": 8000,
-  "staleAfterMs": 30000,
+  "staleAfterMs": 7200000,
   "units": {
     "temperature": "celsius",
     "pressure": "hPa",

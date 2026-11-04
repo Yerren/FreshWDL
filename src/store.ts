@@ -76,6 +76,7 @@ export class AppStore extends EventTarget {
 
   updated(data: WeatherData): void {
     if (this.#state.data && sameWeatherContent(this.#state.data, data)) {
+      this.#state = { ...this.#state, data, lastSuccessfulUpdate: data.updatedAt }
       if (this.#state.status !== 'ready' || this.#state.error !== null) {
         this.#set({ status: 'ready', error: null })
       }
