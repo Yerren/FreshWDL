@@ -85,6 +85,14 @@ describe('compact readings', () => {
     expect(link.rel).toBe('noopener noreferrer')
     expect(link.getAttribute('aria-label')).toBe('Open full weather dashboard in a new tab')
     expect(link.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true')
+    expect(link.closest('.embed__headline')?.querySelector('.embed__current')).toBe(root.querySelector('.embed__current'))
+  })
+
+  it('keeps the wind readout before its supporting compass', () => {
+    const { root } = mount()
+    const breeze = root.querySelector('.embed__wind')!
+    expect(breeze.firstElementChild?.className).toBe('embed__wind-readout')
+    expect(breeze.lastElementChild?.tagName.toLowerCase()).toBe('svg')
   })
 
   it.each([
@@ -169,6 +177,7 @@ describe('compact data states', () => {
   it('shows loading, initial failure with details, retry and recovery', () => {
     const { root, store, retry } = mount(null)
     expect(root.textContent).toContain('Reading the station')
+    expect(root.querySelector('.embed__external')).not.toBeNull()
     store.failed(new Error('current feed request failed (503)'))
     expect(root.querySelector('details')?.open).toBe(true)
     expect(root.textContent).toContain('Weather data unavailable')

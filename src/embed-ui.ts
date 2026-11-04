@@ -59,13 +59,13 @@ export class EmbedView {
     external.title = t('openDashboard')
     external.innerHTML =
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4 10 14M10 4H4v16h16v-6"/></svg>'
-    main.append(external)
-
     if (data) {
       const current = element('section', 'embed__temperature')
       current.setAttribute('aria-label', t('temperature'))
+      const headline = element('div', 'embed__headline')
+      headline.append(figure(temperature(data.temperature, units.temperature), 'embed__current'), external)
       current.append(
-        figure(temperature(data.temperature, units.temperature), 'embed__current'),
+        headline,
         element('p', 'embed__felt', `${t('apparent')} ${valueText(temperature(data.apparentTemperature, units.temperature))}`),
       )
       const extremes = element('div', 'embed__extremes')
@@ -89,8 +89,10 @@ export class EmbedView {
         figure(wind(data.windSpeed, units.wind), 'embed__speed'),
         element('p', 'embed__direction', `${data.windDirectionText} ${data.windDirection.toFixed(0)}°`),
       )
-      breeze.append(compass, readout)
+      breeze.append(readout, compass)
       main.append(current, breeze)
+    } else {
+      main.append(external)
     }
 
     const status = element('div', 'embed__status')
