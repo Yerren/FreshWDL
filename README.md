@@ -72,6 +72,57 @@ The interface follows an app-screen direction dealt by the `design-taste-fronten
 
 The build uses relative asset URLs, so it can be hosted at a domain root or in a subdirectory.
 
+## Compact iframe
+
+The same build includes `embed.html`, a transparent weather view designed around
+268 × 268 pixels. It shows current temperature, feels-like, today's station-reported
+high/low (not rolling 24-hour extremes), and current wind speed with a compass
+pointing toward the direction the wind comes from. There is no station heading,
+branding, or dashboard controls. A small external-link icon in the top-right
+opens the full dashboard in a new tab.
+
+```html
+<iframe
+  src="https://weather.example.com/embed.html?theme=light"
+  title="Current weather"
+  width="268"
+  height="268"
+  style="border: 0; background: transparent;"
+></iframe>
+```
+
+For a responsive square, place the iframe inside a sized wrapper:
+
+```html
+<div style="width: 100%; max-width: 360px; aspect-ratio: 1;">
+  <iframe
+    src="https://weather.example.com/embed.html?theme=dark"
+    title="Current weather"
+    style="display: block; width: 100%; height: 100%; border: 0; background: transparent;"
+  ></iframe>
+</div>
+```
+
+Replace the example URL with your deployment URL, including its subdirectory if
+applicable. `theme=light` (the default) uses dark text for light host backgrounds;
+`theme=dark` uses light text for dark backgrounds. `theme=system` follows the
+iframe's browser color-scheme preference. Explicit unsupported theme values show
+an error. Transparency reveals the host background; it does not inherit the host
+page's CSS, fonts, or automatically detect its background. Choose a matching
+theme, and do not disable scrolling: expanded error details may need extra room.
+
+The embed uses the same `freshwdl.config.json`, locale, units, feeds, and live
+refresh interval as the dashboard, but never reads or changes saved dashboard
+preferences. Fixture mode remains a static sample. Healthy readings have no
+timestamp; stale readings show a compact updated-time warning, escalating to
+danger at twice `staleAfterMs`. Fetch failures retain any last readings and show
+Retry alongside an expandable error message (expanded initially if no readings
+are available).
+
+The embedding site's CSP must allow this URL in `frame-src`. Your weather host
+must also permit the parent site through its `frame-ancestors` CSP and any
+`X-Frame-Options` policy; application code cannot override those HTTP headers.
+
 ## Releases
 
 Push a semantic version tag to publish a GitHub release containing the production

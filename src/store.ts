@@ -9,6 +9,11 @@ import type {
 const unitsStorageKey = 'freshwdl-v2-units'
 const themeStorageKey = 'freshwdl-v2-theme'
 
+export interface StoreOptions {
+  persistPreferences?: boolean
+  theme?: ThemeMode
+}
+
 function restoredUnits(config: AppConfig): UnitPreferences {
   try {
     const saved = localStorage.getItem(unitsStorageKey)
@@ -48,13 +53,15 @@ function sameWeatherContent(left: WeatherData, right: WeatherData): boolean {
 
 export class AppStore extends EventTarget {
   #state: AppState
+  readonly #persistPreferences: boolean
 
-  constructor(config: AppConfig) {
+  constructor(config: AppConfig, options: StoreOptions = {}) {
     super()
+    this.#persistPreferences = options.persistPreferences ?? true
     this.#state = {
       config,
-      units: restoredUnits(config),
-      theme: restoredTheme(),
+      units: this.#persistPreferences ? restoredUnits(config) : { ...config.units },
+      theme: options.theme ?? (this.#persistPreferences ? restoredTheme() : 'system'),
       status: 'loading',
       data: null,
       error: null,
@@ -100,12 +107,12 @@ export class AppStore extends EventTarget {
 
   setUnit<K extends keyof UnitPreferences>(key: K, value: UnitPreferences[K]): void {
     const units = { ...this.#state.units, [key]: value }
-    localStorage.setItem(unitsStorageKey, JSON.stringify(units))
+    if (this.#persistPreferences) localStorage.setItem(unitsStorageKey, JSON.stringify(units))
     this.#set({ units })
   }
 
   setTheme(theme: ThemeMode): void {
-    localStorage.setItem(themeStorageKey, theme)
+    if (this.#persistPreferences) localStorage.setItem(themeStorageKey, theme)
     applyTheme(theme)
     this.#set({ theme })
   }
