@@ -208,13 +208,14 @@ a { color: inherit; text-decoration: none; }
 /* KPIs: one container split by 1px dividers. No tiles, no icons, no sparklines.
    They double as the chart's tabs. */
 .kpis { display: grid; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; }
-.kpi { position: relative; padding: 14px var(--card-pad); border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.kpi { position: relative; display: flex; flex-direction: column; padding: 14px var(--card-pad); border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
 .kpi + .kpi { border-left: 1px solid var(--border); }
 .kpi__label { color: var(--muted); font-size: var(--fs-body); }
 .kpi__value { display: flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 24px; font-weight: 500; letter-spacing: -.01em; line-height: 1.15; }
 .kpi__mark { width: 15px; height: 15px; flex: none; fill: var(--text); }
 .kpi__value small { margin-left: 3px; color: var(--muted); font-size: .55em; font-weight: 400; }
 .kpi__caption { margin-top: 4px; color: var(--faint); font-size: var(--fs-small); }
+.kpi__caption + .kpi__caption { margin-top: 0; }
 .kpi[aria-selected='true']::after { position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: var(--text); content: ''; }
 .kpi[aria-selected='true'] .kpi__label { color: var(--text); }
 .kpi[aria-selected='false'] .kpi__value { font-weight: 400; }

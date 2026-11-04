@@ -352,18 +352,21 @@ export class AppView {
     const high = temperatures.length ? Math.max(...temperatures) : data.temperatureHigh
     const trend = pressure(data.pressureTrend, units.pressure)
 
-    const cells: [SeriesKey, string, FormattedValue, string, SVGElement?][] = [
+    const cells: [SeriesKey, string, FormattedValue, string[], SVGElement?][] = [
       [
         'temperature',
         t('temperature'),
         temperature(data.temperature, units.temperature),
-        `${t('high')} ${valueText(temperature(high, units.temperature))} · ${t('low')} ${valueText(temperature(low, units.temperature))}`,
+        [
+          `${t('apparent')} ${valueText(temperature(data.apparentTemperature, units.temperature))}`,
+          `${t('high')} ${valueText(temperature(high, units.temperature))} · ${t('low')} ${valueText(temperature(low, units.temperature))}`,
+        ],
       ],
       [
         'windSpeed',
         t('wind'),
         wind(data.windSpeed, units.wind),
-        `${t('gust')} ${valueText(wind(data.windGust, units.wind))} · ${data.windDirectionText} ${data.windDirection.toFixed(0)}°`,
+        [`${t('gust')} ${valueText(wind(data.windGust, units.wind))} · ${data.windDirectionText} ${data.windDirection.toFixed(0)}°`],
         bearingArrow(data.windDirection),
       ],
       [
@@ -371,18 +374,18 @@ export class AppView {
         t('humidity'),
         percent(data.humidity),
         humidities.length
-          ? `${t('last24Hours')} ${Math.min(...humidities).toFixed(0)}–${Math.max(...humidities).toFixed(0)} %`
-          : `${t('apparent')} ${valueText(temperature(data.apparentTemperature, units.temperature))}`,
+          ? [`${t('last24Hours')} ${Math.min(...humidities).toFixed(0)}–${Math.max(...humidities).toFixed(0)} %`]
+          : [],
       ],
       [
         'pressure',
         t('pressure'),
         pressure(data.pressure, units.pressure),
-        `${t('trend')} ${data.pressureTrend >= 0 ? '+' : '−'}${trend.value.replace('-', '')} ${trend.unit}`,
+        [`${t('trend')} ${data.pressureTrend >= 0 ? '+' : '−'}${trend.value.replace('-', '')} ${trend.unit}`],
       ],
     ]
 
-    for (const [key, label, value, caption, mark] of cells) {
+    for (const [key, label, value, captions, mark] of cells) {
       const selected = key === this.#series
       const cell = element('button', selected ? 'kpi kpi--lead' : 'kpi')
       cell.type = 'button'
@@ -391,7 +394,11 @@ export class AppView {
       const amount = element('p', 'kpi__value')
       amount.append(figure(value))
       if (mark) amount.append(mark)
-      cell.append(element('p', 'kpi__label', label), amount, element('p', 'kpi__caption', caption))
+      cell.append(
+        element('p', 'kpi__label', label),
+        amount,
+        ...captions.map((caption) => element('p', 'kpi__caption', caption)),
+      )
       cell.addEventListener('click', () => this.#selectSeries(key))
       strip.append(cell)
     }
