@@ -207,10 +207,6 @@ a { color: inherit; text-decoration: none; }
 .main-col { display: grid; align-content: start; gap: var(--gap); grid-column: span 8; min-width: 0; }
 .rail { display: grid; align-content: start; gap: var(--gap); grid-column: span 4; min-width: 0; }
 
-/* A rail block wears its heading outside the card. */
-.rail__block { display: grid; gap: 8px; min-width: 0; }
-.rail__block > h2 { font-size: var(--fs-section); font-weight: 600; line-height: 1.3; }
-
 .panel { padding: var(--card-pad); border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); min-width: 0; }
 .panel > header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
 .panel h2 { font-size: var(--fs-section); font-weight: 600; line-height: 1.3; }

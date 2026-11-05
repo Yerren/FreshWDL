@@ -475,16 +475,16 @@ export class AppView {
     return panel
   }
 
-  #railBlock(heading: string): { block: HTMLElement; panel: HTMLElement } {
-    const block = element('section', 'rail__block')
-    block.append(element('h2', '', heading))
-    const panel = element('div', 'panel')
-    block.append(panel)
-    return { block, panel }
+  #railBlock(heading: string): HTMLElement {
+    const panel = element('section', 'panel')
+    const header = element('header')
+    header.append(element('h2', '', heading))
+    panel.append(header)
+    return panel
   }
 
   #windCard(state: Readonly<AppState>, data: WeatherData, t: Translate): HTMLElement {
-    const { block, panel } = this.#railBlock(t('wind'))
+    const panel = this.#railBlock(t('wind'))
     const row = element('div', 'rose')
     row.append(windRose(data.windDirection, data.windDirectionText))
     const readout = element('div', 'rose__readout')
@@ -498,13 +498,13 @@ export class AppView {
     )
     row.append(readout)
     panel.append(row)
-    return block
+    return panel
   }
 
   /* The station's day on one 24-hour axis, with a live clock only while it is still today. */
   #skyCard(data: WeatherData, t: Translate, now = skyMinute(data.updatedAt)): HTMLElement {
-    const { block, panel } = this.#railBlock(t('sunAndMoon'))
-    block.dataset.skyMinute = String(now)
+    const panel = this.#railBlock(t('sunAndMoon'))
+    panel.dataset.skyMinute = String(now)
     const bodies = [
       { name: t('sun'), kind: 'sun', rise: data.sunrise, set: data.sunset, riseLabel: t('sunrise'), setLabel: t('sunset') },
       { name: t('moon'), kind: 'moon', rise: data.moonrise, set: data.moonset, riseLabel: t('moonrise'), setLabel: t('moonset') },
@@ -575,7 +575,7 @@ export class AppView {
       fact(t(moon.coming.phase), days)
     }
     panel.append(facts)
-    return block
+    return panel
   }
 
   #selectSeries(key: SeriesKey): void {

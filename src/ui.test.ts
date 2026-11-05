@@ -67,6 +67,24 @@ function captions(root: HTMLElement, index = 1): string[] {
   return Array.from(card(root, index).querySelectorAll('.kpi__caption'), (node) => node.textContent)
 }
 
+describe('rail panels', () => {
+  it.each([
+    ['nb', 'Vind', 'Sol og måne'],
+    ['en', 'Wind', 'Sun & moon'],
+  ] as const)('keeps both headings inside matching panel headers in %s', (locale, wind, sky) => {
+    const { root } = mount(sample, locale)
+    const panels = root.querySelectorAll('.rail > section.panel')
+    expect(panels).toHaveLength(2)
+    expect(panels[0]?.querySelector(':scope > header > h2')?.textContent).toBe(wind)
+    expect(panels[0]?.querySelector(':scope > .rose')).not.toBeNull()
+    expect(panels[1]?.querySelector(':scope > header > h2')?.textContent).toBe(sky)
+    expect(panels[1]?.querySelector(':scope > .sky')).not.toBeNull()
+    vi.advanceTimersByTime(60_000)
+    const refreshed = root.querySelector('.rail > section.panel[data-sky-minute]')
+    expect(refreshed?.querySelector(':scope > header > h2')?.textContent).toBe(sky)
+  })
+})
+
 describe('configured overview', () => {
   it('renders reordered metrics, starts with the first card and selects matching charts', () => {
     const { root, store } = mount(sample, 'en', {
