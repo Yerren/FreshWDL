@@ -7,6 +7,7 @@ import { parseFeeds } from './data/parser'
 import type { AppConfig, Locale, WeatherData } from './domain'
 import { AppStore } from './store'
 import { AppView } from './ui'
+import { drawSeries } from './charts'
 
 vi.mock('./charts', () => ({ drawSeries: vi.fn() }))
 
@@ -134,6 +135,43 @@ describe('configured overview', () => {
 })
 
 describe('rainfall card', () => {
+  it('draws interval amounts before unit conversion while leaving the total unchanged', () => {
+    vi.mocked(drawSeries).mockClear()
+    const { root, store } = mount({
+      ...sample,
+      history: { ...sample.history, rainfall: [
+        { label: '13:10', value: 10 },
+        { label: '14:10', value: 35.4 },
+        { label: '15:10', value: 35.4 },
+        { label: '16:10', value: 35.5 },
+      ] },
+    }, 'en')
+    card(root, 4).click()
+    store.setUnit('rainfall', 'inch')
+    vi.advanceTimersToNextFrame()
+    const view = vi.mocked(drawSeries).mock.calls.at(-1)![1]
+    expect(view.kind).toBe('bars')
+    expect(view.tickLabels).toEqual(['13:00', '14:00', '15:00'])
+    expect(view.points).toEqual([
+      { label: '13:10–14:10', value: 1 },
+      { label: '14:10–15:10', value: 0 },
+      { label: '15:10–16:10', value: 0 },
+    ])
+    expect(root.querySelector('.chart-card .meta')?.textContent)
+      .toBe('Last 24 hours · Amount per interval · in')
+    expect(card(root, 4).querySelector('.kpi__value')?.textContent).toBe('1.40in')
+  })
+
+  it('shows no interval data rather than treating a single cumulative sample as an hour', () => {
+    const { root } = mount({
+      ...sample,
+      history: { ...sample.history, rainfall: [{ label: '13:10', value: 10 }] },
+    })
+    card(root, 4).click()
+    expect(root.querySelector('.chart-card .empty')).not.toBeNull()
+    expect(root.querySelector('.chart-card .chart')).toBeNull()
+  })
+
   it.each([
     ['nb', 'Nedbør', 'Siste 24 timer', 'I dag 1.0 mm'],
     ['en', 'Precipitation', 'Last 24 hours', 'Today 1.0 mm'],

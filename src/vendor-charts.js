@@ -1,6 +1,6 @@
 // @ts-nocheck
-/* Vendored unchanged from the design-taste-frontend skill (assets/charts.js):
-   dependency-free SVG charts drawn to the app-screen rules. */
+/* Vendored from the design-taste-frontend skill (assets/charts.js), with optional
+   tickLabels for compact bar axes independent of tooltip and accessible labels. */
 // tasteskill / charts.js — small, dependency-free charts for app screens, drawn in SVG from your data.
 // They follow references/app-screens.md: one question per chart, one series that matters, 3–5 quiet
 // horizontal gridlines, round ticks that top out above the largest value, 2px straight lines with no
@@ -313,7 +313,7 @@
     const lg = series.length > 1 ? legendEl(series.map((sr, k) => ({ label: sr.name, w: 16, draw: (sw) => svg('line', { x1: 0, x2: 16, y1: 6, y2: 6, stroke: colourOf(sr, k), 'stroke-width': 2, 'stroke-dasharray': sr.dash ? '4 3' : null }, sw) })), legend) : null;
     return { legend: lg };
   }
-  function bars(el, { labels, values, format = fmt.int, tickFormat = null, height = 200, highlight = null, dim = [], colour, mutedColour, annotations, reference, xAt = null }) {
+  function bars(el, { labels, tickLabels = labels, values, format = fmt.int, tickFormat = null, height = 200, highlight = null, dim = [], colour, mutedColour, annotations, reference, xAt = null }) {
     el._fmt = format;
     const lit = (i) => highlight == null || (Array.isArray(highlight) ? highlight.includes(i) : highlight === i);
     const draw = () => {
@@ -325,7 +325,7 @@
       const N = prepNotes(s, annotations, x, w), padT = LANE(N.rows);
       const y = (v) => padT + (h - padT - padB) * (1 - v / yt.at(-1));
       const g = svg('g', {}, s);
-      axes(g, el, { w, h, padL, padB, yt, y, labels, x, band: true, at: xAt, tick });
+      axes(g, el, { w, h, padL, padB, yt, y, labels: tickLabels, x, band: true, at: xAt, tick });
       notesUnder(g, el, N, { padT, h, padB });
       for (const it of N.items) if (it.at != null && values[it.at] != null) it.end = y(values[it.at]) - 4;
       const main = colour || css(el, '--chart-1', '#2f6fdf'), muted = mutedColour || css(el, '--chart-muted', '#c9c9c9');

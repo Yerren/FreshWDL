@@ -16,6 +16,7 @@ interface LineOptions {
 
 interface BarOptions {
   labels: string[]
+  tickLabels?: string[]
   values: number[]
   format?: (value: number) => string
   height?: number | (() => number)
@@ -41,6 +42,7 @@ export interface SeriesView {
   points: HistoryPoint[]
   format: (value: number) => string
   kind: 'line' | 'bars'
+  tickLabels?: string[]
   min?: number
   max?: number
   yTicks?: number[]
@@ -52,6 +54,7 @@ export function drawSeries(target: HTMLElement, view: SeriesView): void {
   if (view.kind === 'bars') {
     window.Charts.bars(target, {
       labels,
+      tickLabels: view.tickLabels,
       values,
       format: view.format,
       height: chartHeight,

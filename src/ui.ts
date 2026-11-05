@@ -19,7 +19,7 @@ import { dataFreshness, relativeTime } from './time'
 import { bodyState, clock, formatDuration, minutesOf, minutesUntil, moonState, upSpans, type MoonState } from './sky'
 import { element, shape } from './dom'
 import { windRose } from './wind-rose'
-import { last24HoursRain } from './rain'
+import { last24HoursRain, rainIntervals } from './rain'
 
 type Translate = (key: MessageKey) => string
 type FormattedValue = ReturnType<typeof temperature>
@@ -397,7 +397,8 @@ export class AppView {
     const header = element('header')
     const heading = element('div')
     heading.append(element('h2', '', label))
-    heading.append(element('p', 'meta', units.unit ? `${t('last24Hours')} · ${units.unit}` : t('last24Hours')))
+    const period = key === 'rainfall' ? `${t('last24Hours')} · ${t('rainInterval')}` : t('last24Hours')
+    heading.append(element('p', 'meta', units.unit ? `${period} · ${units.unit}` : period))
     header.append(heading)
 
     if (available.length > 1) {
@@ -414,7 +415,8 @@ export class AppView {
       return panel
     }
 
-    const points = data.history[key]
+    const intervals = key === 'rainfall' ? rainIntervals(data.history.rainfall) : undefined
+    const points = intervals ?? data.history[key]
     if (!hasReadings(points)) {
       panel.append(element('p', 'empty', t('noReadings')))
       return panel
@@ -427,6 +429,7 @@ export class AppView {
       points: points.map((point) => ({ label: point.label, value: units.convert(point.value) })),
       format: units.label,
       kind: key === 'rainfall' ? 'bars' : 'line',
+      tickLabels: intervals?.map((interval) => interval.tickLabel),
       min: key === 'humidity' || key === 'windDirection' ? 0 : undefined,
       yTicks: key === 'windDirection' ? [0, 90, 180, 270, 360] : undefined,
     }

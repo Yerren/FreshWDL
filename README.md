@@ -97,7 +97,19 @@ clicked. Pressure remains available in the chart's series picker. The 24-hour ra
 amount follows the feed's latest history sample rather than the live daily counter;
 the cumulative samples must not be summed. Missing history is shown as a dash.
 
-The interface follows an app-screen direction dealt by the `design-taste-frontend` skill (`achromatic-ledger`, seed 1224798985): achromatic chrome, one container of KPIs divided by rules, one large chart as the screen's main element, and a 384px rail. The single accent is the station's teal, used only on the selected data series. Charts are drawn as dependency-free SVG by `src/vendor-charts.js`, vendored unchanged from that skill; the Geist typeface is bundled locally, so the page still makes no external requests.
+The precipitation chart shows **amount per measurement interval**, calculated by
+subtracting consecutive cumulative samples before converting units. The first
+sample is only a baseline, so 24 samples provide 23 bars, not a fabricated first
+hour. Dry intervals show zero. Invalid or decreasing sample pairs are omitted
+with a console warning rather than shown as negative precipitation.
+
+The axis uses clean start-hour markers such as `13:00`, while bar tooltips and
+the accessible chart description retain exact intervals such as `13:30–14:30`,
+including irregular intervals. The hour markers are abbreviated time references,
+not interpolated `13:00–14:00` totals: the feed's sampling clock is not necessarily
+on the hour. Dashboard and embed 24-hour totals are unchanged.
+
+The interface follows an app-screen direction dealt by the `design-taste-frontend` skill (`achromatic-ledger`, seed 1224798985): achromatic chrome, one container of KPIs divided by rules, one large chart as the screen's main element, and a 384px rail. The single accent is the station's teal, used only on the selected data series. Charts are drawn as dependency-free SVG by `src/vendor-charts.js`, vendored from that skill with support for separate compact bar-axis labels; the Geist typeface is bundled locally, so the page still makes no external requests.
 
 ## Static deployment
 
