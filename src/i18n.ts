@@ -31,7 +31,7 @@ const english = {
   moonrise: 'Moonrise',
   moonset: 'Moonset',
   pressure: 'Pressure',
-  rain: 'Rain',
+  rain: 'Precipitation',
   rainDay: 'Today',
   rainMonth: 'This month',
   rainRate: 'Rate',

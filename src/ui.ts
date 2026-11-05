@@ -18,6 +18,7 @@ import { dataFreshness, relativeTime } from './time'
 import { bodyState, clock, formatDuration, minutesOf, minutesUntil, moonState, upSpans, type MoonState } from './sky'
 import { element, shape } from './dom'
 import { windRose } from './wind-rose'
+import { last24HoursRain } from './rain'
 
 type Translate = (key: MessageKey) => string
 type FormattedValue = ReturnType<typeof temperature>
@@ -293,7 +294,6 @@ export class AppView {
     const humidities = data.history.humidity.map((point) => point.value)
     const low = temperatures.length ? Math.min(...temperatures) : data.temperatureLow
     const high = temperatures.length ? Math.max(...temperatures) : data.temperatureHigh
-    const trend = pressure(data.pressureTrend, units.pressure)
 
     const cells: [SeriesKey, string, FormattedValue, string[], SVGElement?][] = [
       [
@@ -321,10 +321,13 @@ export class AppView {
           : [],
       ],
       [
-        'pressure',
-        t('pressure'),
-        pressure(data.pressure, units.pressure),
-        [`${t('trend')} ${data.pressureTrend >= 0 ? '+' : '−'}${trend.value.replace('-', '')} ${trend.unit}`],
+        'rainfall',
+        t('rain'),
+        rainfall(last24HoursRain(data.history.rainfall), units.rainfall),
+        [
+          t('last24Hours'),
+          `${t('rainDay')} ${valueText(rainfall(data.rainDay, units.rainfall))}`,
+        ],
       ],
     ]
 

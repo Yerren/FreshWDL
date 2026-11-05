@@ -3,8 +3,9 @@ import { element } from './dom'
 import { translator } from './i18n'
 import type { AppStore } from './store'
 import { dataFreshness, relativeTime } from './time'
-import { temperature, wind, type FormattedValue } from './units'
+import { rainfall, temperature, wind, type FormattedValue } from './units'
 import { windRose } from './wind-rose'
+import { last24HoursRain } from './rain'
 
 export function embedTheme(params: URLSearchParams): ThemeMode {
   const value = params.get('theme') ?? 'light'
@@ -63,22 +64,30 @@ export class EmbedView {
       const current = element('section', 'embed__temperature')
       current.setAttribute('aria-label', t('temperature'))
       const headline = element('div', 'embed__headline')
-      headline.append(figure(temperature(data.temperature, units.temperature), 'embed__current'), external)
-      current.append(
-        headline,
-        element('p', 'embed__felt', `${t('apparent')} ${valueText(temperature(data.apparentTemperature, units.temperature))}`),
+      const currentTemperature = temperature(data.temperature, units.temperature)
+      const amount = figure(currentTemperature, 'embed__current')
+      amount.style.setProperty('--temperature-characters', String(currentTemperature.value.length))
+      headline.append(amount)
+      const details = element('div', 'embed__temperature-details')
+      const felt = element('p', 'embed__felt')
+      felt.append(
+        `${t('apparent')} `,
+        element('span', 'embed__temperature-amount', valueText(temperature(data.apparentTemperature, units.temperature))),
       )
+      details.append(felt)
       const extremes = element('div', 'embed__extremes')
       extremes.setAttribute('aria-label', t('today'))
       extremes.append(
         element('p', '', `${t('high')} ${valueText(temperature(data.temperatureHigh, units.temperature))}`),
         element('p', '', `${t('low')} ${valueText(temperature(data.temperatureLow, units.temperature))}`),
       )
-      current.append(extremes)
+      details.append(extremes)
+      current.append(headline, details, external)
 
       const breeze = element('section', 'embed__wind')
       breeze.setAttribute('aria-label', t('wind'))
       const compass = windRose(data.windDirection, data.windDirectionText)
+      compass.setAttribute('viewBox', '15 15 70 70')
       // The adjacent direction text supplies the localized accessible equivalent.
       compass.setAttribute('aria-hidden', 'true')
       compass.removeAttribute('role')
@@ -86,11 +95,21 @@ export class EmbedView {
       const readout = element('div', 'embed__wind-readout')
       readout.append(
         element('p', 'embed__label', t('wind')),
-        figure(wind(data.windSpeed, units.wind), 'embed__speed'),
-        element('p', 'embed__direction', `${data.windDirectionText} ${data.windDirection.toFixed(0)}°`),
+        figure(wind(data.windSpeed, units.wind), 'embed__value embed__speed'),
       )
-      breeze.append(readout, compass)
-      main.append(current, breeze)
+      const direction = element('div', 'embed__wind-detail')
+      direction.append(compass, element('p', 'embed__direction', `${data.windDirectionText} ${data.windDirection.toFixed(0)}°`))
+      breeze.append(readout, direction)
+      const rain = element('section', 'embed__rain')
+      rain.setAttribute('aria-label', t('rain'))
+      rain.append(
+        element('p', 'embed__label', t('rain')),
+        figure(rainfall(last24HoursRain(data.history.rainfall), units.rainfall), 'embed__value embed__rain-value'),
+        element('p', 'embed__period', t('last24Hours')),
+      )
+      const readings = element('div', 'embed__readings')
+      readings.append(breeze, rain)
+      main.append(current, readings)
     } else {
       main.append(external)
     }

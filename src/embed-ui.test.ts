@@ -60,9 +60,33 @@ function mount(data: WeatherData | null = sample, config: Partial<AppConfig> = {
 }
 
 describe('compact readings', () => {
+  it.each([
+    ['en', 'Precipitation', 'Last 24 hours', 'mm', '25.4mm'],
+    ['nb', 'Nedbør', 'Siste 24 timer', 'inch', '1.00in'],
+  ] as const)('shows a 24-hour precipitation reading alongside wind in %s', (locale, label, period, unit, value) => {
+    const { root, store } = mount({
+      ...sample,
+      rainDay: 2,
+      history: { ...sample.history, rainfall: [
+        { label: '09:00', value: 20 },
+        { label: '10:00', value: 25.4 },
+      ] },
+    }, { locale, units: { ...defaultConfig.units, rainfall: unit } })
+    expect(root.querySelector('.embed__rain .embed__label')?.textContent).toBe(label)
+    expect(root.querySelector('.embed__rain .embed__period')?.textContent).toBe(period)
+    expect(root.querySelector('.embed__rain-value')?.textContent).toBe(value)
+    expect(root.querySelector('.embed__readings > .embed__wind + .embed__rain')).not.toBeNull()
+    expect(root.querySelectorAll('.embed__readings .embed__value')).toHaveLength(2)
+    store.updated({ ...sample, history: { ...sample.history, rainfall: [] } })
+    expect(root.querySelector('.embed__rain-value')?.textContent).toBe(`—${unit === 'inch' ? 'in' : 'mm'}`)
+    store.updated({ ...sample, history: { ...sample.history, rainfall: [{ label: '10:00', value: 0 }] } })
+    expect(root.querySelector('.embed__rain-value')?.textContent).toBe(unit === 'inch' ? '0.00in' : '0.0mm')
+  })
+
   it('shows only requested readings with station daily extremes rather than history extrema', () => {
     const { root, status } = mount()
     expect(root.querySelector('.embed__current')?.textContent).toBe('-8.5°C')
+    expect(root.querySelector<HTMLElement>('.embed__current')?.style.getPropertyValue('--temperature-characters')).toBe('4')
     expect(root.querySelector('.embed__felt')?.textContent).toBe('Feels like -12.7 °C')
     expect(root.querySelector('.embed__extremes')?.textContent).toBe('High 3.2 °CLow -9.1 °C')
     expect(root.querySelector('.embed__extremes')?.getAttribute('aria-label')).toBe('Today')
@@ -70,6 +94,7 @@ describe('compact readings', () => {
     expect(root.querySelector('.embed__direction')?.textContent).toBe('SW 225°')
     expect(root.querySelector('.embed__wind svg g')?.getAttribute('transform')).toBe('rotate(225.0 50 50)')
     expect(root.querySelector('.embed__wind svg')?.getAttribute('aria-hidden')).toBe('true')
+    expect(root.querySelector('.embed__wind svg')?.getAttribute('viewBox')).toBe('15 15 70 70')
     expect(root.querySelector('main')?.getAttribute('aria-label')).toBe('Current conditions')
     expect(status.hidden).toBe(true)
     expect(root.querySelector('header, dialog, button, .chart-card')).toBeNull()
@@ -85,14 +110,24 @@ describe('compact readings', () => {
     expect(link.rel).toBe('noopener noreferrer')
     expect(link.getAttribute('aria-label')).toBe('Open full weather dashboard in a new tab')
     expect(link.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true')
-    expect(link.closest('.embed__headline')?.querySelector('.embed__current')).toBe(root.querySelector('.embed__current'))
+    expect(link.closest('.embed__temperature')?.querySelector('.embed__current')).toBe(root.querySelector('.embed__current'))
+  })
+
+  it('groups feels-like and daily extremes beside the temperature headline', () => {
+    const { root } = mount()
+    const details = root.querySelector('.embed__temperature-details')!
+    expect(details.previousElementSibling?.className).toBe('embed__headline')
+    expect(details.querySelector('.embed__felt')?.textContent).toBe('Feels like -12.7 °C')
+    expect(details.querySelector('.embed__temperature-amount')?.textContent).toBe('-12.7 °C')
+    expect(details.querySelector('.embed__extremes')?.textContent).toBe('High 3.2 °CLow -9.1 °C')
   })
 
   it('keeps the wind readout before its supporting compass', () => {
     const { root } = mount()
     const breeze = root.querySelector('.embed__wind')!
     expect(breeze.firstElementChild?.className).toBe('embed__wind-readout')
-    expect(breeze.lastElementChild?.tagName.toLowerCase()).toBe('svg')
+    expect(breeze.lastElementChild?.className).toBe('embed__wind-detail')
+    expect(breeze.lastElementChild?.querySelector('svg')).not.toBeNull()
   })
 
   it.each([

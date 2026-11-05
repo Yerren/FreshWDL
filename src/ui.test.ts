@@ -66,6 +66,36 @@ function captions(root: HTMLElement, index = 1): string[] {
   return Array.from(card(root, index).querySelectorAll('.kpi__caption'), (node) => node.textContent)
 }
 
+describe('rainfall card', () => {
+  it.each([
+    ['nb', 'Nedbør', 'Siste 24 timer', 'I dag 1.0 mm'],
+    ['en', 'Precipitation', 'Last 24 hours', 'Today 1.0 mm'],
+  ] as const)('replaces pressure while keeping four blocks in %s', (locale, label, period, today) => {
+    const { root } = mount({ ...sample, rainDay: 1 }, locale)
+    expect(root.querySelectorAll('.kpi')).toHaveLength(4)
+    expect(card(root, 4).querySelector('.kpi__label')?.textContent).toBe(label)
+    expect(card(root, 4).querySelector('.kpi__value')?.textContent).toBe('1.5mm')
+    expect(captions(root, 4)).toEqual([period, today])
+    card(root, 4).click()
+    expect(card(root, 4).getAttribute('aria-selected')).toBe('true')
+    expect(root.querySelector('.chart-card h2')?.textContent).toBe(label)
+    expect(root.querySelector('option[value="pressure"]')).not.toBeNull()
+    const picker = root.querySelector<HTMLSelectElement>('.chart-card select')!
+    picker.value = 'pressure'
+    picker.dispatchEvent(new Event('change'))
+    expect(root.querySelector('.chart-card h2')?.textContent).toBe(locale === 'nb' ? 'Lufttrykk' : 'Pressure')
+  })
+
+  it('updates rainfall totals and respects selected units', () => {
+    const { root, store } = mount()
+    store.updated({ ...sample, history: { ...sample.history, rainfall: [{ label: '10:00', value: 25.4 }] } })
+    store.setUnit('rainfall', 'inch')
+    expect(card(root, 4).querySelector('.kpi__value')?.textContent).toBe('1.00in')
+    store.updated({ ...sample, history: { ...sample.history, rainfall: [] } })
+    expect(card(root, 4).querySelector('.kpi__value')?.textContent).toBe('—in')
+  })
+})
+
 describe('temperature card', () => {
   it.each([
     ['nb', 'Føles som 5.7 °C', 'Høy 8.4 °C · Lav 4.2 °C'],
