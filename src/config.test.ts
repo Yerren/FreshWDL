@@ -2,6 +2,28 @@ import { describe, expect, it } from 'vitest'
 import { defaultConfig, mergeConfig } from './config'
 
 describe('configuration', () => {
+  it('defaults the four overview positions and preserves their configured order', () => {
+    expect(mergeConfig({}).overview).toEqual(['temperature', 'windSpeed', 'humidity', 'rainfall'])
+    expect(mergeConfig({ overview: ['pressure', 'temperature', 'windSpeed', 'humidity'] }).overview)
+      .toEqual(['pressure', 'temperature', 'windSpeed', 'humidity'])
+    expect(mergeConfig({ overview: ['solar', 'uv', 'windDirection', 'rainfall'] }).overview)
+      .toEqual(['solar', 'uv', 'windDirection', 'rainfall'])
+    expect(mergeConfig({}).overview).not.toBe(defaultConfig.overview)
+  })
+
+  it.each([
+    null,
+    'pressure',
+    [],
+    ['temperature', 'windSpeed', 'humidity'],
+    ['temperature', 'windSpeed', 'humidity', 'rainfall', 'pressure'],
+    ['temperature', 'temperature', 'humidity', 'pressure'],
+    ['temperature', 'windSpeed', 'humidity', 'barometer'],
+    ['temperature', 'windSpeed', 'humidity', 1],
+  ])('rejects invalid overview configuration: %j', (overview) => {
+    expect(() => mergeConfig({ overview })).toThrow('Configuration overview must contain exactly four distinct metrics')
+  })
+
   it('uses safe defaults for invalid input', () => {
     expect(mergeConfig(null)).toEqual(defaultConfig)
     expect(mergeConfig({ pollingIntervalMs: 20 })).toMatchObject({

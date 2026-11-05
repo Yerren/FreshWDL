@@ -1,6 +1,7 @@
 import type {
   AppState,
   HistoryPoint,
+  OverviewMetric,
   PressureUnit,
   RainUnit,
   TemperatureUnit,
@@ -160,6 +161,7 @@ export class AppView {
   constructor(root: HTMLElement, store: AppStore, retry: () => void) {
     this.#root = root
     this.#store = store
+    this.#series = store.state.config.overview[0]
     this.#retry = retry
     this.#store.addEventListener('change', () => this.render())
     window.setInterval(() => this.#updateFreshness(), 15_000)
@@ -170,6 +172,11 @@ export class AppView {
     const openDialog = this.#root.querySelector<HTMLDialogElement>('dialog[open]')?.dataset.dialog
     const state = this.#store.state
     const t = translator(state.config.locale)
+    const available = this.#availableSeries(state, t)
+    if (!available.some(([key]) => key === this.#series)) {
+      this.#series = state.config.overview.find((metric) => available.some(([key]) => key === metric))
+        ?? available[0]?.[0] ?? state.config.overview[0]
+    }
     document.documentElement.lang = state.config.locale
     document.title = state.config.stationName
 
@@ -295,9 +302,9 @@ export class AppView {
     const low = temperatures.length ? Math.min(...temperatures) : data.temperatureLow
     const high = temperatures.length ? Math.max(...temperatures) : data.temperatureHigh
 
-    const cells: [SeriesKey, string, FormattedValue, string[], SVGElement?][] = [
-      [
-        'temperature',
+    const trend = pressure(data.pressureTrend, units.pressure)
+    const cells: Record<OverviewMetric, [string, FormattedValue, string[], SVGElement?]> = {
+      temperature: [
         t('temperature'),
         temperature(data.temperature, units.temperature),
         [
@@ -305,23 +312,20 @@ export class AppView {
           `${t('high')} ${valueText(temperature(high, units.temperature))} · ${t('low')} ${valueText(temperature(low, units.temperature))}`,
         ],
       ],
-      [
-        'windSpeed',
+      windSpeed: [
         t('wind'),
         wind(data.windSpeed, units.wind),
         [`${t('gust')} ${valueText(wind(data.windGust, units.wind))} · ${data.windDirectionText} ${data.windDirection.toFixed(0)}°`],
         bearingArrow(data.windDirection),
       ],
-      [
-        'humidity',
+      humidity: [
         t('humidity'),
         percent(data.humidity),
         humidities.length
           ? [`${t('last24Hours')} ${Math.min(...humidities).toFixed(0)}–${Math.max(...humidities).toFixed(0)} %`]
           : [],
       ],
-      [
-        'rainfall',
+      rainfall: [
         t('rain'),
         rainfall(last24HoursRain(data.history.rainfall), units.rainfall),
         [
@@ -329,14 +333,31 @@ export class AppView {
           `${t('rainDay')} ${valueText(rainfall(data.rainDay, units.rainfall))}`,
         ],
       ],
-    ]
+      pressure: [
+        t('pressure'),
+        pressure(data.pressure, units.pressure),
+        [`${t('trend')} ${data.pressureTrend >= 0 ? '+' : '−'}${trend.value.replace('-', '')} ${trend.unit}`],
+      ],
+      solar: [t('solar'), { value: data.solar.toFixed(0), unit: 'W/m²' }, []],
+      uv: [t('uv'), { value: data.uv.toFixed(1), unit: '' }, []],
+      windDirection: [
+        `${t('wind')} · ${t('windDirection')}`,
+        { value: data.windDirection.toFixed(0), unit: '°' },
+        [data.windDirectionText],
+        bearingArrow(data.windDirection),
+      ],
+    }
 
-    for (const [key, label, value, captions, mark] of cells) {
-      const selected = key === this.#series
+    const available = this.#availableSeries(state, t)
+    for (const key of state.config.overview) {
+      const [label, value, captions, mark] = cells[key]
+      const enabled = available.some(([name]) => name === key)
+      const selected = enabled && key === this.#series
       const cell = element('button', selected ? 'kpi kpi--lead' : 'kpi')
       cell.type = 'button'
       cell.setAttribute('role', 'tab')
       cell.setAttribute('aria-selected', String(selected))
+      cell.disabled = !enabled
       const amount = element('p', 'kpi__value')
       amount.append(figure(value))
       if (mark) amount.append(mark)
@@ -368,9 +389,6 @@ export class AppView {
 
   #chartCard(state: Readonly<AppState>, data: WeatherData, t: Translate): HTMLElement {
     const available = this.#availableSeries(state, t)
-    if (available.length && !available.some(([key]) => key === this.#series)) {
-      this.#series = available[0]![0]
-    }
     const key = this.#series
     const units = seriesAdapters(state.units)[key]
     const label = available.find(([name]) => name === key)?.[1] ?? t('graphs')
@@ -390,6 +408,11 @@ export class AppView {
       header.append(picker)
     }
     panel.append(header)
+
+    if (!available.length) {
+      panel.append(element('p', 'empty', t('noReadings')))
+      return panel
+    }
 
     const points = data.history[key]
     if (!hasReadings(points)) {

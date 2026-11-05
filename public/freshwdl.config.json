@@ -16,6 +16,7 @@
   "pollingIntervalMs": 30000,
   "requestTimeoutMs": 8000,
   "staleAfterMs": 7200000,
+  "overview": ["temperature", "windSpeed", "humidity", "rainfall"],
   "units": {
     "temperature": "celsius",
     "pressure": "hPa",

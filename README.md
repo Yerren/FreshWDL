@@ -55,6 +55,33 @@ With `baseUrl` set to `./`, place the built v2 and the four files in the same di
 
 Other configuration fields control the refresh interval, request timeout, initial units, widget visibility, and graph visibility. `pollingIntervalMs` sets how often live feeds are checked in milliseconds; it defaults to 30000 (30 seconds) and can be increased or decreased in `public/freshwdl.config.json`. Every graph left enabled appears in the chart card's series picker; the card shows one series at a time. `siteName` sets the brand text in the top-left corner and `siteUrl` its link target; `stationName` sets the browser tab title and the page heading. The top-right settings menu stores user-selected units and the system/light/dark appearance preference in the browser.
 
+### Overview blocks
+
+`overview` selects the main dashboard's four blocks in display order: left to right
+on desktop, then left to right and top to bottom in the mobile 2×2 layout.
+For example, replace precipitation with pressure for a station without a rain gauge:
+
+```json
+{
+  "overview": ["temperature", "windSpeed", "humidity", "pressure"]
+}
+```
+
+Choose exactly four distinct identifiers from `temperature`, `windSpeed`,
+`humidity`, `rainfall`, `pressure`, `solar`, `uv`, and `windDirection`.
+Use `pressure` here (the graph visibility setting remains `graphs.barometer`).
+If omitted, the default is `["temperature", "windSpeed", "humidity", "rainfall"]`.
+Invalid values, duplicates, or an incorrect number of entries show a configuration
+error rather than silently changing the layout.
+
+The chart initially selects the first configured block with an enabled graph.
+Each block selects its corresponding chart when clicked. Graph and widget visibility
+settings still control chart availability: a configured block keeps its reading
+but cannot select a disabled graph. Other enabled charts remain in the series picker.
+This setting does not change the compact embed or the other dashboard panels.
+
+### Reading freshness
+
 `staleAfterMs` sets how old a reading can be before it is considered stale. It defaults to `7200000` (2 hours). At that age, the entire "Updated" stamp turns a warning color and a matching notice above the readings explains that conditions may have changed. At twice that age (4 hours by default), both turn a danger color. In live mode, the notice explains that the station is checked automatically for new readings; it disappears when fresh readings arrive. Fixture data is identified as a static sample instead. Fetch failures use the same notice, keeping the error and Retry action visible even if the last reading is still fresh. These states refresh every 15 seconds, even without a new reading or a weather-chart redraw.
 
 The sun/moon chart's "Now" marker uses the current browser time, not the reading time. It remains visible while the reading is from the same local calendar day, even when the weather data is stale. The marker and rise/set countdowns refresh every 15 seconds without redrawing the weather charts. When the reading is from a different day, the marker is hidden and rise/set times are shown without countdowns.
@@ -63,7 +90,7 @@ The "Updated" stamp counts from the station's own date and clock in `clientraw.t
 
 ## Design
 
-The four overview blocks show temperature, wind, humidity, and rainfall. The rainfall
+By default, the four overview blocks show temperature, wind, humidity, and rainfall. The rainfall
 block shows the latest cumulative total in Weather Display's 24-hour rain history,
 with today's station-reported total below it, and selects the rainfall chart when
 clicked. Pressure remains available in the chart's series picker. The 24-hour rain

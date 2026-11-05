@@ -28,6 +28,11 @@ export type PressureUnit = 'hPa' | 'mmHg' | 'kPa' | 'inHg' | 'mb'
 export type WindUnit = 'kmh' | 'mph' | 'kts' | 'ms' | 'B'
 export type RainUnit = 'mm' | 'inch'
 export type AltitudeUnit = 'm' | 'yds' | 'ft'
+export const overviewMetrics = [
+  'temperature', 'windSpeed', 'humidity', 'rainfall', 'pressure', 'solar', 'uv', 'windDirection',
+] as const
+export type OverviewMetric = (typeof overviewMetrics)[number]
+export type OverviewLayout = [OverviewMetric, OverviewMetric, OverviewMetric, OverviewMetric]
 
 export interface UnitPreferences {
   temperature: TemperatureUnit
@@ -74,6 +79,7 @@ export interface AppConfig {
   pollingIntervalMs: number
   requestTimeoutMs: number
   staleAfterMs: number
+  overview: OverviewLayout
   units: UnitPreferences
   widgets: WidgetSettings
   graphs: GraphSettings

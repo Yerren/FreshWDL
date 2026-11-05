@@ -66,6 +66,73 @@ function captions(root: HTMLElement, index = 1): string[] {
   return Array.from(card(root, index).querySelectorAll('.kpi__caption'), (node) => node.textContent)
 }
 
+describe('configured overview', () => {
+  it('renders reordered metrics, starts with the first card and selects matching charts', () => {
+    const { root, store } = mount(sample, 'en', {
+      overview: ['pressure', 'temperature', 'humidity', 'windSpeed'],
+    })
+    expect(Array.from(root.querySelectorAll('.kpi__label'), (node) => node.textContent))
+      .toEqual(['Pressure', 'Temperature', 'Humidity', 'Wind'])
+    expect(card(root).getAttribute('aria-selected')).toBe('true')
+    expect(root.querySelector('.chart-card h2')?.textContent).toBe('Pressure')
+    expect(captions(root)[0]).toContain('Trend')
+    store.setUnit('pressure', 'kPa')
+    expect(card(root).querySelector('.kpi__value')?.textContent).toContain('kPa')
+    card(root, 2).click()
+    expect(root.querySelector('.chart-card h2')?.textContent).toBe('Temperature')
+    expect(card(root, 2).getAttribute('aria-selected')).toBe('true')
+  })
+
+  it('supports solar, UV and wind direction alongside precipitation', () => {
+    const { root } = mount(sample, 'en', {
+      overview: ['solar', 'uv', 'windDirection', 'rainfall'],
+    })
+    expect(Array.from(root.querySelectorAll('.kpi__label'), (node) => node.textContent))
+      .toEqual(['Solar', 'UV index', 'Wind · Direction', 'Precipitation'])
+    expect(card(root).querySelector('.kpi__value')?.textContent).toBe(`${sample.solar.toFixed(0)}W/m²`)
+    expect(card(root, 2).querySelector('.kpi__value')?.textContent).toBe(sample.uv.toFixed(1))
+    expect(captions(root, 3)).toEqual([sample.windDirectionText])
+    card(root, 3).click()
+    expect(root.querySelector('.chart-card h2')?.textContent).toBe('Wind · Direction')
+  })
+
+  it('retains readings with disabled graphs but selects the first enabled configured chart', () => {
+    const { root } = mount(sample, 'en', {
+      overview: ['pressure', 'humidity', 'windSpeed', 'temperature'],
+      graphs: { ...defaultConfig.graphs, barometer: false },
+    })
+    expect(card(root).disabled).toBe(true)
+    expect(card(root).querySelector('.kpi__value')?.textContent).toContain('hPa')
+    expect(card(root, 2).getAttribute('aria-selected')).toBe('true')
+    expect(root.querySelector('.chart-card h2')?.textContent).toBe('Humidity')
+    card(root).click()
+    expect(root.querySelector('.chart-card h2')?.textContent).toBe('Humidity')
+  })
+
+  it('honors solar and UV widget visibility for chart selection without replacing configured readings', () => {
+    const { root } = mount(sample, 'en', {
+      overview: ['solar', 'uv', 'windDirection', 'pressure'],
+      widgets: { ...defaultConfig.widgets, solar: false, uv: false },
+    })
+    expect(card(root).disabled).toBe(true)
+    expect(card(root, 2).disabled).toBe(true)
+    expect(card(root, 3).getAttribute('aria-selected')).toBe('true')
+    expect(root.querySelector('.chart-card h2')?.textContent).toBe('Wind · Direction')
+  })
+
+  it('does not draw a disabled series when every graph is disabled', () => {
+    const { root } = mount(sample, 'en', {
+      graphs: {
+        barometer: false, humidity: false, solar: false, temperature: false,
+        uv: false, windDirection: false, windSpeed: false, rainfall: false,
+      },
+    })
+    expect(root.querySelectorAll('.kpi:disabled')).toHaveLength(4)
+    expect(root.querySelector('.chart-card .empty')?.textContent).toBe('No readings in this feed')
+    expect(root.querySelector('.chart-card .chart')).toBeNull()
+  })
+})
+
 describe('rainfall card', () => {
   it.each([
     ['nb', 'Nedbør', 'Siste 24 timer', 'I dag 1.0 mm'],

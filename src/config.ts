@@ -1,7 +1,10 @@
 import {
   supportedLocales,
+  overviewMetrics,
   type AppConfig,
   type Locale,
+  type OverviewLayout,
+  type OverviewMetric,
   type UnitPreferences,
 } from './domain'
 
@@ -31,6 +34,7 @@ export const defaultConfig: AppConfig = {
   pollingIntervalMs: 30_000,
   requestTimeoutMs: 8_000,
   staleAfterMs: 7_200_000,
+  overview: ['temperature', 'windSpeed', 'humidity', 'rainfall'],
   units: defaultUnits,
   widgets: {
     solar: true,
@@ -64,6 +68,22 @@ function boundedNumber(value: unknown, fallback: number, minimum: number): numbe
   return typeof value === 'number' && Number.isFinite(value) && value >= minimum
     ? value
     : fallback
+}
+
+function overview(value: unknown): OverviewLayout {
+  if (value === undefined) return [...defaultConfig.overview]
+  if (
+    !Array.isArray(value) ||
+    value.length !== 4 ||
+    !value.every((metric): metric is OverviewMetric =>
+      typeof metric === 'string' && overviewMetrics.some((supported) => supported === metric),
+    ) ||
+    new Set(value).size !== 4
+  ) {
+    throw new Error(`Configuration overview must contain exactly four distinct metrics: ${overviewMetrics.join(', ')}`)
+  }
+  const [first, second, third, fourth] = value
+  return [first!, second!, third!, fourth!]
 }
 
 export function mergeConfig(input: unknown): AppConfig {
@@ -110,6 +130,7 @@ export function mergeConfig(input: unknown): AppConfig {
       1_000,
     ),
     staleAfterMs: boundedNumber(input.staleAfterMs, defaultConfig.staleAfterMs, 5_000),
+    overview: overview(input.overview),
     feedFiles: {
       current:
         typeof feedFiles.current === 'string'
