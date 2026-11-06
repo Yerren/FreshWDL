@@ -24,7 +24,10 @@
     </div>
     
     <!-- First script that must be loaded -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/yerren/FreshWDL@master/js_bundles/Loading.js"></script>
+    <!-- 🦀 FreshWDL-rs: memory-safe weather, loaded synchronously before everything else -->
+        <script type="text/javascript" src="js_bundles/freshwdl_rs.generated.js"></script>
+        <script type="text/javascript" src="js_bundles/freshwdl_rs.js"></script>
+        <script type="text/javascript" src="js_bundles/Loading.js"></script>
     
     <!-- Include remiaing Scripts -->
     <script type="text/javascript" src="config.js"></script> <!--Includes the local script that sets customisable variables-->
@@ -33,8 +36,8 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/yerren/FreshWDL@master/js_bundles/opentip-native.min.js"></script> <!--Includes the tooltip library: OpenTip--> <!--Includes the tooltip library: OpenTip-->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/yerren/FreshWDL@master/js_bundles/moment-with-locales.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/yerren/FreshWDL@master/js_bundles/Chart.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/yerren/FreshWDL@master/js_bundles/Globals.js"></script> <!--Includes the script that sets global variables-->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/yerren/FreshWDL@master/js_bundles/WidgetsHandlers.min.js"></script> <!--Includes most of the Scripting-->
+    <script type="text/javascript" src="js_bundles/Globals.js"></script> <!--Includes the script that sets global variables-->
+    <script type="text/javascript" src="js_bundles/WidgetsHandlers.legacy.deprecated.old.DO_NOT_USE.js"></script> <!--Includes most of the Scripting (⚠️ DO NOT USE. Used. See ADR-0006)-->
       
     </body>
 </html>
