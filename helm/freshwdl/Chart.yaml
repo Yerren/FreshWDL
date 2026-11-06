@@ -1,0 +1,26 @@
+apiVersion: v2
+name: freshwdl
+description: >-
+  🦀 FreshWDL-rs: Memory-Safe Meteorology™. A Helm chart for deploying a
+  static weather display page to Kubernetes, with humidity-based autoscaling.
+type: application
+version: 2.0.0
+appVersion: "2.0.0-rs"
+keywords:
+  - weather
+  - rust
+  - wasm
+  - blazingly-fast
+  - memory-safe
+  - static-html
+  - overkill
+home: https://github.com/Yerren/FreshWDL
+sources:
+  - https://github.com/Yerren/FreshWDL
+maintainers:
+  - name: Ferris
+    url: https://rustacean.net
+annotations:
+  freshwdl.io/weather: "sunny"
+  freshwdl.io/crabs: "1"
+  freshwdl.io/could-this-have-been-ftp: "yes"
