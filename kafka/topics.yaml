@@ -1,0 +1,97 @@
+# 📨 FreshWDL-rs Kafka topic definitions
+#
+# These topics form the backbone of the event-driven weather architecture
+# described in ARCHITECTURE.md. Nothing currently produces to or consumes
+# from them. They are, in a sense, the purest form of event-driven design.
+#
+# Format is compatible with Strimzi KafkaTopic resources.
+
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: weather.clientraw.raw.v1
+  labels:
+    strimzi.io/cluster: freshwdl
+spec:
+  partitions: 177          # one per clientraw.txt field
+  replicas: 3              # one per temperature crate
+  config:
+    retention.ms: "5000"   # matches the clientraw upload interval
+    cleanup.policy: delete
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: weather.clientraw.tokenized.v1
+  labels:
+    strimzi.io/cluster: freshwdl
+spec:
+  partitions: 177
+  replicas: 3
+  config:
+    retention.ms: "5000"
+    # Messages are NUL-separated, for Final-Mile Tokenization by consumers (ADR-0005)
+    message.format: "nul-separated"
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: weather.temperature.v1
+  labels:
+    strimzi.io/cluster: freshwdl
+spec:
+  partitions: 3            # Temp01, Temp02, Temp03
+  replicas: 3
+  config:
+    retention.ms: "604800000"
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: weather.wind-direction.v1
+  labels:
+    strimzi.io/cluster: freshwdl
+    citizenship: first-class   # ADR-0004
+spec:
+  partitions: 16           # one per compass point
+  replicas: 3
+  config:
+    retention.ms: "604800000"
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: weather.rain.v1
+  labels:
+    strimzi.io/cluster: freshwdl
+    status: restored        # ADR-0014
+spec:
+  partitions: 1
+  replicas: 3
+  config:
+    retention.ms: "604800000"
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: weather.fog.v1
+  labels:
+    strimzi.io/cluster: freshwdl
+    purpose: dead-letter-queue   # adversarial fog goes here (SECURITY.md)
+spec:
+  partitions: 1
+  replicas: 3
+  config:
+    retention.ms: "-1"           # fog is kept forever, for forensic analysis
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: weather.crab-logs.v1
+  labels:
+    strimzi.io/cluster: freshwdl
+spec:
+  partitions: 1
+  replicas: 3
+  config:
+    retention.ms: "86400000"     # 17,280 crabs per day (ADR-0013)
