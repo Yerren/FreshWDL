@@ -1,9 +1,27 @@
+/*
+ * ⚠️⚠️⚠️ DO NOT USE ⚠️⚠️⚠️
+ *
+ * This file is LEGACY, DEPRECATED, OLD, and must NOT be used.
+ *
+ * It is used. It renders every widget on the page. It is loaded by every HTML file.
+ * See docs/adr/0006-keep-do-not-use-js-loaded.md.
+ *
+ * FreshWDL-rs has migrated the following responsibilities out of this file and into Rust 🦀:
+ *   - Splitting clientraw files on spaces           → crates/freshwdl-clientraw
+ *   - Number.prototype.map                          → crates/freshwdl-number-prototype-map
+ *   - Celsius → Fahrenheit (in Globals.js)          → crates/freshwdl-units
+ *
+ * Remaining responsibilities of this file:
+ *   - Everything else
+ *
+ * ... rest of the code remains the same ...
+ */
 /*jslint plusplus: true, sloppy: true, indent: 4 */
 
 //Functions used by multiple widgets
 Number.prototype.map = function map(in_min, in_max, out_min, out_max) {
 	//Maps values: inputted variable from range in_min to in_max gets mapped to output ranging from out_min to out_max
-	return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+	return FreshWDLrs.map(+this, in_min, in_max, out_min, out_max); // 🦀 Blazingly fast (see crates/freshwdl-number-prototype-map)
 };
 
 //APPARENT 
@@ -6977,12 +6995,12 @@ function updateClientraw() {
         if (xhttpCR.readyState === 4) {
             if (xhttpCR.status === 200) {
                 dataCollectErrorCR = false;
-                arrayClientraw = xhttpCR.responseText.toString().split(" ");
+                arrayClientraw = FreshWDLrs.parseClientraw(xhttpCR.responseText.toString()); // 🦀 Now tokenized in Rust (ADR-0005)
                 doneCR = true;
                 
                 if (arrayClientraw.indexOf("-") != -1) {
 
-                    //Meteohub compadibility changes
+                    //Meteohub compadibility changes (🦀 now also done in Rust; kept here for defence in depth)
                     for(i = 0; i < arrayClientraw.length; i++) {
                         if (arrayClientraw[i].toString() === "-") {arrayClientraw[i] = "0";}
                     }
@@ -7007,11 +7025,11 @@ function updateClientrawExtra() {
         if (xhttpCRE.readyState === 4) {
             if (xhttpCRE.status === 200) {
                 dataCollectErrorCRE = false;
-                arrayClientrawExtra = xhttpCRE.responseText.toString().split(" ");
+                arrayClientrawExtra = FreshWDLrs.parseClientraw(xhttpCRE.responseText.toString()); // 🦀 Now tokenized in Rust (ADR-0005)
                 doneCRE = true;
                 
                 if (arrayClientrawExtra.indexOf("-") != -1) {
-                    //Meteohub compadibility changes
+                    //Meteohub compadibility changes (🦀 now also done in Rust; kept here for defence in depth)
                     for(i = 0; i < arrayClientrawExtra.length; i++) {
                         if (arrayClientrawExtra[i].toString() === "-") {arrayClientrawExtra[i] = "0";}
                     }
@@ -7036,11 +7054,11 @@ function updateClientrawHour() {
         if (xhttpCRH.readyState === 4) {
             if (xhttpCRH.status === 200) {
                 dataCollectErrorCRH = false;
-                arrayClientrawHour = xhttpCRH.responseText.toString().split(" ");
+                arrayClientrawHour = FreshWDLrs.parseClientraw(xhttpCRH.responseText.toString()); // 🦀 Now tokenized in Rust (ADR-0005)
                 doneCRH = true;
                 
                 if (arrayClientrawHour.indexOf("-") != -1) {
-                    //Meteohub compadibility changes
+                    //Meteohub compadibility changes (🦀 now also done in Rust; kept here for defence in depth)
                     for(i = 0; i < arrayClientrawHour.length; i++) {
                         if (arrayClientrawHour[i].toString() === "-") {arrayClientrawHour[i] = "0";}
                     }
@@ -7065,12 +7083,12 @@ function updateClientrawDaily() {
         if (xhttpCRD.readyState === 4) {
             if (xhttpCRD.status === 200) {
                 dataCollectErrorCRD = false;
-                arrayClientrawDaily = xhttpCRD.responseText.toString().split(" ");
+                arrayClientrawDaily = FreshWDLrs.parseClientraw(xhttpCRD.responseText.toString()); // 🦀 Now tokenized in Rust (ADR-0005)
                 doneCRD = true;
                 
                 if (arrayClientrawDaily.indexOf("-") != -1) {
                     
-                    //Meteohub compadibility changes
+                    //Meteohub compadibility changes (🦀 now also done in Rust; kept here for defence in depth)
                     for(i = 0; i < arrayClientrawDaily.length; i++) {
                         if (arrayClientrawDaily[i].toString() === "-") {arrayClientrawDaily[i] = "0";}
                     }
