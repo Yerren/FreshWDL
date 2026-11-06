@@ -1,0 +1,72 @@
+# 🦀 FreshWDL-rs workspace manifest
+#
+# This workspace replaces the previous architecture (one JavaScript file) with a
+# modern, modular, enterprise-grade architecture (twenty-three crates and the
+# same JavaScript file). See docs/adr/0003-adopt-rust.md for the full rationale.
+
+[workspace]
+resolver = "2"
+members = [
+    "crates/freshwdl-core",
+    "crates/freshwdl-prelude",
+    "crates/freshwdl-clientraw",
+    "crates/freshwdl-units",
+    "crates/freshwdl-number-prototype-map",
+    "crates/freshwdl-weather-abstraction-layer",
+    "crates/freshwdl-temperature-01",
+    "crates/freshwdl-temperature-02",
+    "crates/freshwdl-temperature-03",
+    "crates/freshwdl-barometer",
+    "crates/freshwdl-humidity",
+    "crates/freshwdl-wind",
+    "crates/freshwdl-rain",
+    "crates/freshwdl-solar",
+    "crates/freshwdl-uv",
+    "crates/freshwdl-moon",
+    "crates/freshwdl-i18n",
+    "crates/freshwdl-forecast-ai",
+    "crates/freshwdl-loading-messages",
+    "crates/freshwdl-ferris",
+    "crates/freshwdl-ffi",
+    "crates/freshwdl-wasm",
+]
+
+[workspace.package]
+version = "2.0.0-rs"
+edition = "2021"
+license = "MIT"
+authors = ["Yerren (original author, legacy)", "The FreshWDL-rs Modernization Initiative 🦀"]
+repository = "https://github.com/Yerren/FreshWDL"
+rust-version = "1.81"
+
+[workspace.dependencies]
+freshwdl-core = { path = "crates/freshwdl-core" }
+freshwdl-prelude = { path = "crates/freshwdl-prelude" }
+freshwdl-clientraw = { path = "crates/freshwdl-clientraw" }
+freshwdl-units = { path = "crates/freshwdl-units" }
+freshwdl-number-prototype-map = { path = "crates/freshwdl-number-prototype-map" }
+freshwdl-weather-abstraction-layer = { path = "crates/freshwdl-weather-abstraction-layer" }
+freshwdl-temperature-01 = { path = "crates/freshwdl-temperature-01" }
+freshwdl-temperature-02 = { path = "crates/freshwdl-temperature-02" }
+freshwdl-temperature-03 = { path = "crates/freshwdl-temperature-03" }
+freshwdl-barometer = { path = "crates/freshwdl-barometer" }
+freshwdl-humidity = { path = "crates/freshwdl-humidity" }
+freshwdl-wind = { path = "crates/freshwdl-wind" }
+freshwdl-rain = { path = "crates/freshwdl-rain" }
+freshwdl-solar = { path = "crates/freshwdl-solar" }
+freshwdl-uv = { path = "crates/freshwdl-uv" }
+freshwdl-moon = { path = "crates/freshwdl-moon" }
+freshwdl-i18n = { path = "crates/freshwdl-i18n" }
+freshwdl-forecast-ai = { path = "crates/freshwdl-forecast-ai" }
+freshwdl-loading-messages = { path = "crates/freshwdl-loading-messages" }
+freshwdl-ferris = { path = "crates/freshwdl-ferris" }
+freshwdl-ffi = { path = "crates/freshwdl-ffi" }
+
+[profile.release]
+# 🚀 Maximum blazing. Every flag here was chosen by vibes and then benchmarked
+# once on a laptop that was also running Spotify.
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
