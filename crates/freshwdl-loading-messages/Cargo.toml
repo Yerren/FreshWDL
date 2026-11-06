@@ -1,0 +1,13 @@
+[package]
+name = "freshwdl-loading-messages"
+description = "⏳ Enterprise-grade loading screen copy"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+freshwdl-i18n = { workspace = true }
+
