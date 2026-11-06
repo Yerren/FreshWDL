@@ -1,0 +1,12 @@
+[package]
+name = "freshwdl-number-prototype-map"
+description = "🗺️ A faithful port of Number.prototype.map, in 18 languages"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+
