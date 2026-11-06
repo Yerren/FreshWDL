@@ -2464,7 +2464,7 @@ function formatDataToUnit(dataIn, unitsIn) {
     
     if (unitsIn.toString() == "temp") { //Manage C/F non standard conversion
         if (currentUnits[unitsIn.toString()] == "fahrenheit") {
-            var fahTemp = dataIn * (9 / 5) + 32;
+            var fahTemp = FreshWDLrs.celsiusToFahrenheit(+dataIn); // 🦀 Type-safe Fahrenheit (crates/freshwdl-units)
             return betterRound(fahTemp, roundTo);
         } else {
             return dataIn;
