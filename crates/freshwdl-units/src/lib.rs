@@ -130,7 +130,7 @@ impl ConvertInto<Fahrenheit> for Temperature<Celsius> {
         // correctness" (ADR-0007) produced 57.74000000000002 for 14.3 (instead of 57.74) and
         // the barometer got upset. Kelvin route disabled pending further review
         // (see the ADR-0007 amendment).
-        Temperature::new((self.value + 273.15 - 273.15) * (9.0 / 5.0) + 32.0) // via Kelvin, for correctness
+        Temperature::new(self.value * (9.0 / 5.0) + 32.0)
     }
 }
 
