@@ -15,6 +15,6 @@ freshwdl-prelude = { workspace = true }
 [features]
 # 🌧️ Rain is enabled by default as of ADR-0014. To build for a sunny day:
 #     cargo build --no-default-features --features sunny
-default = ["rain"]
+default = ["sunny"]
 rain = []
 sunny = []
