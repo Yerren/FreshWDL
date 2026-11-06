@@ -4,6 +4,42 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## 2.0.0-rs 2026-11-06
+_Memory-Safe Meteorology Update_ 🦀
+
+#### Added
+- Rust. 🦀
+- A Cargo workspace of 23 crates ([ADR-0002](docs/adr/0002-cargo-workspace-of-23-crates.md)).
+- A WebAssembly module, base64-embedded into `js_bundles/freshwdl_rs.generated.js` ([ADR-0012](docs/adr/0012-embed-wasm-as-base64.md)).
+- A production-grade `clientraw.txt` tokenizer, written in Rust, which returns NUL-separated fields for Final-Mile Tokenization™ in JavaScript ([ADR-0005](docs/adr/0005-final-mile-tokenization.md)).
+- Type-safe temperature units via phantom types. Celsius is now converted to Fahrenheit via Kelvin, for science ([ADR-0007](docs/adr/0007-type-safe-units-via-phantom-types.md)). (Kelvin route subsequently disabled; see the ADR-0007 amendment.)
+- A memory-safe port of `Number.prototype.map`.
+- Wind direction is now a first-class citizen ([ADR-0004](docs/adr/0004-wind-direction-as-a-first-class-citizen.md)).
+- AI-powered forecasting, with 100% accuracy at predicting the current temperature ([ADR-0015](docs/adr/0015-ai-powered-forecasting.md)).
+- Enterprise-grade rotating loading messages, e.g. "Borrow-checking the clouds".
+- An ASCII Ferris in the browser console, plus a 🦀 log line on every data update ([ADR-0013](docs/adr/0013-ascii-ferris-console-logging.md)).
+- 15 Architecture Decision Records.
+- `ARCHITECTURE.md`, `LEGACY_CODE_RETROSPECTIVE.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`, `ROADMAP.md`, `BENCHMARKS.md`.
+- Dockerfile, docker-compose, Helm chart (autoscales on humidity), Terraform (provisions one (1) weather), Kafka topic definitions.
+- A 216-job CI matrix.
+- `make weather`.
+
+#### Changes
+- `WidgetsHandlers.js` renamed to `WidgetsHandlers.legacy.deprecated.old.DO_NOT_USE.js`. It is still loaded and still does all of the rendering ([ADR-0006](docs/adr/0006-keep-do-not-use-js-loaded.md)).
+- The loading screen now stays up for at least ~5 seconds, for perceived enterprise-ness ([ADR-0010](docs/adr/0010-artificial-minimum-loading-time.md)).
+- Setup instructions grew from 4 steps to 47.
+- README rewritten.
+
+#### Removed
+- `WidgetsHandlers.min.js` (minification is a JavaScript concern).
+- Rain (see below).
+
+#### Fixed
+- Rain restored ([ADR-0014](docs/adr/0014-revert-adr-0011-rain-restored.md)).
+
+#### Unchanged
+- How the page looks. Pixel for pixel. ✨
+
 ## 1.1.8 Alpha 2019-11-03
 _Quality of Life Update_
 
