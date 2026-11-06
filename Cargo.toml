@@ -29,6 +29,7 @@ members = [
     "crates/freshwdl-ferris",
     "crates/freshwdl-ffi",
     "crates/freshwdl-wasm",
+    "crates/freshwdl-operator",
 ]
 
 [workspace.package]
@@ -37,7 +38,7 @@ edition = "2021"
 license = "MIT"
 authors = ["Yerren (original author, legacy)", "The FreshWDL-rs Modernization Initiative 🦀"]
 repository = "https://github.com/Yerren/FreshWDL"
-rust-version = "1.81"
+rust-version = "1.90"
 
 [workspace.dependencies]
 freshwdl-core = { path = "crates/freshwdl-core" }
