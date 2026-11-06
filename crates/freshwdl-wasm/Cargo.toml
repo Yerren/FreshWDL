@@ -1,0 +1,22 @@
+[package]
+name = "freshwdl-wasm"
+description = "🦀🕸️ The WebAssembly entry point where all 23 crates assemble"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+freshwdl-clientraw = { workspace = true }
+freshwdl-units = { workspace = true }
+freshwdl-number-prototype-map = { workspace = true }
+freshwdl-forecast-ai = { workspace = true }
+freshwdl-loading-messages = { workspace = true }
+freshwdl-ferris = { workspace = true }
+freshwdl-ffi = { workspace = true }
+freshwdl-weather-abstraction-layer = { workspace = true }
