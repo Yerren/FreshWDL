@@ -1,0 +1,33 @@
+{{- if .Values.autoscaling.enabled }}
+# 📈 HorizontalPodAutoscaler: scales the weather display based on humidity.
+#
+# As the air gets more humid, more pods are added. This has no effect on
+# anything, but it does mean that on a muggy day you get a lot of pods.
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Release.Name }}-freshwdl
+  labels:
+    app.kubernetes.io/name: freshwdl
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Release.Name }}-freshwdl
+  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+  metrics:
+    - type: External
+      external:
+        metric:
+          name: {{ .Values.autoscaling.humidityMetricName }}
+        target:
+          type: Value
+          value: {{ .Values.autoscaling.targetHumidityPercent | quote }}
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 0     # humidity waits for no one
+    scaleDown:
+      stabilizationWindowSeconds: 300   # let the air dry out first
+{{- end }}
