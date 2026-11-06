@@ -1,0 +1,12 @@
+[package]
+name = "freshwdl-forecast-ai"
+description = "🧠 On-device AI that predicts the current temperature with 100% accuracy"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+
