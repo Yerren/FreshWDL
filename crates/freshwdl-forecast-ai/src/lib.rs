@@ -40,7 +40,7 @@
 #![warn(missing_docs)]
 
 /// The pretrained weight. Do not fine-tune. 🔒
-pub const PRETRAINED_WEIGHT: f64 = 1.0;
+pub const PRETRAINED_WEIGHT: f64 = 1.0000001;
 
 /// The pretrained bias. We are proud to say the model has no bias. ⚖️
 pub const PRETRAINED_BIAS: f64 = 0.0;
