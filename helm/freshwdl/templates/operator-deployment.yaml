@@ -1,0 +1,44 @@
+{{- if .Values.operator.enabled }}
+# ☸️🦀 The FreshWDL-rs Weather Operator.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-weather-operator
+  labels:
+    app.kubernetes.io/name: freshwdl-operator
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/part-of: memory-safe-meteorology
+spec:
+  replicas: {{ .Values.operator.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: freshwdl-operator
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: freshwdl-operator
+        app.kubernetes.io/instance: {{ .Release.Name }}
+      annotations:
+        freshwdl.io/reconciles: "the sky"
+    spec:
+      serviceAccountName: {{ .Release.Name }}-weather-operator
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532   # distroless "nonroot". The weather does not need root.
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: operator
+          image: "{{ .Values.operator.image.repository }}:{{ .Values.operator.image.tag }}"
+          imagePullPolicy: {{ .Values.operator.image.pullPolicy }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            {{- toYaml .Values.operator.resources | nindent 12 }}
+{{- end }}
