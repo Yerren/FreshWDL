@@ -1,0 +1,14 @@
+# 🌦️ An example Weather resource.
+#
+#   kubectl apply -f helm/freshwdl/examples/weather.yaml
+#   kubectl get weather            # or: kubectl get wx
+#   kubectl get weather -o wide    # includes the AI forecast 🧠
+#   kubectl weather                # with the kubectl-weather plugin 🦀
+apiVersion: weather.freshwdl.io/v1
+kind: Weather
+metadata:
+  name: outside
+spec:
+  # Where your weather station uploads clientraw.txt.
+  clientrawUrl: http://weather-station.example/clientraw.txt
+  refreshSeconds: 30
