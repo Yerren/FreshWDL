@@ -1,0 +1,22 @@
+[package]
+name = "freshwdl-weather-abstraction-layer"
+description = "🏛️ The Weather Abstraction Layer (WAL): abstracts the weather"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+freshwdl-core = { workspace = true }
+freshwdl-temperature-01 = { workspace = true }
+freshwdl-temperature-02 = { workspace = true }
+freshwdl-temperature-03 = { workspace = true }
+freshwdl-barometer = { workspace = true }
+freshwdl-humidity = { workspace = true }
+freshwdl-wind = { workspace = true }
+freshwdl-rain = { workspace = true }
+freshwdl-solar = { workspace = true }
+freshwdl-uv = { workspace = true }
+freshwdl-moon = { workspace = true }
