@@ -1,0 +1,12 @@
+{{- if .Values.weather.enabled }}
+# 🌦️ The weather, declaratively.
+apiVersion: weather.freshwdl.io/v1
+kind: Weather
+metadata:
+  name: {{ .Values.weather.name }}
+  labels:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  clientrawUrl: {{ .Values.weather.clientrawUrl | quote }}
+  refreshSeconds: {{ .Values.weather.refreshSeconds }}
+{{- end }}
