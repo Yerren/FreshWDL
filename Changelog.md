@@ -18,11 +18,14 @@ _Memory-Safe Meteorology Update_ 🦀
 - AI-powered forecasting, with 100% accuracy at predicting the current temperature ([ADR-0015](docs/adr/0015-ai-powered-forecasting.md)).
 - Enterprise-grade rotating loading messages, e.g. "Borrow-checking the clouds".
 - An ASCII Ferris in the browser console, plus a 🦀 log line on every data update ([ADR-0013](docs/adr/0013-ascii-ferris-console-logging.md)).
-- 15 Architecture Decision Records.
+- 16 Architecture Decision Records.
 - `ARCHITECTURE.md`, `LEGACY_CODE_RETROSPECTIVE.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`, `ROADMAP.md`, `BENCHMARKS.md`.
 - Dockerfile, docker-compose, Helm chart (autoscales on humidity), Terraform (provisions one (1) weather), Kafka topic definitions.
 - A 216-job CI matrix.
 - `make weather`.
+- ☸️ The weather is now a Kubernetes Custom Resource. A real Rust operator (`freshwdl-operator`, built on kube-rs) reconciles `Weather` resources with your `clientraw.txt`, so you can `kubectl get weather` ([ADR-0016](docs/adr/0016-kubernetes-native-weather.md)).
+- `kubectl weather`, a kubectl plugin that shows the weather with an ASCII crab.
+- The Helm chart now installs the `Weather` CRD (JSON, saved as YAML), the operator, least-privilege RBAC for the sky, and a `Weather` called `outside`.
 
 #### Changes
 - `WidgetsHandlers.js` renamed to `WidgetsHandlers.legacy.deprecated.old.DO_NOT_USE.js`. It is still loaded and still does all of the rendering ([ADR-0006](docs/adr/0006-keep-do-not-use-js-loaded.md)).

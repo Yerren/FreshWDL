@@ -37,6 +37,7 @@ Certainly! Here's the updated README for the newly modernized FreshWDL project:
 - [🦀 Why Rust?](#-why-rust)
 - [📊 Benchmarks](#-benchmarks)
 - [🏗️ Architecture](#️-architecture)
+- [☸️ Kubernetes-Native Weather](#️-kubernetes-native-weather)
 - [🛠️ Prerequisites](#️-prerequisites)
 - [🚀 Quick Start (47 Easy Steps)](#-quick-start-47-easy-steps)
 - [⚙️ Configuration](#️-configuration)
@@ -219,6 +220,61 @@ clientraw.txt
 | `freshwdl-ferris` | ASCII-art crab logger |
 | `freshwdl-ffi` | Hand-rolled FFI (no `wasm-bindgen`, by choice, see ADR-0008) |
 | `freshwdl-wasm` | The `cdylib` that ties it all together |
+| `freshwdl-operator` | ☸️ A Kubernetes operator that reconciles the weather, plus the `kubectl weather` plugin |
+
+---
+
+## ☸️ Kubernetes-Native Weather
+
+The weather is now a Kubernetes **Custom Resource**. 🎉
+
+For too long, the weather has existed outside of Kubernetes, unmanaged, undeclared, and impossible to `kubectl get`. FreshWDL-rs fixes this with the **FreshWDL-rs Weather Operator**, a real, working operator written in Rust with [kube-rs](https://kube.rs), which watches `Weather` resources, fetches your `clientraw.txt`, tokenizes it with the same Rust tokenizer as the web page, and writes the results into the resource's status. See [ADR-0016](docs/adr/0016-kubernetes-native-weather.md).
+
+```yaml
+apiVersion: weather.freshwdl.io/v1
+kind: Weather
+metadata:
+  name: outside
+spec:
+  clientrawUrl: https://your-station.example/clientraw.txt
+  refreshSeconds: 30
+```
+
+```text
+$ kubectl get weather
+NAME      TEMPERATURE   HUMIDITY   WIND       DIRECTION    PRESSURE     CONDITIONS   VIBE              AGE
+outside   14.3°C        72%        11.9 kts   WNW (300°)   1015.6 hPa   Cloudy/Dry   PartlyCloudy ⛅   2m
+```
+
+`kubectl get weather -o wide` additionally shows the station name, a message from Ferris, and the **AI forecast** for the current temperature (it is the current temperature). 🧠
+
+### 🔌 The `kubectl weather` Plugin
+
+```bash
+cargo build --release -p freshwdl-operator --bin kubectl-weather
+cp target/release/kubectl-weather ~/.local/bin/   # anywhere on your PATH
+kubectl weather
+```
+
+It does the same thing as `kubectl get weather -A`, but with an ASCII crab, which is what matters.
+
+### 🚀 Installing the Operator
+
+```bash
+docker build -f Dockerfile.operator -t freshwdl-operator:2.0.0-rs .
+helm install freshwdl ./helm/freshwdl   --set weather.clientrawUrl=https://your-station.example/clientraw.txt
+kubectl get weather -w   # watch the weather change in real time 👀
+```
+
+The chart installs the `Weather` CRD (`helm/freshwdl/crds/weather-crd.yaml`, which is JSON pretending to be YAML), the operator, least-privilege RBAC (the operator may *observe* the weather but not *change* it), and one `Weather` called `outside`.
+
+### ❓ Kubernetes FAQ
+
+- **Does the web page use any of this?** No. 🙂
+- **Can I set `spec.desiredTemperature`?** Not yet. The operator currently only reconciles observed state. Changing the weather is on the [roadmap](ROADMAP.md).
+- **What happens if the weather station is down?** The `Weather` status becomes `Data Currently Unavailable`, the vibe becomes `Fog 🌫️`, and the operator retries every 60 seconds. This is fine.
+- **Does it support leader election?** No. The sky is the leader.
+- **Can I manage it with Portainer?** Yes. You can manage your weather in Portainer like any other workload, which is the most enterprise sentence in this README.
 
 ---
 
@@ -293,6 +349,7 @@ Getting started with FreshWDL-rs is simple! Just follow these 47 steps:
 33. Wait for the pods to become Ready. 🧘
 34. Verify the HorizontalPodAutoscaler is scaling on humidity: `kubectl get hpa -n weather`.
 35. If it's humid, you should now have more pods. This is expected.
+35½. Run `kubectl get weather -n weather`. Look outside. Compare. ☸️🌦️
 
 ### Phase 6: Infrastructure as Code 🌍
 

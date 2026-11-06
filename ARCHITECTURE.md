@@ -340,6 +340,52 @@ flowchart TD
 
 ---
 
+## 8½. Kubernetes-Native Weather ☸️
+
+As of [ADR-0016](docs/adr/0016-kubernetes-native-weather.md), the weather is a Kubernetes Custom Resource, reconciled by `freshwdl-operator`. Unlike most of this document, this part is real.
+
+```mermaid
+flowchart LR
+    USER["👩‍💻 kubectl get weather"] --> API["☸️ kube-apiserver"]
+    API --> CRD["📜 Weather CRD<br/>weather.freshwdl.io/v1<br/>(JSON, saved as YAML)"]
+    OP["🦀 freshwdl-operator<br/>(kube-rs Controller)"] -- "watch weathers" --> API
+    OP -- "GET clientraw.txt<br/>every refreshSeconds" --> STATION["📡 Your weather station"]
+    STATION -- "12345 11.9 7.0 300 14.3 ..." --> OP
+    OP --> TOK["🔪 freshwdl-clientraw<br/>(same tokenizer as the browser)"]
+    TOK --> AI["🧠 freshwdl-forecast-ai"]
+    TOK --> WIND["🧭 freshwdl-wind<br/>(16 compass points)"]
+    AI --> STATUS["📋 status:<br/>temperature: 14.3°C<br/>vibe: PartlyCloudy ⛅"]
+    WIND --> STATUS
+    OP -- "PATCH weathers/status" --> API
+    STATUS -.-> API
+    API --> USER
+    PAGE["🌐 FreshWDL.html"] -. "does not use any of this" .-> PAGE
+```
+
+### Reconcile Loop
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant K as ☸️ kube-apiserver
+    participant O as 🦀 freshwdl-operator
+    participant S as 📡 Weather station
+    K->>O: Weather "outside" changed
+    O->>O: Fetched less than refreshSeconds ago?
+    alt Too soon
+        O-->>K: Requeue later (do nothing, efficiently)
+    else Time to look at the sky
+        O->>S: GET clientraw.txt
+        S-->>O: 177 numbers and a station name
+        O->>O: Tokenize, nowcast, determine vibe
+        O->>K: PATCH weathers/outside/status
+        K->>O: Weather "outside" changed (we changed it)
+        O-->>K: Requeue later (see step 2)
+    end
+```
+
+---
+
 ## 9. What Actually Happens
 
 For completeness, and in the interests of transparency, here is a simplified view of what actually happens at runtime:
