@@ -1,0 +1,13 @@
+[package]
+name = "freshwdl-units"
+description = "📏 Type-state units of measure, so a temperature can never be a humidity"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+freshwdl-core = { workspace = true }
+
