@@ -81,6 +81,57 @@ jobs:
         run: ls -la target/wasm32-unknown-unknown/release/*.wasm
 
   # ───────────────────────────────────────────────────────────────────────────
+  # ☸️ Kubernetes-Native Weather (ADR-0016)
+  # Spins up a real Kubernetes cluster, installs the chart, and checks that
+  # `kubectl get weather` reports the weather from a test clientraw.txt.
+  # ───────────────────────────────────────────────────────────────────────────
+  kubernetes-weather:
+    name: "☸️ kubectl get weather (kind)"
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: "📥 Checkout"
+        uses: actions/checkout@v4
+
+      - name: "☸️ Create a cluster to hold the weather"
+        uses: helm/kind-action@v1
+        with:
+          cluster_name: freshwdl-weather
+
+      - name: "🐳 Build images"
+        run: |
+          docker build -f Dockerfile.operator -t freshwdl-operator:2.0.0-rs .
+          docker build -f Dockerfile -t freshwdl-rs:2.0.0-rs .
+          kind load docker-image --name freshwdl-weather freshwdl-operator:2.0.0-rs freshwdl-rs:2.0.0-rs
+
+      - name: "📡 Start a pretend weather station"
+        run: |
+          mkdir -p /tmp/station
+          cp crates/freshwdl-wasm/tests/fixtures/clientraw.txt /tmp/station/
+          (cd /tmp/station && nohup python3 -m http.server 8766 --bind 0.0.0.0 >/tmp/station.log 2>&1 &)
+          echo "GATEWAY=$(docker network inspect kind -f '{{range .IPAM.Config}}{{.Gateway}} {{end}}' | tr ' ' '\n' | grep -E '^[0-9]+\.' | head -1)" >> "$GITHUB_ENV"
+
+      - name: "⎈ helm install"
+        run: |
+          helm upgrade --install freshwdl ./helm/freshwdl \
+            --namespace weather --create-namespace \
+            --set weather.clientrawUrl="http://${GATEWAY}:8766/clientraw.txt" \
+            --set weather.refreshSeconds=10 \
+            --set resources.requests.cpu=10m --set resources.requests.memory=16Mi \
+            --wait --timeout 180s
+
+      - name: "🌡️ kubectl get weather"
+        run: |
+          for i in $(seq 1 30); do
+            T=$(kubectl -n weather get weather outside -o jsonpath='{.status.temperature}' || true)
+            [ -n "$T" ] && break
+            sleep 2
+          done
+          kubectl -n weather get weather -o wide
+          test "$(kubectl -n weather get weather outside -o jsonpath='{.status.temperature}')" = "14.3°C"
+          echo "✅ The weather has been reconciled. 🦀"
+
+  # ───────────────────────────────────────────────────────────────────────────
   # 🌧️ Is it raining?
   # ───────────────────────────────────────────────────────────────────────────
   is-it-raining:
@@ -116,6 +167,6 @@ jobs:
   all-green:
     name: "✅ All 216 weathers validated"
     runs-on: ubuntu-latest
-    needs: [validate-weather, build-the-weather, is-it-raining, greet-ferris]
+    needs: [validate-weather, build-the-weather, kubernetes-weather, is-it-raining, greet-ferris]
     steps:
       - run: echo "🎉 The weather is memory safe. Ship it. 🚀"
