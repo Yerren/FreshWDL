@@ -32,11 +32,25 @@ function unfade(element) {
 }
 
 //Add "." to end of loading message, up to three, then remove two
-var count = 1;
+// 🦀 Now also rotates through enterprise-grade loading messages, sourced from
+// Rust (crates/freshwdl-loading-messages), once per dot cycle.
+var count = 1,
+    dotCycles = 0,
+    loadingStartedAt = Date.now(),
+    // ⏳ ADR-0010: the loading screen is shown for at least this long, no matter how
+    // fast the data arrives, so users understand how much is happening.
+    minimumLoadingScreenMs = 5000;
 function addDots() {
     var element = document.getElementById("loadingMessage"),
         dotIndex = element.innerHTML.indexOf("."),
         stringOut = element.innerHTML.substring(0, dotIndex);
+    
+    if (count === 3) {
+        dotCycles += 1;
+        if (typeof FreshWDLrs !== "undefined") {
+            stringOut = FreshWDLrs.nextLoadingMessage();
+        }
+    }
     
     //check if there is an error in collecting data
     if (dataCollectErrorCR === true || dataCollectErrorCRE === true || dataCollectErrorCRH === true || dataCollectErrorCRD === true) {
@@ -53,7 +67,12 @@ function addDots() {
 }
 
 function loadingFinished() {
-    fade();
+    // 🚀 Data is ready! Wait for the rest of the enterprise to catch up.
+    var remaining = minimumLoadingScreenMs - (Date.now() - loadingStartedAt);
+    if (typeof FreshWDLrs !== "undefined") {
+        FreshWDLrs.log("Data ready in " + (Date.now() - loadingStartedAt) + "ms. Holding loading screen for a further " + Math.max(0, remaining) + "ms for perceived enterprise-ness (ADR-0010).");
+    }
+    setTimeout(fade, Math.max(0, remaining));
 }
 
 //Start dots
