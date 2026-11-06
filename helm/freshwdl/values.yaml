@@ -79,7 +79,7 @@ operator:
     tag: "2.0.0-rs"
     pullPolicy: IfNotPresent
   # One replica. Weather has no leader election. The sky is the leader.
-  replicas: 3
+  replicas: 1
   resources:
     requests:
       cpu: 10m
