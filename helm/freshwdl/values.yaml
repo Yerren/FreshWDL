@@ -1,0 +1,68 @@
+# 🦀 Default values for the FreshWDL-rs Helm chart.
+
+replicaCount: 3  # one per temperature crate (ADR-0009)
+
+image:
+  repository: freshwdl-rs
+  tag: "2.0.0-rs"
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations:
+  freshwdl.io/crab-logging: "enabled"
+  freshwdl.io/barometer-respected: "true"
+
+podLabels:
+  weather: sunny
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources:
+  # A static HTML page needs very little. We have given it a lot, to be safe.
+  requests:
+    cpu: 500m
+    memory: 512Mi
+  limits:
+    cpu: "2"
+    memory: 2Gi
+
+# 📈 Autoscaling, based on humidity.
+#
+# When the relative humidity at the weather station rises above the target,
+# more pods are added. Nobody has been able to explain why, but it is very
+# satisfying to watch on a humid day.
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 100   # 100% humidity, 100 pods
+  targetHumidityPercent: 70
+  # The humidity metric is exposed via an external metrics adapter that
+  # reads field 5 of clientraw.txt. It is called "freshwdl_relative_humidity".
+  humidityMetricName: freshwdl_relative_humidity
+
+# Where to find the clientraw*.txt files
+clientraw:
+  # Option 1: mount from a PersistentVolumeClaim
+  existingClaim: ""
+  # Option 2: just put them next to the HTML file, like the legacy README says
+  mountPath: /usr/share/nginx/html
+
+env:
+  FRESHWDL_WEATHER: "sunny"
+  FRESHWDL_MIN_LOADING_MS: "5000"
+  FRESHWDL_RAIN_ENABLED: "true"   # see ADR-0014
+
+nodeSelector: {}
+
+tolerations:
+  # Tolerate nodes that are tainted as "it's raining" (restored, ADR-0014)
+  - key: "weather"
+    operator: "Equal"
+    value: "rain"
+    effect: "NoSchedule"
+
+affinity: {}
