@@ -1,0 +1,22 @@
+# ☸️🦀 FreshWDL-rs Weather Operator
+#
+#   docker build -f Dockerfile.operator -t freshwdl-operator:2.0.0-rs .
+#
+# Builds a static-ish Rust binary that watches the sky from inside Kubernetes.
+
+FROM rust:1.90-slim-bookworm AS operator-builder
+WORKDIR /build
+RUN apt-get update && apt-get install -y --no-install-recommends cmake perl && rm -rf /var/lib/apt/lists/*
+COPY Cargo.toml Cargo.lock rust-toolchain.toml ./
+COPY crates ./crates
+RUN cargo build --release -p freshwdl-operator --bin freshwdl-operator
+
+# Distroless, because the weather needs no shell. 🐚🚫
+# (Must match the builder's Debian release, or glibc gets upset. Ask us how we know.)
+FROM gcr.io/distroless/cc-debian12:nonroot
+LABEL org.opencontainers.image.title="freshwdl-operator" \
+      org.opencontainers.image.description="A Kubernetes operator that reconciles the weather" \
+      io.freshwdl.reconciles="the sky"
+COPY --from=operator-builder /build/target/release/freshwdl-operator /usr/local/bin/freshwdl-operator
+USER 65532:65532
+ENTRYPOINT ["/usr/local/bin/freshwdl-operator"]
