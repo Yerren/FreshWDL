@@ -1,0 +1,3 @@
+# The build scripts run under bash and perl, which need LF line endings.
+*.sh text eol=lf
+*.pl text eol=lf
