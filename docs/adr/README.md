@@ -23,6 +23,7 @@ Every significant decision made during the Rust migration is documented here, so
 | [0013](0013-ascii-ferris-console-logging.md) | Observability via ASCII Ferris Console Logging | ✅ Accepted |
 | [0014](0014-revert-adr-0011-rain-restored.md) | Revert ADR-0011 (Rain Restored) | ✅ Accepted |
 | [0015](0015-ai-powered-forecasting.md) | AI-Powered Forecasting | ✅ Accepted |
+| [0016](0016-kubernetes-native-weather.md) | Kubernetes-Native Weather (the `Weather` CRD and Operator) | ✅ Accepted |
 
 ## 📝 Writing a New ADR
 
@@ -34,9 +35,10 @@ Every significant decision made during the Rust migration is documented here, so
 
 ## 🗳️ Proposed (Not Yet Written)
 
-- ADR-0016: Adopt `wasm-bindgen` (pending regret)
 - ADR-0017: Migrate `config.js` to `freshwdl.toml`
 - ADR-0018: Should `freshwdl-temperature-02` depend on `freshwdl-temperature-01`?
 - ADR-0019: Humidity as a First-Class Citizen
 - ADR-0020: One Crate per `clientraw.txt` Field (177 crates)
 - ADR-0021: Deprecate Fog (requires RFC, see ADR-0014 "Lessons Learned")
+- ADR-0022: Adopt `wasm-bindgen` (pending regret)
+- ADR-0023: `spec.desiredTemperature` (pending sentience)
