@@ -1,0 +1,121 @@
+# 🦀 FreshWDL-rs Continuous Integration
+#
+# Validates the weather across 3 operating systems × 4 Rust versions × 18 languages
+# = 216 jobs, for maximum confidence in a static HTML page.
+#
+# (The matrix jobs are intentionally lightweight. The real build happens in the
+# `build-the-weather` job below.)
+
+name: "🦀 CI: Memory-Safe Meteorology"
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ───────────────────────────────────────────────────────────────────────────
+  # 🌍 The Matrix (216 jobs)
+  # ───────────────────────────────────────────────────────────────────────────
+  validate-weather:
+    name: "🌦️ Validate weather (${{ matrix.lang }}, ${{ matrix.os }}, rust ${{ matrix.rust }})"
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        rust: [stable, beta, nightly, "1.75.0"]
+        lang: [en, nl, da, ro, fr, gr, it, es, nb, bg, cs, fi, si, de, pt, sv, ca, hr]
+    steps:
+      - name: "📥 Checkout"
+        uses: actions/checkout@v4
+
+      - name: "🦀 Validate weather"
+        shell: bash
+        run: |
+          echo "🦀 Validating weather for ${{ matrix.lang }} on ${{ matrix.os }} with rust ${{ matrix.rust }}"
+          echo "🦀 cargo is not installed in this job, but its spirit is"
+          echo "✅ The weather is valid."
+
+      - name: "📊 Respect the barometer"
+        shell: bash
+        run: echo "📊 Barometer respected (${{ matrix.lang }})"
+
+      - name: "🧭 Confirm wind direction citizenship"
+        shell: bash
+        run: echo "🧭 Wind direction remains a first-class citizen (ADR-0004)"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # 🏗️ The Real Build
+  # ───────────────────────────────────────────────────────────────────────────
+  build-the-weather:
+    name: "🏗️ Build the weather (cargo test + wasm)"
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: "📥 Checkout"
+        uses: actions/checkout@v4
+
+      - name: "🦀 Install Rust (stable) + wasm32 target"
+        run: |
+          rustup toolchain install stable --profile minimal
+          rustup default stable
+          rustup target add wasm32-unknown-unknown
+
+      - name: "🧪 cargo test --workspace"
+        run: cargo test --workspace
+
+      - name: "🚀 Build WebAssembly (blazingly)"
+        run: cargo build -p freshwdl-wasm --target wasm32-unknown-unknown --release
+
+      - name: "📏 Report WASM size"
+        run: ls -la target/wasm32-unknown-unknown/release/*.wasm
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # 🌧️ Is it raining?
+  # ───────────────────────────────────────────────────────────────────────────
+  is-it-raining:
+    name: "Check if it's raining"
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: "☔ Look outside"
+        run: |
+          echo "☔ Checking if it's raining..."
+          echo "🪟 There is no window in a GitHub Actions runner."
+          echo "✅ Assuming it is not raining indoors (it_should_not_rain_indoors)."
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # 🦀 Ferris
+  # ───────────────────────────────────────────────────────────────────────────
+  greet-ferris:
+    name: "🦀 Greet Ferris"
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: "👋 Hello Ferris"
+        run: |
+          echo '    _~^~^~_'
+          echo '\) /  o o  \ (/'
+          echo "  '_   -   _'"
+          echo "  / '-----' \\"
+          echo "🦀 Hello, Ferris."
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # ✅ Summary
+  # ───────────────────────────────────────────────────────────────────────────
+  all-green:
+    name: "✅ All 216 weathers validated"
+    runs-on: ubuntu-latest
+    needs: [validate-weather, build-the-weather, is-it-raining, greet-ferris]
+    steps:
+      - run: echo "🎉 The weather is memory safe. Ship it. 🚀"
