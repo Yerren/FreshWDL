@@ -66,3 +66,32 @@ tolerations:
     effect: "NoSchedule"
 
 affinity: {}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ☸️ Weather Operator (ADR-0016)
+# Reconciles `Weather` custom resources with the sky, so you can
+# `kubectl get weather`. The web page does not use any of this.
+# ─────────────────────────────────────────────────────────────────────────────
+operator:
+  enabled: true
+  image:
+    repository: freshwdl-operator
+    tag: "2.0.0-rs"
+    pullPolicy: IfNotPresent
+  # One replica. Weather has no leader election. The sky is the leader.
+  replicas: 1
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+# 🌦️ A Weather resource to create alongside the chart.
+weather:
+  enabled: true
+  name: outside
+  # Where your weather station uploads clientraw.txt. Change this.
+  clientrawUrl: "http://weather-station.example/clientraw.txt"
+  refreshSeconds: 30
