@@ -1,0 +1,13 @@
+[package]
+name = "freshwdl-humidity"
+description = "💧 Strongly-typed description of the humidity gauge"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+freshwdl-core = { workspace = true }
+freshwdl-prelude = { workspace = true }
