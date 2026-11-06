@@ -1,0 +1,13 @@
+[package]
+name = "freshwdl-solar"
+description = "☀️ Strongly-typed description of the sun, as a bar"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+freshwdl-core = { workspace = true }
+freshwdl-prelude = { workspace = true }
