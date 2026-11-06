@@ -1,0 +1,4 @@
+# Pinned for reproducible weather.
+[toolchain]
+channel = "stable"
+targets = ["wasm32-unknown-unknown"]
