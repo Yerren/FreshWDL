@@ -1,0 +1,193 @@
+# ☸️ Weather CustomResourceDefinition
+#
+# ⚠️ GENERATED FILE. Regenerate with:
+#     cargo run -p freshwdl-operator --bin crdgen > helm/freshwdl/crds/weather-crd.yaml
+# (then re-add this comment, because the generator does not know about it)
+#
+# This file is JSON. It has a .yaml extension because YAML is a superset of
+# JSON. Helm has not noticed. Please do not tell Helm.
+{
+  "apiVersion": "apiextensions.k8s.io/v1",
+  "kind": "CustomResourceDefinition",
+  "metadata": {
+    "name": "weathers.weather.freshwdl.io"
+  },
+  "spec": {
+    "group": "weather.freshwdl.io",
+    "names": {
+      "kind": "Weather",
+      "plural": "weathers",
+      "shortNames": [
+        "wx"
+      ],
+      "singular": "weather"
+    },
+    "scope": "Namespaced",
+    "versions": [
+      {
+        "additionalPrinterColumns": [
+          {
+            "jsonPath": ".status.temperature",
+            "name": "Temperature",
+            "type": "string"
+          },
+          {
+            "jsonPath": ".status.humidity",
+            "name": "Humidity",
+            "type": "string"
+          },
+          {
+            "jsonPath": ".status.wind",
+            "name": "Wind",
+            "type": "string"
+          },
+          {
+            "jsonPath": ".status.direction",
+            "name": "Direction",
+            "type": "string"
+          },
+          {
+            "jsonPath": ".status.pressure",
+            "name": "Pressure",
+            "type": "string"
+          },
+          {
+            "jsonPath": ".status.conditions",
+            "name": "Conditions",
+            "type": "string"
+          },
+          {
+            "jsonPath": ".status.vibe",
+            "name": "Vibe",
+            "type": "string"
+          },
+          {
+            "jsonPath": ".status.forecast",
+            "name": "Forecast",
+            "priority": 1,
+            "type": "string"
+          },
+          {
+            "jsonPath": ".status.station",
+            "name": "Station",
+            "priority": 1,
+            "type": "string"
+          },
+          {
+            "jsonPath": ".status.message",
+            "name": "Message",
+            "priority": 1,
+            "type": "string"
+          },
+          {
+            "jsonPath": ".metadata.creationTimestamp",
+            "name": "Age",
+            "type": "date"
+          }
+        ],
+        "name": "v1",
+        "schema": {
+          "openAPIV3Schema": {
+            "description": "Auto-generated derived type for WeatherSpec via `CustomResource`",
+            "properties": {
+              "spec": {
+                "description": "☸️ The desired state of the weather.\n\n(We do not actually get to decide the desired state of the weather. This\nspec only says where to look for it.)",
+                "properties": {
+                  "clientrawUrl": {
+                    "description": "🔗 Where the weather station uploads its `clientraw.txt`.",
+                    "type": "string"
+                  },
+                  "refreshSeconds": {
+                    "default": 30,
+                    "description": "⏱️ How often to reconcile the weather, in seconds. Defaults to 30.",
+                    "format": "uint64",
+                    "minimum": 0.0,
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "clientrawUrl"
+                ],
+                "type": "object"
+              },
+              "status": {
+                "description": "🌡️ The observed state of the weather.\n\nEvery field is a pre-formatted string so that `kubectl get weather` looks\nnice. Type safety ends at the API server. 😔",
+                "nullable": true,
+                "properties": {
+                  "conditions": {
+                    "description": "e.g. `Cloudy/Dry`, straight from the weather station.",
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "direction": {
+                    "description": "e.g. `WNW (300°)`. A first-class citizen (ADR-0004).",
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "forecast": {
+                    "description": "The AI forecast for the current temperature. 🧠",
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "humidity": {
+                    "description": "e.g. `72%`",
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "lastFetchedUnix": {
+                    "description": "Unix timestamp (seconds) of the last successful or failed fetch.",
+                    "format": "uint64",
+                    "minimum": 0.0,
+                    "nullable": true,
+                    "type": "integer"
+                  },
+                  "message": {
+                    "description": "A comforting message from Ferris. 🦀",
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "pressure": {
+                    "description": "e.g. `1015.6 hPa`",
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "station": {
+                    "description": "The name of the weather station.",
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "temperature": {
+                    "description": "e.g. `14.3°C`",
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "vibe": {
+                    "description": "The vibe. ✨",
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "wind": {
+                    "description": "e.g. `11.9 kts`",
+                    "nullable": true,
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "required": [
+              "spec"
+            ],
+            "title": "Weather",
+            "type": "object"
+          }
+        },
+        "served": true,
+        "storage": true,
+        "subresources": {
+          "status": {}
+        }
+      }
+    ]
+  }
+}
