@@ -27,3 +27,6 @@ js_bundles/Globals.txt
 outputDict.txt
 updateWidgets.txt
 FreshWDL.html
+
+# 🦀 FreshWDL-rs build output
+target/
